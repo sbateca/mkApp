@@ -39,10 +39,10 @@ export const ReportsContent = (): React.ReactElement => {
     useReports();
   const {sampleTypes} = useSampleType();
   const {samples} = useSample();
-  const {analytes} = useAnalyte();
   const {showSnackBarMessage} = useSnackBar();
   const {isSideSectionOpen, setIsSideSectionOpen, setSideSectionTitle} =
     useSideSection();
+  const {analytes} = useAnalyte();
 
   const handleOpenSideSection = () => {
     setSelectedReport(null);
@@ -55,7 +55,7 @@ export const ReportsContent = (): React.ReactElement => {
     if (reports) {
       setRows(reportsToTableRows(reports, samples, sampleTypes, analytes));
     }
-  }, [reports]);
+  }, [reports, analytes]);
 
   useEffect(() => {
     if (error) {
