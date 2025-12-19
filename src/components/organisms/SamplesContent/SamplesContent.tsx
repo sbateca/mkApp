@@ -9,7 +9,6 @@ import {Table} from "../Table";
 
 import {
   useSideSection,
-  useSnackBar,
   useSampleType,
   useClient,
   useSample,
@@ -30,6 +29,7 @@ import {
 } from "../../../utils/constants";
 import {TableRowProps} from "../../molecules/TableRow/Types";
 import {SampleContentStyles} from "./SamplesContentStyles";
+import useSnackBarStore from "../../../stores/snackBarStore";
 
 export const SamplesContent = (): React.ReactElement => {
   const [rows, setRows] = useState<TableRowProps[]>([]);
@@ -39,7 +39,7 @@ export const SamplesContent = (): React.ReactElement => {
     useSample();
   const {clients} = useClient();
   const {sampleTypes} = useSampleType();
-  const {showSnackBarMessage} = useSnackBar();
+  const {showSnackBarMessage} = useSnackBarStore();
   const {isSideSectionOpen, setIsSideSectionOpen, setSideSectionTitle} =
     useSideSection();
 

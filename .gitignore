@@ -25,3 +25,6 @@ dist-ssr
 
 # environment variables
 .env
+
+# mock data
+mock-data.json

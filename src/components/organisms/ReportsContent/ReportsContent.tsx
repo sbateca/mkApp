@@ -13,7 +13,6 @@ import {
   useSampleType,
   useSample,
   useSideSection,
-  useSnackBar,
   useReports,
 } from "../../../utils/hooks";
 import {
@@ -30,6 +29,7 @@ import {
   SharedButtonVariants,
   SnackBarSeverity,
 } from "../../../utils/enums";
+import useSnackBarStore from "../../../stores/snackBarStore";
 
 export const ReportsContent = (): React.ReactElement => {
   const [rows, setRows] = useState<TableRowProps[]>([]);
@@ -39,7 +39,7 @@ export const ReportsContent = (): React.ReactElement => {
     useReports();
   const {sampleTypes} = useSampleType();
   const {samples} = useSample();
-  const {showSnackBarMessage} = useSnackBar();
+  const {showSnackBarMessage} = useSnackBarStore();
   const {isSideSectionOpen, setIsSideSectionOpen, setSideSectionTitle} =
     useSideSection();
   const {analytes} = useAnalyte();

@@ -2,6 +2,7 @@ import {render, screen} from "@testing-library/react";
 
 import {SampleDetail} from "./SampleDetail";
 import * as hooks from "../../../utils/hooks";
+import * as store from "../../../stores";
 import {SnackBarSeverity} from "../../../utils/enums";
 import dayjs from "dayjs";
 import {DATEPICKER_FORMAT} from "../../../utils/constants";
@@ -93,6 +94,10 @@ jest.mock("../../../config/EnvManager", () => ({
   },
 }));
 
+jest.mock("../../../stores", () => ({
+  useSnackBarStore: jest.fn(),
+}));
+
 jest.mock("../../../utils/hooks", () => ({
   useSample: jest.fn(),
   useClient: jest.fn(),
@@ -155,7 +160,7 @@ export const renderSampleDetail = async () => {
     setDefaultFormFieldsValues: jest.fn(),
     isNotValidForm: false,
   });
-  jest.spyOn(hooks, "useSnackBar").mockReturnValue({
+  jest.spyOn(store, "useSnackBarStore").mockReturnValue({
     showSnackBarMessage: jest.fn(),
     isSnackBarOpen: false,
     snackBarText: "",

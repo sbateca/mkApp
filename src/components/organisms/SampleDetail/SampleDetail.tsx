@@ -22,7 +22,6 @@ import {
   useSideSection,
   useSample,
   useForm,
-  useSnackBar,
   useSampleType,
   useClient,
 } from "../../../utils/hooks";
@@ -69,6 +68,7 @@ import {
 } from "./Types";
 import {AutoCompleteOption} from "../../molecules/AutoComplete/types";
 import {SampleDetailStyles, SampleFormStyles} from "./SampleDetailStyles";
+import useSnackBarStore from "../../../stores/snackBarStore";
 
 export const SampleDetail = ({
   isReadOnlyMode,
@@ -113,7 +113,7 @@ export const SampleDetail = ({
     setFormFieldsValidationFunctions,
     cleanForm,
   } = useForm();
-  const {showSnackBarMessage} = useSnackBar();
+  const {showSnackBarMessage} = useSnackBarStore();
 
   const handleCloseSideSection = () => {
     if (setIsSideSectionOpen) {
