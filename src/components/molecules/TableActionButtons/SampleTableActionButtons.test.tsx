@@ -9,11 +9,13 @@ jest.mock("../../../config/EnvManager", () => ({
   },
 }));
 
+jest.mock("../../../stores", () => ({
+  __esModule: true,
+  useSnackBarStore: jest.fn(),
+}));
+
 jest.mock("../../../utils/hooks", () => ({
   useSample: jest.fn(),
-  useSnackBar: () => ({
-    showSnackBarMessage: jest.fn(),
-  }),
   useSideSection: () => ({
     setIsSideSectionOpen: jest.fn(),
     setSideSectionTitle: jest.fn(),

@@ -55,32 +55,36 @@ jest.mock("../../../Config/envManager", () => ({
     BACKEND_URL: "http://mockurl.com/api",
   },
 }));
+
+jest.mock("../../../stores", () => ({
+  __esModule: true,
+  useSnackBarStore: jest.fn(),
+}));
+
 jest.mock("../SampleDetail/SampleDetail", () => ({
   SampleDetail: () => (
     <div data-testid="sampleDetail">Sample Detail Component</div>
   ),
 }));
+
 jest.mock("../../../utils/hooks/useSampleType", () => ({
   useSampleType: () => ({
     sampleTypes: mockSampleTypes,
     getSampleTypes: jest.fn(),
   }),
 }));
+
 jest.mock("../../../utils/hooks/useAnalyte", () => ({
   useAnalyte: () => ({
     analytes: mockAnalytes,
     getAnalytes: jest.fn(),
   }),
 }));
+
 jest.mock("../../../utils/hooks/useClient", () => ({
   useClient: () => ({
     clients: mockClient,
     getClients: jest.fn(),
-  }),
-}));
-jest.mock("../../../utils/hooks/useSnackBar", () => ({
-  useSnackBar: () => ({
-    showSnackBarMessage: jest.fn(),
   }),
 }));
 

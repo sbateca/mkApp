@@ -8,32 +8,8 @@ jest.mock("../../../Config/envManager", () => ({
     BACKEND_URL: "http://mockurl.com/api",
   },
 }));
-jest.mock("../../../utils/hooks/useSideSection", () => ({
-  useSideSection: () => jest.fn(),
-}));
-jest.mock("../../../utils/hooks/useSnackBar", () => ({
-  useSnackBar: () => jest.fn(),
-}));
-jest.mock("../../../utils/hooks/useClient", () => ({
-  useClient: () => jest.fn(),
-}));
-jest.mock("../../../utils/hooks/useSampleType", () => ({
-  useSampleType: () => jest.fn(),
-}));
-jest.mock("../../../utils/hooks/useSample", () => ({
-  useSample: () => jest.fn(),
-}));
-jest.mock("../../../utils/hooks/useReports", () => ({
-  useReports: () => jest.fn(),
-}));
-jest.mock("../../../utils/hooks/useAnalyte", () => ({
-  useAnalyte: () => jest.fn(),
-}));
-jest.mock("../../../utils/hooks/useCriteria", () => ({
-  useCriteria: () => jest.fn(),
-}));
-jest.mock("../../../utils/hooks/useAnalysisMethod", () => ({
-  useAnalysisMethod: () => jest.fn(),
+jest.mock("../../organisms/ReportsDetail", () => ({
+  ReportsDetail: () => <div data-testid="reportsDetailComponent" />,
 }));
 jest.mock("../../templates/Main/Main", () => ({
   MainTemplate: ({header, menu, mainContent}: MainTemplateProps) => (
@@ -42,6 +18,11 @@ jest.mock("../../templates/Main/Main", () => ({
       <div data-testid="menuComponent">{menu}</div>
       <div data-testid="mainContentComponent">{mainContent}</div>
     </div>
+  ),
+}));
+jest.mock("../../../app/providers/adminProviders", () => ({
+  AdminProviders: ({children}: {children: React.ReactNode}) => (
+    <div data-testid="adminProviders">{children}</div>
   ),
 }));
 

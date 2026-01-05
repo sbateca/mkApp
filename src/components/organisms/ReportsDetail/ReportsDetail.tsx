@@ -66,7 +66,6 @@ import {
   useReports,
   useSideSection,
   useForm,
-  useSnackBar,
 } from "../../../utils/hooks";
 import {
   BoxContainerProps,
@@ -76,6 +75,7 @@ import {
   StackRowDirectionSpacingPropsProps,
 } from "./Types";
 import {ReportDetailStyles, SampleFormStyles} from "./ReportsDetailStyles";
+import useSnackBarStore from "../../../stores/snackBarStore";
 
 export const ReportDetail = ({
   isReadOnlyMode,
@@ -107,7 +107,7 @@ export const ReportDetail = ({
   const {analytes, isLoading: isLoadingAnalytes} = useAnalyte();
   const {criterias, isLoading: isLoadingCriterias} = useCriteria();
   const {setIsSideSectionOpen, sideSectionTitle} = useSideSection();
-  const {showSnackBarMessage} = useSnackBar();
+  const {showSnackBarMessage} = useSnackBarStore();
   const [loadingState, setLoadingState] = useState(false);
 
   const defaultFormValue: FormProps = {
