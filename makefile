@@ -11,4 +11,4 @@ fix-eslint: ## fix eslint errors
 .PHONY: start-server
 start-server:
 	echo "Starting mocked server..."
-	json-server --watch mock-data.json --port 4000
+	npx json-server --watch mock-data.json --port 4000
