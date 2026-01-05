@@ -10,7 +10,8 @@ describe("SampleDetail", () => {
     const expectedData = {
       ...mockData.expectedData,
     };
-    const {title, closeButton, screen} = await renderReportDetail();
+    const {titleNode, closeButton, screen} = await renderReportDetail();
+    expect(titleNode).toBeInTheDocument();
 
     const sampleValue = screen.getByDisplayValue(
       expectedData.sampleId,
@@ -30,7 +31,6 @@ describe("SampleDetail", () => {
     const datePickers = screen.getAllByPlaceholderText("MM/DD/YYYY");
     const reportDateValue = datePickers[0] as HTMLInputElement;
 
-    expect(title).toBeInTheDocument();
     expect(closeButton).toBeInTheDocument();
     expect(reportDateValue.value).toBe(expectedData.reportDate);
     expect(sampleValue.value).toBe(expectedData.sampleId);
@@ -71,7 +71,7 @@ describe("SampleDetail", () => {
       ...mockData.expectedData,
     };
 
-    const {title, closeButton, screen} = await renderReportDetail();
+    const {titleNode: title, closeButton, screen} = await renderReportDetail();
     const sampleValue = screen.getByDisplayValue(
       expectedData.sampleId,
     ) as HTMLInputElement;

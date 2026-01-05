@@ -4,7 +4,7 @@ import {Box} from "@mui/material";
 import Swal from "sweetalert2";
 
 import {Button, Spinner} from "../../atoms";
-import {useSideSection, useReports} from "../../../utils/hooks";
+import {useReports} from "../../../utils/hooks";
 import {ReportTableActionButtonsProps} from "./Types";
 import {
   IconNames,
@@ -23,6 +23,7 @@ import {
   SAMPLE_SUCCESSFULLY_DELETED_TEXT,
 } from "../../../utils/constants";
 import useSnackBarStore from "../../../stores/snackBarStore";
+import useSideSectionStore from "../../../stores/sideSectionStore";
 
 export const ReportTableActionButtons = ({
   reportId,
@@ -36,7 +37,7 @@ export const ReportTableActionButtons = ({
     setSelectedReport,
   } = useReports();
   const {showSnackBarMessage} = useSnackBarStore();
-  const {setIsSideSectionOpen, setSideSectionTitle} = useSideSection();
+  const {setIsSideSectionOpen, setSideSectionTitle} = useSideSectionStore();
 
   const handleOpenSideSection = async (reportId: string) => {
     const report = await getReportById(reportId);

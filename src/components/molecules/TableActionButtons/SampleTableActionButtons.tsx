@@ -4,7 +4,7 @@ import {Box} from "@mui/material";
 import Swal from "sweetalert2";
 
 import {Button, Spinner} from "../../atoms";
-import {useSample, useSideSection} from "../../../utils/hooks";
+import {useSample} from "../../../utils/hooks";
 import {SampleTableActionButtonsProps} from "./Types";
 import {
   IconNames,
@@ -23,6 +23,7 @@ import {
   SAMPLE_DETAILS_TITLE_TEXT,
 } from "../../../utils/constants";
 import useSnackBarStore from "../../../stores/snackBarStore";
+import useSideSectionStore from "../../../stores/sideSectionStore";
 
 export const SampleTableActionButtons = ({
   sampleId,
@@ -36,7 +37,7 @@ export const SampleTableActionButtons = ({
     error,
   } = useSample();
   const {showSnackBarMessage} = useSnackBarStore();
-  const {setIsSideSectionOpen, setSideSectionTitle} = useSideSection();
+  const {setIsSideSectionOpen, setSideSectionTitle} = useSideSectionStore();
 
   const handleOpenSideSection = async (sampleId: string) => {
     const sample = await getSampleById(sampleId);

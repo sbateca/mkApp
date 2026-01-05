@@ -12,7 +12,6 @@ import {
   useAnalyte,
   useSampleType,
   useSample,
-  useSideSection,
   useReports,
 } from "../../../utils/hooks";
 import {
@@ -30,6 +29,7 @@ import {
   SnackBarSeverity,
 } from "../../../utils/enums";
 import useSnackBarStore from "../../../stores/snackBarStore";
+import useSideSectionStore from "../../../stores/sideSectionStore";
 
 export const ReportsContent = (): React.ReactElement => {
   const [rows, setRows] = useState<TableRowProps[]>([]);
@@ -41,7 +41,7 @@ export const ReportsContent = (): React.ReactElement => {
   const {samples} = useSample();
   const {showSnackBarMessage} = useSnackBarStore();
   const {isSideSectionOpen, setIsSideSectionOpen, setSideSectionTitle} =
-    useSideSection();
+    useSideSectionStore();
   const {analytes} = useAnalyte();
 
   const handleOpenSideSection = () => {
