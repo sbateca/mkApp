@@ -42,7 +42,7 @@ describe("Button Component", () => {
   });
 
   it("should render with the correct color", async () => {
-    const expectedClass = "MuiButton-colorPrimary";
+    const expectedClass = "MuiButton-containedPrimary";
     const {button} = await renderListItemButton();
 
     expect(button).toHaveClass(expectedClass);
