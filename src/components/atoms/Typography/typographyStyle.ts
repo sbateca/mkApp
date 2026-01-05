@@ -1,4 +1,4 @@
-import {Theme} from "@mui/system";
+import {Theme} from "@mui/material/styles";
 
 const typographyStyle = {
   error: (theme: Theme) => theme.palette.error.main,

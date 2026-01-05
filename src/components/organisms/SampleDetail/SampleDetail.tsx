@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 
-import {SxProps} from "@mui/system";
+import {SxProps} from "@mui/material/styles";
 import {
   Box,
   Chip,
