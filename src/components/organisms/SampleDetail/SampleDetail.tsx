@@ -19,7 +19,6 @@ import {Typography, Button, Spinner} from "../../atoms";
 import SampleSideSectionButtons from "./SampleSideSectionActions";
 import {AutoComplete} from "../../molecules";
 import {
-  useSideSection,
   useSample,
   useForm,
   useSampleType,
@@ -69,6 +68,7 @@ import {
 import {AutoCompleteOption} from "../../molecules/AutoComplete/types";
 import {SampleDetailStyles, SampleFormStyles} from "./SampleDetailStyles";
 import useSnackBarStore from "../../../stores/snackBarStore";
+import useSideSectionStore from "../../../stores/sideSectionStore";
 
 export const SampleDetail = ({
   isReadOnlyMode,
@@ -100,7 +100,7 @@ export const SampleDetail = ({
   } = useSample();
   const {clients, isLoading: isLoadingClients} = useClient();
   const {sampleTypes, isLoading: isLoadingSampleTypes} = useSampleType();
-  const {setIsSideSectionOpen, sideSectionTitle} = useSideSection();
+  const {setIsSideSectionOpen, sideSectionTitle} = useSideSectionStore();
   const {
     isNotValidForm,
     form,

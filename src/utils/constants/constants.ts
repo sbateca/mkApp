@@ -1,0 +1,1 @@
+export const DEFAULT_CALLBACK_TIMEOUT = 1000;

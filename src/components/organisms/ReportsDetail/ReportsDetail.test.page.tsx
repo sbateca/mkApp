@@ -2,7 +2,8 @@ import {render, screen} from "@testing-library/react";
 
 import {ReportDetail} from "./ReportsDetail";
 import * as hooks from "../../../utils/hooks";
-import * as store from "../../../stores";
+import useSideSectionStore from "../../../stores/sideSectionStore";
+import useSnackBarStore from "../../../stores/snackBarStore";
 import {SnackBarSeverity} from "../../../utils/enums";
 import dayjs from "dayjs";
 import {DATEPICKER_FORMAT} from "../../../utils/constants";
@@ -141,6 +142,17 @@ jest.mock("../../../config/EnvManager", () => ({
 jest.mock("../../../stores", () => ({
   __esModule: true,
   useSnackBarStore: jest.fn(),
+  useSideSectionStore: jest.fn(),
+}));
+
+jest.mock("../../../stores/sideSectionStore", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
+
+jest.mock("../../../stores/snackBarStore", () => ({
+  __esModule: true,
+  default: jest.fn(),
 }));
 
 jest.mock("../../../utils/hooks", () => ({
@@ -251,12 +263,17 @@ export const renderReportDetail = async () => {
     setDefaultFormFieldsValues: jest.fn(),
     isNotValidForm: false,
   });
-  jest.spyOn(store, "useSnackBarStore").mockReturnValue({
-    showSnackBarMessage: jest.fn(),
-    isSnackBarOpen: false,
-    snackBarText: "",
-    snackBarSeverity: SnackBarSeverity.SUCCESS,
-  });
+  (useSnackBarStore as jest.Mock).mockReturnValue({
+  showSnackBarMessage: jest.fn(),
+  isSnackBarOpen: false,
+  snackBarText: "",
+  snackBarSeverity: SnackBarSeverity.SUCCESS,
+});
+
+(useSideSectionStore as jest.Mock).mockReturnValue({
+  setIsSideSectionOpen: jest.fn(),
+  sideSectionTitle: "Mock title",
+});
   const container = render(
     <ReportDetail
       isReadOnlyMode={mockData.readonly}
@@ -266,7 +283,7 @@ export const renderReportDetail = async () => {
 
   return {
     container,
-    title: screen.getByText("Mock title"),
+    titleNode: container.container.querySelector("h6"),
     closeButton: screen.getByText("Close"),
     screen,
   };

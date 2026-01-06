@@ -64,7 +64,6 @@ import {
   useCriteria,
   useClient,
   useReports,
-  useSideSection,
   useForm,
 } from "../../../utils/hooks";
 import {
@@ -76,6 +75,7 @@ import {
 } from "./Types";
 import {ReportDetailStyles, SampleFormStyles} from "./ReportsDetailStyles";
 import useSnackBarStore from "../../../stores/snackBarStore";
+import useSideSectionStore from "../../../stores/sideSectionStore";
 
 export const ReportDetail = ({
   isReadOnlyMode,
@@ -106,7 +106,7 @@ export const ReportDetail = ({
     useAnalysisMethod();
   const {analytes, isLoading: isLoadingAnalytes} = useAnalyte();
   const {criterias, isLoading: isLoadingCriterias} = useCriteria();
-  const {setIsSideSectionOpen, sideSectionTitle} = useSideSection();
+  const {setIsSideSectionOpen, sideSectionTitle} = useSideSectionStore();
   const {showSnackBarMessage} = useSnackBarStore();
   const [loadingState, setLoadingState] = useState(false);
 
@@ -259,13 +259,13 @@ export const ReportDetail = ({
       result: [isEmpty],
     });
     cleanForm(defaultFormValue);
-  }, []);
+  }, [selectedReport]);
 
   useEffect(() => {
     if (selectedReport) {
       setForm(reportToReportForm(selectedReport));
     }
-  }, []);
+  }, [selectedReport]);
 
   useEffect(() => {
     if (error) {

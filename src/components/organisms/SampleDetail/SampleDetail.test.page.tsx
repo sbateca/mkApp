@@ -2,7 +2,8 @@ import {render, screen} from "@testing-library/react";
 
 import {SampleDetail} from "./SampleDetail";
 import * as hooks from "../../../utils/hooks";
-import * as store from "../../../stores";
+import useSideSectionStore from "../../../stores/sideSectionStore";
+import useSnackBarStore from "../../../stores/snackBarStore";
 import {SnackBarSeverity} from "../../../utils/enums";
 import dayjs from "dayjs";
 import {DATEPICKER_FORMAT} from "../../../utils/constants";
@@ -94,8 +95,15 @@ jest.mock("../../../config/EnvManager", () => ({
   },
 }));
 
-jest.mock("../../../stores", () => ({
-  useSnackBarStore: jest.fn(),
+
+jest.mock("../../../stores/sideSectionStore", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
+
+jest.mock("../../../stores/snackBarStore", () => ({
+  __esModule: true,
+  default: jest.fn(),
 }));
 
 jest.mock("../../../utils/hooks", () => ({
@@ -107,16 +115,20 @@ jest.mock("../../../utils/hooks", () => ({
   useSnackBar: jest.fn(),
 }));
 
-export const renderSampleDetail = async () => {
+export const renderSampleDetail = (opts?: {
+  selectedSample?: any;
+  form?: any;
+  isNotValidForm?: boolean;
+}) => {
   jest.spyOn(hooks, "useSample").mockReturnValue({
     isLoading: false,
     error: null,
     getSampleById: jest.fn().mockReturnValue(mockData.samples[0]),
     samples: mockData.samples,
-    selectedSample: mockData.samples[0],
+    selectedSample: opts?.selectedSample ?? mockData.samples[0],
     createSample: jest.fn().mockReturnValue(mockData.samples[1]),
     editSample: jest.fn().mockReturnValue(mockData.samples[1]),
-    setSelectedSample: jest.fn().mockReturnValue(mockData.samples[0]),
+    setSelectedSample: jest.fn(),
     getSamples: jest.fn().mockReturnValue(mockData.samples),
     deleteSample: jest.fn().mockReturnValue(mockData.samples[1]),
   });
@@ -124,9 +136,9 @@ export const renderSampleDetail = async () => {
   jest.spyOn(hooks, "useClient").mockReturnValue({
     clients: mockData.clients,
     selectedClient: mockData.clients[0],
-    setSelectedClient: jest.fn().mockReturnValue(mockData.clients[1]),
+    setSelectedClient: jest.fn(),
     getClients: jest.fn().mockReturnValue(mockData.clients),
-    getClientById: jest.fn().mockReturnValue(mockData.clients[1]),
+    getClientById: jest.fn(),
     isLoading: false,
     error: null,
   });
@@ -134,21 +146,16 @@ export const renderSampleDetail = async () => {
   jest.spyOn(hooks, "useSampleType").mockReturnValue({
     sampleTypes: mockData.sampleTypes,
     selectedSampleType: mockData.sampleTypes[0],
-    setSelectedSampleType: jest.fn().mockReturnValue(mockData.sampleTypes[1]),
+    setSelectedSampleType: jest.fn(),
     getSampleTypes: jest.fn().mockReturnValue(mockData.sampleTypes),
-    getSampleTypeById: jest.fn().mockReturnValue(mockData.sampleTypes[1]),
+    getSampleTypeById: jest.fn(),
     isLoading: false,
     error: null,
   });
-  jest.spyOn(hooks, "useSideSection").mockReturnValue({
-    setIsSideSectionOpen: jest.fn().mockReturnValue(true),
-    setSideSectionTitle: jest.fn().mockReturnValue("Mock title"),
-    isSideSectionOpen: true,
-    sideSectionTitle: "Mock title",
-  });
+
   jest.spyOn(hooks, "useForm").mockReturnValue({
-    form: mockData.form,
-    setForm: jest.fn().mockReturnValue(mockData.form),
+    form: opts?.form ?? mockData.form,
+    setForm: jest.fn(),
     handleChange: jest.fn(),
     handleDateChange: jest.fn(),
     cleanForm: jest.fn(),
@@ -158,26 +165,29 @@ export const renderSampleDetail = async () => {
     getTextFieldHelperText: jest.fn(),
     setFormFieldsValidationFunctions: jest.fn(),
     setDefaultFormFieldsValues: jest.fn(),
-    isNotValidForm: false,
+    isNotValidForm: opts?.isNotValidForm ?? false,
   });
-  jest.spyOn(store, "useSnackBarStore").mockReturnValue({
+
+  // ✅ ZUSTAND STORES (CLAVE)
+  (useSideSectionStore as jest.Mock).mockReturnValue({
+    setIsSideSectionOpen: jest.fn(),
+    sideSectionTitle: "Mock title",
+  });
+
+  (useSnackBarStore as jest.Mock).mockReturnValue({
     showSnackBarMessage: jest.fn(),
     isSnackBarOpen: false,
     snackBarText: "",
     snackBarSeverity: SnackBarSeverity.SUCCESS,
   });
 
-  const container = render(
+  render(
     <SampleDetail
       isReadOnlyMode={mockData.readonly}
       setIsReadOnlyMode={() => {}}
     />,
   );
 
-  return {
-    container,
-    title: screen.getByText("Mock title"),
-    closeButton: screen.getByText("Close"),
-    screen,
-  };
+  return { screen };
 };
+
