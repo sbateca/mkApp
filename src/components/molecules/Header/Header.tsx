@@ -3,14 +3,15 @@ import {useEffect, useState} from "react";
 import {AppBar, Toolbar, IconButton, Typography} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
-import {useMenu} from "../../../utils/hooks";
 import {localStorageToUser} from "../../../adapters/user";
 import {UserMenu} from "../UserMenu";
 import {HeaderProps} from "./Type";
 import {LOCAL_STORAGE_USER_KEY} from "../../../utils/constants";
+import {useMenuStore} from "../../../features/menu/model/store";
+import {selectToggleMenu} from "../../../features/menu/model/selectors";
 
 export const Header = ({companyName}: HeaderProps): React.ReactElement => {
-  const {toggleMenu} = useMenu();
+  const toogleMenu = useMenuStore(selectToggleMenu);
   const [username, setUsername] = useState("");
   const [userMenu, setUserMenu] = useState(false);
 
@@ -31,7 +32,7 @@ export const Header = ({companyName}: HeaderProps): React.ReactElement => {
           edge="start"
           color="inherit"
           aria-label="menu"
-          onClick={toggleMenu}
+          onClick={toogleMenu}
           data-testid="toggleMainMenu"
         >
           <MenuIcon />

@@ -1,26 +1,21 @@
 import React from "react";
 
 import {ListItemButton as MuiListItemButton, ListItemText} from "@mui/material";
-
-import {useMenu} from "../../../utils/hooks";
-import {LisItemButtonProps} from "./Types";
 import {SharedMenuItems} from "../../../utils/enums";
 
+type Props = {
+  label: SharedMenuItems;
+  selected?: boolean;
+  onClick?: () => void;
+};
+
 export const ListItemButton = ({
-  label,
-}: LisItemButtonProps): React.ReactElement => {
-  const {selectedMenuItem, setSelectedMenuItem, toggleMenu} = useMenu();
-
-  const handleClick = (item: SharedMenuItems) => {
-    setSelectedMenuItem(item);
-    toggleMenu();
-  };
-
+  label = SharedMenuItems.SAMPLES,
+  selected = false,
+  onClick,
+}: Props): React.ReactElement => {
   return (
-    <MuiListItemButton
-      selected={selectedMenuItem === label}
-      onClick={() => handleClick(label)}
-    >
+    <MuiListItemButton selected={selected} onClick={onClick}>
       <ListItemText primary={label} />
     </MuiListItemButton>
   );
