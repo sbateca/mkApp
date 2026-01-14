@@ -264,16 +264,16 @@ export const renderReportDetail = async () => {
     isNotValidForm: false,
   });
   (useSnackBarStore as jest.Mock).mockReturnValue({
-  showSnackBarMessage: jest.fn(),
-  isSnackBarOpen: false,
-  snackBarText: "",
-  snackBarSeverity: SnackBarSeverity.SUCCESS,
-});
+    showSnackBarMessage: jest.fn(),
+    isSnackBarOpen: false,
+    snackBarText: "",
+    snackBarSeverity: SnackBarSeverity.SUCCESS,
+  });
 
-(useSideSectionStore as jest.Mock).mockReturnValue({
-  setIsSideSectionOpen: jest.fn(),
-  sideSectionTitle: "Mock title",
-});
+  (useSideSectionStore as jest.Mock).mockReturnValue({
+    setIsSideSectionOpen: jest.fn(),
+    sideSectionTitle: "Mock title",
+  });
   const container = render(
     <ReportDetail
       isReadOnlyMode={mockData.readonly}

@@ -12,8 +12,22 @@ describe("UserMenu component", () => {
   beforeEach(() => {
     Storage.prototype.removeItem = jest.fn();
     jest.spyOn(window.location, "reload").mockImplementation(() => {});
+    const handleMenu = jest.fn();
+    const handleClose = jest.fn();
+    const handleLogout = () => {
+      localStorage.removeItem(LOCAL_STORAGE_USER_KEY);
+      window.location.reload();
+    };
 
-    render(<UserMenu username="testuser" />);
+    render(
+      <UserMenu
+        username="testuser"
+        anchorEl={null}
+        handleMenu={handleMenu}
+        handleClose={handleClose}
+        handleLogout={handleLogout}
+      />,
+    );
   });
 
   it("renders username correctly", () => {

@@ -5,12 +5,12 @@ import {
   ReportTableActionButtons,
   SampleTableActionButtons,
 } from "../TableActionButtons";
-import {useMenu} from "../../../utils/hooks";
 import {TableRowProps} from "./Types";
 import {SharedMenuItems} from "../../../utils/enums";
+import {selectSelectedMenuItem, useMenuStore} from "../../../features/menu";
 
 function TableRow({id, cells}: TableRowProps): React.ReactElement {
-  const {selectedMenuItem} = useMenu();
+  const selectedMenuItem = useMenuStore(selectSelectedMenuItem);
 
   const getActionButtons = (): React.ReactElement => {
     switch (selectedMenuItem) {

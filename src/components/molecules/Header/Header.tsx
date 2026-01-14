@@ -4,14 +4,26 @@ import {AppBar, Toolbar, IconButton, Typography} from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 
 import {localStorageToUser} from "../../../adapters/user";
-import {UserMenu} from "../UserMenu";
 import {HeaderProps} from "./Type";
 import {LOCAL_STORAGE_USER_KEY} from "../../../utils/constants";
 import {useMenuStore} from "../../../features/menu/model/store";
 import {selectToggleMenu} from "../../../features/menu/model/selectors";
+import {UserMenu} from "../UserMenu";
+import {
+  selectAnchorEl,
+  selectHandleClose,
+  selectHandleLogout,
+  selectHandleMenu,
+  useUserMenuStore,
+} from "../../../features/usermenu";
 
 export const Header = ({companyName}: HeaderProps): React.ReactElement => {
   const toogleMenu = useMenuStore(selectToggleMenu);
+  const handleUserMenu = useUserMenuStore(selectHandleMenu);
+  const handleClose = useUserMenuStore(selectHandleClose);
+  const handleLogout = useUserMenuStore(selectHandleLogout);
+  const anchorElement = useUserMenuStore(selectAnchorEl);
+
   const [username, setUsername] = useState("");
   const [userMenu, setUserMenu] = useState(false);
 
@@ -38,7 +50,15 @@ export const Header = ({companyName}: HeaderProps): React.ReactElement => {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6">{companyName}</Typography>
-        {userMenu ? <UserMenu username={username} /> : null}
+        {userMenu ? (
+          <UserMenu
+            username={username}
+            anchorEl={anchorElement}
+            handleMenu={handleUserMenu}
+            handleClose={handleClose}
+            handleLogout={handleLogout}
+          />
+        ) : null}
       </Toolbar>
     </AppBar>
   );

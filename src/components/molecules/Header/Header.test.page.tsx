@@ -1,6 +1,5 @@
 import {render, screen} from "@testing-library/react";
 import {Header} from "./Header";
-import {MenuProvider} from "../../../context";
 import {Menu} from "../Menu/Menu";
 import {MenuProps} from "../Menu/Types";
 import {SharedMenuItems} from "../../../utils/enums";
@@ -43,10 +42,10 @@ jest.mock("../../../config/EnvManager", () => ({
 
 export const renderHeader = async () => {
   render(
-    <MenuProvider>
+    <>
       <Header companyName={mockData.companyName} />
       <Menu {...mockMenuItems} />
-    </MenuProvider>,
+    </>,
   );
   return {
     header: screen.getByTestId("header"),

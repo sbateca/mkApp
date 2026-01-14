@@ -10,16 +10,16 @@ import {AnalysisMethodProvider} from "../../context/Services/AnalysisMethodConte
 
 export function AdminProviders({children}: {children: React.ReactNode}) {
   return (
-      <ClientProvider>
-        <SampleTypeProvider>
-          <SampleProvider>
-            <ReportsProvider>
-              <CriteriaProvider>
-                <AnalysisMethodProvider>{children}</AnalysisMethodProvider>
-              </CriteriaProvider>
-            </ReportsProvider>
-          </SampleProvider>
-        </SampleTypeProvider>
-      </ClientProvider>
+    <ClientProvider>
+      <SampleTypeProvider>
+        <SampleProvider>
+          <ReportsProvider>
+            <CriteriaProvider>
+              <AnalysisMethodProvider>{children}</AnalysisMethodProvider>
+            </CriteriaProvider>
+          </ReportsProvider>
+        </SampleProvider>
+      </SampleTypeProvider>
+    </ClientProvider>
   );
 }

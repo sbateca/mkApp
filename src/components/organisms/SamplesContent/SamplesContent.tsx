@@ -7,11 +7,7 @@ import {SideSection} from "../SideSection/SideSection";
 import {SampleDetail} from "../SampleDetail";
 import {Table} from "../Table";
 
-import {
-  useSampleType,
-  useClient,
-  useSample,
-} from "../../../utils/hooks";
+import {useSampleType, useClient, useSample} from "../../../utils/hooks";
 import {samplesToTableRows} from "../../../adapters/tableRow";
 import {
   SharedButtonColors,

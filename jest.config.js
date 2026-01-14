@@ -7,5 +7,8 @@ module.exports = {
   moduleNameMapper: {
     "\\.(gif|ttf|eot|svg|png)$": "jest-transform-stub",
   },
-  setupFilesAfterEnv: ["@testing-library/jest-dom", "<rootDir>/src/setupTests.ts"],
+  setupFilesAfterEnv: [
+    "@testing-library/jest-dom",
+    "<rootDir>/src/setupTests.ts",
+  ],
 };
