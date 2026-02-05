@@ -13,28 +13,28 @@ describe("SampleDetail", () => {
   });
 
   it("should render the sample detail successfully", async () => {
-  const { screen } = renderSampleDetail();
+    const {screen} = renderSampleDetail();
 
-  expect(screen.getByText("Mock title")).toBeInTheDocument();
-  expect(screen.getByText("Close")).toBeInTheDocument();
+    expect(screen.getByText("Mock title")).toBeInTheDocument();
+    expect(screen.getByText("Close")).toBeInTheDocument();
 
-  expect(
-    screen.getByDisplayValue(mockData.expectedData.sampleCode),
-  ).toBeInTheDocument();
+    expect(
+      screen.getByDisplayValue(mockData.expectedData.sampleCode),
+    ).toBeInTheDocument();
 
-  expect(
-    screen.getByDisplayValue(mockData.expectedData.sampleLocation),
-  ).toBeInTheDocument();
-});
-
-  it("should render the sample detail with default values when selectedSample is not provided", async () => {
-  const { screen } = renderSampleDetail({
-    selectedSample: null,
-    form: mockData.defaulForm,
-    isNotValidForm: true,
+    expect(
+      screen.getByDisplayValue(mockData.expectedData.sampleLocation),
+    ).toBeInTheDocument();
   });
 
-  expect(screen.getByText("Mock title")).toBeInTheDocument();
-  expect(screen.getByText("Close")).toBeInTheDocument();
-});
+  it("should render the sample detail with default values when selectedSample is not provided", async () => {
+    const {screen} = renderSampleDetail({
+      selectedSample: null,
+      form: mockData.defaulForm,
+      isNotValidForm: true,
+    });
+
+    expect(screen.getByText("Mock title")).toBeInTheDocument();
+    expect(screen.getByText("Close")).toBeInTheDocument();
+  });
 });

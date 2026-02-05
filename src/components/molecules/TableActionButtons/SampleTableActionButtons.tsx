@@ -4,7 +4,6 @@ import {Box} from "@mui/material";
 import Swal from "sweetalert2";
 
 import {Button, Spinner} from "../../atoms";
-import {useSample} from "../../../utils/hooks";
 import {SampleTableActionButtonsProps} from "./Types";
 import {
   IconNames,
@@ -24,18 +23,26 @@ import {
 } from "../../../utils/constants";
 import useSnackBarStore from "../../../stores/snackBarStore";
 import useSideSectionStore from "../../../stores/sideSectionStore";
+import {useSampleStore} from "../../../features/samples/model/store";
+import {
+  selectDeleteSample,
+  selectError,
+  selectGetSampleById,
+  selectGetSamples,
+  selectIsLoading,
+  selectSetSelectedSample,
+} from "../../../features/samples/model/selectors";
 
 export const SampleTableActionButtons = ({
   sampleId,
 }: SampleTableActionButtonsProps): React.ReactElement => {
-  const {
-    getSampleById,
-    deleteSample,
-    getSamples,
-    setSelectedSample,
-    isLoading,
-    error,
-  } = useSample();
+  const getSamples = useSampleStore(selectGetSamples);
+  const setSelectedSample = useSampleStore(selectSetSelectedSample);
+  const getSampleById = useSampleStore(selectGetSampleById);
+  const deleteSample = useSampleStore(selectDeleteSample);
+  const isLoading = useSampleStore(selectIsLoading);
+  const error = useSampleStore(selectError);
+
   const {showSnackBarMessage} = useSnackBarStore();
   const {setIsSideSectionOpen, setSideSectionTitle} = useSideSectionStore();
 

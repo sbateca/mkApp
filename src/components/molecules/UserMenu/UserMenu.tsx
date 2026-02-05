@@ -1,34 +1,24 @@
-import {useState} from "react";
-
 import {IconButton, Menu, MenuItem, Typography} from "@mui/material";
 import {AccountCircle} from "@mui/icons-material";
 
-import {
-  USER_MENU_LOGOUT,
-  LOCAL_STORAGE_USER_KEY,
-} from "../../../utils/constants";
+import {USER_MENU_LOGOUT} from "../../../utils/constants";
 import {UserMenuStyle} from "./UserMenuStyle";
 
-interface UserMenuProps {
+type Props = {
   username: string;
-}
+  handleMenu: (event: React.MouseEvent<HTMLElement>) => void;
+  handleClose: () => void;
+  handleLogout: () => void;
+  anchorEl: null | HTMLElement;
+};
 
-export const UserMenu = ({username}: UserMenuProps): React.ReactElement => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem(LOCAL_STORAGE_USER_KEY);
-    window.location.reload();
-  };
-
+export const UserMenu = ({
+  username,
+  anchorEl,
+  handleMenu,
+  handleClose,
+  handleLogout,
+}: Props): React.ReactElement => {
   return (
     <div style={UserMenuStyle}>
       <Typography>{username}</Typography>

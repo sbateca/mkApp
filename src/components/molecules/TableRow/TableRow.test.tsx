@@ -10,6 +10,12 @@ jest.mock("../../../config/EnvManager", () => ({
   },
 }));
 
+jest.mock("../../../features/menu", () => ({
+  __esModule: true,
+  useMenuStore: jest.fn().mockReturnValue("SAMPLES"),
+  selectSelectedMenuItem: jest.fn(),
+}));
+
 describe("TableRow component", () => {
   it("should render correctly", () => {
     const mockCells: TableCellProps[] = [

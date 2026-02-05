@@ -1,12 +1,17 @@
 import {Drawer, List} from "@mui/material";
 
 import {ListItemButton} from "../../atoms";
-import {useMenu} from "../../../utils/hooks";
 import {MenuStyle} from "./MenuStyle";
 import {MenuProps} from "./Types";
+import {
+  selectMenuOpen,
+  selectToggleMenu,
+  useMenuStore,
+} from "../../../features/menu";
 
 export const Menu = ({menuItems}: MenuProps): React.ReactElement => {
-  const {menuOpen, toggleMenu} = useMenu();
+  const menuOpen = useMenuStore(selectMenuOpen);
+  const toggleMenu = useMenuStore(selectToggleMenu);
   return (
     <Drawer
       anchor="left"

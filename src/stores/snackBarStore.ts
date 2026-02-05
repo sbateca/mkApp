@@ -1,6 +1,6 @@
 import {create} from "zustand";
 import {SnackBarSeverity} from "../utils/enums";
-import { DEFAULT_CALLBACK_TIMEOUT } from "../utils/constants";
+import {DEFAULT_CALLBACK_TIMEOUT} from "../utils/constants";
 
 interface SnackBarStore {
   isSnackBarOpen: boolean;
@@ -34,7 +34,7 @@ const useSnackBarStore = create<SnackBarStore>((set) => ({
       timer = setTimeout(() => {
         callback();
       }, DEFAULT_CALLBACK_TIMEOUT);
-    };
+    }
 
     set({
       snackBarText: text,

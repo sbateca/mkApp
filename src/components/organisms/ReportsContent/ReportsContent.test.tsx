@@ -62,6 +62,18 @@ const mockUseSideSectionArgs = {
   sideSectionTitle: "",
   setSideSectionTitle: jest.fn(),
 };
+const mockedSamplesState = {
+  samples: mockSamples,
+  selectedSample: mockSamples[0],
+  isLoading: false,
+  error: null,
+  setSelectedSample: jest.fn(),
+  getSamples: jest.fn(),
+  getSampleById: jest.fn().mockResolvedValue(mockSamples[0] as Sample),
+  createSample: jest.fn().mockResolvedValue(mockSamples[0] as Sample),
+  editSample: jest.fn().mockResolvedValue(mockSamples[0] as Sample),
+  deleteSample: jest.fn().mockResolvedValue(null),
+};
 
 jest.mock("../../../Config/envManager", () => ({
   __esModule: true,
@@ -80,11 +92,8 @@ jest.mock("../../../utils/hooks/useSampleType", () => ({
     getSampleTypes: jest.fn(),
   }),
 }));
-jest.mock("../../../utils/hooks/useSample", () => ({
-  useSample: () => ({
-    samples: mockSamples,
-    getSamples: jest.fn(),
-  }),
+jest.mock("../../../features/samples/model/store", () => ({
+  useSampleStore: (selector: any) => selector(mockedSamplesState),
 }));
 jest.mock("../../../utils/hooks/useAnalyte", () => ({
   useAnalyte: () => ({

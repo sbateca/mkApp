@@ -2,7 +2,6 @@ import {render, screen, waitFor} from "@testing-library/react";
 
 import {SamplesContent} from "./SamplesContent";
 import {Sample} from "../../../model/Sample";
-import * as useSampleModule from "../../../utils/hooks/useSample";
 import {Analyte, Client, SampleType} from "../../../model";
 
 const mockSampleTypes: SampleType[] = [
@@ -36,17 +35,18 @@ const mockSamples: Sample[] = [
     responsable: "mock responsable",
   },
 ];
-const mockUseSampleArgs = {
+
+const mockSamplesStoreState = {
   samples: mockSamples,
-  selectedSample: null,
-  setSelectedSample: jest.fn(),
-  getSamples: jest.fn(),
-  getSampleById: jest.fn(),
-  createSample: jest.fn(),
-  editSample: jest.fn(),
-  deleteSample: jest.fn(),
+  selectedSample: mockSamples[0],
   isLoading: false,
   error: null,
+  setSelectedSample: jest.fn(),
+  getSamples: jest.fn(),
+  getSampleById: jest.fn().mockResolvedValue(mockSamples[0] as Sample),
+  createSample: jest.fn().mockResolvedValue(mockSamples[0] as Sample),
+  editSample: jest.fn().mockResolvedValue(mockSamples[0] as Sample),
+  deleteSample: jest.fn().mockResolvedValue(null),
 };
 
 jest.mock("../../../Config/envManager", () => ({
@@ -59,6 +59,11 @@ jest.mock("../../../Config/envManager", () => ({
 jest.mock("../../../stores", () => ({
   __esModule: true,
   useSnackBarStore: jest.fn(),
+}));
+
+jest.mock("../../../features/samples/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useSampleStore: (selector: any) => selector(mockSamplesStoreState),
 }));
 
 jest.mock("../SampleDetail/SampleDetail", () => ({
@@ -94,16 +99,6 @@ describe("SamplesContent test", () => {
   });
 
   it("should render samples data successfully", async () => {
-    const getSamplesMock = jest.fn().mockReturnValue({
-      samples: mockSamples,
-      loading: false,
-      error: false,
-    });
-    jest.spyOn(useSampleModule, "useSample").mockReturnValue({
-      ...getSamplesMock(),
-      getSamples: getSamplesMock,
-    });
-
     render(<SamplesContent />);
 
     await waitFor(() => {
@@ -115,10 +110,7 @@ describe("SamplesContent test", () => {
   });
 
   it("should render no data text when does not retrieve samples", async () => {
-    jest.spyOn(useSampleModule, "useSample").mockReturnValue({
-      ...mockUseSampleArgs,
-      samples: [],
-    });
+    mockSamplesStoreState.samples = [];
 
     render(<SamplesContent />);
 
@@ -128,10 +120,7 @@ describe("SamplesContent test", () => {
   });
 
   it("should render loading spinner when is loading", async () => {
-    jest.spyOn(useSampleModule, "useSample").mockReturnValue({
-      ...mockUseSampleArgs,
-      isLoading: true,
-    });
+    mockSamplesStoreState.isLoading = true;
 
     render(<SamplesContent />);
 

@@ -1,14 +1,15 @@
 import {Box} from "@mui/material";
 
-import {useMenu} from "../../../utils/hooks";
 import {ContentStyle} from "./ContentStyle";
 import {ReportsContent} from "../ReportsContent";
 import {SnackBarContainer} from "../../molecules";
 import {SamplesContent} from "../SamplesContent";
 import {SharedMenuItems} from "../../../utils/enums";
+import {useMenuStore} from "../../../features/menu/model/store";
+import {selectSelectedMenuItem} from "../../../features/menu/model/selectors";
 
 export const Content = (): React.ReactElement => {
-  const {selectedMenuItem} = useMenu();
+  const selectedMenuItem = useMenuStore(selectSelectedMenuItem);
 
   let contentComponent;
   switch (selectedMenuItem) {

@@ -8,12 +8,7 @@ import {Table} from "../Table";
 import {SideSection} from "../SideSection";
 import {ReportDetail} from "../ReportsDetail";
 import {reportsToTableRows} from "../../../adapters/tableRow";
-import {
-  useAnalyte,
-  useSampleType,
-  useSample,
-  useReports,
-} from "../../../utils/hooks";
+import {useAnalyte, useSampleType, useReports} from "../../../utils/hooks";
 import {
   REPORTS_TITLE_CONFIG,
   REPORTS_TABLE_HEADER_LABELS,
@@ -30,6 +25,8 @@ import {
 } from "../../../utils/enums";
 import useSnackBarStore from "../../../stores/snackBarStore";
 import useSideSectionStore from "../../../stores/sideSectionStore";
+import {useSampleStore} from "../../../features/samples/model/store";
+import {selectSamples} from "../../../features/samples/model/selectors";
 
 export const ReportsContent = (): React.ReactElement => {
   const [rows, setRows] = useState<TableRowProps[]>([]);
@@ -38,7 +35,7 @@ export const ReportsContent = (): React.ReactElement => {
   const {reports, getReports, setSelectedReport, isLoading, error} =
     useReports();
   const {sampleTypes} = useSampleType();
-  const {samples} = useSample();
+  const samples = useSampleStore(selectSamples);
   const {showSnackBarMessage} = useSnackBarStore();
   const {isSideSectionOpen, setIsSideSectionOpen, setSideSectionTitle} =
     useSideSectionStore();

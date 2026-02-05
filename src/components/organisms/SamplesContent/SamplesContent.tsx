@@ -7,11 +7,7 @@ import {SideSection} from "../SideSection/SideSection";
 import {SampleDetail} from "../SampleDetail";
 import {Table} from "../Table";
 
-import {
-  useSampleType,
-  useClient,
-  useSample,
-} from "../../../utils/hooks";
+import {useSampleType, useClient} from "../../../utils/hooks";
 import {samplesToTableRows} from "../../../adapters/tableRow";
 import {
   SharedButtonColors,
@@ -30,13 +26,25 @@ import {TableRowProps} from "../../molecules/TableRow/Types";
 import {SampleContentStyles} from "./SamplesContentStyles";
 import useSnackBarStore from "../../../stores/snackBarStore";
 import useSideSectionStore from "../../../stores/sideSectionStore";
+import {useSampleStore} from "../../../features/samples/model/store";
+import {
+  selectError,
+  selectGetSamples,
+  selectIsLoading,
+  selectSamples,
+  selectSetSelectedSample,
+} from "../../../features/samples/model/selectors";
 
 export const SamplesContent = (): React.ReactElement => {
   const [rows, setRows] = useState<TableRowProps[]>([]);
   const [isReadOnlyMode, setIsReadOnlyMode] = useState(true);
 
-  const {samples, isLoading, error, getSamples, setSelectedSample} =
-    useSample();
+  const samples = useSampleStore(selectSamples);
+  const isLoading = useSampleStore(selectIsLoading);
+  const error = useSampleStore(selectError);
+  const getSamples = useSampleStore(selectGetSamples);
+  const setSelectedSample = useSampleStore(selectSetSelectedSample);
+
   const {clients} = useClient();
   const {sampleTypes} = useSampleType();
   const {showSnackBarMessage} = useSnackBarStore();
@@ -51,16 +59,20 @@ export const SamplesContent = (): React.ReactElement => {
   };
 
   useEffect(() => {
+    getSamples();
+  }, [getSamples]);
+
+  useEffect(() => {
     if (samples) {
       setRows(samplesToTableRows(samples, sampleTypes, clients));
     }
-  }, [samples]);
+  }, [samples, clients, sampleTypes]);
 
   useEffect(() => {
     if (error) {
       showSnackBarMessage(error, SnackBarSeverity.ERROR, getSamples);
     }
-  }, [error]);
+  }, [error, getSamples, showSnackBarMessage]);
 
   return isLoading ? (
     <Spinner />

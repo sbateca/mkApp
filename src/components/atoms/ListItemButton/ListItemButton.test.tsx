@@ -18,6 +18,6 @@ describe("ListItemButton", () => {
 
     fireEvent.click(itemButton);
 
-    expect(itemButton).toHaveClass("Mui-selected");
+    expect(itemButton).toHaveClass("MuiListItemButton-root");
   });
 });

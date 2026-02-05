@@ -5,12 +5,13 @@ import {
   ReportTableActionButtons,
   SampleTableActionButtons,
 } from "../TableActionButtons";
-import {useMenu} from "../../../utils/hooks";
 import {TableRowProps} from "./Types";
 import {SharedMenuItems} from "../../../utils/enums";
+import {selectSelectedMenuItem, useMenuStore} from "../../../features/menu";
+import {Spinner} from "../../atoms/Spinner";
 
 function TableRow({id, cells}: TableRowProps): React.ReactElement {
-  const {selectedMenuItem} = useMenu();
+  const selectedMenuItem = useMenuStore(selectSelectedMenuItem);
 
   const getActionButtons = (): React.ReactElement => {
     switch (selectedMenuItem) {
@@ -22,7 +23,9 @@ function TableRow({id, cells}: TableRowProps): React.ReactElement {
         return <></>;
     }
   };
-  return (
+  return cells.length === 0 ? (
+    <Spinner />
+  ) : (
     <MuiTableRow>
       {cells.map((cell, index) => {
         return (

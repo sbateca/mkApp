@@ -6,7 +6,8 @@ import useSideSectionStore from "../../../stores/sideSectionStore";
 import useSnackBarStore from "../../../stores/snackBarStore";
 import {SnackBarSeverity} from "../../../utils/enums";
 import dayjs from "dayjs";
-import {DATEPICKER_FORMAT} from "../../../utils/constants";
+import {DATEPICKER_FORMAT, FormProps} from "../../../utils/constants";
+import {Sample} from "../../../model";
 
 const today = dayjs();
 const RENDERED_FORMAT_DATE = "MM/DD/YYYY";
@@ -95,7 +96,6 @@ jest.mock("../../../config/EnvManager", () => ({
   },
 }));
 
-
 jest.mock("../../../stores/sideSectionStore", () => ({
   __esModule: true,
   default: jest.fn(),
@@ -116,8 +116,8 @@ jest.mock("../../../utils/hooks", () => ({
 }));
 
 export const renderSampleDetail = (opts?: {
-  selectedSample?: any;
-  form?: any;
+  selectedSample?: Sample;
+  form?: FormProps;
   isNotValidForm?: boolean;
 }) => {
   jest.spyOn(hooks, "useSample").mockReturnValue({
@@ -168,13 +168,12 @@ export const renderSampleDetail = (opts?: {
     isNotValidForm: opts?.isNotValidForm ?? false,
   });
 
-  // ✅ ZUSTAND STORES (CLAVE)
-  (useSideSectionStore as jest.Mock).mockReturnValue({
+  (useSideSectionStore as unknown as jest.Mock).mockReturnValue({
     setIsSideSectionOpen: jest.fn(),
     sideSectionTitle: "Mock title",
   });
 
-  (useSnackBarStore as jest.Mock).mockReturnValue({
+  (useSnackBarStore as unknown as jest.Mock).mockReturnValue({
     showSnackBarMessage: jest.fn(),
     isSnackBarOpen: false,
     snackBarText: "",
@@ -188,6 +187,5 @@ export const renderSampleDetail = (opts?: {
     />,
   );
 
-  return { screen };
+  return {screen};
 };
-
