@@ -13,7 +13,7 @@ import {
   SAMPLE_ID_OR_SAMPLE_MISSING_TEXT,
 } from "../../utils/constants";
 
-const SampleContext = createContext<{
+export type SampleContextType = {
   samples: Sample[] | null;
   selectedSample: Sample | null;
   setSelectedSample: React.Dispatch<React.SetStateAction<Sample | null>>;
@@ -24,18 +24,9 @@ const SampleContext = createContext<{
   deleteSample: (sampleId?: string) => Promise<Sample | null>;
   isLoading: boolean;
   error: string | null;
-}>({
-  samples: [],
-  selectedSample: null,
-  setSelectedSample: () => {},
-  getSamples: async () => {},
-  getSampleById: async () => ({}) as Sample,
-  createSample: async () => ({}) as Sample,
-  editSample: async () => ({}) as Sample,
-  deleteSample: async () => ({}) as Sample,
-  isLoading: true,
-  error: null,
-});
+};
+
+const SampleContext = createContext<SampleContextType | null>(null);
 
 interface IProviderProps {
   children: React.ReactNode;
@@ -50,12 +41,11 @@ function SampleProvider({children}: IProviderProps) {
   const getSamples = async () => {
     try {
       setIsLoading(true);
+      setError(null);
       const samples = await getSamplesService();
-      if (samples !== null) {
-        setSamples(samples);
-      }
-    } catch (error) {
-      setError((error as Error).message);
+      setSamples(samples);
+    } catch (e) {
+      setError((e as Error).message);
     } finally {
       setIsLoading(false);
     }
@@ -64,24 +54,27 @@ function SampleProvider({children}: IProviderProps) {
   const getSampleById = async (sampleId: string): Promise<Sample | null> => {
     try {
       setIsLoading(true);
+      setError(null);
       return await getSampleByIdService(sampleId);
-    } catch (error) {
-      setError((error as Error).message);
+    } catch (e) {
+      setError((e as Error).message);
+      return null;
     } finally {
       setIsLoading(false);
     }
-    return null;
   };
 
   const createSample = async (sample: Sample): Promise<Sample | null> => {
     try {
+      setIsLoading(true);
+      setError(null);
       return await createSampleService(sample);
-    } catch (error) {
-      setError((error as Error).message);
+    } catch (e) {
+      setError((e as Error).message);
+      return null;
     } finally {
       setIsLoading(false);
     }
-    return null;
   };
 
   const editSample = async (
@@ -89,41 +82,43 @@ function SampleProvider({children}: IProviderProps) {
     sample?: Sample,
   ): Promise<Sample | null> => {
     try {
-      if (sampleId && sample) {
-        return await editSampleService(sampleId, sample);
-      } else {
+      setIsLoading(true);
+      setError(null);
+
+      if (!sampleId || !sample) {
         setError(SAMPLE_ID_OR_SAMPLE_MISSING_TEXT);
+        return null;
       }
-    } catch (error) {
-      setError((error as Error).message);
+      return await editSampleService(sampleId, sample);
+    } catch (e) {
+      setError((e as Error).message);
+      return null;
     } finally {
       setIsLoading(false);
     }
-    return null;
   };
 
   const deleteSample = async (sampleId?: string): Promise<Sample | null> => {
     try {
-      if (sampleId) {
-        return await deleteSampleService(sampleId);
-      } else {
+      setIsLoading(true);
+      setError(null);
+
+      if (!sampleId) {
         setError(SAMPLE_ID_MISSING_TEXT);
+        return null;
       }
-    } catch (error) {
-      setError((error as Error).message);
+      return await deleteSampleService(sampleId);
+    } catch (e) {
+      setError((e as Error).message);
+      return null;
     } finally {
       setIsLoading(false);
     }
-    return null;
   };
 
   useEffect(() => {
     getSamples();
   }, []);
-
-  useEffect(() => {
-    setSelectedSample(selectedSample);
-  }, [selectedSample]);
 
   const value = useMemo(
     () => ({

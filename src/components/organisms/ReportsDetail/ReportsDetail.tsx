@@ -57,7 +57,6 @@ import {
 } from "../../../adapters/reports";
 import {getAutoCompleteOptionsFromModel} from "../../../utils/model";
 import {
-  useSample,
   useSampleType,
   useAnalysisMethod,
   useAnalyte,
@@ -76,6 +75,14 @@ import {
 import {ReportDetailStyles, SampleFormStyles} from "./ReportsDetailStyles";
 import useSnackBarStore from "../../../stores/snackBarStore";
 import useSideSectionStore from "../../../stores/sideSectionStore";
+import {useSampleStore} from "../../../features/samples/model/store";
+import {
+  selectGetSampleById,
+  selectIsLoading,
+  selectSamples,
+  selectSelectedSample,
+  selectSetSelectedSample,
+} from "../../../features/samples/model/selectors";
 
 export const ReportDetail = ({
   isReadOnlyMode,
@@ -93,13 +100,12 @@ export const ReportDetail = ({
     isLoading,
     error,
   } = useReports();
-  const {
-    samples,
-    selectedSample,
-    isLoading: isLoadingSample,
-    getSampleById,
-    setSelectedSample,
-  } = useSample();
+  const samples = useSampleStore(selectSamples);
+  const selectedSample = useSampleStore(selectSelectedSample);
+  const isLoadingSample = useSampleStore(selectIsLoading);
+  const getSampleById = useSampleStore(selectGetSampleById);
+  const setSelectedSample = useSampleStore(selectSetSelectedSample);
+
   const {clients, isLoading: isLoadingClients} = useClient();
   const {sampleTypes, isLoading: isLoadingSampleTypes} = useSampleType();
   const {analysisMethods, isLoading: isLoadingAnalysisMethods} =
@@ -242,8 +248,7 @@ export const ReportDetail = ({
           );
           return {
             id: sample.id,
-            optionLabel:
-              `${sample.sampleCode} - ${sampleTypeFound?.name}` ?? "",
+            optionLabel: `${sample.sampleCode} - ${sampleTypeFound?.name}`,
           };
         }) ?? []
       );

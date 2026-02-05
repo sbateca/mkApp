@@ -18,12 +18,7 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {Typography, Button, Spinner} from "../../atoms";
 import SampleSideSectionButtons from "./SampleSideSectionActions";
 import {AutoComplete} from "../../molecules";
-import {
-  useSample,
-  useForm,
-  useSampleType,
-  useClient,
-} from "../../../utils/hooks";
+import {useForm, useSampleType, useClient} from "../../../utils/hooks";
 import {
   ReportFormFields,
   SamplesFormFields,
@@ -69,6 +64,15 @@ import {AutoCompleteOption} from "../../molecules/AutoComplete/types";
 import {SampleDetailStyles, SampleFormStyles} from "./SampleDetailStyles";
 import useSnackBarStore from "../../../stores/snackBarStore";
 import useSideSectionStore from "../../../stores/sideSectionStore";
+import {useSampleStore} from "../../../features/samples/model/store";
+import {
+  selectCreateSample,
+  selectEditSample,
+  selectError,
+  selectGetSamples,
+  selectIsLoading,
+  selectSelectedSample,
+} from "../../../features/samples/model/selectors";
 
 export const SampleDetail = ({
   isReadOnlyMode,
@@ -89,15 +93,13 @@ export const SampleDetail = ({
     sampleLocation: "",
     responsable: "",
   };
+  const getSamples = useSampleStore(selectGetSamples);
+  const createSample = useSampleStore(selectCreateSample);
+  const editSample = useSampleStore(selectEditSample);
+  const selectedSample = useSampleStore(selectSelectedSample);
+  const isLoading = useSampleStore(selectIsLoading);
+  const error = useSampleStore(selectError);
 
-  const {
-    getSamples,
-    createSample,
-    editSample,
-    selectedSample,
-    isLoading,
-    error,
-  } = useSample();
   const {clients, isLoading: isLoadingClients} = useClient();
   const {sampleTypes, isLoading: isLoadingSampleTypes} = useSampleType();
   const {setIsSideSectionOpen, sideSectionTitle} = useSideSectionStore();
