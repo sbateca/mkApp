@@ -3,17 +3,10 @@ import {
   getSampleTypeByIdService,
   getSampleTypesService,
 } from "./sampleTypeService";
+import {SampleType} from "../model";
+import {buildSampleTypesData} from "../shared/test/builders";
 
-const mockSampleTypes = [
-  {
-    id: "1",
-    name: "Sample Type 1",
-  },
-  {
-    id: "2",
-    name: "Sample Type 2",
-  },
-];
+const mockSampleTypes: SampleType[] = buildSampleTypesData(2);
 
 jest.mock("../config/EnvManager", () => ({
   __esModule: true,

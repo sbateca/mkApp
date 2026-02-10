@@ -1,16 +1,10 @@
 import axios from "axios";
 import {getCriteriaByIdService, getCriteriasService} from "./criteriaService";
+import {buildCriteriasData} from "../shared/test/builders/criteriaBuilder";
+import {Criteria} from "../model";
 
-const mockCriterias = [
-  {
-    id: "1",
-    name: "Criteria 1",
-  },
-  {
-    id: "2",
-    name: "Criteria 2",
-  },
-];
+const mockCriterias: Criteria[] = buildCriteriasData(2);
+
 jest.mock("../config/EnvManager", () => ({
   __esModule: true,
   default: {

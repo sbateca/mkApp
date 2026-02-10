@@ -8,138 +8,75 @@ import {SnackBarSeverity} from "../../../utils/enums";
 import dayjs from "dayjs";
 import {DATEPICKER_FORMAT} from "../../../utils/constants";
 import {SamplesStore} from "../../../features/samples/model/types";
-import {Sample} from "../../../model";
+import {Analyte, Sample, SampleType} from "../../../model";
+import {
+  buildAnalytesData,
+  buildClientsData,
+  buildReportsData,
+  buildSamplesData,
+  buildSampleTypesData,
+} from "../../../shared/test/builders";
+import {buildAnalysisMethodsData} from "../../../shared/test/builders/analisysMethodBuilder";
+import {buildCriteriasData} from "../../../shared/test/builders/criteriaBuilder";
+import {buildFormData} from "../../../shared/test/builders/formDataBuilder";
 
 const today = dayjs();
 const RENDERED_FORMAT_DATE = "MM/DD/YYYY";
-export const mockData = {
+
+const mockSampleTypes: SampleType[] = buildSampleTypesData(2);
+const mockAnalytes: Analyte[] = buildAnalytesData(2);
+const mockAnalysisMethods = buildAnalysisMethodsData(2);
+const mockClients = buildClientsData(2);
+const mockCriterias = buildCriteriasData(2);
+const mockSamples = buildSamplesData(2, {
+  clientId: mockClients[0].id,
+  sampleTypeId: mockSampleTypes[0].id,
+});
+const mockReports = buildReportsData(2, {
+  sampleId: mockSamples[0].id,
+  analyte: mockAnalytes[0].id,
+  analysisMethod: mockAnalysisMethods[0].id,
+  criteria: mockCriterias[0].id,
+});
+const mockFormData = buildFormData({
+  reportDate: today.format(DATEPICKER_FORMAT),
+  sampleId: mockSamples[0].id,
+  analyte: mockAnalytes[0].id,
+  analysisMethod: mockAnalysisMethods[0].id,
+  criteria: mockCriterias[0].id,
+  result: mockReports[0].result,
+});
+const mockDefaultFormData = buildFormData({
+  reportDate: today.format(DATEPICKER_FORMAT),
+  sampleId: "",
+  analyte: "",
+  analysisMethod: "",
+  criteria: "",
+  result: "",
+});
+
+export const mockReportDetailData = {
   readonly: false,
-  samples: [
-    {
-      id: "1",
-      sampleCode: "001",
-      sampleTypeId: "1",
-      clientId: "1",
-      getSampleDate: "2021-09-01",
-      receptionDate: "2021-09-01",
-      analysisDate: "2021-09-01",
-      sampleLocation: "Mock location",
-      responsable: "Mock responsable",
-    },
-    {
-      id: "2",
-      sampleCode: "002",
-      sampleTypeId: "2",
-      clientId: "2",
-      getSampleDate: "2021-09-01",
-      receptionDate: "2021-09-01",
-      analysisDate: "2021-09-01",
-      sampleLocation: "Mock location",
-      responsable: "Mock responsable",
-    },
-  ],
-  clients: [
-    {
-      id: "1",
-      name: "Client 1",
-    },
-    {
-      id: "2",
-      name: "Client 2",
-    },
-  ],
-  sampleTypes: [
-    {
-      id: "1",
-      name: "Sample Type 1",
-    },
-    {
-      id: "2",
-      name: "Sample Type 2",
-    },
-  ],
-  analytes: [
-    {
-      id: "1",
-      name: "Analyte 1",
-    },
-    {
-      id: "2",
-      name: "Analyte 2",
-    },
-  ],
-  analysisMethods: [
-    {
-      id: "1",
-      name: "Analysis Method 1",
-    },
-    {
-      id: "2",
-      name: "Analysis Method 2",
-    },
-  ],
-  criterias: [
-    {
-      id: "1",
-      name: "Criteria 1",
-    },
-    {
-      id: "2",
-      name: "Criteria 2",
-    },
-  ],
-  reports: [
-    {
-      id: "1",
-      reportDate: "2021-09-01",
-      sampleId: "1",
-      analyte: "1",
-      analysisMethod: "1",
-      criteria: "1",
-      result: "0 UFC/100 mL",
-    },
-    {
-      id: "2",
-      reportDate: "2021-09-01",
-      sampleId: "2",
-      analyte: "2",
-      analysisMethod: "2",
-      criteria: "2",
-      result: "0 UFC/100 mL",
-    },
-  ],
-  form: {
-    reportDate: today.format(DATEPICKER_FORMAT),
-    sampleId: "1",
-    analyte: "1",
-    analysisMethod: "1",
-    criteria: "1",
-    result: "0 UFC/100 mL",
-  },
-  defaulForm: {
-    reportDate: today.format(DATEPICKER_FORMAT),
-    sampleId: "",
-    analyte: "",
-    analysisMethod: "",
-    criteria: "",
-    result: "",
-  },
+  samples: mockSamples,
+  clients: mockClients,
+  sampleTypes: mockSampleTypes,
+  analytes: mockAnalytes,
+  analysisMethods: mockAnalysisMethods,
+  criterias: mockCriterias,
+  reports: mockReports,
+  form: mockFormData,
+  defaulForm: mockDefaultFormData,
   expectedData: {
     reportDate: today.format(RENDERED_FORMAT_DATE),
-    sampleId: "001 - Sample Type 1",
-    analyte: "Analyte 1",
-    analysisMethod: "Analysis Method 1",
-    criteria: "Criteria 1",
-    result: "0 UFC/100 mL",
+    sampleId: `${mockSamples[0].sampleCode} - ${mockSampleTypes[0].name}`,
+    analyte: mockAnalytes[0].name,
+    analysisMethod: mockAnalysisMethods[0].name,
+    criteria: mockCriterias[0].name,
+    result: mockReports[0].result,
   },
 };
 let mockedSamplesState: SamplesStore;
 
-jest.mock("../../../config/EnvManager", () => ({
-  default: {
-    BACKEND_URL: "http://example.com/api",
-  },
-}));
 jest.mock("../../../features/samples/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSampleStore: (selector: any) => selector(mockedSamplesState),
@@ -169,62 +106,80 @@ jest.mock("../../../utils/hooks", () => ({
 
 export const renderReportDetail = async () => {
   mockedSamplesState = {
-    samples: mockData.samples,
-    selectedSample: mockData.samples[0],
+    samples: mockReportDetailData.samples,
+    selectedSample: mockReportDetailData.samples[0],
     isLoading: false,
     error: null,
     setSelectedSample: jest.fn(),
     getSamples: jest.fn(),
-    getSampleById: jest.fn().mockResolvedValue(mockData.samples[0] as Sample),
-    createSample: jest.fn().mockResolvedValue(mockData.samples[0] as Sample),
-    editSample: jest.fn().mockResolvedValue(mockData.samples[0] as Sample),
+    getSampleById: jest
+      .fn()
+      .mockResolvedValue(mockReportDetailData.samples[0] as Sample),
+    createSample: jest
+      .fn()
+      .mockResolvedValue(mockReportDetailData.samples[0] as Sample),
+    editSample: jest
+      .fn()
+      .mockResolvedValue(mockReportDetailData.samples[0] as Sample),
     deleteSample: jest.fn().mockResolvedValue(null),
   };
 
   jest.spyOn(hooks, "useClient").mockReturnValue({
-    clients: mockData.clients,
-    selectedClient: mockData.clients[0],
-    setSelectedClient: jest.fn().mockReturnValue(mockData.clients[1]),
-    getClients: jest.fn().mockReturnValue(mockData.clients),
-    getClientById: jest.fn().mockReturnValue(mockData.clients[1]),
+    clients: mockReportDetailData.clients,
+    selectedClient: mockReportDetailData.clients[0],
+    setSelectedClient: jest
+      .fn()
+      .mockReturnValue(mockReportDetailData.clients[1]),
+    getClients: jest.fn().mockReturnValue(mockReportDetailData.clients),
+    getClientById: jest.fn().mockReturnValue(mockReportDetailData.clients[1]),
     isLoading: false,
     error: null,
   });
 
   jest.spyOn(hooks, "useSampleType").mockReturnValue({
-    sampleTypes: mockData.sampleTypes,
-    selectedSampleType: mockData.sampleTypes[0],
-    setSelectedSampleType: jest.fn().mockReturnValue(mockData.sampleTypes[1]),
-    getSampleTypes: jest.fn().mockReturnValue(mockData.sampleTypes),
-    getSampleTypeById: jest.fn().mockReturnValue(mockData.sampleTypes[1]),
+    sampleTypes: mockReportDetailData.sampleTypes,
+    selectedSampleType: mockReportDetailData.sampleTypes[0],
+    setSelectedSampleType: jest
+      .fn()
+      .mockReturnValue(mockReportDetailData.sampleTypes[1]),
+    getSampleTypes: jest.fn().mockReturnValue(mockReportDetailData.sampleTypes),
+    getSampleTypeById: jest
+      .fn()
+      .mockReturnValue(mockReportDetailData.sampleTypes[1]),
     isLoading: false,
     error: null,
   });
   jest.spyOn(hooks, "useAnalysisMethod").mockReturnValue({
-    analysisMethods: mockData.analysisMethods,
-    selectedAnalysisMethod: mockData.analysisMethods[0],
+    analysisMethods: mockReportDetailData.analysisMethods,
+    selectedAnalysisMethod: mockReportDetailData.analysisMethods[0],
     setSelectedAnalysisMethod: jest
       .fn()
-      .mockReturnValue(mockData.analysisMethods[1]),
-    getAnalysisMethods: jest.fn().mockReturnValue(mockData.analysisMethods),
+      .mockReturnValue(mockReportDetailData.analysisMethods[1]),
+    getAnalysisMethods: jest
+      .fn()
+      .mockReturnValue(mockReportDetailData.analysisMethods),
     getAnalysisMethodById: jest
       .fn()
-      .mockReturnValue(mockData.analysisMethods[1]),
+      .mockReturnValue(mockReportDetailData.analysisMethods[1]),
     isLoading: false,
     error: null,
   });
   jest.spyOn(hooks, "useCriteria").mockReturnValue({
-    criterias: mockData.criterias,
-    selectedCriteria: mockData.criterias[0],
-    setSelectedCriteria: jest.fn().mockReturnValue(mockData.criterias[1]),
-    getCriterias: jest.fn().mockReturnValue(mockData.criterias),
-    getCriteriaById: jest.fn().mockReturnValue(mockData.criterias[1]),
+    criterias: mockReportDetailData.criterias,
+    selectedCriteria: mockReportDetailData.criterias[0],
+    setSelectedCriteria: jest
+      .fn()
+      .mockReturnValue(mockReportDetailData.criterias[1]),
+    getCriterias: jest.fn().mockReturnValue(mockReportDetailData.criterias),
+    getCriteriaById: jest
+      .fn()
+      .mockReturnValue(mockReportDetailData.criterias[1]),
     isLoading: false,
     error: null,
   });
   jest.spyOn(hooks, "useAnalyte").mockReturnValue({
-    analytes: mockData.analytes,
-    selectedAnalyte: mockData.analytes[0],
+    analytes: mockReportDetailData.analytes,
+    selectedAnalyte: mockReportDetailData.analytes[0],
     setSelectedAnalyte: jest.fn(),
     getAnalytes: jest.fn(),
     getAnalyteById: jest.fn(),
@@ -232,8 +187,8 @@ export const renderReportDetail = async () => {
     error: null,
   });
   jest.spyOn(hooks, "useReports").mockReturnValue({
-    reports: mockData.reports,
-    selectedReport: mockData.reports[0],
+    reports: mockReportDetailData.reports,
+    selectedReport: mockReportDetailData.reports[0],
     setSelectedReport: jest.fn(),
     getReports: jest.fn(),
     createReport: jest.fn(),
@@ -250,8 +205,8 @@ export const renderReportDetail = async () => {
     sideSectionTitle: "Mock title",
   });
   jest.spyOn(hooks, "useForm").mockReturnValue({
-    form: mockData.form,
-    setForm: jest.fn().mockReturnValue(mockData.form),
+    form: mockReportDetailData.form,
+    setForm: jest.fn().mockReturnValue(mockReportDetailData.form),
     handleChange: jest.fn(),
     handleDateChange: jest.fn(),
     cleanForm: jest.fn(),
@@ -276,7 +231,7 @@ export const renderReportDetail = async () => {
   });
   const container = render(
     <ReportDetail
-      isReadOnlyMode={mockData.readonly}
+      isReadOnlyMode={mockReportDetailData.readonly}
       setIsReadOnlyMode={() => {}}
     />,
   );

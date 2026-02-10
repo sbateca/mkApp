@@ -6,31 +6,20 @@ import {
   getSampleByIdService,
   getSamplesService,
 } from "./sampleService";
+import {Client, Sample, SampleType} from "../model";
+import {
+  buildClientsData,
+  buildSamplesData,
+  buildSampleTypesData,
+} from "../shared/test/builders";
 
-const mockSamples = [
-  {
-    id: "1",
-    sampleCode: "S01",
-    sampleTypeId: "1",
-    clientId: "1",
-    getSampleDate: "2021-01-01",
-    receptionDate: "2021-01-01",
-    analysisDate: "2021-01-01",
-    sampleLocation: "Mock Location",
-    responsable: "Mock Responsable",
-  },
-  {
-    id: "2",
-    sampleCode: "S02",
-    sampleTypeId: "2",
-    clientId: "2",
-    getSampleDate: "2021-01-02",
-    receptionDate: "2021-01-02",
-    analysisDate: "2021-01-02",
-    sampleLocation: "Mock Location",
-    responsable: "Mock Responsable",
-  },
-];
+const mockSampleTypes: SampleType[] = buildSampleTypesData(2);
+const mockClients: Client[] = buildClientsData(2);
+const mockSamples: Sample[] = buildSamplesData(2, {
+  clientId: mockClients[0].id,
+  sampleTypeId: mockSampleTypes[0].id,
+});
+
 jest.mock("../config/EnvManager", () => ({
   __esModule: true,
   default: {

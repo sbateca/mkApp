@@ -1,16 +1,9 @@
 import axios from "axios";
 import {getClientByIdService, getClientsService} from "./clientService";
+import {buildClientsData} from "../shared/test/builders";
+import {Client} from "../model";
 
-const mockClients = [
-  {
-    id: "1",
-    name: "Client 1",
-  },
-  {
-    id: "2",
-    name: "Client 2",
-  },
-];
+const mockClients: Client[] = buildClientsData(2);
 
 jest.mock("../config/EnvManager", () => ({
   __esModule: true,

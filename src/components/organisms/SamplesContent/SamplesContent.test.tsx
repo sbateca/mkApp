@@ -2,39 +2,21 @@ import {render, screen, waitFor} from "@testing-library/react";
 
 import {SamplesContent} from "./SamplesContent";
 import {Sample} from "../../../model/Sample";
-import {Analyte, Client, SampleType} from "../../../model";
+import {Analyte, SampleType} from "../../../model";
+import {
+  buildAnalytesData,
+  buildClientsData,
+  buildSamplesData,
+  buildSampleTypesData,
+} from "../../../shared/test/builders";
 
-const mockSampleTypes: SampleType[] = [
-  {
-    id: "b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3",
-    name: "Total coliforms",
-  },
-];
-const mockAnalytes: Analyte[] = [
-  {
-    id: "ab3b3b3b-ab3b-ab3b-ab3b-ab3b3b3b3b3b",
-    name: "mock analyte name",
-  },
-];
-const mockClient: Client[] = [
-  {
-    id: "ab3b3b3b-ab3b-ab3b-ab3b-ab3b3b3b3b3b",
-    name: "mock client name",
-  },
-];
-const mockSamples: Sample[] = [
-  {
-    id: "1234",
-    sampleCode: "sam1001",
-    sampleTypeId: "b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3",
-    clientId: "ab3b3b3b-ab3b-ab3b-ab3b-ab3b3b3b3b3b",
-    getSampleDate: "2024-08-05",
-    receptionDate: "2024-08-06",
-    analysisDate: "2024-08-07",
-    sampleLocation: "mock location",
-    responsable: "mock responsable",
-  },
-];
+const mockSampleTypes: SampleType[] = buildSampleTypesData(1);
+const mockAnalytes: Analyte[] = buildAnalytesData(1);
+const mockClients = buildClientsData(1);
+const mockSamples = buildSamplesData(1, {
+  clientId: mockClients[0].id,
+  sampleTypeId: mockSampleTypes[0].id,
+});
 
 const mockSamplesStoreState = {
   samples: mockSamples,
@@ -88,7 +70,7 @@ jest.mock("../../../utils/hooks/useAnalyte", () => ({
 
 jest.mock("../../../utils/hooks/useClient", () => ({
   useClient: () => ({
-    clients: mockClient,
+    clients: mockClients,
     getClients: jest.fn(),
   }),
 }));
@@ -99,13 +81,18 @@ describe("SamplesContent test", () => {
   });
 
   it("should render samples data successfully", async () => {
+    const expectedSampleTypeName = mockSampleTypes[0].name;
+    const expectedClientName = mockClients[0].name;
+    const expectedGetSampleDate = mockSamples[0].getSampleDate;
+    const expectedReceptionDate = mockSamples[0].receptionDate;
+
     render(<SamplesContent />);
 
     await waitFor(() => {
-      expect(screen.getByText("Total coliforms")).toBeInTheDocument();
-      expect(screen.getByText("mock client name")).toBeInTheDocument();
-      expect(screen.getByText("2024-08-05")).toBeInTheDocument();
-      expect(screen.getByText("2024-08-06")).toBeInTheDocument();
+      expect(screen.getByText(expectedSampleTypeName)).toBeInTheDocument();
+      expect(screen.getByText(expectedClientName)).toBeInTheDocument();
+      expect(screen.getByText(expectedGetSampleDate)).toBeInTheDocument();
+      expect(screen.getByText(expectedReceptionDate)).toBeInTheDocument();
     });
   });
 

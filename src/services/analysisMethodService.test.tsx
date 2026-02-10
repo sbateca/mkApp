@@ -3,21 +3,11 @@ import {
   getAnalysisMethodService,
   getAnalysisMethodByIdService,
 } from "./analysisMethodService";
+import {buildAnalysisMethodsData} from "../shared/test/builders/analisysMethodBuilder";
+import {AnalysisMethod} from "../model";
 
-const mockAnalysisMethods = [
-  {
-    id: "1",
-    name: "Analysis Method 1",
-  },
-  {
-    id: "2",
-    name: "Analysis Method 2",
-  },
-  {
-    id: "3",
-    name: "Analysis Method 3",
-  },
-];
+const mockAnalysisMethods: AnalysisMethod[] = buildAnalysisMethodsData(3);
+
 jest.mock("../config/EnvManager", () => ({
   __esModule: true,
   default: {

@@ -1,16 +1,9 @@
 import axios from "axios";
 import {getAnalyteByIdService, getAnalytesService} from "./analyteService";
+import {buildAnalytesData} from "../shared/test/builders";
+import {Analyte} from "../model";
 
-const mockAnalytes = [
-  {
-    id: "1",
-    name: "Analyte 1",
-  },
-  {
-    id: "2",
-    name: "Analyte 2",
-  },
-];
+const mockAnalytes: Analyte[] = buildAnalytesData(2);
 
 jest.mock("../config/EnvManager", () => ({
   __esModule: true,

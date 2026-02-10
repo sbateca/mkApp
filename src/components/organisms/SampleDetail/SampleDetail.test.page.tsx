@@ -7,85 +7,59 @@ import useSnackBarStore from "../../../stores/snackBarStore";
 import {SnackBarSeverity} from "../../../utils/enums";
 import dayjs from "dayjs";
 import {DATEPICKER_FORMAT, FormProps} from "../../../utils/constants";
-import {Sample} from "../../../model";
+import {Sample, SampleType} from "../../../model";
+import {
+  buildClientsData,
+  buildSamplesData,
+  buildSampleTypesData,
+} from "../../../shared/test/builders";
+import {buildFormData} from "../../../shared/test/builders/formDataBuilder";
 
 const today = dayjs();
 const RENDERED_FORMAT_DATE = "MM/DD/YYYY";
+const mockSampleTypes: SampleType[] = buildSampleTypesData(1);
+const mockClients = buildClientsData(2);
+const mockSamples = buildSamplesData(1, {
+  clientId: mockClients[0].id,
+  sampleTypeId: mockSampleTypes[0].id,
+});
+const mockForm = buildFormData({
+  sampleCode: mockSamples[0].sampleCode,
+  sampleType: mockSampleTypes[0].id,
+  client: mockClients[0].id,
+  getSampleDate: today.format(DATEPICKER_FORMAT),
+  receptionDate: today.format(DATEPICKER_FORMAT),
+  analysisDate: today.format(DATEPICKER_FORMAT),
+  sampleLocation: mockSamples[0].sampleLocation,
+  responsable: mockSamples[0].responsable,
+});
+const mockDefaultForm = buildFormData({
+  sampleCode: "",
+  sampleType: "",
+  client: "",
+  getSampleDate: "",
+  receptionDate: "",
+  analysisDate: "",
+  sampleLocation: "",
+  responsable: "",
+});
+
 export const mockData = {
   readonly: false,
-  samples: [
-    {
-      id: "1",
-      sampleCode: "001",
-      sampleTypeId: "1",
-      clientId: "1",
-      getSampleDate: "2021-09-01",
-      receptionDate: "2021-09-01",
-      analysisDate: "2021-09-01",
-      sampleLocation: "Mock location",
-      responsable: "Mock responsable",
-    },
-    {
-      id: "2",
-      sampleCode: "002",
-      sampleTypeId: "2",
-      clientId: "2",
-      getSampleDate: "2021-09-01",
-      receptionDate: "2021-09-01",
-      analysisDate: "2021-09-01",
-      sampleLocation: "Mock location",
-      responsable: "Mock responsable",
-    },
-  ],
-  clients: [
-    {
-      id: "1",
-      name: "Client 1",
-    },
-    {
-      id: "2",
-      name: "Client 2",
-    },
-  ],
-  sampleTypes: [
-    {
-      id: "1",
-      name: "Sample Type 1",
-    },
-    {
-      id: "2",
-      name: "Sample Type 2",
-    },
-  ],
-  form: {
-    sampleCode: "001",
-    sampleType: "1",
-    client: "1",
-    getSampleDate: today.format(DATEPICKER_FORMAT),
-    receptionDate: today.format(DATEPICKER_FORMAT),
-    analysisDate: today.format(DATEPICKER_FORMAT),
-    sampleLocation: "Mock location",
-    responsable: "Mock responsable",
-  },
-  defaulForm: {
-    sampleCode: "",
-    sampleType: "",
-    client: "",
-    getSampleDate: today.format(DATEPICKER_FORMAT),
-    receptionDate: today.format(DATEPICKER_FORMAT),
-    analysisDate: today.format(DATEPICKER_FORMAT),
-    sampleLocation: "",
-    responsable: "",
-  },
+  samples: mockSamples,
+  clients: mockClients,
+  sampleTypes: mockSampleTypes,
+  form: mockForm,
+  defaulForm: mockDefaultForm,
   expectedData: {
-    sampleCode: "001",
-    sampleType: "Sample Type 1",
-    client: "Client 1",
+    sampleCode: mockSamples[0].sampleCode,
+    sampleType: mockSampleTypes[0].name,
+    client: mockClients[0].name,
     getSampleDate: today.format(RENDERED_FORMAT_DATE),
     receptionDate: today.format(RENDERED_FORMAT_DATE),
     analysisDate: today.format(RENDERED_FORMAT_DATE),
-    sampleLocation: "Mock location",
-    responsable: "Mock responsable",
+    sampleLocation: mockSamples[0].sampleLocation,
+    responsable: mockSamples[0].responsable,
   },
 };
 
