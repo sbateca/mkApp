@@ -1,4 +1,7 @@
-import {mockData, renderReportDetail} from "./ReportsDetail.test.page";
+import {
+  mockReportDetailData,
+  renderReportDetail,
+} from "./ReportsDetail.test.page";
 import * as hooks from "../../../utils/hooks";
 
 describe("SampleDetail", () => {
@@ -7,7 +10,7 @@ describe("SampleDetail", () => {
   });
 
   it("should render the report detail successfully", async () => {
-    const expectedData = {...mockData.expectedData};
+    const expectedData = {...mockReportDetailData.expectedData};
 
     const {titleNode, closeButton, screen} = await renderReportDetail();
 
@@ -30,8 +33,8 @@ describe("SampleDetail", () => {
 
   it("should render the report detail with default values when selectedReport is not provided", async () => {
     jest.spyOn(hooks, "useForm").mockReturnValue({
-      form: mockData.defaulForm,
-      setForm: jest.fn().mockReturnValue(mockData.defaulForm),
+      form: mockReportDetailData.defaulForm,
+      setForm: jest.fn().mockReturnValue(mockReportDetailData.defaulForm),
       handleChange: jest.fn(),
       handleDateChange: jest.fn(),
       cleanForm: jest.fn(),
@@ -44,7 +47,7 @@ describe("SampleDetail", () => {
       isNotValidForm: true,
     });
     const expectedData = {
-      ...mockData.expectedData,
+      ...mockReportDetailData.expectedData,
     };
 
     const {titleNode: title, closeButton, screen} = await renderReportDetail();

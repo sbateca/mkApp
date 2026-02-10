@@ -5,43 +5,25 @@ import * as useSideSectionModule from "../../../utils/hooks/useSideSection";
 import {Report} from "../../../model/Report";
 import {ReportsContent} from "./ReportsContent";
 import {Sample, SampleType, Analyte} from "../../../model";
+import {
+  buildAnalytesData,
+  buildClientData,
+  buildReportsData,
+  buildSamplesData,
+  buildSampleTypesData,
+} from "../../../shared/test/builders";
 
-const mockSampleTypes: SampleType[] = [
-  {
-    id: "b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3",
-    name: "Total coliforms",
-  },
-];
-const mockSamples: Sample[] = [
-  {
-    id: "ce59c2ba-c7f2-4df5-a8db-7dd74b7381a9",
-    sampleCode: "sam1001",
-    sampleTypeId: "b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3",
-    clientId: "ab3b3b3b-ab3b-ab3b-ab3b-ab3b3b3b3b3b",
-    getSampleDate: "2024-08-05",
-    receptionDate: "2024-08-05",
-    analysisDate: "2024-08-05",
-    sampleLocation: "mock location",
-    responsable: "mock responsable",
-  },
-];
-const mockAnalytes: Analyte[] = [
-  {
-    id: "ab3b3b3b-ab3b-ab3b-ab3b-ab3b3b3b3b3b",
-    name: "mock analyte name",
-  },
-];
-const mockReports: Report[] = [
-  {
-    id: "14860e3c-56df-4a31-96cc-100dc2a8f749",
-    reportDate: "2024-08-05",
-    sampleId: "ce59c2ba-c7f2-4df5-a8db-7dd74b7381a9",
-    analyte: "ab3b3b3b-ab3b-ab3b-ab3b-ab3b3b3b3b3b",
-    analysisMethod: "c461270c-6682-4f51-9148-efb9fbaab44e",
-    criteria: "b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3",
-    result: "0 UFC/g",
-  },
-];
+const mockSampleTypes: SampleType[] = buildSampleTypesData(1);
+const mockAnalytes: Analyte[] = buildAnalytesData(1);
+const mockClient = buildClientData();
+const mockSamples = buildSamplesData(1, {
+  clientId: mockClient.id,
+  sampleTypeId: mockSampleTypes[0].id,
+});
+const mockReports: Report[] = buildReportsData(1, {
+  sampleId: mockSamples[0].id,
+  analyte: mockAnalytes[0].id,
+});
 
 const mockUseReportArgs = {
   reports: mockReports,
@@ -93,6 +75,7 @@ jest.mock("../../../utils/hooks/useSampleType", () => ({
   }),
 }));
 jest.mock("../../../features/samples/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSampleStore: (selector: any) => selector(mockedSamplesState),
 }));
 jest.mock("../../../utils/hooks/useAnalyte", () => ({
@@ -108,6 +91,13 @@ describe("ReportsContent test", () => {
   });
 
   it("should render reports data successfully", async () => {
+    const expectedReportDate = mockReports[0].reportDate;
+    const sampleCode = mockSamples[0].sampleCode;
+    const sampleTypeName = mockSampleTypes[0].name;
+    const expectedSampleCodeAndType = `${sampleCode} - ${sampleTypeName}`;
+    const expectedAnalyteName = mockAnalytes[0].name;
+    const expectedResult = mockReports[0].result;
+
     jest.spyOn(useReportsModule, "useReports").mockReturnValue({
       ...mockUseReportArgs,
       reports: mockReports,
@@ -116,10 +106,10 @@ describe("ReportsContent test", () => {
     render(<ReportsContent />);
 
     await waitFor(() => {
-      expect(screen.getByText("2024-08-05")).toBeInTheDocument();
-      expect(screen.getByText("sam1001 - Total coliforms")).toBeInTheDocument();
-      expect(screen.getByText("mock analyte name")).toBeInTheDocument();
-      expect(screen.getByText("0 UFC/g")).toBeInTheDocument();
+      expect(screen.getByText(expectedReportDate)).toBeInTheDocument();
+      expect(screen.getByText(expectedSampleCodeAndType)).toBeInTheDocument();
+      expect(screen.getByText(expectedAnalyteName)).toBeInTheDocument();
+      expect(screen.getByText(expectedResult)).toBeInTheDocument();
     });
   });
 

@@ -5,27 +5,40 @@ import {
   getReportByIdService,
   getReportsService,
 } from "./reportsService";
+import {
+  buildAnalytesData,
+  buildClientsData,
+  buildReportsData,
+  buildSamplesData,
+  buildSampleTypesData,
+} from "../shared/test/builders";
+import {
+  AnalysisMethod,
+  Analyte,
+  Client,
+  Criteria,
+  Sample,
+  SampleType,
+} from "../model";
+import {buildAnalysisMethodsData} from "../shared/test/builders/analisysMethodBuilder";
+import {buildCriteriasData} from "../shared/test/builders/criteriaBuilder";
 
-const mockReports = [
-  {
-    id: "1",
-    reportDate: "2021-01-01",
-    sampleId: "1",
-    analyte: "1",
-    analysisMethod: "1",
-    criteria: "1",
-    result: "mock result",
-  },
-  {
-    id: "2",
-    reportDate: "2021-01-02",
-    sampleId: "2",
-    analyte: "2",
-    analysisMethod: "2",
-    criteria: "2",
-    result: "mock result",
-  },
-];
+const mockSampleTypes: SampleType[] = buildSampleTypesData(2);
+const mockAnalytes: Analyte[] = buildAnalytesData(2);
+const mockAnalysisMethods: AnalysisMethod[] = buildAnalysisMethodsData(2);
+const mockClients: Client[] = buildClientsData(2);
+const mockCriterias: Criteria[] = buildCriteriasData(2);
+const mockSamples: Sample[] = buildSamplesData(2, {
+  clientId: mockClients[0].id,
+  sampleTypeId: mockSampleTypes[0].id,
+});
+const mockReports = buildReportsData(2, {
+  sampleId: mockSamples[0].id,
+  analyte: mockAnalytes[0].id,
+  analysisMethod: mockAnalysisMethods[0].id,
+  criteria: mockCriterias[0].id,
+});
+
 jest.mock("../config/EnvManager", () => ({
   __esModule: true,
   default: {
