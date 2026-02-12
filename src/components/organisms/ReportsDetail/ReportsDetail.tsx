@@ -61,7 +61,6 @@ import {
   useAnalysisMethod,
   useAnalyte,
   useCriteria,
-  useClient,
   useReports,
   useForm,
 } from "../../../utils/hooks";
@@ -82,7 +81,12 @@ import {
   selectSamples,
   selectSelectedSample,
   selectSetSelectedSample,
-} from "../../../features/samples/model/selectors";
+} from "../../../features/samples";
+import {
+  selectClients,
+  selectIsLoadingClient,
+  useClientStore,
+} from "../../../features/clients";
 
 export const ReportDetail = ({
   isReadOnlyMode,
@@ -106,7 +110,9 @@ export const ReportDetail = ({
   const getSampleById = useSampleStore(selectGetSampleById);
   const setSelectedSample = useSampleStore(selectSetSelectedSample);
 
-  const {clients, isLoading: isLoadingClients} = useClient();
+  const clients = useClientStore(selectClients);
+  const isLoadingClients = useClientStore(selectIsLoadingClient);
+
   const {sampleTypes, isLoading: isLoadingSampleTypes} = useSampleType();
   const {analysisMethods, isLoading: isLoadingAnalysisMethods} =
     useAnalysisMethod();
