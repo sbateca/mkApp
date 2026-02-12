@@ -19,6 +19,7 @@ import {
 import {buildAnalysisMethodsData} from "../../../shared/test/builders/analisysMethodBuilder";
 import {buildCriteriasData} from "../../../shared/test/builders/criteriaBuilder";
 import {buildFormData} from "../../../shared/test/builders/formDataBuilder";
+import {ClientsStore} from "../../../features/clients/model/types";
 
 const today = dayjs();
 const RENDERED_FORMAT_DATE = "MM/DD/YYYY";
@@ -76,10 +77,15 @@ export const mockReportDetailData = {
   },
 };
 let mockedSamplesState: SamplesStore;
+let mockClientStoreState: ClientsStore;
 
 jest.mock("../../../features/samples/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSampleStore: (selector: any) => selector(mockedSamplesState),
+}));
+jest.mock("../../../features/clients/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useClientStore: (selector: any) => selector(mockClientStoreState),
 }));
 jest.mock("../../../stores", () => ({
   useSnackBarStore: jest.fn(),
@@ -94,7 +100,6 @@ jest.mock("../../../stores/snackBarStore", () => ({
   default: jest.fn(),
 }));
 jest.mock("../../../utils/hooks", () => ({
-  useClient: jest.fn(),
   useSampleType: jest.fn(),
   useAnalysisMethod: jest.fn(),
   useSideSection: jest.fn(),
@@ -124,17 +129,15 @@ export const renderReportDetail = async () => {
     deleteSample: jest.fn().mockResolvedValue(null),
   };
 
-  jest.spyOn(hooks, "useClient").mockReturnValue({
-    clients: mockReportDetailData.clients,
-    selectedClient: mockReportDetailData.clients[0],
-    setSelectedClient: jest
-      .fn()
-      .mockReturnValue(mockReportDetailData.clients[1]),
-    getClients: jest.fn().mockReturnValue(mockReportDetailData.clients),
-    getClientById: jest.fn().mockReturnValue(mockReportDetailData.clients[1]),
+  mockClientStoreState = {
+    clients: mockClients,
+    selectedClient: mockClients[0],
+    setSelectedClient: jest.fn(),
+    getClients: jest.fn().mockReturnValue(mockClients),
+    getClientById: jest.fn(),
     isLoading: false,
     error: null,
-  });
+  };
 
   jest.spyOn(hooks, "useSampleType").mockReturnValue({
     sampleTypes: mockReportDetailData.sampleTypes,

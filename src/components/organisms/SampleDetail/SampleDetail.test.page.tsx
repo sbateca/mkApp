@@ -14,6 +14,7 @@ import {
   buildSampleTypesData,
 } from "../../../shared/test/builders";
 import {buildFormData} from "../../../shared/test/builders/formDataBuilder";
+import {ClientsStore} from "../../../features/clients/model/types";
 
 const today = dayjs();
 const RENDERED_FORMAT_DATE = "MM/DD/YYYY";
@@ -63,8 +64,9 @@ export const mockData = {
   },
 };
 
+let mockClientStoreState: ClientsStore;
+
 jest.mock("../../../config/EnvManager", () => ({
-  __esModule: true,
   default: {
     BACKEND_URL: "http://example.com/api",
   },
@@ -81,33 +83,23 @@ jest.mock("../../../stores/snackBarStore", () => ({
 }));
 
 jest.mock("../../../utils/hooks", () => ({
-  useSample: jest.fn(),
-  useClient: jest.fn(),
   useSampleType: jest.fn(),
   useSideSection: jest.fn(),
   useForm: jest.fn(),
   useSnackBar: jest.fn(),
 }));
 
+jest.mock("../../../features/clients/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useClientStore: (selector: any) => selector(mockClientStoreState),
+}));
+
 export const renderSampleDetail = (opts?: {
-  selectedSample?: Sample;
+  selectedSample: Sample | null;
   form?: FormProps;
   isNotValidForm?: boolean;
 }) => {
-  jest.spyOn(hooks, "useSample").mockReturnValue({
-    isLoading: false,
-    error: null,
-    getSampleById: jest.fn().mockReturnValue(mockData.samples[0]),
-    samples: mockData.samples,
-    selectedSample: opts?.selectedSample ?? mockData.samples[0],
-    createSample: jest.fn().mockReturnValue(mockData.samples[1]),
-    editSample: jest.fn().mockReturnValue(mockData.samples[1]),
-    setSelectedSample: jest.fn(),
-    getSamples: jest.fn().mockReturnValue(mockData.samples),
-    deleteSample: jest.fn().mockReturnValue(mockData.samples[1]),
-  });
-
-  jest.spyOn(hooks, "useClient").mockReturnValue({
+  mockClientStoreState = {
     clients: mockData.clients,
     selectedClient: mockData.clients[0],
     setSelectedClient: jest.fn(),
@@ -115,7 +107,7 @@ export const renderSampleDetail = (opts?: {
     getClientById: jest.fn(),
     isLoading: false,
     error: null,
-  });
+  };
 
   jest.spyOn(hooks, "useSampleType").mockReturnValue({
     sampleTypes: mockData.sampleTypes,

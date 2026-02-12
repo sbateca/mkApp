@@ -18,7 +18,7 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {Typography, Button, Spinner} from "../../atoms";
 import SampleSideSectionButtons from "./SampleSideSectionActions";
 import {AutoComplete} from "../../molecules";
-import {useForm, useSampleType, useClient} from "../../../utils/hooks";
+import {useForm, useSampleType} from "../../../utils/hooks";
 import {
   ReportFormFields,
   SamplesFormFields,
@@ -73,6 +73,11 @@ import {
   selectIsLoading,
   selectSelectedSample,
 } from "../../../features/samples/model/selectors";
+import {
+  selectClients,
+  selectIsLoadingClient,
+  useClientStore,
+} from "../../../features/clients";
 
 export const SampleDetail = ({
   isReadOnlyMode,
@@ -100,7 +105,9 @@ export const SampleDetail = ({
   const isLoading = useSampleStore(selectIsLoading);
   const error = useSampleStore(selectError);
 
-  const {clients, isLoading: isLoadingClients} = useClient();
+  const clients = useClientStore(selectClients);
+  const isLoadingClients = useClientStore(selectIsLoadingClient);
+
   const {sampleTypes, isLoading: isLoadingSampleTypes} = useSampleType();
   const {setIsSideSectionOpen, sideSectionTitle} = useSideSectionStore();
   const {

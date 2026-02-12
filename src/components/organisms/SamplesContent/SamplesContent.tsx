@@ -7,7 +7,7 @@ import {SideSection} from "../SideSection/SideSection";
 import {SampleDetail} from "../SampleDetail";
 import {Table} from "../Table";
 
-import {useSampleType, useClient} from "../../../utils/hooks";
+import {useSampleType} from "../../../utils/hooks";
 import {samplesToTableRows} from "../../../adapters/tableRow";
 import {
   SharedButtonColors,
@@ -34,6 +34,11 @@ import {
   selectSamples,
   selectSetSelectedSample,
 } from "../../../features/samples/model/selectors";
+import {
+  selectClients,
+  selectGetClients,
+  useClientStore,
+} from "../../../features/clients";
 
 export const SamplesContent = (): React.ReactElement => {
   const [rows, setRows] = useState<TableRowProps[]>([]);
@@ -45,7 +50,9 @@ export const SamplesContent = (): React.ReactElement => {
   const getSamples = useSampleStore(selectGetSamples);
   const setSelectedSample = useSampleStore(selectSetSelectedSample);
 
-  const {clients} = useClient();
+  const clients = useClientStore(selectClients);
+  const getClients = useClientStore(selectGetClients);
+
   const {sampleTypes} = useSampleType();
   const {showSnackBarMessage} = useSnackBarStore();
   const {isSideSectionOpen, setIsSideSectionOpen, setSideSectionTitle} =
@@ -57,6 +64,10 @@ export const SamplesContent = (): React.ReactElement => {
     setSideSectionTitle(CREATE_SAMPLE_TITLE_TEXT);
     setIsSideSectionOpen(true);
   };
+
+  useEffect(() => {
+    getClients();
+  }, [getClients]);
 
   useEffect(() => {
     getSamples();

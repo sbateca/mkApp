@@ -9,6 +9,13 @@ import {
   buildSamplesData,
   buildSampleTypesData,
 } from "../../../shared/test/builders";
+import {ClientsStore} from "../../../features/clients/model/types";
+import {buildFormData} from "../../../shared/test/builders/formDataBuilder";
+import dayjs from "dayjs";
+import {DATEPICKER_FORMAT} from "../../../utils/constants";
+
+const today = dayjs();
+const RENDERED_FORMAT_DATE = "MM/DD/YYYY";
 
 const mockSampleTypes: SampleType[] = buildSampleTypesData(1);
 const mockAnalytes: Analyte[] = buildAnalytesData(1);
@@ -17,6 +24,55 @@ const mockSamples = buildSamplesData(1, {
   clientId: mockClients[0].id,
   sampleTypeId: mockSampleTypes[0].id,
 });
+
+const mockForm = buildFormData({
+  sampleCode: mockSamples[0].sampleCode,
+  sampleType: mockSampleTypes[0].id,
+  client: mockClients[0].id,
+  getSampleDate: today.format(DATEPICKER_FORMAT),
+  receptionDate: today.format(DATEPICKER_FORMAT),
+  analysisDate: today.format(DATEPICKER_FORMAT),
+  sampleLocation: mockSamples[0].sampleLocation,
+  responsable: mockSamples[0].responsable,
+});
+const mockDefaultForm = buildFormData({
+  sampleCode: "",
+  sampleType: "",
+  client: "",
+  getSampleDate: "",
+  receptionDate: "",
+  analysisDate: "",
+  sampleLocation: "",
+  responsable: "",
+});
+
+export const mockData = {
+  readonly: false,
+  samples: mockSamples,
+  clients: mockClients,
+  sampleTypes: mockSampleTypes,
+  form: mockForm,
+  defaulForm: mockDefaultForm,
+  expectedData: {
+    sampleCode: mockSamples[0].sampleCode,
+    sampleType: mockSampleTypes[0].name,
+    client: mockClients[0].name,
+    getSampleDate: today.format(RENDERED_FORMAT_DATE),
+    receptionDate: today.format(RENDERED_FORMAT_DATE),
+    analysisDate: today.format(RENDERED_FORMAT_DATE),
+    sampleLocation: mockSamples[0].sampleLocation,
+    responsable: mockSamples[0].responsable,
+  },
+};
+const mockClientStoreState: ClientsStore = {
+  clients: mockData.clients,
+  selectedClient: mockData.clients[0],
+  setSelectedClient: jest.fn(),
+  getClients: jest.fn().mockReturnValue(mockData.clients),
+  getClientById: jest.fn(),
+  isLoading: false,
+  error: null,
+};
 
 const mockSamplesStoreState = {
   samples: mockSamples,
@@ -48,6 +104,11 @@ jest.mock("../../../features/samples/model/store", () => ({
   useSampleStore: (selector: any) => selector(mockSamplesStoreState),
 }));
 
+jest.mock("../../../features/clients/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useClientStore: (selector: any) => selector(mockClientStoreState),
+}));
+
 jest.mock("../SampleDetail/SampleDetail", () => ({
   SampleDetail: () => (
     <div data-testid="sampleDetail">Sample Detail Component</div>
@@ -65,13 +126,6 @@ jest.mock("../../../utils/hooks/useAnalyte", () => ({
   useAnalyte: () => ({
     analytes: mockAnalytes,
     getAnalytes: jest.fn(),
-  }),
-}));
-
-jest.mock("../../../utils/hooks/useClient", () => ({
-  useClient: () => ({
-    clients: mockClients,
-    getClients: jest.fn(),
   }),
 }));
 
