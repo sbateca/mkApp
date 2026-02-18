@@ -18,7 +18,7 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {Typography, Button, Spinner} from "../../atoms";
 import SampleSideSectionButtons from "./SampleSideSectionActions";
 import {AutoComplete} from "../../molecules";
-import {useForm, useSampleType} from "../../../utils/hooks";
+import {useForm} from "../../../utils/hooks";
 import {
   ReportFormFields,
   SamplesFormFields,
@@ -78,26 +78,35 @@ import {
   selectIsLoadingClient,
   useClientStore,
 } from "../../../features/clients";
+import {useSampleTypeStore} from "../../../features/sampleType/model/store";
+import {
+  selectGetSampleTypes,
+  selectIsLoadingSampleTypes,
+  selectSamplesTypes,
+  selectSetSampleTypes,
+} from "../../../features/sampleType/model/selectors";
 
 export const SampleDetail = ({
   isReadOnlyMode,
   setIsReadOnlyMode,
 }: SampleDetailProps): React.ReactElement => {
-  const today = dayjs();
+  const today = React.useMemo(() => dayjs(), []);
   const theme = useTheme<Theme>();
   const isLessThanMediumScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const [loadingState, setLoadingState] = useState(false);
 
-  const defaultFormValue: FormProps = {
-    sampleCode: "",
-    sampleType: "",
-    client: "",
-    getSampleDate: today.format(DATEPICKER_FORMAT),
-    receptionDate: today.format(DATEPICKER_FORMAT),
-    analysisDate: today.format(DATEPICKER_FORMAT),
-    sampleLocation: "",
-    responsable: "",
-  };
+  const defaultFormValue = React.useMemo(() => {
+    return {
+      sampleCode: "",
+      sampleType: "",
+      client: "",
+      getSampleDate: today.format(DATEPICKER_FORMAT),
+      receptionDate: today.format(DATEPICKER_FORMAT),
+      analysisDate: today.format(DATEPICKER_FORMAT),
+      sampleLocation: "",
+      responsable: "",
+    } as FormProps;
+  }, [today]);
+
   const getSamples = useSampleStore(selectGetSamples);
   const createSample = useSampleStore(selectCreateSample);
   const editSample = useSampleStore(selectEditSample);
@@ -108,7 +117,21 @@ export const SampleDetail = ({
   const clients = useClientStore(selectClients);
   const isLoadingClients = useClientStore(selectIsLoadingClient);
 
-  const {sampleTypes, isLoading: isLoadingSampleTypes} = useSampleType();
+  const sampleTypes = useSampleTypeStore(selectSamplesTypes);
+  const isLoadingSampleTypes = useSampleTypeStore(selectIsLoadingSampleTypes);
+  const getSampleTypes = useSampleTypeStore(selectGetSampleTypes);
+  const setSampleTypes = useSampleTypeStore(selectSetSampleTypes);
+
+  const isLoadingAll = isLoadingClients || isLoadingSampleTypes;
+  const sampleTypeOptions: AutoCompleteOption[] = React.useMemo(
+    () => sampleTypes?.map((st) => ({id: st.id, optionLabel: st.name})) ?? [],
+    [sampleTypes],
+  );
+  const clientOptions: AutoCompleteOption[] = React.useMemo(
+    () => clients?.map((c) => ({id: c.id, optionLabel: c.name})) ?? [],
+    [clients],
+  );
+
   const {setIsSideSectionOpen, sideSectionTitle} = useSideSectionStore();
   const {
     isNotValidForm,
@@ -228,24 +251,6 @@ export const SampleDetail = ({
     return null;
   };
 
-  const getAutoCompleteOptionsFromClients = (): AutoCompleteOption[] => {
-    return (
-      clients?.map((client) => ({
-        id: client.id,
-        optionLabel: client.name,
-      })) ?? []
-    );
-  };
-
-  const getAutoCompleteOptionsFromSampleTypes = (): AutoCompleteOption[] => {
-    return (
-      sampleTypes?.map((sampleType) => ({
-        id: sampleType.id,
-        optionLabel: sampleType.name,
-      })) ?? []
-    );
-  };
-
   useEffect(() => {
     setFormFieldsValidationFunctions({
       sampleCode: [isEmpty],
@@ -257,26 +262,29 @@ export const SampleDetail = ({
       sampleLocation: [isEmpty],
       responsable: [isEmpty],
     });
-    cleanForm(defaultFormValue);
-  }, []);
+  }, [setFormFieldsValidationFunctions]);
 
   useEffect(() => {
     if (selectedSample) {
       setForm(sampleToSampleForm(selectedSample));
+      return;
     }
-  }, []);
+    cleanForm(defaultFormValue);
+  }, [selectedSample, setForm, cleanForm, defaultFormValue]);
 
   useEffect(() => {
     if (error) {
       showSnackBarMessage(error, SnackBarSeverity.ERROR);
     }
-  }, [error]);
+  }, [error, showSnackBarMessage]);
 
   useEffect(() => {
-    if (isLoadingClients || isLoadingSampleTypes) {
-      setLoadingState(true);
-    }
-  }, [isLoadingClients, isLoadingSampleTypes]);
+    const fetchSampleTypes = async () => {
+      const sampleTypes = await getSampleTypes();
+      setSampleTypes(sampleTypes);
+    };
+    fetchSampleTypes();
+  }, [getSampleTypes, setSampleTypes]);
 
   return (
     <Box sx={getBoxContainerProps(isLessThanMediumScreen) as SxProps}>
@@ -303,7 +311,7 @@ export const SampleDetail = ({
         />
       </Stack>
       <Divider />
-      {loadingState ? (
+      {isLoadingAll ? (
         <Spinner />
       ) : (
         <Stack {...getStackContainerProps(isLessThanMediumScreen)}>
@@ -331,7 +339,7 @@ export const SampleDetail = ({
             </Stack>
             <Stack {...getStackFieldProps()}>
               <AutoComplete
-                options={getAutoCompleteOptionsFromSampleTypes()}
+                options={sampleTypeOptions}
                 label={SAMPLE_TYPE_LABEL_TEXT}
                 value={form.sampleType}
                 variant={SelectVariants.STANDARD}
@@ -349,7 +357,7 @@ export const SampleDetail = ({
           <Stack {...getStackRowProps(isLessThanMediumScreen)}>
             <Stack {...getStackFieldProps()}>
               <AutoComplete
-                options={getAutoCompleteOptionsFromClients()}
+                options={clientOptions}
                 label={SAMPLE_CLIENT_LABEL_TEXT}
                 value={form.client}
                 variant={SelectVariants.STANDARD}
@@ -366,7 +374,6 @@ export const SampleDetail = ({
                 <DatePicker
                   sx={SampleFormStyles.datePicker}
                   disableFuture
-                  defaultValue={today}
                   views={DATEPICKER_VIEWS}
                   label={SAMPLE_GET_SAMPLE_DATE_LABEL_TEXT}
                   name={SamplesFormFields.GET_SAMPLE_DATE}
@@ -384,7 +391,7 @@ export const SampleDetail = ({
                     },
                   }}
                   readOnly={isReadOnlyMode}
-                  value={dayjs(form.getSampleDate) ?? null}
+                  value={form.getSampleDate ? dayjs(form.getSampleDate) : null}
                   data-testid={SamplesFormFields.GET_SAMPLE_DATE}
                 />
               </LocalizationProvider>

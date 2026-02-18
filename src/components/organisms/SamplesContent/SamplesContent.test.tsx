@@ -87,6 +87,17 @@ const mockSamplesStoreState = {
   deleteSample: jest.fn().mockResolvedValue(null),
 };
 
+const mockSampleTypeStoreState = {
+  sampleTypes: mockSampleTypes,
+  selectedSampleType: mockSampleTypes[0],
+  isLoading: false,
+  error: null,
+  setSampleTypes: jest.fn(),
+  setSelectedSampleType: jest.fn(),
+  getSampleTypes: jest.fn().mockReturnValue(mockSampleTypes),
+  getSampleTypeById: jest.fn().mockReturnValue(mockSampleTypes[0]),
+};
+
 jest.mock("../../../Config/envManager", () => ({
   __esModule: true,
   default: {
@@ -109,17 +120,15 @@ jest.mock("../../../features/clients/model/store", () => ({
   useClientStore: (selector: any) => selector(mockClientStoreState),
 }));
 
+jest.mock("../../../features/sampleType/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useSampleTypeStore: (selector: any) => selector(mockSampleTypeStoreState),
+}));
+
 jest.mock("../SampleDetail/SampleDetail", () => ({
   SampleDetail: () => (
     <div data-testid="sampleDetail">Sample Detail Component</div>
   ),
-}));
-
-jest.mock("../../../utils/hooks/useSampleType", () => ({
-  useSampleType: () => ({
-    sampleTypes: mockSampleTypes,
-    getSampleTypes: jest.fn(),
-  }),
 }));
 
 jest.mock("../../../utils/hooks/useAnalyte", () => ({

@@ -56,6 +56,16 @@ const mockedSamplesState = {
   editSample: jest.fn().mockResolvedValue(mockSamples[0] as Sample),
   deleteSample: jest.fn().mockResolvedValue(null),
 };
+const mockSampleTypeStoreState = {
+  sampleTypes: mockSampleTypes,
+  selectedSampleType: mockSampleTypes[0],
+  isLoading: false,
+  error: null,
+  setSampleTypes: jest.fn(),
+  setSelectedSampleType: jest.fn(),
+  getSampleTypes: jest.fn().mockResolvedValue(mockSampleTypes),
+  getSampleTypeById: jest.fn(),
+};
 
 jest.mock("../../../Config/envManager", () => ({
   __esModule: true,
@@ -63,21 +73,23 @@ jest.mock("../../../Config/envManager", () => ({
     BACKEND_URL: "http://mockurl.com/api",
   },
 }));
+
 jest.mock("../ReportsDetail/ReportsDetail", () => ({
   ReportDetail: () => (
     <div data-testid="reportsDetail">Reports Detail Component</div>
   ),
 }));
-jest.mock("../../../utils/hooks/useSampleType", () => ({
-  useSampleType: () => ({
-    sampleTypes: mockSampleTypes,
-    getSampleTypes: jest.fn(),
-  }),
-}));
+
 jest.mock("../../../features/samples/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSampleStore: (selector: any) => selector(mockedSamplesState),
 }));
+
+jest.mock("../../../features/sampleType/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useSampleTypeStore: (selector: any) => selector(mockSampleTypeStoreState),
+}));
+
 jest.mock("../../../utils/hooks/useAnalyte", () => ({
   useAnalyte: () => ({
     analytes: mockAnalytes,
