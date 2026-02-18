@@ -16,7 +16,7 @@ export const useSampleTypeStore = create<SampleTypeStore>((set) => ({
     set({selectedSampleType: sampleType}),
 
   setSampleTypes: (sampleTypes: SampleType[] | null) =>
-    set({sampleTypes: sampleTypes}),
+    set({sampleTypes: sampleTypes ? [...sampleTypes] : null}),
 
   getSampleTypes: async () => {
     set({isLoading: true, error: null});

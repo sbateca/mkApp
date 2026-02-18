@@ -20,7 +20,6 @@ import SampleSideSectionButtons from "./SampleSideSectionActions";
 import {AutoComplete} from "../../molecules";
 import {useForm} from "../../../utils/hooks";
 import {
-  ReportFormFields,
   SamplesFormFields,
   SelectVariants,
   SharedButtonColors,
@@ -60,7 +59,6 @@ import {
   StackFieldProps,
   StackRowDirectionSpacingPropsProps,
 } from "./Types";
-import {AutoCompleteOption} from "../../molecules/AutoComplete/types";
 import {SampleDetailStyles, SampleFormStyles} from "./SampleDetailStyles";
 import useSnackBarStore from "../../../stores/snackBarStore";
 import useSideSectionStore from "../../../stores/sideSectionStore";
@@ -85,6 +83,7 @@ import {
   selectSamplesTypes,
   selectSetSampleTypes,
 } from "../../../features/sampleType/model/selectors";
+import {getAutoCompleteOptionsFromModel} from "../../../utils/model";
 
 export const SampleDetail = ({
   isReadOnlyMode,
@@ -123,14 +122,6 @@ export const SampleDetail = ({
   const setSampleTypes = useSampleTypeStore(selectSetSampleTypes);
 
   const isLoadingAll = isLoadingClients || isLoadingSampleTypes;
-  const sampleTypeOptions: AutoCompleteOption[] = React.useMemo(
-    () => sampleTypes?.map((st) => ({id: st.id, optionLabel: st.name})) ?? [],
-    [sampleTypes],
-  );
-  const clientOptions: AutoCompleteOption[] = React.useMemo(
-    () => clients?.map((c) => ({id: c.id, optionLabel: c.name})) ?? [],
-    [clients],
-  );
 
   const {setIsSideSectionOpen, sideSectionTitle} = useSideSectionStore();
   const {
@@ -270,7 +261,7 @@ export const SampleDetail = ({
       return;
     }
     cleanForm(defaultFormValue);
-  }, [selectedSample, setForm, cleanForm, defaultFormValue]);
+  }, [cleanForm, defaultFormValue, today, selectedSample, setForm]);
 
   useEffect(() => {
     if (error) {
@@ -339,12 +330,12 @@ export const SampleDetail = ({
             </Stack>
             <Stack {...getStackFieldProps()}>
               <AutoComplete
-                options={sampleTypeOptions}
+                options={getAutoCompleteOptionsFromModel(sampleTypes)}
                 label={SAMPLE_TYPE_LABEL_TEXT}
                 value={form.sampleType}
                 variant={SelectVariants.STANDARD}
                 onChange={handleAutoCompleteChange}
-                name={ReportFormFields.SAMPLE_TYPE}
+                name={SamplesFormFields.SAMPLE_TYPE}
                 readOnly={isReadOnlyMode}
                 error={!!formFieldsErrors[SamplesFormFields.SAMPLE_TYPE]}
                 helperText={getTextFieldHelperText(
@@ -357,7 +348,7 @@ export const SampleDetail = ({
           <Stack {...getStackRowProps(isLessThanMediumScreen)}>
             <Stack {...getStackFieldProps()}>
               <AutoComplete
-                options={clientOptions}
+                options={getAutoCompleteOptionsFromModel(clients)}
                 label={SAMPLE_CLIENT_LABEL_TEXT}
                 value={form.client}
                 variant={SelectVariants.STANDARD}
