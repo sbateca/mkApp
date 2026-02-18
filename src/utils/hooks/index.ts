@@ -6,6 +6,5 @@ export * from "./useForm";
 export * from "./useMenu";
 export * from "./useReports";
 export * from "./useSample";
-export * from "./useSampleType";
 export * from "./useSideSection";
 export * from "./useSnackBar";
