@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 
 import {
   Box,
@@ -48,7 +48,6 @@ import {
   DATEPICKER_VIEWS,
   isEmpty,
   isNotValidDate,
-  FormProps,
 } from "../../../utils/constants";
 
 import {
@@ -57,7 +56,6 @@ import {
 } from "../../../adapters/reports";
 import {getAutoCompleteOptionsFromModel} from "../../../utils/model";
 import {
-  useSampleType,
   useAnalysisMethod,
   useAnalyte,
   useCriteria,
@@ -87,12 +85,19 @@ import {
   selectIsLoadingClient,
   useClientStore,
 } from "../../../features/clients";
+import {useSampleTypeStore} from "../../../features/sampleType/model/store";
+import {
+  selectGetSampleTypes,
+  selectIsLoadingSampleTypes,
+  selectSamplesTypes,
+  selectSetSampleTypes,
+} from "../../../features/sampleType/model/selectors";
 
 export const ReportDetail = ({
   isReadOnlyMode,
   setIsReadOnlyMode,
 }: ReportDetailProps): React.ReactElement => {
-  const today = dayjs();
+  const today = React.useMemo(() => dayjs(), []);
   const theme = useTheme<Theme>();
   const isLessThanMediumScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
@@ -113,23 +118,25 @@ export const ReportDetail = ({
   const clients = useClientStore(selectClients);
   const isLoadingClients = useClientStore(selectIsLoadingClient);
 
-  const {sampleTypes, isLoading: isLoadingSampleTypes} = useSampleType();
+  const sampleTypes = useSampleTypeStore(selectSamplesTypes);
+  const getSampleTypes = useSampleTypeStore(selectGetSampleTypes);
+  const isLoadingSampleTypes = useSampleTypeStore(selectIsLoadingSampleTypes);
+  const setSampleTypes = useSampleTypeStore(selectSetSampleTypes);
+
   const {analysisMethods, isLoading: isLoadingAnalysisMethods} =
     useAnalysisMethod();
   const {analytes, isLoading: isLoadingAnalytes} = useAnalyte();
   const {criterias, isLoading: isLoadingCriterias} = useCriteria();
   const {setIsSideSectionOpen, sideSectionTitle} = useSideSectionStore();
   const {showSnackBarMessage} = useSnackBarStore();
-  const [loadingState, setLoadingState] = useState(false);
 
-  const defaultFormValue: FormProps = {
-    reportDate: today.format(DATEPICKER_FORMAT),
-    sampleId: selectedReport?.sampleId ?? "",
-    analyte: "",
-    analysisMethod: "",
-    criteria: "",
-    result: "",
-  };
+  const isLoadingAll =
+    isLoadingClients ||
+    isLoadingSampleTypes ||
+    isLoadingAnalysisMethods ||
+    isLoadingAnalytes ||
+    isLoadingCriterias;
+
   const {
     isNotValidForm,
     form,
@@ -269,50 +276,49 @@ export const ReportDetail = ({
       criteria: [isEmpty],
       result: [isEmpty],
     });
-    cleanForm(defaultFormValue);
-  }, [selectedReport]);
+  }, [setFormFieldsValidationFunctions]);
 
   useEffect(() => {
     if (selectedReport) {
       setForm(reportToReportForm(selectedReport));
+      return;
     }
-  }, [selectedReport]);
+
+    cleanForm({
+      reportDate: today.format(DATEPICKER_FORMAT),
+      sampleId: "",
+      analyte: "",
+      analysisMethod: "",
+      criteria: "",
+      result: "",
+    });
+  }, [selectedReport, setForm, cleanForm, today]);
 
   useEffect(() => {
     if (error) {
       showSnackBarMessage(error, SnackBarSeverity.ERROR);
     }
-  }, [error]);
+  }, [error, showSnackBarMessage]);
 
   useEffect(() => {
-    if (
-      isLoadingClients ||
-      isLoadingSampleTypes ||
-      isLoadingAnalysisMethods ||
-      isLoadingAnalytes ||
-      isLoadingCriterias
-    ) {
-      setLoadingState(true);
-    }
-  }, [
-    isLoadingClients,
-    isLoadingSampleTypes,
-    isLoadingAnalysisMethods,
-    isLoadingAnalytes,
-    isLoadingCriterias,
-  ]);
-
-  useEffect(() => {
-    const getSample = async () => {
-      const selectedSample = await getSampleById(form?.sampleId || "");
-      if (form.sampleId === "") {
+    const run = async () => {
+      if (!form.sampleId) {
         setSelectedSample(null);
-      } else {
-        setSelectedSample(selectedSample);
+        return;
       }
+      const sample = await getSampleById(form.sampleId);
+      setSelectedSample(sample);
     };
-    getSample();
-  }, [selectedReport, form.sampleId]);
+    run();
+  }, [form.sampleId, getSampleById, setSelectedSample]);
+
+  useEffect(() => {
+    const getAllSampleTypes = async () => {
+      const sampleTypes = await getSampleTypes();
+      setSampleTypes(sampleTypes);
+    };
+    getAllSampleTypes();
+  }, [getSampleTypes, setSampleTypes]);
 
   return (
     <Box sx={getBoxContainerProps(isLessThanMediumScreen) as SxProps}>
@@ -339,7 +345,7 @@ export const ReportDetail = ({
         />
       </Stack>
       <Divider />
-      {loadingState ? (
+      {isLoadingAll ? (
         <Spinner />
       ) : (
         <Stack {...getStackContainerProps(isLessThanMediumScreen)}>
@@ -349,7 +355,6 @@ export const ReportDetail = ({
                 <DatePicker
                   sx={SampleFormStyles.datePicker}
                   disableFuture
-                  defaultValue={today}
                   views={DATEPICKER_VIEWS}
                   label={REPORT_DATE_LABEL_TEXT}
                   name={ReportFormFields.REPORT_DATE}
@@ -365,7 +370,7 @@ export const ReportDetail = ({
                       variant: SharedTextFieldVariants.STANDARD,
                     },
                   }}
-                  value={dayjs(form.reportDate) ?? null}
+                  value={form.reportDate ? dayjs(form.reportDate) : null}
                   readOnly={isReadOnlyMode}
                 />
               </LocalizationProvider>

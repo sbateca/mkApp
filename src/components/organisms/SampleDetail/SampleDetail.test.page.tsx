@@ -15,6 +15,7 @@ import {
 } from "../../../shared/test/builders";
 import {buildFormData} from "../../../shared/test/builders/formDataBuilder";
 import {ClientsStore} from "../../../features/clients/model/types";
+import {SampleTypeStore} from "../../../features/sampleType/model/types";
 
 const today = dayjs();
 const RENDERED_FORMAT_DATE = "MM/DD/YYYY";
@@ -65,6 +66,7 @@ export const mockData = {
 };
 
 let mockClientStoreState: ClientsStore;
+let mockSampleTypeStoreState: SampleTypeStore;
 
 jest.mock("../../../config/EnvManager", () => ({
   default: {
@@ -83,7 +85,6 @@ jest.mock("../../../stores/snackBarStore", () => ({
 }));
 
 jest.mock("../../../utils/hooks", () => ({
-  useSampleType: jest.fn(),
   useSideSection: jest.fn(),
   useForm: jest.fn(),
   useSnackBar: jest.fn(),
@@ -92,6 +93,11 @@ jest.mock("../../../utils/hooks", () => ({
 jest.mock("../../../features/clients/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useClientStore: (selector: any) => selector(mockClientStoreState),
+}));
+
+jest.mock("../../../features/sampleType/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useSampleTypeStore: (selector: any) => selector(mockSampleTypeStoreState),
 }));
 
 export const renderSampleDetail = (opts?: {
@@ -108,16 +114,16 @@ export const renderSampleDetail = (opts?: {
     isLoading: false,
     error: null,
   };
-
-  jest.spyOn(hooks, "useSampleType").mockReturnValue({
-    sampleTypes: mockData.sampleTypes,
-    selectedSampleType: mockData.sampleTypes[0],
-    setSelectedSampleType: jest.fn(),
-    getSampleTypes: jest.fn().mockReturnValue(mockData.sampleTypes),
-    getSampleTypeById: jest.fn(),
+  mockSampleTypeStoreState = {
+    sampleTypes: mockSampleTypes,
+    selectedSampleType: mockSampleTypes[0],
     isLoading: false,
     error: null,
-  });
+    setSampleTypes: jest.fn(),
+    setSelectedSampleType: jest.fn(),
+    getSampleTypes: jest.fn().mockReturnValue(mockSampleTypes),
+    getSampleTypeById: jest.fn().mockReturnValue(mockSampleTypes[0]),
+  };
 
   jest.spyOn(hooks, "useForm").mockReturnValue({
     form: opts?.form ?? mockData.form,

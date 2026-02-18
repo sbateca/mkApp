@@ -5,6 +5,7 @@ import {Dayjs} from "dayjs";
 
 import {AutoCompleteOption} from "../../components/molecules/AutoComplete/types";
 import {FormProps, DATEPICKER_FORMAT} from "../constants";
+import React from "react";
 
 export interface SampleFormProps {
   form: FormProps;
@@ -125,10 +126,11 @@ export const useForm = () => {
     return "";
   };
 
-  const cleanForm = (defaultFormVFieldValues: FormProps) => {
+  const cleanForm = React.useCallback((defaultFormVFieldValues: FormProps) => {
     setDefaultFormFieldsValues(defaultFormVFieldValues);
     setFormFieldsErrors({});
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const setDefaultFormFieldsValues = (defaultValues: FormProps) => {
     Object.keys(defaultValues).forEach((value) => {

@@ -8,7 +8,7 @@ import {Table} from "../Table";
 import {SideSection} from "../SideSection";
 import {ReportDetail} from "../ReportsDetail";
 import {reportsToTableRows} from "../../../adapters/tableRow";
-import {useAnalyte, useSampleType, useReports} from "../../../utils/hooks";
+import {useAnalyte, useReports} from "../../../utils/hooks";
 import {
   REPORTS_TITLE_CONFIG,
   REPORTS_TABLE_HEADER_LABELS,
@@ -27,6 +27,12 @@ import useSnackBarStore from "../../../stores/snackBarStore";
 import useSideSectionStore from "../../../stores/sideSectionStore";
 import {useSampleStore} from "../../../features/samples/model/store";
 import {selectSamples} from "../../../features/samples/model/selectors";
+import {useSampleTypeStore} from "../../../features/sampleType/model/store";
+import {
+  selectGetSampleTypes,
+  selectSamplesTypes,
+  selectSetSampleTypes,
+} from "../../../features/sampleType/model/selectors";
 
 export const ReportsContent = (): React.ReactElement => {
   const [rows, setRows] = useState<TableRowProps[]>([]);
@@ -34,7 +40,9 @@ export const ReportsContent = (): React.ReactElement => {
 
   const {reports, getReports, setSelectedReport, isLoading, error} =
     useReports();
-  const {sampleTypes} = useSampleType();
+  const sampleTypes = useSampleTypeStore(selectSamplesTypes);
+  const getSampleTypes = useSampleTypeStore(selectGetSampleTypes);
+  const setSampleTypes = useSampleTypeStore(selectSetSampleTypes);
   const samples = useSampleStore(selectSamples);
   const {showSnackBarMessage} = useSnackBarStore();
   const {isSideSectionOpen, setIsSideSectionOpen, setSideSectionTitle} =
@@ -49,16 +57,24 @@ export const ReportsContent = (): React.ReactElement => {
   };
 
   useEffect(() => {
+    const getSamplTypes = async () => {
+      const sampleTypes = await getSampleTypes();
+      setSampleTypes(sampleTypes);
+    };
+    getSamplTypes();
+  }, [getSampleTypes, setSampleTypes]);
+
+  useEffect(() => {
     if (reports) {
       setRows(reportsToTableRows(reports, samples, sampleTypes, analytes));
     }
-  }, [reports, analytes]);
+  }, [reports, analytes, sampleTypes, samples]);
 
   useEffect(() => {
     if (error) {
       showSnackBarMessage(error, SnackBarSeverity.ERROR, getReports);
     }
-  }, [error]);
+  }, [error, getReports, showSnackBarMessage]);
 
   if (isLoading) return <Spinner />;
   if (error) return <Typography text={error} variant="h6" />;

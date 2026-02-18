@@ -7,7 +7,6 @@ import {SideSection} from "../SideSection/SideSection";
 import {SampleDetail} from "../SampleDetail";
 import {Table} from "../Table";
 
-import {useSampleType} from "../../../utils/hooks";
 import {samplesToTableRows} from "../../../adapters/tableRow";
 import {
   SharedButtonColors,
@@ -39,6 +38,12 @@ import {
   selectGetClients,
   useClientStore,
 } from "../../../features/clients";
+import {useSampleTypeStore} from "../../../features/sampleType/model/store";
+import {
+  selectGetSampleTypes,
+  selectSamplesTypes,
+  selectSetSampleTypes,
+} from "../../../features/sampleType/model/selectors";
 
 export const SamplesContent = (): React.ReactElement => {
   const [rows, setRows] = useState<TableRowProps[]>([]);
@@ -53,7 +58,10 @@ export const SamplesContent = (): React.ReactElement => {
   const clients = useClientStore(selectClients);
   const getClients = useClientStore(selectGetClients);
 
-  const {sampleTypes} = useSampleType();
+  const sampleTypes = useSampleTypeStore(selectSamplesTypes);
+  const getSampleTypes = useSampleTypeStore(selectGetSampleTypes);
+  const setSampleTypes = useSampleTypeStore(selectSetSampleTypes);
+
   const {showSnackBarMessage} = useSnackBarStore();
   const {isSideSectionOpen, setIsSideSectionOpen, setSideSectionTitle} =
     useSideSectionStore();
@@ -72,6 +80,15 @@ export const SamplesContent = (): React.ReactElement => {
   useEffect(() => {
     getSamples();
   }, [getSamples]);
+
+  useEffect(() => {
+    const getAllSampleTypes = async () => {
+      const sampleTypes = await getSampleTypes();
+      setSampleTypes(sampleTypes);
+    };
+
+    getAllSampleTypes();
+  }, [getSampleTypes, setSampleTypes]);
 
   useEffect(() => {
     if (samples) {
