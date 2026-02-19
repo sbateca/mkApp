@@ -1,7 +1,6 @@
 export * from "./useAnalysisMethod";
 export * from "./useAnalyte";
 export * from "./useClient";
-export * from "./useCriteria";
 export * from "./useForm";
 export * from "./useMenu";
 export * from "./useReports";

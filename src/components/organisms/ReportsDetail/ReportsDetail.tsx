@@ -58,7 +58,6 @@ import {getAutoCompleteOptionsFromModel} from "../../../utils/model";
 import {
   useAnalysisMethod,
   useAnalyte,
-  useCriteria,
   useReports,
   useForm,
 } from "../../../utils/hooks";
@@ -92,6 +91,13 @@ import {
   selectSamplesTypes,
   selectSetSampleTypes,
 } from "../../../features/sampleType/model/selectors";
+import {useCriteriaStore} from "../../../features/criteria/model/store";
+import {
+  selectCriterias,
+  selectGetCriterias,
+  selectIsLoadingCriterias,
+  selectSetCriterias,
+} from "../../../features/criteria/model/selector";
 
 export const ReportDetail = ({
   isReadOnlyMode,
@@ -126,7 +132,12 @@ export const ReportDetail = ({
   const {analysisMethods, isLoading: isLoadingAnalysisMethods} =
     useAnalysisMethod();
   const {analytes, isLoading: isLoadingAnalytes} = useAnalyte();
-  const {criterias, isLoading: isLoadingCriterias} = useCriteria();
+
+  const criterias = useCriteriaStore(selectCriterias);
+  const isLoadingCriterias = useCriteriaStore(selectIsLoadingCriterias);
+  const getCriterias = useCriteriaStore(selectGetCriterias);
+  const setCriterias = useCriteriaStore(selectSetCriterias);
+
   const {setIsSideSectionOpen, sideSectionTitle} = useSideSectionStore();
   const {showSnackBarMessage} = useSnackBarStore();
 
@@ -319,6 +330,14 @@ export const ReportDetail = ({
     };
     getAllSampleTypes();
   }, [getSampleTypes, setSampleTypes]);
+
+  useEffect(() => {
+    const getAllCriterias = async () => {
+      const criterias = await getCriterias();
+      setCriterias(criterias);
+    };
+    getAllCriterias();
+  }, [getCriterias, setCriterias]);
 
   return (
     <Box sx={getBoxContainerProps(isLessThanMediumScreen) as SxProps}>
