@@ -55,12 +55,7 @@ import {
   reportToReportForm,
 } from "../../../adapters/reports";
 import {getAutoCompleteOptionsFromModel} from "../../../utils/model";
-import {
-  useAnalysisMethod,
-  useAnalyte,
-  useReports,
-  useForm,
-} from "../../../utils/hooks";
+import {useAnalysisMethod, useAnalyte, useForm} from "../../../utils/hooks";
 import {
   BoxContainerProps,
   ReportDetailProps,
@@ -98,6 +93,15 @@ import {
   selectIsLoadingCriterias,
   selectSetCriterias,
 } from "../../../features/criteria/model/selector";
+import {useReportStore} from "../../../features/reports/model/store";
+import {
+  selectCreateReport,
+  selectEditReport,
+  selectError,
+  selectGetReports,
+  selectIsLoadingReport,
+  selectSelectedReport,
+} from "../../../features/reports/model/selector";
 
 export const ReportDetail = ({
   isReadOnlyMode,
@@ -107,14 +111,13 @@ export const ReportDetail = ({
   const theme = useTheme<Theme>();
   const isLessThanMediumScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const {
-    getReports,
-    createReport,
-    editReport,
-    selectedReport,
-    isLoading,
-    error,
-  } = useReports();
+  const selectedReport = useReportStore(selectSelectedReport);
+  const isLoading = useReportStore(selectIsLoadingReport);
+  const error = useReportStore(selectError);
+  const getReports = useReportStore(selectGetReports);
+  const createReport = useReportStore(selectCreateReport);
+  const editReport = useReportStore(selectEditReport);
+
   const samples = useSampleStore(selectSamples);
   const selectedSample = useSampleStore(selectSelectedSample);
   const isLoadingSample = useSampleStore(selectIsLoading);

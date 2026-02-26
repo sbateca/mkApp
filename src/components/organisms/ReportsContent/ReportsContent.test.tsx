@@ -1,6 +1,5 @@
 import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 
-import * as useReportsModule from "../../../utils/hooks/useReports";
 import * as useSideSectionModule from "../../../utils/hooks/useSideSection";
 import {Report} from "../../../model/Report";
 import {ReportsContent} from "./ReportsContent";
@@ -12,6 +11,7 @@ import {
   buildSamplesData,
   buildSampleTypesData,
 } from "../../../shared/test/builders";
+import {ReportStore} from "../../../features/reports/model/types";
 
 const mockSampleTypes: SampleType[] = buildSampleTypesData(1);
 const mockAnalytes: Analyte[] = buildAnalytesData(1);
@@ -24,19 +24,6 @@ const mockReports: Report[] = buildReportsData(1, {
   sampleId: mockSamples[0].id,
   analyte: mockAnalytes[0].id,
 });
-
-const mockUseReportArgs = {
-  reports: mockReports,
-  selectedReport: null,
-  setSelectedReport: jest.fn(),
-  getReports: jest.fn(),
-  getReportById: jest.fn(),
-  createReport: jest.fn(),
-  editReport: jest.fn(),
-  deleteReport: jest.fn(),
-  isLoading: false,
-  error: null,
-};
 
 const mockUseSideSectionArgs = {
   isSideSectionOpen: false,
@@ -55,6 +42,19 @@ const mockedSamplesState = {
   createSample: jest.fn().mockResolvedValue(mockSamples[0] as Sample),
   editSample: jest.fn().mockResolvedValue(mockSamples[0] as Sample),
   deleteSample: jest.fn().mockResolvedValue(null),
+};
+let mockedReportsState: ReportStore = {
+  reports: mockReports,
+  selectedReport: mockReports[0],
+  isLoading: false,
+  error: null,
+  setReports: jest.fn(),
+  setSelectedReport: jest.fn(),
+  getReports: jest.fn().mockReturnValue(mockReports),
+  getReportById: jest.fn().mockReturnValue(mockReports[0]),
+  createReport: jest.fn().mockReturnValue(mockReports[0]),
+  editReport: jest.fn().mockReturnValue(mockReports[0]),
+  deleteReport: jest.fn().mockReturnValue(mockReports[0]),
 };
 const mockSampleTypeStoreState = {
   sampleTypes: mockSampleTypes,
@@ -78,6 +78,11 @@ jest.mock("../ReportsDetail/ReportsDetail", () => ({
   ReportDetail: () => (
     <div data-testid="reportsDetail">Reports Detail Component</div>
   ),
+}));
+
+jest.mock("../../../features/reports/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useReportStore: (selector: any) => selector(mockedReportsState),
 }));
 
 jest.mock("../../../features/samples/model/store", () => ({
@@ -110,11 +115,6 @@ describe("ReportsContent test", () => {
     const expectedAnalyteName = mockAnalytes[0].name;
     const expectedResult = mockReports[0].result;
 
-    jest.spyOn(useReportsModule, "useReports").mockReturnValue({
-      ...mockUseReportArgs,
-      reports: mockReports,
-    });
-
     render(<ReportsContent />);
 
     await waitFor(() => {
@@ -126,10 +126,10 @@ describe("ReportsContent test", () => {
   });
 
   it("should render no data text when does not retrieve reports", async () => {
-    jest.spyOn(useReportsModule, "useReports").mockReturnValue({
-      ...mockUseReportArgs,
+    mockedReportsState = {
+      ...mockedReportsState,
       reports: [],
-    });
+    };
 
     render(<ReportsContent />);
 
@@ -139,10 +139,10 @@ describe("ReportsContent test", () => {
   });
 
   it("should render loading spinner when is loading", async () => {
-    jest.spyOn(useReportsModule, "useReports").mockReturnValue({
-      ...mockUseReportArgs,
+    mockedReportsState = {
+      ...mockedReportsState,
       isLoading: true,
-    });
+    };
 
     render(<ReportsContent />);
 
@@ -152,10 +152,11 @@ describe("ReportsContent test", () => {
   });
 
   it("should render error message when there is an error", async () => {
-    jest.spyOn(useReportsModule, "useReports").mockReturnValue({
-      ...mockUseReportArgs,
+    mockedReportsState = {
+      ...mockedReportsState,
+      isLoading: false,
       error: "Error message",
-    });
+    };
 
     render(<ReportsContent />);
 
@@ -165,10 +166,6 @@ describe("ReportsContent test", () => {
   });
 
   it("should render the report detail when click in details button", async () => {
-    jest.spyOn(useReportsModule, "useReports").mockReturnValue({
-      ...mockUseReportArgs,
-      reports: mockReports,
-    });
     jest.spyOn(useSideSectionModule, "useSideSection").mockReturnValue({
       ...mockUseSideSectionArgs,
       isSideSectionOpen: true,

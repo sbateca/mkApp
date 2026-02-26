@@ -4,6 +4,13 @@ import {
 } from "./ReportsDetail.test.page";
 import * as hooks from "../../../utils/hooks";
 
+jest.mock("../../../config/EnvManager", () => ({
+  __esModule: true,
+  default: {
+    BACKEND_URL: "http://example.com/api",
+  },
+}));
+
 describe("SampleDetail", () => {
   beforeEach(() => {
     jest.clearAllMocks();

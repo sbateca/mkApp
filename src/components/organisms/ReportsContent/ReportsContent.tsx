@@ -8,7 +8,7 @@ import {Table} from "../Table";
 import {SideSection} from "../SideSection";
 import {ReportDetail} from "../ReportsDetail";
 import {reportsToTableRows} from "../../../adapters/tableRow";
-import {useAnalyte, useReports} from "../../../utils/hooks";
+import {useAnalyte} from "../../../utils/hooks";
 import {
   REPORTS_TITLE_CONFIG,
   REPORTS_TABLE_HEADER_LABELS,
@@ -33,13 +33,27 @@ import {
   selectSamplesTypes,
   selectSetSampleTypes,
 } from "../../../features/sampleType/model/selectors";
+import {useReportStore} from "../../../features/reports/model/store";
+import {
+  selectError,
+  selectGetReports,
+  selectIsLoadingReport,
+  selectReports,
+  selectSetReports,
+  selectSetSelectedReport,
+} from "../../../features/reports/model/selector";
 
 export const ReportsContent = (): React.ReactElement => {
   const [rows, setRows] = useState<TableRowProps[]>([]);
   const [isReadOnlyMode, setIsReadOnlyMode] = useState(true);
 
-  const {reports, getReports, setSelectedReport, isLoading, error} =
-    useReports();
+  const reports = useReportStore(selectReports);
+  const getReports = useReportStore(selectGetReports);
+  const setReports = useReportStore(selectSetReports);
+  const setSelectedReport = useReportStore(selectSetSelectedReport);
+  const isLoading = useReportStore(selectIsLoadingReport);
+  const error = useReportStore(selectError);
+
   const sampleTypes = useSampleTypeStore(selectSamplesTypes);
   const getSampleTypes = useSampleTypeStore(selectGetSampleTypes);
   const setSampleTypes = useSampleTypeStore(selectSetSampleTypes);
@@ -76,7 +90,15 @@ export const ReportsContent = (): React.ReactElement => {
     }
   }, [error, getReports, showSnackBarMessage]);
 
-  if (isLoading) return <Spinner />;
+  useEffect(() => {
+    const getAllReports = async () => {
+      const reports = await getReports();
+      setReports(reports);
+    };
+
+    getAllReports();
+  }, [getReports, setReports]);
+
   if (error) return <Typography text={error} variant="h6" />;
 
   return isLoading ? (

@@ -22,6 +22,7 @@ import {buildFormData} from "../../../shared/test/builders/formDataBuilder";
 import {ClientsStore} from "../../../features/clients/model/types";
 import {SampleTypeStore} from "../../../features/sampleType/model/types";
 import {CriteriaStore} from "../../../features/criteria/model/types";
+import {ReportStore} from "../../../features/reports/model/types";
 
 const today = dayjs();
 const RENDERED_FORMAT_DATE = "MM/DD/YYYY";
@@ -80,6 +81,7 @@ export const mockReportDetailData = {
 };
 
 let mockedSamplesState: SamplesStore;
+let mockedReportState: ReportStore;
 let mockClientStoreState: ClientsStore;
 let mockSampleTypeStoreState: SampleTypeStore;
 let mockCriteriaStoreState: CriteriaStore;
@@ -87,6 +89,11 @@ let mockCriteriaStoreState: CriteriaStore;
 jest.mock("../../../features/samples/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSampleStore: (selector: any) => selector(mockedSamplesState),
+}));
+
+jest.mock("../../../features/reports/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useReportStore: (selector: any) => selector(mockedReportState),
 }));
 
 jest.mock("../../../features/clients/model/store", () => ({
@@ -119,16 +126,10 @@ jest.mock("../../../stores/snackBarStore", () => ({
   default: jest.fn(),
 }));
 
-jest.mock("../../../stores/snackBarStore", () => ({
-  __esModule: true,
-  default: jest.fn(),
-}));
-
 jest.mock("../../../utils/hooks", () => ({
   useAnalysisMethod: jest.fn(),
   useSideSection: jest.fn(),
   useAnalyte: jest.fn(),
-  useReports: jest.fn(),
   useForm: jest.fn(),
 }));
 
@@ -150,6 +151,20 @@ export const renderReportDetail = async () => {
       .fn()
       .mockResolvedValue(mockReportDetailData.samples[0] as Sample),
     deleteSample: jest.fn().mockResolvedValue(null),
+  };
+
+  mockedReportState = {
+    reports: mockReports,
+    selectedReport: mockReports[0],
+    isLoading: false,
+    error: null,
+    setReports: jest.fn(),
+    setSelectedReport: jest.fn(),
+    getReports: jest.fn().mockReturnValue(mockReports),
+    getReportById: jest.fn().mockReturnValue(mockReports[0]),
+    createReport: jest.fn().mockReturnValue(mockReports[0]),
+    editReport: jest.fn().mockReturnValue(mockReports[0]),
+    deleteReport: jest.fn().mockReturnValue(mockReports[0]),
   };
 
   mockClientStoreState = {
@@ -208,19 +223,6 @@ export const renderReportDetail = async () => {
     getAnalyteById: jest.fn(),
     isLoading: false,
     error: null,
-  });
-
-  jest.spyOn(hooks, "useReports").mockReturnValue({
-    reports: mockReportDetailData.reports,
-    selectedReport: mockReportDetailData.reports[0],
-    setSelectedReport: jest.fn(),
-    getReports: jest.fn(),
-    createReport: jest.fn(),
-    editReport: jest.fn(),
-    deleteReport: jest.fn(),
-    isLoading: false,
-    error: null,
-    getReportById: jest.fn(),
   });
 
   jest.spyOn(hooks, "useSideSection").mockReturnValue({
