@@ -1,6 +1,20 @@
 import {render, screen} from "@testing-library/react";
 import {ReportTableActionButtons} from "./ReportTableActionButtons";
-import * as hooks from "../../../utils/hooks";
+import {ReportStore} from "../../../features/reports/model/types";
+
+let mockReportsStoreState: ReportStore = {
+  isLoading: false,
+  error: null,
+  deleteReport: jest.fn(),
+  getReportById: jest.fn(),
+  getReports: jest.fn(),
+  setSelectedReport: jest.fn(),
+  reports: null,
+  selectedReport: null,
+  createReport: jest.fn(),
+  editReport: jest.fn(),
+  setReports: jest.fn(),
+};
 
 jest.mock("../../../config/EnvManager", () => ({
   __esModule: true,
@@ -9,37 +23,24 @@ jest.mock("../../../config/EnvManager", () => ({
   },
 }));
 
-jest.mock("../../../stores", () => ({
-  __esModule: true,
-  useSnackBarStore: jest.fn(),
-}));
-
 jest.mock("../../../utils/hooks", () => ({
-  useReports: jest.fn(),
   useSideSection: () => ({
     setIsSideSectionOpen: jest.fn(),
     setSideSectionTitle: jest.fn(),
   }),
 }));
 
+jest.mock("../../../features/reports/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useReportStore: (selector: any) => selector(mockReportsStoreState),
+}));
+
 describe("ReportTableActionButtons", () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
-  it("should render the actions buttons successfully", async () => {
-    jest.spyOn(hooks, "useReports").mockReturnValue({
-      isLoading: false,
-      error: null,
-      deleteReport: jest.fn(),
-      getReportById: jest.fn(),
-      getReports: jest.fn(),
-      setSelectedReport: jest.fn(),
-      reports: null,
-      selectedReport: null,
-      createReport: jest.fn(),
-      editReport: jest.fn(),
-    });
 
+  it("should render the actions buttons successfully", async () => {
     render(<ReportTableActionButtons reportId="1" />);
     const viewButton = screen.getByText("View");
     const deleteButton = screen.getByText("Delete");
@@ -49,18 +50,10 @@ describe("ReportTableActionButtons", () => {
   });
 
   it("should not render the actions buttons and show the progressbar when isLoading is true", async () => {
-    jest.spyOn(hooks, "useReports").mockReturnValue({
+    mockReportsStoreState = {
+      ...mockReportsStoreState,
       isLoading: true,
-      error: null,
-      deleteReport: jest.fn(),
-      getReportById: jest.fn(),
-      getReports: jest.fn(),
-      setSelectedReport: jest.fn(),
-      reports: null,
-      selectedReport: null,
-      createReport: jest.fn(),
-      editReport: jest.fn(),
-    });
+    };
 
     render(<ReportTableActionButtons reportId="1" />);
     const viewButton = screen.queryByText("View");

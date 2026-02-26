@@ -4,7 +4,6 @@ import {Box} from "@mui/material";
 import Swal from "sweetalert2";
 
 import {Button, Spinner} from "../../atoms";
-import {useReports} from "../../../utils/hooks";
 import {ReportTableActionButtonsProps} from "./Types";
 import {
   IconNames,
@@ -24,18 +23,26 @@ import {
 } from "../../../utils/constants";
 import useSnackBarStore from "../../../stores/snackBarStore";
 import useSideSectionStore from "../../../stores/sideSectionStore";
+import {useReportStore} from "../../../features/reports/model/store";
+import {
+  selectDeleteReport,
+  selectError,
+  selectGetReportById,
+  selectGetReports,
+  selectIsLoadingReport,
+  selectSetSelectedReport,
+} from "../../../features/reports/model/selector";
 
 export const ReportTableActionButtons = ({
   reportId,
 }: ReportTableActionButtonsProps): React.ReactElement => {
-  const {
-    isLoading,
-    error,
-    deleteReport,
-    getReportById,
-    getReports,
-    setSelectedReport,
-  } = useReports();
+  const isLoading = useReportStore(selectIsLoadingReport);
+  const error = useReportStore(selectError);
+  const deleteReport = useReportStore(selectDeleteReport);
+  const getReportById = useReportStore(selectGetReportById);
+  const getReports = useReportStore(selectGetReports);
+  const setSelectedReport = useReportStore(selectSetSelectedReport);
+
   const {showSnackBarMessage} = useSnackBarStore();
   const {setIsSideSectionOpen, setSideSectionTitle} = useSideSectionStore();
 
@@ -75,7 +82,7 @@ export const ReportTableActionButtons = ({
     if (error) {
       showSnackBarMessage(error, SnackBarSeverity.ERROR);
     }
-  }, [error]);
+  }, [error, showSnackBarMessage]);
 
   return (
     <Box>
