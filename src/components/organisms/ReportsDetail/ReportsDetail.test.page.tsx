@@ -24,6 +24,7 @@ import {SampleTypeStore} from "../../../features/sampleType/model/types";
 import {CriteriaStore} from "../../../features/criteria/model/types";
 import {ReportStore} from "../../../features/reports/model/types";
 import {AnalysisMethodStore} from "../../../features/analysisMethods/model/types";
+import {AnalyteStore} from "../../../features/analyte/model/types";
 
 const today = dayjs();
 const RENDERED_FORMAT_DATE = "MM/DD/YYYY";
@@ -87,6 +88,7 @@ let mockClientStoreState: ClientsStore;
 let mockSampleTypeStoreState: SampleTypeStore;
 let mockCriteriaStoreState: CriteriaStore;
 let mockAnalysisMethodsStoreState: AnalysisMethodStore;
+let mockAnalyteStoreState: AnalyteStore;
 
 jest.mock("../../../features/samples/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -111,6 +113,11 @@ jest.mock("../../../features/sampleType/model/store", () => ({
 jest.mock("../../../features/criteria/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useCriteriaStore: (selector: any) => selector(mockCriteriaStoreState),
+}));
+
+jest.mock("../../../features/analyte/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useAnalyteStore: (selector: any) => selector(mockAnalyteStoreState),
 }));
 
 jest.mock("../../../features/analysisMethods/model/store", () => ({
@@ -218,15 +225,16 @@ export const renderReportDetail = async () => {
     error: null,
   };
 
-  jest.spyOn(hooks, "useAnalyte").mockReturnValue({
-    analytes: mockReportDetailData.analytes,
-    selectedAnalyte: mockReportDetailData.analytes[0],
+  mockAnalyteStoreState = {
+    analytes: mockAnalytes,
+    selectedAnalyte: mockAnalytes[0],
     setSelectedAnalyte: jest.fn(),
-    getAnalytes: jest.fn(),
-    getAnalyteById: jest.fn(),
+    setAnalytes: jest.fn(),
+    getAnalytes: jest.fn().mockReturnValue(mockAnalytes),
+    getAnalyteById: jest.fn().mockReturnValue(mockAnalytes[0]),
     isLoading: false,
     error: null,
-  });
+  };
 
   jest.spyOn(hooks, "useSideSection").mockReturnValue({
     setIsSideSectionOpen: jest.fn().mockReturnValue(true),

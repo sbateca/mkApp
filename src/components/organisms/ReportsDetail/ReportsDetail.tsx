@@ -55,7 +55,7 @@ import {
   reportToReportForm,
 } from "../../../adapters/reports";
 import {getAutoCompleteOptionsFromModel} from "../../../utils/model";
-import {useAnalyte, useForm} from "../../../utils/hooks";
+import {useForm} from "../../../utils/hooks";
 import {
   BoxContainerProps,
   ReportDetailProps,
@@ -109,6 +109,13 @@ import {
   selectIsLoadingAnalysisMethods,
   selectSetAnalysisMethods,
 } from "../../../features/analysisMethods/model/selectors";
+import {useAnalyteStore} from "../../../features/analyte/model/store";
+import {
+  selectAnalytes,
+  selectGetAnalytes,
+  selectIsLoadingAnalytes,
+  selectSetAnalytes,
+} from "../../../features/analyte/model/selectors";
 
 export const ReportDetail = ({
   isReadOnlyMode,
@@ -146,7 +153,10 @@ export const ReportDetail = ({
   const getAnalysisMethods = useAnalysisMethodsStore(selectGetAnalysisMethods);
   const setAnalysisMethods = useAnalysisMethodsStore(selectSetAnalysisMethods);
 
-  const {analytes, isLoading: isLoadingAnalytes} = useAnalyte();
+  const analytes = useAnalyteStore(selectAnalytes);
+  const isLoadingAnalytes = useAnalyteStore(selectIsLoadingAnalytes);
+  const getAnalytes = useAnalyteStore(selectGetAnalytes);
+  const setAnalytes = useAnalyteStore(selectSetAnalytes);
 
   const criterias = useCriteriaStore(selectCriterias);
   const isLoadingCriterias = useCriteriaStore(selectIsLoadingCriterias);
@@ -362,6 +372,15 @@ export const ReportDetail = ({
 
     getAllAnalysisMethods();
   }, [getAnalysisMethods, setAnalysisMethods]);
+
+  useEffect(() => {
+    const getAllAnalytes = async () => {
+      const analytes = await getAnalytes();
+      setAnalytes(analytes);
+    };
+
+    getAllAnalytes();
+  }, [getAnalytes, setAnalytes]);
 
   return (
     <Box sx={getBoxContainerProps(isLessThanMediumScreen) as SxProps}>

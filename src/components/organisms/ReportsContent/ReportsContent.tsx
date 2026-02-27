@@ -8,7 +8,6 @@ import {Table} from "../Table";
 import {SideSection} from "../SideSection";
 import {ReportDetail} from "../ReportsDetail";
 import {reportsToTableRows} from "../../../adapters/tableRow";
-import {useAnalyte} from "../../../utils/hooks";
 import {
   REPORTS_TITLE_CONFIG,
   REPORTS_TABLE_HEADER_LABELS,
@@ -42,6 +41,12 @@ import {
   selectSetReports,
   selectSetSelectedReport,
 } from "../../../features/reports/model/selector";
+import {useAnalyteStore} from "../../../features/analyte/model/store";
+import {
+  selectAnalytes,
+  selectGetAnalytes,
+  selectSetAnalytes,
+} from "../../../features/analyte/model/selectors";
 
 export const ReportsContent = (): React.ReactElement => {
   const [rows, setRows] = useState<TableRowProps[]>([]);
@@ -57,11 +62,17 @@ export const ReportsContent = (): React.ReactElement => {
   const sampleTypes = useSampleTypeStore(selectSamplesTypes);
   const getSampleTypes = useSampleTypeStore(selectGetSampleTypes);
   const setSampleTypes = useSampleTypeStore(selectSetSampleTypes);
+
   const samples = useSampleStore(selectSamples);
+
   const {showSnackBarMessage} = useSnackBarStore();
+
   const {isSideSectionOpen, setIsSideSectionOpen, setSideSectionTitle} =
     useSideSectionStore();
-  const {analytes} = useAnalyte();
+
+  const analytes = useAnalyteStore(selectAnalytes);
+  const getAnalytes = useAnalyteStore(selectGetAnalytes);
+  const setAnalytes = useAnalyteStore(selectSetAnalytes);
 
   const handleOpenSideSection = () => {
     setSelectedReport(null);
@@ -98,6 +109,15 @@ export const ReportsContent = (): React.ReactElement => {
 
     getAllReports();
   }, [getReports, setReports]);
+
+  useEffect(() => {
+    const getAllAnalytes = async () => {
+      const analytes = await getAnalytes();
+      setAnalytes(analytes);
+    };
+
+    getAllAnalytes();
+  }, [getAnalytes, setAnalytes]);
 
   if (error) return <Typography text={error} variant="h6" />;
 

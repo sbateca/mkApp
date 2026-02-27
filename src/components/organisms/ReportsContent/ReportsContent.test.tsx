@@ -12,6 +12,7 @@ import {
   buildSampleTypesData,
 } from "../../../shared/test/builders";
 import {ReportStore} from "../../../features/reports/model/types";
+import {AnalyteStore} from "../../../features/analyte/model/types";
 
 const mockSampleTypes: SampleType[] = buildSampleTypesData(1);
 const mockAnalytes: Analyte[] = buildAnalytesData(1);
@@ -67,6 +68,17 @@ const mockSampleTypeStoreState = {
   getSampleTypeById: jest.fn(),
 };
 
+const mockAnalyteStoreState: AnalyteStore = {
+  analytes: mockAnalytes,
+  selectedAnalyte: mockAnalytes[0],
+  setSelectedAnalyte: jest.fn(),
+  setAnalytes: jest.fn(),
+  getAnalytes: jest.fn().mockReturnValue(mockAnalytes),
+  getAnalyteById: jest.fn().mockReturnValue(mockAnalytes[0]),
+  isLoading: false,
+  error: null,
+};
+
 jest.mock("../../../Config/envManager", () => ({
   __esModule: true,
   default: {
@@ -95,11 +107,9 @@ jest.mock("../../../features/sampleType/model/store", () => ({
   useSampleTypeStore: (selector: any) => selector(mockSampleTypeStoreState),
 }));
 
-jest.mock("../../../utils/hooks/useAnalyte", () => ({
-  useAnalyte: () => ({
-    analytes: mockAnalytes,
-    getAnalytes: jest.fn(),
-  }),
+jest.mock("../../../features/analyte/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useAnalyteStore: (selector: any) => selector(mockAnalyteStoreState),
 }));
 
 describe("ReportsContent test", () => {

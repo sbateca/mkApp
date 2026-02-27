@@ -1,4 +1,3 @@
-export * from "./useAnalyte";
 export * from "./useClient";
 export * from "./useForm";
 export * from "./useMenu";

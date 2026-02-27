@@ -2,9 +2,8 @@ import {render, screen, waitFor} from "@testing-library/react";
 
 import {SamplesContent} from "./SamplesContent";
 import {Sample} from "../../../model/Sample";
-import {Analyte, SampleType} from "../../../model";
+import {SampleType} from "../../../model";
 import {
-  buildAnalytesData,
   buildClientsData,
   buildSamplesData,
   buildSampleTypesData,
@@ -18,7 +17,6 @@ const today = dayjs();
 const RENDERED_FORMAT_DATE = "MM/DD/YYYY";
 
 const mockSampleTypes: SampleType[] = buildSampleTypesData(1);
-const mockAnalytes: Analyte[] = buildAnalytesData(1);
 const mockClients = buildClientsData(1);
 const mockSamples = buildSamplesData(1, {
   clientId: mockClients[0].id,
@@ -129,13 +127,6 @@ jest.mock("../SampleDetail/SampleDetail", () => ({
   SampleDetail: () => (
     <div data-testid="sampleDetail">Sample Detail Component</div>
   ),
-}));
-
-jest.mock("../../../utils/hooks/useAnalyte", () => ({
-  useAnalyte: () => ({
-    analytes: mockAnalytes,
-    getAnalytes: jest.fn(),
-  }),
 }));
 
 describe("SamplesContent test", () => {
