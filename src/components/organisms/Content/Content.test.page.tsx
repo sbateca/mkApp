@@ -1,6 +1,5 @@
 import {render, screen} from "@testing-library/react";
 
-import {MenuProvider} from "../../../context";
 import {Content} from "./Content";
 import {MenuStore} from "../../../features/menu/model/types";
 import {SharedMenuItems} from "../../../utils/enums";
@@ -38,11 +37,7 @@ export const updateUseMenu = (menuItem: SharedMenuItems) => {
 };
 
 export const renderContent = async () => {
-  render(
-    <MenuProvider>
-      <Content />
-    </MenuProvider>,
-  );
+  render(<Content />);
   return {
     screen,
   };
