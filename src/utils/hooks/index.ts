@@ -1,4 +1,3 @@
-export * from "./useAnalysisMethod";
 export * from "./useAnalyte";
 export * from "./useClient";
 export * from "./useForm";

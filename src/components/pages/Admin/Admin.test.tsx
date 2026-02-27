@@ -20,11 +20,6 @@ jest.mock("../../templates/Main/Main", () => ({
     </div>
   ),
 }));
-jest.mock("../../../app/providers/adminProviders", () => ({
-  AdminProviders: ({children}: {children: React.ReactNode}) => (
-    <div data-testid="adminProviders">{children}</div>
-  ),
-}));
 
 describe("Admin component", () => {
   it("renders without crashing", async () => {

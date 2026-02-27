@@ -23,6 +23,7 @@ import {ClientsStore} from "../../../features/clients/model/types";
 import {SampleTypeStore} from "../../../features/sampleType/model/types";
 import {CriteriaStore} from "../../../features/criteria/model/types";
 import {ReportStore} from "../../../features/reports/model/types";
+import {AnalysisMethodStore} from "../../../features/analysisMethods/model/types";
 
 const today = dayjs();
 const RENDERED_FORMAT_DATE = "MM/DD/YYYY";
@@ -85,6 +86,7 @@ let mockedReportState: ReportStore;
 let mockClientStoreState: ClientsStore;
 let mockSampleTypeStoreState: SampleTypeStore;
 let mockCriteriaStoreState: CriteriaStore;
+let mockAnalysisMethodsStoreState: AnalysisMethodStore;
 
 jest.mock("../../../features/samples/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -109,6 +111,12 @@ jest.mock("../../../features/sampleType/model/store", () => ({
 jest.mock("../../../features/criteria/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useCriteriaStore: (selector: any) => selector(mockCriteriaStoreState),
+}));
+
+jest.mock("../../../features/analysisMethods/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useAnalysisMethodsStore: (selector: any) =>
+    selector(mockAnalysisMethodsStoreState),
 }));
 
 jest.mock("../../../stores", () => ({
@@ -199,21 +207,16 @@ export const renderReportDetail = async () => {
     getCriteriaById: jest.fn().mockResolvedValue(mockCriterias[0]),
   };
 
-  jest.spyOn(hooks, "useAnalysisMethod").mockReturnValue({
-    analysisMethods: mockReportDetailData.analysisMethods,
-    selectedAnalysisMethod: mockReportDetailData.analysisMethods[0],
-    setSelectedAnalysisMethod: jest
-      .fn()
-      .mockReturnValue(mockReportDetailData.analysisMethods[1]),
-    getAnalysisMethods: jest
-      .fn()
-      .mockReturnValue(mockReportDetailData.analysisMethods),
-    getAnalysisMethodById: jest
-      .fn()
-      .mockReturnValue(mockReportDetailData.analysisMethods[1]),
+  mockAnalysisMethodsStoreState = {
+    analysisMethods: mockAnalysisMethods,
+    selectedAnalysisMethod: mockAnalysisMethods[0],
+    setAnalysisMethods: jest.fn(),
+    setSelectedAnalysisMethod: jest.fn(),
+    getAnalysisMethods: jest.fn().mockReturnValue(mockAnalysisMethods),
+    getAnalysisMethodById: jest.fn().mockReturnValue(mockAnalysisMethods[0]),
     isLoading: false,
     error: null,
-  });
+  };
 
   jest.spyOn(hooks, "useAnalyte").mockReturnValue({
     analytes: mockReportDetailData.analytes,
