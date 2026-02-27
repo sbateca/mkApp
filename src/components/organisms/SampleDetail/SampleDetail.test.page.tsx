@@ -1,13 +1,10 @@
 import {render, screen} from "@testing-library/react";
 
 import {SampleDetail} from "./SampleDetail";
-import * as hooks from "../../../utils/hooks";
-import useSideSectionStore from "../../../stores/sideSectionStore";
-import useSnackBarStore from "../../../stores/snackBarStore";
-import {SnackBarSeverity} from "../../../utils/enums";
+import {useSideSectionStore, useSnackBarStore} from "../../../stores";
 import dayjs from "dayjs";
-import {DATEPICKER_FORMAT, FormProps} from "../../../utils/constants";
-import {Sample, SampleType} from "../../../model";
+import {DATEPICKER_FORMAT} from "../../../utils/constants";
+import {SampleType} from "../../../model";
 import {
   buildClientsData,
   buildSamplesData,
@@ -16,6 +13,7 @@ import {
 import {buildFormData} from "../../../shared/test/builders/formDataBuilder";
 import {ClientsStore} from "../../../features/clients/model/types";
 import {SampleTypeStore} from "../../../features/sampleType/model/types";
+import {SnackBarSeverity} from "../../../utils/enums";
 
 const today = dayjs();
 const RENDERED_FORMAT_DATE = "MM/DD/YYYY";
@@ -67,6 +65,8 @@ export const mockData = {
 
 let mockClientStoreState: ClientsStore;
 let mockSampleTypeStoreState: SampleTypeStore;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let mockUseForm: any;
 
 jest.mock("../../../config/EnvManager", () => ({
   default: {
@@ -85,9 +85,8 @@ jest.mock("../../../stores/snackBarStore", () => ({
 }));
 
 jest.mock("../../../utils/hooks", () => ({
-  useSideSection: jest.fn(),
-  useForm: jest.fn(),
-  useSnackBar: jest.fn(),
+  __esModule: true,
+  useForm: jest.fn(() => mockUseForm),
 }));
 
 jest.mock("../../../features/clients/model/store", () => ({
@@ -100,11 +99,7 @@ jest.mock("../../../features/sampleType/model/store", () => ({
   useSampleTypeStore: (selector: any) => selector(mockSampleTypeStoreState),
 }));
 
-export const renderSampleDetail = (opts?: {
-  selectedSample: Sample | null;
-  form?: FormProps;
-  isNotValidForm?: boolean;
-}) => {
+export const renderSampleDetail = () => {
   mockClientStoreState = {
     clients: mockData.clients,
     selectedClient: mockData.clients[0],
@@ -125,8 +120,8 @@ export const renderSampleDetail = (opts?: {
     getSampleTypeById: jest.fn().mockReturnValue(mockSampleTypes[0]),
   };
 
-  jest.spyOn(hooks, "useForm").mockReturnValue({
-    form: opts?.form ?? mockData.form,
+  mockUseForm = {
+    form: mockForm,
     setForm: jest.fn(),
     handleChange: jest.fn(),
     handleDateChange: jest.fn(),
@@ -137,8 +132,8 @@ export const renderSampleDetail = (opts?: {
     getTextFieldHelperText: jest.fn(),
     setFormFieldsValidationFunctions: jest.fn(),
     setDefaultFormFieldsValues: jest.fn(),
-    isNotValidForm: opts?.isNotValidForm ?? false,
-  });
+    isNotValidForm: false,
+  };
 
   (useSideSectionStore as unknown as jest.Mock).mockReturnValue({
     setIsSideSectionOpen: jest.fn(),
@@ -146,10 +141,12 @@ export const renderSampleDetail = (opts?: {
   });
 
   (useSnackBarStore as unknown as jest.Mock).mockReturnValue({
-    showSnackBarMessage: jest.fn(),
     isSnackBarOpen: false,
-    snackBarText: "",
+    snackBarText: null,
     snackBarSeverity: SnackBarSeverity.SUCCESS,
+    callbackFunction: jest.fn(),
+    showSnackBarMessage: jest.fn(),
+    closeSnackBar: jest.fn(),
   });
 
   render(

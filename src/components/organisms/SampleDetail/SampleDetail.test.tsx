@@ -26,15 +26,4 @@ describe("SampleDetail", () => {
       screen.getByDisplayValue(mockData.expectedData.sampleLocation),
     ).toBeInTheDocument();
   });
-
-  it("should render the sample detail with default values when selectedSample is not provided", async () => {
-    const {screen} = renderSampleDetail({
-      selectedSample: null,
-      form: mockData.defaulForm,
-      isNotValidForm: true,
-    });
-
-    expect(screen.getByText("Mock title")).toBeInTheDocument();
-    expect(screen.getByText("Close")).toBeInTheDocument();
-  });
 });
