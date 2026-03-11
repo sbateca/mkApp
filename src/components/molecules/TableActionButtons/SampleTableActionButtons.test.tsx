@@ -1,6 +1,7 @@
 import {render, screen} from "@testing-library/react";
 import {SampleTableActionButtons} from "./SampleTableActionButtons";
 import {Sample} from "../../../model";
+import {SideSectionStore} from "../../../features/sideSection/model/types";
 
 const mockSamples: Sample[] = [
   {
@@ -40,17 +41,21 @@ const mockSampleStoreState = {
   deleteSample: jest.fn().mockResolvedValue(null),
 };
 
+let mockSideSectionStoreState: SideSectionStore = {
+  isSideSectionOpen: false,
+  sideSectionTitle: "",
+  setIsSideSectionOpen: jest.fn(),
+  setSideSectionTitle: jest.fn(),
+};
+
 jest.mock("../../../features/samples/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSampleStore: (selector: any) => selector(mockSampleStoreState),
 }));
 
-jest.mock("../../../utils/hooks", () => ({
-  useSample: jest.fn(),
-  useSideSection: () => ({
-    setIsSideSectionOpen: jest.fn(),
-    setSideSectionTitle: jest.fn(),
-  }),
+jest.mock("../../../features/sideSection/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useSideSectionStore: (selector: any) => selector(mockSideSectionStoreState),
 }));
 
 describe("SampleTableActionButtons", () => {
@@ -66,6 +71,12 @@ describe("SampleTableActionButtons", () => {
 
   it("should not render the actions buttons and show the progressbar when isLoading is true", async () => {
     mockSampleStoreState.isLoading = true;
+    mockSideSectionStoreState = {
+      isSideSectionOpen: true,
+      sideSectionTitle: "",
+      setIsSideSectionOpen: jest.fn(),
+      setSideSectionTitle: jest.fn(),
+    };
 
     render(<SampleTableActionButtons sampleId="1" />);
     const viewButton = screen.queryByText("View");

@@ -60,8 +60,6 @@ import {
   StackRowDirectionSpacingPropsProps,
 } from "./Types";
 import {SampleDetailStyles, SampleFormStyles} from "./SampleDetailStyles";
-import useSnackBarStore from "../../../stores/snackBarStore";
-import useSideSectionStore from "../../../stores/sideSectionStore";
 import {useSampleStore} from "../../../features/samples/model/store";
 import {
   selectCreateSample,
@@ -84,6 +82,13 @@ import {
   selectSetSampleTypes,
 } from "../../../features/sampleType/model/selectors";
 import {getAutoCompleteOptionsFromModel} from "../../../utils/model";
+import {useSideSectionStore} from "../../../features/sideSection/model/store";
+import {
+  selectSetIsSideSectionOpen,
+  selectSideSectionTitle,
+} from "../../../features/sideSection/model/selectors";
+import {useSnackBarStore} from "../../../features/snackbar/model/store";
+import {selectShowSnackBarMessage} from "../../../features/snackbar/model/selectors";
 
 export const SampleDetail = ({
   isReadOnlyMode,
@@ -123,7 +128,9 @@ export const SampleDetail = ({
 
   const isLoadingAll = isLoadingClients || isLoadingSampleTypes;
 
-  const {setIsSideSectionOpen, sideSectionTitle} = useSideSectionStore();
+  const sideSectionTitle = useSideSectionStore(selectSideSectionTitle);
+  const setIsSideSectionOpen = useSideSectionStore(selectSetIsSideSectionOpen);
+
   const {
     isNotValidForm,
     form,
@@ -136,7 +143,8 @@ export const SampleDetail = ({
     setFormFieldsValidationFunctions,
     cleanForm,
   } = useForm();
-  const {showSnackBarMessage} = useSnackBarStore();
+
+  const showSnackBarMessage = useSnackBarStore(selectShowSnackBarMessage);
 
   const handleCloseSideSection = () => {
     if (setIsSideSectionOpen) {
