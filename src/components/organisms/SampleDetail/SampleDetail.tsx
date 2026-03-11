@@ -60,7 +60,6 @@ import {
   StackRowDirectionSpacingPropsProps,
 } from "./Types";
 import {SampleDetailStyles, SampleFormStyles} from "./SampleDetailStyles";
-import useSnackBarStore from "../../../stores/snackBarStore";
 import {useSampleStore} from "../../../features/samples/model/store";
 import {
   selectCreateSample,
@@ -88,6 +87,8 @@ import {
   selectSetIsSideSectionOpen,
   selectSideSectionTitle,
 } from "../../../features/sideSection/model/selectors";
+import {useSnackBarStore} from "../../../features/snackbar/model/store";
+import {selectShowSnackBarMessage} from "../../../features/snackbar/model/selectors";
 
 export const SampleDetail = ({
   isReadOnlyMode,
@@ -142,7 +143,8 @@ export const SampleDetail = ({
     setFormFieldsValidationFunctions,
     cleanForm,
   } = useForm();
-  const {showSnackBarMessage} = useSnackBarStore();
+
+  const showSnackBarMessage = useSnackBarStore(selectShowSnackBarMessage);
 
   const handleCloseSideSection = () => {
     if (setIsSideSectionOpen) {

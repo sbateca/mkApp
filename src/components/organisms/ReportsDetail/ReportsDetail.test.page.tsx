@@ -2,7 +2,6 @@ import {render, screen} from "@testing-library/react";
 
 import {ReportDetail} from "./ReportsDetail";
 import * as hooks from "../../../utils/hooks";
-import useSnackBarStore from "../../../stores/snackBarStore";
 import {SnackBarSeverity} from "../../../utils/enums";
 import dayjs from "dayjs";
 import {DATEPICKER_FORMAT} from "../../../utils/constants";
@@ -25,6 +24,7 @@ import {ReportStore} from "../../../features/reports/model/types";
 import {AnalysisMethodStore} from "../../../features/analysisMethods/model/types";
 import {AnalyteStore} from "../../../features/analyte/model/types";
 import {SideSectionStore} from "../../../features/sideSection/model/types";
+import {SnackBarStore} from "../../../features/snackbar/model/types";
 
 const today = dayjs();
 const RENDERED_FORMAT_DATE = "MM/DD/YYYY";
@@ -90,6 +90,7 @@ let mockCriteriaStoreState: CriteriaStore;
 let mockAnalysisMethodsStoreState: AnalysisMethodStore;
 let mockAnalyteStoreState: AnalyteStore;
 let mockSideSectionStoreState: SideSectionStore;
+let mockSnackBarStoreState: SnackBarStore;
 
 jest.mock("../../../features/samples/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -132,13 +133,9 @@ jest.mock("../../../features/sideSection/model/store", () => ({
   useSideSectionStore: (selector: any) => selector(mockSideSectionStoreState),
 }));
 
-jest.mock("../../../stores", () => ({
-  useSnackBarStore: jest.fn(),
-}));
-
-jest.mock("../../../stores/snackBarStore", () => ({
-  __esModule: true,
-  default: jest.fn(),
+jest.mock("../../../features/snackbar/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useSnackBarStore: (selector: any) => selector(mockSnackBarStoreState),
 }));
 
 jest.mock("../../../utils/hooks", () => ({
@@ -243,6 +240,15 @@ export const renderReportDetail = async () => {
     setSideSectionTitle: jest.fn(),
   };
 
+  mockSnackBarStoreState = {
+    isSnackBarOpen: false,
+    snackBarText: "",
+    snackBarSeverity: SnackBarSeverity.INFO,
+    callbackFunction: jest.fn(),
+    showSnackBarMessage: jest.fn(),
+    closeSnackBar: jest.fn(),
+  };
+
   jest.spyOn(hooks, "useSideSection").mockReturnValue({
     setIsSideSectionOpen: jest.fn().mockReturnValue(true),
     setSideSectionTitle: jest.fn().mockReturnValue("Mock title"),
@@ -263,13 +269,6 @@ export const renderReportDetail = async () => {
     setFormFieldsValidationFunctions: jest.fn(),
     setDefaultFormFieldsValues: jest.fn(),
     isNotValidForm: false,
-  });
-
-  (useSnackBarStore as unknown as jest.Mock).mockReturnValue({
-    showSnackBarMessage: jest.fn(),
-    isSnackBarOpen: false,
-    snackBarText: "",
-    snackBarSeverity: SnackBarSeverity.SUCCESS,
   });
 
   const container = render(

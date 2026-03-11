@@ -23,7 +23,6 @@ import {
 } from "../../../utils/constants";
 import {TableRowProps} from "../../molecules/TableRow/Types";
 import {SampleContentStyles} from "./SamplesContentStyles";
-import useSnackBarStore from "../../../stores/snackBarStore";
 import {useSampleStore} from "../../../features/samples/model/store";
 import {
   selectError,
@@ -49,6 +48,8 @@ import {
   selectSetSideSectionTitle,
 } from "../../../features/sideSection/model/selectors";
 import {useSideSectionStore} from "../../../features/sideSection/model/store";
+import {useSnackBarStore} from "../../../features/snackbar/model/store";
+import {selectShowSnackBarMessage} from "../../../features/snackbar/model/selectors";
 
 export const SamplesContent = (): React.ReactElement => {
   const [rows, setRows] = useState<TableRowProps[]>([]);
@@ -67,7 +68,7 @@ export const SamplesContent = (): React.ReactElement => {
   const getSampleTypes = useSampleTypeStore(selectGetSampleTypes);
   const setSampleTypes = useSampleTypeStore(selectSetSampleTypes);
 
-  const {showSnackBarMessage} = useSnackBarStore();
+  const showSnackBarMessage = useSnackBarStore(selectShowSnackBarMessage);
 
   const isSideSectionOpen = useSideSectionStore(selectIsSideSectionOpen);
   const setSideSectionTitle = useSideSectionStore(selectSetSideSectionTitle);

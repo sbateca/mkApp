@@ -21,7 +21,6 @@ import {
   SAMPLE_DELETE_CONFIRMATION_TITLE,
   SAMPLE_DETAILS_TITLE_TEXT,
 } from "../../../utils/constants";
-import useSnackBarStore from "../../../stores/snackBarStore";
 import {useSampleStore} from "../../../features/samples/model/store";
 import {
   selectDeleteSample,
@@ -36,6 +35,8 @@ import {
   selectSetIsSideSectionOpen,
   selectSetSideSectionTitle,
 } from "../../../features/sideSection/model/selectors";
+import {useSnackBarStore} from "../../../features/snackbar/model/store";
+import {selectShowSnackBarMessage} from "../../../features/snackbar/model/selectors";
 
 export const SampleTableActionButtons = ({
   sampleId,
@@ -47,7 +48,7 @@ export const SampleTableActionButtons = ({
   const isLoading = useSampleStore(selectIsLoading);
   const error = useSampleStore(selectError);
 
-  const {showSnackBarMessage} = useSnackBarStore();
+  const showSnackBarMessage = useSnackBarStore(selectShowSnackBarMessage);
 
   const setIsSideSectionOpen = useSideSectionStore(selectSetIsSideSectionOpen);
   const setSideSectionTitle = useSideSectionStore(selectSetSideSectionTitle);

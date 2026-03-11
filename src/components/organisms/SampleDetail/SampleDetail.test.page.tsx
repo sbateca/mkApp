@@ -1,7 +1,6 @@
 import {render, screen} from "@testing-library/react";
 
 import {SampleDetail} from "./SampleDetail";
-import {useSnackBarStore} from "../../../stores";
 import dayjs from "dayjs";
 import {DATEPICKER_FORMAT} from "../../../utils/constants";
 import {SampleType} from "../../../model";
@@ -15,6 +14,7 @@ import {ClientsStore} from "../../../features/clients/model/types";
 import {SampleTypeStore} from "../../../features/sampleType/model/types";
 import {SnackBarSeverity} from "../../../utils/enums";
 import {SideSectionStore} from "../../../features/sideSection/model/types";
+import {SnackBarStore} from "../../../features/snackbar/model/types";
 
 const today = dayjs();
 const RENDERED_FORMAT_DATE = "MM/DD/YYYY";
@@ -73,6 +73,7 @@ const mockSideSectionStoreState: SideSectionStore = {
 
 let mockClientStoreState: ClientsStore;
 let mockSampleTypeStoreState: SampleTypeStore;
+let mockSnackBarStoreState: SnackBarStore;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let mockUseForm: any;
 
@@ -80,11 +81,6 @@ jest.mock("../../../config/EnvManager", () => ({
   default: {
     BACKEND_URL: "http://example.com/api",
   },
-}));
-
-jest.mock("../../../stores/snackBarStore", () => ({
-  __esModule: true,
-  default: jest.fn(),
 }));
 
 jest.mock("../../../utils/hooks", () => ({
@@ -107,6 +103,11 @@ jest.mock("../../../features/sideSection/model/store", () => ({
   useSideSectionStore: (selector: any) => selector(mockSideSectionStoreState),
 }));
 
+jest.mock("../../../features/snackbar/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useSnackBarStore: (selector: any) => selector(mockSnackBarStoreState),
+}));
+
 export const renderSampleDetail = () => {
   mockClientStoreState = {
     clients: mockData.clients,
@@ -127,6 +128,14 @@ export const renderSampleDetail = () => {
     getSampleTypes: jest.fn().mockReturnValue(mockSampleTypes),
     getSampleTypeById: jest.fn().mockReturnValue(mockSampleTypes[0]),
   };
+  mockSnackBarStoreState = {
+    isSnackBarOpen: false,
+    snackBarText: "",
+    snackBarSeverity: SnackBarSeverity.INFO,
+    callbackFunction: jest.fn(),
+    showSnackBarMessage: jest.fn(),
+    closeSnackBar: jest.fn(),
+  };
 
   mockUseForm = {
     form: mockForm,
@@ -142,15 +151,6 @@ export const renderSampleDetail = () => {
     setDefaultFormFieldsValues: jest.fn(),
     isNotValidForm: false,
   };
-
-  (useSnackBarStore as unknown as jest.Mock).mockReturnValue({
-    isSnackBarOpen: false,
-    snackBarText: null,
-    snackBarSeverity: SnackBarSeverity.SUCCESS,
-    callbackFunction: jest.fn(),
-    showSnackBarMessage: jest.fn(),
-    closeSnackBar: jest.fn(),
-  });
 
   render(
     <SampleDetail

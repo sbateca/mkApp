@@ -64,7 +64,6 @@ import {
   StackRowDirectionSpacingPropsProps,
 } from "./Types";
 import {ReportDetailStyles, SampleFormStyles} from "./ReportsDetailStyles";
-import useSnackBarStore from "../../../stores/snackBarStore";
 import {useSampleStore} from "../../../features/samples/model/store";
 import {
   selectGetSampleById,
@@ -120,6 +119,8 @@ import {
   selectSetIsSideSectionOpen,
   selectSideSectionTitle,
 } from "../../../features/sideSection/model/selectors";
+import {selectShowSnackBarMessage} from "../../../features/snackbar/model/selectors";
+import {useSnackBarStore} from "../../../features/snackbar/model/store";
 
 export const ReportDetail = ({
   isReadOnlyMode,
@@ -170,7 +171,7 @@ export const ReportDetail = ({
   const sideSectionTitle = useSideSectionStore(selectSideSectionTitle);
   const setIsSideSectionOpen = useSideSectionStore(selectSetIsSideSectionOpen);
 
-  const {showSnackBarMessage} = useSnackBarStore();
+  const showSnackBarMessage = useSnackBarStore(selectShowSnackBarMessage);
 
   const isLoadingAll =
     isLoadingClients ||

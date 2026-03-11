@@ -12,6 +12,7 @@ import {ClientsStore} from "../../../features/clients/model/types";
 import {buildFormData} from "../../../shared/test/builders/formDataBuilder";
 import dayjs from "dayjs";
 import {SideSectionStore} from "../../../features/sideSection/model/types";
+import {SnackBarSeverity} from "../../../utils/enums";
 
 const today = dayjs();
 const RENDERED_FORMAT_DATE = "MM/DD/YYYY";
@@ -103,16 +104,20 @@ const mockSideSectionStoreState: SideSectionStore = {
   setSideSectionTitle: jest.fn(),
 };
 
+const mockSnackBarStoreState = {
+  isSnackBarOpen: false,
+  snackBarText: "",
+  snackBarSeverity: SnackBarSeverity.INFO,
+  callbackFunction: jest.fn(),
+  showSnackBarMessage: jest.fn(),
+  closeSnackBar: jest.fn(),
+};
+
 jest.mock("../../../Config/envManager", () => ({
   __esModule: true,
   default: {
     BACKEND_URL: "http://mockurl.com/api",
   },
-}));
-
-jest.mock("../../../stores", () => ({
-  __esModule: true,
-  useSnackBarStore: jest.fn(),
 }));
 
 jest.mock("../../../features/samples/model/store", () => ({
@@ -133,6 +138,11 @@ jest.mock("../../../features/sampleType/model/store", () => ({
 jest.mock("../../../features/sideSection/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSideSectionStore: (selector: any) => selector(mockSideSectionStoreState),
+}));
+
+jest.mock("../../../features/snackbar/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useSnackBarStore: (selector: any) => selector(mockSnackBarStoreState),
 }));
 
 jest.mock("../SampleDetail/SampleDetail", () => ({
