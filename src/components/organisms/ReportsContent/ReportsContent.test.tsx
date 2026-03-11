@@ -13,6 +13,7 @@ import {
 } from "../../../shared/test/builders";
 import {ReportStore} from "../../../features/reports/model/types";
 import {AnalyteStore} from "../../../features/analyte/model/types";
+import {SideSectionStore} from "../../../features/sideSection/model/types";
 
 const mockSampleTypes: SampleType[] = buildSampleTypesData(1);
 const mockAnalytes: Analyte[] = buildAnalytesData(1);
@@ -57,6 +58,12 @@ let mockedReportsState: ReportStore = {
   editReport: jest.fn().mockReturnValue(mockReports[0]),
   deleteReport: jest.fn().mockReturnValue(mockReports[0]),
 };
+let mockSideSectionStoreState: SideSectionStore = {
+  isSideSectionOpen: false,
+  sideSectionTitle: "",
+  setIsSideSectionOpen: jest.fn(),
+  setSideSectionTitle: jest.fn(),
+};
 const mockSampleTypeStoreState = {
   sampleTypes: mockSampleTypes,
   selectedSampleType: mockSampleTypes[0],
@@ -78,13 +85,6 @@ const mockAnalyteStoreState: AnalyteStore = {
   isLoading: false,
   error: null,
 };
-
-jest.mock("../../../Config/envManager", () => ({
-  __esModule: true,
-  default: {
-    BACKEND_URL: "http://mockurl.com/api",
-  },
-}));
 
 jest.mock("../ReportsDetail/ReportsDetail", () => ({
   ReportDetail: () => (
@@ -112,9 +112,20 @@ jest.mock("../../../features/analyte/model/store", () => ({
   useAnalyteStore: (selector: any) => selector(mockAnalyteStoreState),
 }));
 
+jest.mock("../../../features/sideSection/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useSideSectionStore: (selector: any) => selector(mockSideSectionStoreState),
+}));
+
 describe("ReportsContent test", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockSideSectionStoreState = {
+      isSideSectionOpen: true,
+      sideSectionTitle: "",
+      setIsSideSectionOpen: jest.fn(),
+      setSideSectionTitle: jest.fn(),
+    };
   });
 
   it("should render reports data successfully", async () => {

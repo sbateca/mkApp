@@ -22,7 +22,6 @@ import {
   SAMPLE_SUCCESSFULLY_DELETED_TEXT,
 } from "../../../utils/constants";
 import useSnackBarStore from "../../../stores/snackBarStore";
-import useSideSectionStore from "../../../stores/sideSectionStore";
 import {useReportStore} from "../../../features/reports/model/store";
 import {
   selectDeleteReport,
@@ -32,6 +31,11 @@ import {
   selectIsLoadingReport,
   selectSetSelectedReport,
 } from "../../../features/reports/model/selector";
+import {useSideSectionStore} from "../../../features/sideSection/model/store";
+import {
+  selectSetIsSideSectionOpen,
+  selectSetSideSectionTitle,
+} from "../../../features/sideSection/model/selectors";
 
 export const ReportTableActionButtons = ({
   reportId,
@@ -44,7 +48,9 @@ export const ReportTableActionButtons = ({
   const setSelectedReport = useReportStore(selectSetSelectedReport);
 
   const {showSnackBarMessage} = useSnackBarStore();
-  const {setIsSideSectionOpen, setSideSectionTitle} = useSideSectionStore();
+
+  const setIsSideSectionOpen = useSideSectionStore(selectSetIsSideSectionOpen);
+  const setSideSectionTitle = useSideSectionStore(selectSetSideSectionTitle);
 
   const handleOpenSideSection = async (reportId: string) => {
     const report = await getReportById(reportId);

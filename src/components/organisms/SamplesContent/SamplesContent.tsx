@@ -24,7 +24,6 @@ import {
 import {TableRowProps} from "../../molecules/TableRow/Types";
 import {SampleContentStyles} from "./SamplesContentStyles";
 import useSnackBarStore from "../../../stores/snackBarStore";
-import useSideSectionStore from "../../../stores/sideSectionStore";
 import {useSampleStore} from "../../../features/samples/model/store";
 import {
   selectError,
@@ -44,6 +43,12 @@ import {
   selectSamplesTypes,
   selectSetSampleTypes,
 } from "../../../features/sampleType/model/selectors";
+import {
+  selectIsSideSectionOpen,
+  selectSetIsSideSectionOpen,
+  selectSetSideSectionTitle,
+} from "../../../features/sideSection/model/selectors";
+import {useSideSectionStore} from "../../../features/sideSection/model/store";
 
 export const SamplesContent = (): React.ReactElement => {
   const [rows, setRows] = useState<TableRowProps[]>([]);
@@ -63,8 +68,10 @@ export const SamplesContent = (): React.ReactElement => {
   const setSampleTypes = useSampleTypeStore(selectSetSampleTypes);
 
   const {showSnackBarMessage} = useSnackBarStore();
-  const {isSideSectionOpen, setIsSideSectionOpen, setSideSectionTitle} =
-    useSideSectionStore();
+
+  const isSideSectionOpen = useSideSectionStore(selectIsSideSectionOpen);
+  const setSideSectionTitle = useSideSectionStore(selectSetSideSectionTitle);
+  const setIsSideSectionOpen = useSideSectionStore(selectSetIsSideSectionOpen);
 
   const handleOpenSideSection = () => {
     setSelectedSample(null);

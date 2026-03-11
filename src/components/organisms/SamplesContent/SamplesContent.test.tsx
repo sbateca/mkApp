@@ -11,7 +11,7 @@ import {
 import {ClientsStore} from "../../../features/clients/model/types";
 import {buildFormData} from "../../../shared/test/builders/formDataBuilder";
 import dayjs from "dayjs";
-import {DATEPICKER_FORMAT} from "../../../utils/constants";
+import {SideSectionStore} from "../../../features/sideSection/model/types";
 
 const today = dayjs();
 const RENDERED_FORMAT_DATE = "MM/DD/YYYY";
@@ -27,9 +27,9 @@ const mockForm = buildFormData({
   sampleCode: mockSamples[0].sampleCode,
   sampleType: mockSampleTypes[0].id,
   client: mockClients[0].id,
-  getSampleDate: today.format(DATEPICKER_FORMAT),
-  receptionDate: today.format(DATEPICKER_FORMAT),
-  analysisDate: today.format(DATEPICKER_FORMAT),
+  getSampleDate: today.subtract(3, "day").format(RENDERED_FORMAT_DATE),
+  receptionDate: today.subtract(2, "day").format(RENDERED_FORMAT_DATE),
+  analysisDate: today.subtract(1, "day").format(RENDERED_FORMAT_DATE),
   sampleLocation: mockSamples[0].sampleLocation,
   responsable: mockSamples[0].responsable,
 });
@@ -55,9 +55,9 @@ export const mockData = {
     sampleCode: mockSamples[0].sampleCode,
     sampleType: mockSampleTypes[0].name,
     client: mockClients[0].name,
-    getSampleDate: today.format(RENDERED_FORMAT_DATE),
-    receptionDate: today.format(RENDERED_FORMAT_DATE),
-    analysisDate: today.format(RENDERED_FORMAT_DATE),
+    getSampleDate: today.subtract(3, "day").format(RENDERED_FORMAT_DATE),
+    receptionDate: today.subtract(2, "day").format(RENDERED_FORMAT_DATE),
+    analysisDate: today.subtract(1, "day").format(RENDERED_FORMAT_DATE),
     sampleLocation: mockSamples[0].sampleLocation,
     responsable: mockSamples[0].responsable,
   },
@@ -96,6 +96,13 @@ const mockSampleTypeStoreState = {
   getSampleTypeById: jest.fn().mockReturnValue(mockSampleTypes[0]),
 };
 
+const mockSideSectionStoreState: SideSectionStore = {
+  isSideSectionOpen: true,
+  sideSectionTitle: "Mock title",
+  setIsSideSectionOpen: jest.fn(),
+  setSideSectionTitle: jest.fn(),
+};
+
 jest.mock("../../../Config/envManager", () => ({
   __esModule: true,
   default: {
@@ -121,6 +128,11 @@ jest.mock("../../../features/clients/model/store", () => ({
 jest.mock("../../../features/sampleType/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSampleTypeStore: (selector: any) => selector(mockSampleTypeStoreState),
+}));
+
+jest.mock("../../../features/sideSection/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useSideSectionStore: (selector: any) => selector(mockSideSectionStoreState),
 }));
 
 jest.mock("../SampleDetail/SampleDetail", () => ({

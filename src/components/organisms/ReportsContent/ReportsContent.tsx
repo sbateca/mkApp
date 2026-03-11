@@ -23,7 +23,6 @@ import {
   SnackBarSeverity,
 } from "../../../utils/enums";
 import useSnackBarStore from "../../../stores/snackBarStore";
-import useSideSectionStore from "../../../stores/sideSectionStore";
 import {useSampleStore} from "../../../features/samples/model/store";
 import {selectSamples} from "../../../features/samples/model/selectors";
 import {useSampleTypeStore} from "../../../features/sampleType/model/store";
@@ -47,6 +46,12 @@ import {
   selectGetAnalytes,
   selectSetAnalytes,
 } from "../../../features/analyte/model/selectors";
+import {
+  selectIsSideSectionOpen,
+  selectSetIsSideSectionOpen,
+  selectSetSideSectionTitle,
+} from "../../../features/sideSection/model/selectors";
+import {useSideSectionStore} from "../../../features/sideSection/model/store";
 
 export const ReportsContent = (): React.ReactElement => {
   const [rows, setRows] = useState<TableRowProps[]>([]);
@@ -67,8 +72,9 @@ export const ReportsContent = (): React.ReactElement => {
 
   const {showSnackBarMessage} = useSnackBarStore();
 
-  const {isSideSectionOpen, setIsSideSectionOpen, setSideSectionTitle} =
-    useSideSectionStore();
+  const isSideSectionOpen = useSideSectionStore(selectIsSideSectionOpen);
+  const setIsSideSectionOpen = useSideSectionStore(selectSetIsSideSectionOpen);
+  const setSideSectionTitle = useSideSectionStore(selectSetSideSectionTitle);
 
   const analytes = useAnalyteStore(selectAnalytes);
   const getAnalytes = useAnalyteStore(selectGetAnalytes);

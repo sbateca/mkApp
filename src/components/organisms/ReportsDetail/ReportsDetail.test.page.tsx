@@ -2,7 +2,6 @@ import {render, screen} from "@testing-library/react";
 
 import {ReportDetail} from "./ReportsDetail";
 import * as hooks from "../../../utils/hooks";
-import useSideSectionStore from "../../../stores/sideSectionStore";
 import useSnackBarStore from "../../../stores/snackBarStore";
 import {SnackBarSeverity} from "../../../utils/enums";
 import dayjs from "dayjs";
@@ -25,6 +24,7 @@ import {CriteriaStore} from "../../../features/criteria/model/types";
 import {ReportStore} from "../../../features/reports/model/types";
 import {AnalysisMethodStore} from "../../../features/analysisMethods/model/types";
 import {AnalyteStore} from "../../../features/analyte/model/types";
+import {SideSectionStore} from "../../../features/sideSection/model/types";
 
 const today = dayjs();
 const RENDERED_FORMAT_DATE = "MM/DD/YYYY";
@@ -89,6 +89,7 @@ let mockSampleTypeStoreState: SampleTypeStore;
 let mockCriteriaStoreState: CriteriaStore;
 let mockAnalysisMethodsStoreState: AnalysisMethodStore;
 let mockAnalyteStoreState: AnalyteStore;
+let mockSideSectionStoreState: SideSectionStore;
 
 jest.mock("../../../features/samples/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -126,14 +127,13 @@ jest.mock("../../../features/analysisMethods/model/store", () => ({
     selector(mockAnalysisMethodsStoreState),
 }));
 
-jest.mock("../../../stores", () => ({
-  useSnackBarStore: jest.fn(),
-  useSideSectionStore: jest.fn(),
+jest.mock("../../../features/sideSection/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useSideSectionStore: (selector: any) => selector(mockSideSectionStoreState),
 }));
 
-jest.mock("../../../stores/sideSectionStore", () => ({
-  __esModule: true,
-  default: jest.fn(),
+jest.mock("../../../stores", () => ({
+  useSnackBarStore: jest.fn(),
 }));
 
 jest.mock("../../../stores/snackBarStore", () => ({
@@ -236,6 +236,13 @@ export const renderReportDetail = async () => {
     error: null,
   };
 
+  mockSideSectionStoreState = {
+    isSideSectionOpen: true,
+    sideSectionTitle: "Mock Title",
+    setIsSideSectionOpen: jest.fn(),
+    setSideSectionTitle: jest.fn(),
+  };
+
   jest.spyOn(hooks, "useSideSection").mockReturnValue({
     setIsSideSectionOpen: jest.fn().mockReturnValue(true),
     setSideSectionTitle: jest.fn().mockReturnValue("Mock title"),
@@ -263,11 +270,6 @@ export const renderReportDetail = async () => {
     isSnackBarOpen: false,
     snackBarText: "",
     snackBarSeverity: SnackBarSeverity.SUCCESS,
-  });
-
-  (useSideSectionStore as unknown as jest.Mock).mockReturnValue({
-    setIsSideSectionOpen: jest.fn(),
-    sideSectionTitle: "Mock title",
   });
 
   const container = render(

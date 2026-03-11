@@ -1,7 +1,7 @@
 import {render, screen} from "@testing-library/react";
 
 import {SampleDetail} from "./SampleDetail";
-import {useSideSectionStore, useSnackBarStore} from "../../../stores";
+import {useSnackBarStore} from "../../../stores";
 import dayjs from "dayjs";
 import {DATEPICKER_FORMAT} from "../../../utils/constants";
 import {SampleType} from "../../../model";
@@ -14,6 +14,7 @@ import {buildFormData} from "../../../shared/test/builders/formDataBuilder";
 import {ClientsStore} from "../../../features/clients/model/types";
 import {SampleTypeStore} from "../../../features/sampleType/model/types";
 import {SnackBarSeverity} from "../../../utils/enums";
+import {SideSectionStore} from "../../../features/sideSection/model/types";
 
 const today = dayjs();
 const RENDERED_FORMAT_DATE = "MM/DD/YYYY";
@@ -27,9 +28,9 @@ const mockForm = buildFormData({
   sampleCode: mockSamples[0].sampleCode,
   sampleType: mockSampleTypes[0].id,
   client: mockClients[0].id,
-  getSampleDate: today.format(DATEPICKER_FORMAT),
-  receptionDate: today.format(DATEPICKER_FORMAT),
-  analysisDate: today.format(DATEPICKER_FORMAT),
+  getSampleDate: today.subtract(3, "day").format(DATEPICKER_FORMAT),
+  receptionDate: today.subtract(2, "day").format(DATEPICKER_FORMAT),
+  analysisDate: today.subtract(1, "day").format(DATEPICKER_FORMAT),
   sampleLocation: mockSamples[0].sampleLocation,
   responsable: mockSamples[0].responsable,
 });
@@ -63,6 +64,13 @@ export const mockData = {
   },
 };
 
+const mockSideSectionStoreState: SideSectionStore = {
+  isSideSectionOpen: true,
+  sideSectionTitle: "Mock title",
+  setIsSideSectionOpen: jest.fn(),
+  setSideSectionTitle: jest.fn(),
+};
+
 let mockClientStoreState: ClientsStore;
 let mockSampleTypeStoreState: SampleTypeStore;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -72,11 +80,6 @@ jest.mock("../../../config/EnvManager", () => ({
   default: {
     BACKEND_URL: "http://example.com/api",
   },
-}));
-
-jest.mock("../../../stores/sideSectionStore", () => ({
-  __esModule: true,
-  default: jest.fn(),
 }));
 
 jest.mock("../../../stores/snackBarStore", () => ({
@@ -97,6 +100,11 @@ jest.mock("../../../features/clients/model/store", () => ({
 jest.mock("../../../features/sampleType/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSampleTypeStore: (selector: any) => selector(mockSampleTypeStoreState),
+}));
+
+jest.mock("../../../features/sideSection/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useSideSectionStore: (selector: any) => selector(mockSideSectionStoreState),
 }));
 
 export const renderSampleDetail = () => {
@@ -134,11 +142,6 @@ export const renderSampleDetail = () => {
     setDefaultFormFieldsValues: jest.fn(),
     isNotValidForm: false,
   };
-
-  (useSideSectionStore as unknown as jest.Mock).mockReturnValue({
-    setIsSideSectionOpen: jest.fn(),
-    sideSectionTitle: "Mock title",
-  });
 
   (useSnackBarStore as unknown as jest.Mock).mockReturnValue({
     isSnackBarOpen: false,

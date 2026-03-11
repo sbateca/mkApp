@@ -65,7 +65,6 @@ import {
 } from "./Types";
 import {ReportDetailStyles, SampleFormStyles} from "./ReportsDetailStyles";
 import useSnackBarStore from "../../../stores/snackBarStore";
-import useSideSectionStore from "../../../stores/sideSectionStore";
 import {useSampleStore} from "../../../features/samples/model/store";
 import {
   selectGetSampleById,
@@ -116,6 +115,11 @@ import {
   selectIsLoadingAnalytes,
   selectSetAnalytes,
 } from "../../../features/analyte/model/selectors";
+import {useSideSectionStore} from "../../../features/sideSection/model/store";
+import {
+  selectSetIsSideSectionOpen,
+  selectSideSectionTitle,
+} from "../../../features/sideSection/model/selectors";
 
 export const ReportDetail = ({
   isReadOnlyMode,
@@ -163,7 +167,9 @@ export const ReportDetail = ({
   const getCriterias = useCriteriaStore(selectGetCriterias);
   const setCriterias = useCriteriaStore(selectSetCriterias);
 
-  const {setIsSideSectionOpen, sideSectionTitle} = useSideSectionStore();
+  const sideSectionTitle = useSideSectionStore(selectSideSectionTitle);
+  const setIsSideSectionOpen = useSideSectionStore(selectSetIsSideSectionOpen);
+
   const {showSnackBarMessage} = useSnackBarStore();
 
   const isLoadingAll =

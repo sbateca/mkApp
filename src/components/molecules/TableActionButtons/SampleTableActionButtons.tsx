@@ -22,7 +22,6 @@ import {
   SAMPLE_DETAILS_TITLE_TEXT,
 } from "../../../utils/constants";
 import useSnackBarStore from "../../../stores/snackBarStore";
-import useSideSectionStore from "../../../stores/sideSectionStore";
 import {useSampleStore} from "../../../features/samples/model/store";
 import {
   selectDeleteSample,
@@ -32,6 +31,11 @@ import {
   selectIsLoading,
   selectSetSelectedSample,
 } from "../../../features/samples/model/selectors";
+import {useSideSectionStore} from "../../../features/sideSection/model/store";
+import {
+  selectSetIsSideSectionOpen,
+  selectSetSideSectionTitle,
+} from "../../../features/sideSection/model/selectors";
 
 export const SampleTableActionButtons = ({
   sampleId,
@@ -44,7 +48,9 @@ export const SampleTableActionButtons = ({
   const error = useSampleStore(selectError);
 
   const {showSnackBarMessage} = useSnackBarStore();
-  const {setIsSideSectionOpen, setSideSectionTitle} = useSideSectionStore();
+
+  const setIsSideSectionOpen = useSideSectionStore(selectSetIsSideSectionOpen);
+  const setSideSectionTitle = useSideSectionStore(selectSetSideSectionTitle);
 
   const handleOpenSideSection = async (sampleId: string) => {
     const sample = await getSampleById(sampleId);

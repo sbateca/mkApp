@@ -61,7 +61,6 @@ import {
 } from "./Types";
 import {SampleDetailStyles, SampleFormStyles} from "./SampleDetailStyles";
 import useSnackBarStore from "../../../stores/snackBarStore";
-import useSideSectionStore from "../../../stores/sideSectionStore";
 import {useSampleStore} from "../../../features/samples/model/store";
 import {
   selectCreateSample,
@@ -84,6 +83,11 @@ import {
   selectSetSampleTypes,
 } from "../../../features/sampleType/model/selectors";
 import {getAutoCompleteOptionsFromModel} from "../../../utils/model";
+import {useSideSectionStore} from "../../../features/sideSection/model/store";
+import {
+  selectSetIsSideSectionOpen,
+  selectSideSectionTitle,
+} from "../../../features/sideSection/model/selectors";
 
 export const SampleDetail = ({
   isReadOnlyMode,
@@ -123,7 +127,9 @@ export const SampleDetail = ({
 
   const isLoadingAll = isLoadingClients || isLoadingSampleTypes;
 
-  const {setIsSideSectionOpen, sideSectionTitle} = useSideSectionStore();
+  const sideSectionTitle = useSideSectionStore(selectSideSectionTitle);
+  const setIsSideSectionOpen = useSideSectionStore(selectSetIsSideSectionOpen);
+
   const {
     isNotValidForm,
     form,
