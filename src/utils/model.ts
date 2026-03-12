@@ -1,4 +1,4 @@
-import {AutoCompleteOption} from "../components/molecules/AutoComplete/types";
+import {AutoCompleteOption} from "../shared/ui/AutoComplete/types";
 
 export interface GenericModelWithId {
   id: string;

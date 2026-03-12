@@ -2,10 +2,9 @@ import {useEffect, useState} from "react";
 
 import {Box} from "@mui/material";
 
-import {Button, Spinner, Typography} from "../../atoms";
+import {Button, Spinner, Table, Typography} from "../../../shared/ui";
 import {SideSection} from "../SideSection/SideSection";
 import {SampleDetail} from "../SampleDetail";
-import {Table} from "../Table";
 
 import {samplesToTableRows} from "../../../adapters/tableRow";
 import {

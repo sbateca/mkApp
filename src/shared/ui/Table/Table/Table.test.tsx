@@ -1,6 +1,6 @@
 import {render, screen} from "@testing-library/react";
 
-import {TableRowProps} from "../../molecules/TableRow/Types";
+import {TableRowProps} from "../../../../components/molecules/TableRow/Types";
 import {Table} from "./Table";
 
 const mockHeaderLabels = ["header1", "header2"];
@@ -18,7 +18,7 @@ const mockRows: TableRowProps[] = [
     ],
   },
 ];
-jest.mock("../../../Config/envManager", () => ({
+jest.mock("../../../../Config/envManager", () => ({
   __esModule: true,
   default: {
     BACKEND_URL: "http://mockurl.com/api",

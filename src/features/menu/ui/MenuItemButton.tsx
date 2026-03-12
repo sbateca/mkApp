@@ -1,5 +1,5 @@
 import {useCallback} from "react";
-import {ListItemButton} from "../../../components/atoms";
+import {ListItemButton} from "../../../shared/ui";
 import {SharedMenuItems} from "../../../utils/enums";
 import {useMenuStore} from "../model/store";
 import {

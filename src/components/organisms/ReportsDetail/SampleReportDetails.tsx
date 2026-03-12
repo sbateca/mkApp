@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {Card, CardContent, Grid, Typography} from "@mui/material";
 
 import {Client, Sample, SampleType} from "../../../model";
-import {Spinner} from "../../atoms";
+import {Spinner} from "../../../shared/ui";
 
 interface SampleReportDetailsProps {
   sample: Sample | null;

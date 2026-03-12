@@ -15,11 +15,10 @@ import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 
-import {Typography, Button, Spinner} from "../../atoms";
-import {AutoComplete} from "../../molecules";
+import {Typography, Button, Spinner, AutoComplete} from "../../../shared/ui";
 import {ReportSideSectionButtons} from "./ReportsSideSectionButtons";
 import {SampleReportDetails} from "./SampleReportDetails";
-import {AutoCompleteOption} from "../../molecules/AutoComplete/types";
+import {AutoCompleteOption} from "../../../shared/ui/AutoComplete/types";
 import {
   ReportFormFields,
   SelectVariants,

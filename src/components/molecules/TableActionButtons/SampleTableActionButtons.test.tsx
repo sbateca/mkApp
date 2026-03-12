@@ -48,6 +48,13 @@ let mockSideSectionStoreState: SideSectionStore = {
   setSideSectionTitle: jest.fn(),
 };
 
+jest.mock("../../../config/EnvManager", () => ({
+  __esModule: true,
+  default: {
+    BACKEND_URL: "http://example.com/api",
+  },
+}));
+
 jest.mock("../../../features/samples/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSampleStore: (selector: any) => selector(mockSampleStoreState),

@@ -1,6 +1,6 @@
 import {render, screen} from "@testing-library/react";
 
-import {TableCellProps} from "../TableCell/Types";
+import {TableCellProps} from "../../../shared/ui/Table/TableCell/Types";
 import TableRow from "./TableRow";
 
 jest.mock("../../../config/EnvManager", () => ({

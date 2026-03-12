@@ -6,11 +6,11 @@ import {
   TableContainer,
 } from "@mui/material";
 
-import TableHead from "../../molecules/TableHead/TableHead";
-import TableRow from "../../molecules/TableRow/TableRow";
-import {NO_RECORDS_MESSAGE} from "../../../utils/constants";
+import TableHead from "../TableHead/TableHead";
+import TableRow from "../../../../components/molecules/TableRow/TableRow";
 import {TableProps} from "./Types";
 import {TableStyles} from "./TableStyles";
+import {NO_RECORDS_MESSAGE} from "../../../../utils/constants";
 
 export const Table = ({headerLabels, rows}: TableProps): React.ReactElement => {
   return (

@@ -1,4 +1,4 @@
-import ITypographyProps from "../../../components/atoms/Typography/Types";
+import ITypographyProps from "../../../shared/ui/Typography/Types";
 import {getSharedPageTitleConfig} from "./shared";
 
 export const SAMPLES_PAGE_NAME = "Samples";
