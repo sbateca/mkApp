@@ -1,6 +1,6 @@
 import {Box} from "@mui/material";
 
-import {Button} from "../../atoms";
+import {Button} from "../../../shared/ui";
 import {
   IconNames,
   SharedButtonColors,

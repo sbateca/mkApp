@@ -1,6 +1,6 @@
 import {Drawer, List} from "@mui/material";
 
-import {ListItemButton} from "../../atoms";
+import {ListItemButton} from "../../../shared/ui";
 import {MenuStyle} from "./MenuStyle";
 import {MenuProps} from "./Types";
 import {

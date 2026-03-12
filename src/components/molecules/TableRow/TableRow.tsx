@@ -1,6 +1,6 @@
 import {TableRow as MuiTableRow} from "@mui/material";
 
-import {TableCell} from "../TableCell";
+import {TableCell, Spinner} from "../../../shared/ui";
 import {
   ReportTableActionButtons,
   SampleTableActionButtons,
@@ -8,7 +8,6 @@ import {
 import {TableRowProps} from "./Types";
 import {SharedMenuItems} from "../../../utils/enums";
 import {selectSelectedMenuItem, useMenuStore} from "../../../features/menu";
-import {Spinner} from "../../atoms/Spinner";
 
 function TableRow({id, cells}: TableRowProps): React.ReactElement {
   const selectedMenuItem = useMenuStore(selectSelectedMenuItem);

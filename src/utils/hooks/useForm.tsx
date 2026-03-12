@@ -3,7 +3,7 @@ import React, {ChangeEvent, SyntheticEvent, useEffect, useState} from "react";
 import {SelectChangeEvent} from "@mui/material";
 import {Dayjs} from "dayjs";
 
-import {AutoCompleteOption} from "../../components/molecules/AutoComplete/types";
+import {AutoCompleteOption} from "../../shared/ui/AutoComplete/types";
 import {FormProps, DATEPICKER_FORMAT} from "../constants";
 
 export interface SampleFormProps {

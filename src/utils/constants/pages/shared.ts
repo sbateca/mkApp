@@ -1,5 +1,5 @@
 import {DateView} from "@mui/x-date-pickers";
-import ITypographyProps from "../../../components/atoms/Typography/Types";
+import ITypographyProps from "../../../shared/ui/Typography/Types";
 
 export const getSharedPageTitleConfig = (
   pageName: string,

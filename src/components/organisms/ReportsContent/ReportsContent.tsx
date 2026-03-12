@@ -3,8 +3,7 @@ import {useEffect, useState} from "react";
 import {Box} from "@mui/material";
 
 import {TableRowProps} from "../../molecules/TableRow/Types";
-import {Button, Spinner, Typography} from "../../atoms";
-import {Table} from "../Table";
+import {Button, Spinner, Table, Typography} from "../../../shared/ui";
 import {SideSection} from "../SideSection";
 import {ReportDetail} from "../ReportsDetail";
 import {reportsToTableRows} from "../../../adapters/tableRow";

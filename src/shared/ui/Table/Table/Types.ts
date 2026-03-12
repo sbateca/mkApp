@@ -1,4 +1,4 @@
-import {TableRowProps} from "../../molecules/TableRow/Types";
+import {TableRowProps} from "../../../../components/molecules/TableRow/Types";
 
 export interface TableProps {
   headerLabels: string[];

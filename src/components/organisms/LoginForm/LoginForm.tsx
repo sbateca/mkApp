@@ -4,7 +4,7 @@ import {Navigate} from "react-router-dom";
 import {FormControl, Button, Box, FormHelperText} from "@mui/material";
 
 import {getUserByUserName} from "../../../services/userService";
-import {TextField} from "../../atoms";
+import {TextField} from "../../../shared/ui";
 import {
   LOGIN_ERROR_ACCESS_DENIED_MESSAGE,
   LOGIN_FORM_SIGN_IN,

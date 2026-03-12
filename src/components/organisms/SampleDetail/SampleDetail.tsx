@@ -15,9 +15,8 @@ import dayjs from "dayjs";
 import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 
-import {Typography, Button, Spinner} from "../../atoms";
+import {Typography, Button, Spinner, AutoComplete} from "../../../shared/ui";
 import SampleSideSectionButtons from "./SampleSideSectionActions";
-import {AutoComplete} from "../../molecules";
 import {useForm} from "../../../utils/hooks";
 import {
   SamplesFormFields,

@@ -3,7 +3,7 @@ import {useEffect} from "react";
 import {Box} from "@mui/material";
 import Swal from "sweetalert2";
 
-import {Button, Spinner} from "../../atoms";
+import {Button, Spinner} from "../../../shared/ui";
 import {ReportTableActionButtonsProps} from "./Types";
 import {
   IconNames,
