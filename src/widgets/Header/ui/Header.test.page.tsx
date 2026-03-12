@@ -1,8 +1,7 @@
 import {render, screen} from "@testing-library/react";
-import {Header} from "./Header";
-import {Menu} from "../Menu/Menu";
-import {MenuProps} from "../Menu/Types";
+import {Menu, MenuProps} from "../../../components/molecules/Menu";
 import {SharedMenuItems} from "../../../utils/enums";
+import {Header} from "./Header";
 
 export const mockData = {
   companyName: "Test Company",
@@ -26,10 +25,10 @@ export const mockMenuItems: MenuProps = {
 };
 
 export const setupMocks = () => {
-  jest.mock("../UserMenu/UserMenu", () => ({
+  jest.mock("../../../components/molecules/UserMenu/UserMenu", () => ({
     UserMenu: () => <div data-testid="userMenu" />,
   }));
-  jest.mock("../../../adapters/user", () => ({
+  jest.mock("../../../entities/user", () => ({
     localStorageToUser: jest.fn(),
   }));
 };
