@@ -2,6 +2,7 @@ import {render, screen} from "@testing-library/react";
 import {Menu, MenuProps} from "../../../components/molecules/Menu";
 import {SharedMenuItems} from "../../../utils/enums";
 import {Header} from "./Header";
+import {MenuStore} from "../../../features/menu/model/types";
 
 export const mockData = {
   companyName: "Test Company",
@@ -24,12 +25,25 @@ export const mockMenuItems: MenuProps = {
   ],
 };
 
+const mockMenuStoreStatus: MenuStore = {
+  menuOpen: false,
+  selectedMenuItem: SharedMenuItems.SAMPLES,
+  toggleMenu: () => jest.fn(),
+  openMenu: () => jest.fn(),
+  closeMenu: () => jest.fn(),
+  setSelectedMenuItem: () => jest.fn(),
+};
+
 export const setupMocks = () => {
-  jest.mock("../../../components/molecules/UserMenu/UserMenu", () => ({
+  jest.mock("../../../features/UserMenu/ui", () => ({
     UserMenu: () => <div data-testid="userMenu" />,
   }));
   jest.mock("../../../entities/user", () => ({
     localStorageToUser: jest.fn(),
+  }));
+  jest.mock("../../../features/usermenu/model/store", () => ({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    useMenuStore: (selector: any) => selector(mockMenuStoreStatus),
   }));
 };
 jest.mock("../../../config/EnvManager", () => ({
