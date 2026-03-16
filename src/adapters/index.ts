@@ -7,4 +7,3 @@ export * from "./reports";
 export * from "./samples";
 export * from "./sampleType";
 export * from "./tableRow";
-export * from "./user";

@@ -10,12 +10,20 @@ jest.mock("../../../config/EnvManager", () => ({
     BACKEND_URL: "http://example.com/api",
   },
 }));
-jest.mock("../../organisms/SamplesContent/SamplesContent", () => ({
-  SamplesContent: () => <div data-testid="samples-content" />,
-}));
-jest.mock("../../organisms/ReportsContent/ReportsContent", () => ({
-  ReportsContent: () => <div data-testid="reports-content" />,
-}));
+
+jest.mock(
+  "../../../components/organisms/SamplesContent/SamplesContent",
+  () => ({
+    SamplesContent: () => <div data-testid="samples-content" />,
+  }),
+);
+
+jest.mock(
+  "../../../components/organisms/ReportsContent/ReportsContent",
+  () => ({
+    ReportsContent: () => <div data-testid="reports-content" />,
+  }),
+);
 
 let mockedSelectedMenuItem: SharedMenuItems;
 
