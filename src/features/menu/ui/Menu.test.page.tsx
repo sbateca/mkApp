@@ -6,14 +6,7 @@ import {MenuProps} from "./MenuProps";
 import {MenuStore} from "../model/types";
 
 export const mockMenuItems: MenuProps = {
-  menuItems: [
-    {
-      label: SharedMenuItems.REPORTS,
-    },
-    {
-      label: SharedMenuItems.SAMPLES,
-    },
-  ],
+  menuItems: [SharedMenuItems.REPORTS, SharedMenuItems.SAMPLES],
 };
 jest.mock("../../../config/EnvManager", () => ({
   __esModule: true,

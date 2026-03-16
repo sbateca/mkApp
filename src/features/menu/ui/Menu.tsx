@@ -9,7 +9,6 @@ import {MenuItemButton} from "./MenuItemButton";
 export const Menu = ({menuItems}: MenuProps): React.ReactElement => {
   const menuOpen = useMenuStore(selectMenuOpen);
   const toggleMenu = useMenuStore(selectToggleMenu);
-
   return (
     <Drawer
       anchor="left"
@@ -19,7 +18,7 @@ export const Menu = ({menuItems}: MenuProps): React.ReactElement => {
     >
       <List sx={MenuStyle} data-testid="menuList">
         {menuItems.map((item) => (
-          <MenuItemButton key={item.label} item={item.label} />
+          <MenuItemButton key={item} item={item} />
         ))}
       </List>
     </Drawer>

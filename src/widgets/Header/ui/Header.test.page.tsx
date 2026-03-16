@@ -15,14 +15,7 @@ export const mockData = {
 };
 
 export const mockMenuItems: MenuProps = {
-  menuItems: [
-    {
-      label: SharedMenuItems.REPORTS,
-    },
-    {
-      label: SharedMenuItems.SAMPLES,
-    },
-  ],
+  menuItems: [SharedMenuItems.REPORTS, SharedMenuItems.SAMPLES],
 };
 
 const mockMenuStoreStatus: MenuStore = {
