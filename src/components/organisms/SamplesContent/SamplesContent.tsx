@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import {Box} from "@mui/material";
 
 import {Button, Spinner, Table, Typography} from "../../../shared/ui";
-import {SideSection} from "../SideSection/SideSection";
+import {SideSection} from "../../../shared/ui/SideSection/SideSection";
 import {SampleDetail} from "../SampleDetail";
 
 import {samplesToTableRows} from "../../../adapters/tableRow";
