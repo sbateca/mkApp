@@ -6,7 +6,7 @@ import {MenuStyle} from "./MenuStyle";
 import {MenuProps} from "./MenuProps";
 import {MenuItemButton} from "./MenuItemButton";
 
-export const MenuDrawer = ({menuItems}: MenuProps): React.ReactElement => {
+export const Menu = ({menuItems}: MenuProps): React.ReactElement => {
   const menuOpen = useMenuStore(selectMenuOpen);
   const toggleMenu = useMenuStore(selectToggleMenu);
 

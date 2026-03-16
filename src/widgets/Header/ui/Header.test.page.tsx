@@ -1,5 +1,5 @@
 import {render, screen} from "@testing-library/react";
-import {Menu, MenuProps} from "../../../components/molecules/Menu";
+import {Menu, MenuProps} from "../../../features/menu";
 import {SharedMenuItems} from "../../../utils/enums";
 import {Header} from "./Header";
 import {MenuStore} from "../../../features/menu/model/types";

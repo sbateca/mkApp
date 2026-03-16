@@ -1,9 +1,9 @@
 import {render, screen} from "@testing-library/react";
 
-import {Menu} from "../Menu/Menu";
+import {Menu} from "./Menu";
 import {SharedMenuItems} from "../../../utils/enums";
-import {MenuProps} from "../Menu/Types";
-import {MenuStore} from "../../../features/menu/model/types";
+import {MenuProps} from "./MenuProps";
+import {MenuStore} from "../model/types";
 
 export const mockMenuItems: MenuProps = {
   menuItems: [
