@@ -1,11 +1,11 @@
 import {Box} from "@mui/material";
 
 import {MainTemplate} from "../../templates";
-import {Content} from "../../organisms";
 import {COMPANY_NAME, MENU_ITEMS} from "../../../utils/constants";
 import {AdminStyle} from "./AdminStyle";
 import {MenuDrawer} from "../../../features/menu/ui/MenuDrawer";
 import {Header} from "../../../widgets/Header";
+import {Content} from "../../../widgets/Content";
 
 export const Admin = (): React.ReactElement => {
   return (

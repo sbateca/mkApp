@@ -1,4 +1,3 @@
-export * from "./Content";
 export * from "./LoginForm";
 export * from "./ReportsContent";
 export * from "./ReportsDetail";
