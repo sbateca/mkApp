@@ -1,26 +1,12 @@
-import {Alert, AlertColor, Snackbar as MuiSnackbar} from "@mui/material";
+import {Alert, Snackbar as MuiSnackbar} from "@mui/material";
 import {SnackBarSeverity} from "../../../utils/enums";
+import {toMuiSeverity} from "../lib/severityMapper";
 
 type Props = {
   isOpen: boolean;
   snackBarText: string;
   severity: SnackBarSeverity;
   onClose: () => void;
-};
-
-const toMuiSeverity = (s: SnackBarSeverity): AlertColor => {
-  switch (s) {
-    case SnackBarSeverity.SUCCESS:
-      return "success";
-    case SnackBarSeverity.ERROR:
-      return "error";
-    case SnackBarSeverity.WARNING:
-      return "warning";
-    case SnackBarSeverity.INFO:
-      return "info";
-    default:
-      return "info";
-  }
 };
 
 export const Snackbar = ({isOpen, snackBarText, severity, onClose}: Props) => (
