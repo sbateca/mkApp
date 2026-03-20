@@ -4,7 +4,7 @@ import {Box} from "@mui/material";
 
 import {TableRowProps} from "../../molecules/TableRow/Types";
 import {Button, Spinner, Table, Typography} from "../../../shared/ui";
-import {SideSection} from "../SideSection";
+import {SideSection} from "../../../shared/ui/SideSection";
 import {ReportDetail} from "../ReportsDetail";
 import {reportsToTableRows} from "../../../adapters/tableRow";
 import {

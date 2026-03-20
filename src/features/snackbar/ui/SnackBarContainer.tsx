@@ -3,8 +3,8 @@ import {
   selectIsSnackBarOpen,
   selectSnackBarSeverity,
   selectSnackBarText,
-} from "../../../features/snackbar/model/selectors";
-import {useSnackBarStore} from "../../../features/snackbar/model/store";
+} from "../model/selectors";
+import {useSnackBarStore} from "../model/store";
 import {Snackbar} from "./SnackBar";
 
 export const SnackBarContainer = () => {

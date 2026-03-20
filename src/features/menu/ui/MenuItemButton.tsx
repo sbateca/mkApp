@@ -1,25 +1,9 @@
-import {useCallback} from "react";
 import {ListItemButton} from "../../../shared/ui";
-import {SharedMenuItems} from "../../../utils/enums";
-import {useMenuStore} from "../model/store";
-import {
-  selectSelectedMenuItem,
-  selectSetSelectedMenuItem,
-  selectToggleMenu,
-} from "../model/selectors";
+import {useMenuItemButton} from "../model/useMenuItemButton";
+import {MenuItemButtonProps} from "./MenuItemButtonProps";
 
-type Props = {item: SharedMenuItems};
-
-export const MenuItemButton = ({item}: Props) => {
-  const selected = useMenuStore(selectSelectedMenuItem);
-  const setSelected = useMenuStore(selectSetSelectedMenuItem);
-  const toggleMenu = useMenuStore(selectToggleMenu);
-
-  const onClick = useCallback(() => {
-    setSelected(item);
-    toggleMenu();
-  }, [item, setSelected, toggleMenu]);
-
+export const MenuItemButton = ({item}: MenuItemButtonProps) => {
+  const {selected, onClick} = useMenuItemButton(item);
   return (
     <ListItemButton
       label={item}
