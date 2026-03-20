@@ -1,9 +1,8 @@
-import {useEffect, useState} from "react";
-
 import {Card, CardContent, Grid, Typography} from "@mui/material";
 
 import {Client, Sample, SampleType} from "../../../model";
 import {Spinner} from "../../../shared/ui";
+import {useSampleReportDetails} from "../model/useSampleReportDetails";
 
 interface SampleReportDetailsProps {
   sample: Sample | null;
@@ -12,59 +11,17 @@ interface SampleReportDetailsProps {
   isLoadingSample: boolean;
 }
 
-interface SampleCardDetails {
-  sampleCode: string;
-  sampleType: string;
-  client: string;
-  getSampleDate: string;
-  receptionDate: string;
-  analysisDate: string;
-  sampleLocation: string;
-  responsable: string;
-}
-
 export const SampleReportDetails = ({
   sample,
   sampleTypes,
   clients,
   isLoadingSample,
 }: SampleReportDetailsProps) => {
-  const [sampleCardDetails, setSampleCardDetails] =
-    useState<SampleCardDetails>();
-
-  const getSampleTypeFromSample = () => {
-    if (sample) {
-      return sampleTypes.find(
-        (sampleType) => sampleType.id === sample.sampleTypeId,
-      );
-    }
-    return null;
-  };
-
-  const getClientFromSample = () => {
-    if (sample) {
-      return clients.find((client) => client.id === sample.clientId);
-    }
-    return null;
-  };
-
-  const getSampleCardDetails = (): SampleCardDetails => {
-    return {
-      sampleCode: sample ? sample.sampleCode : "",
-      sampleType: getSampleTypeFromSample()?.name || "",
-      client: getClientFromSample()?.name || "",
-      getSampleDate: sample ? sample.getSampleDate : "",
-      receptionDate: sample ? sample.receptionDate : "",
-      analysisDate: sample ? sample.analysisDate : "",
-      sampleLocation: sample ? sample.sampleLocation : "",
-      responsable: sample ? sample.responsable : "",
-    };
-  };
-
-  useEffect(() => {
-    const sampleCardDetails = getSampleCardDetails();
-    setSampleCardDetails(sampleCardDetails);
-  }, [sample]);
+  const {sampleCardDetails} = useSampleReportDetails(
+    sample,
+    sampleTypes,
+    clients,
+  );
 
   return isLoadingSample ? (
     <Spinner />

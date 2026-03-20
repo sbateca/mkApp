@@ -16,8 +16,7 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 
 import {Typography, Button, Spinner, AutoComplete} from "../../../shared/ui";
-import {ReportSideSectionButtons} from "./ReportsSideSectionButtons";
-import {SampleReportDetails} from "./SampleReportDetails";
+import {SampleReportDetails} from "../../../entities/sample/";
 import {AutoCompleteOption} from "../../../shared/ui/AutoComplete/types";
 import {
   ReportFormFields,
@@ -55,13 +54,6 @@ import {
 } from "../../../adapters/reports";
 import {getAutoCompleteOptionsFromModel} from "../../../utils/model";
 import {useForm} from "../../../utils/hooks";
-import {
-  BoxContainerProps,
-  ReportDetailProps,
-  StackContainerProps,
-  StackFieldProps,
-  StackRowDirectionSpacingPropsProps,
-} from "./Types";
 import {ReportDetailStyles, SampleFormStyles} from "./ReportsDetailStyles";
 import {useSampleStore} from "../../../features/samples/model/store";
 import {
@@ -120,6 +112,14 @@ import {
 } from "../../../features/sideSection/model/selectors";
 import {selectShowSnackBarMessage} from "../../../features/snackbar/model/selectors";
 import {useSnackBarStore} from "../../../features/snackbar/model/store";
+import {
+  BoxContainerProps,
+  ReportDetailProps,
+  StackContainerProps,
+  StackFieldProps,
+  StackRowDirectionSpacingPropsProps,
+} from "./Types";
+import {ReportSideSectionButtons} from "./ReportsSideSectionButtons";
 
 export const ReportDetail = ({
   isReadOnlyMode,

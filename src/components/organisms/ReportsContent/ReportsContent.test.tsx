@@ -86,7 +86,7 @@ const mockAnalyteStoreState: AnalyteStore = {
   error: null,
 };
 
-jest.mock("../ReportsDetail/ReportsDetail", () => ({
+jest.mock("../../../widgets/ReportsDetail", () => ({
   ReportDetail: () => (
     <div data-testid="reportsDetail">Reports Detail Component</div>
   ),
