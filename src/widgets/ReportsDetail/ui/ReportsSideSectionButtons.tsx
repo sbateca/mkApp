@@ -8,7 +8,7 @@ import {
   SharedButtonSizes,
   SharedButtonVariants,
 } from "../../../utils/enums";
-import {ReportSideSectionActionsProps} from "./Types";
+import {ReportSideSectionActionsProps} from "../Types";
 import {EDIT_REPORTS_BUTTON_LABEL} from "../../../utils/constants";
 
 export const ReportSideSectionButtons = ({

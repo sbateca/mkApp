@@ -5,7 +5,6 @@ import {Box} from "@mui/material";
 import {TableRowProps} from "../../molecules/TableRow/Types";
 import {Button, Spinner, Table, Typography} from "../../../shared/ui";
 import {SideSection} from "../../../shared/ui/SideSection";
-import {ReportDetail} from "../ReportsDetail";
 import {reportsToTableRows} from "../../../adapters/tableRow";
 import {
   REPORTS_TITLE_CONFIG,
@@ -52,6 +51,7 @@ import {
 import {useSideSectionStore} from "../../../features/sideSection/model/store";
 import {useSnackBarStore} from "../../../features/snackbar/model/store";
 import {selectShowSnackBarMessage} from "../../../features/snackbar/model/selectors";
+import {ReportDetail} from "../../../widgets/ReportsDetail";
 
 export const ReportsContent = (): React.ReactElement => {
   const [rows, setRows] = useState<TableRowProps[]>([]);

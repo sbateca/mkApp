@@ -8,7 +8,7 @@ jest.mock("../../../Config/envManager", () => ({
     BACKEND_URL: "http://mockurl.com/api",
   },
 }));
-jest.mock("../../organisms/ReportsDetail", () => ({
+jest.mock("../../../widgets/ReportsDetail", () => ({
   ReportsDetail: () => <div data-testid="reportsDetailComponent" />,
 }));
 jest.mock("../../templates/Main/Main", () => ({
