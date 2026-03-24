@@ -40,14 +40,13 @@ import {
   REPORT_CRITERIA_LABEL_TEXT,
   REPORT_DATE_LABEL_TEXT,
   REPORT_RESULT_LABEL_TEXT,
-  SAMPLE_SUCCESSFULLY_UPDATED_TEXT,
   DATEPICKER_FORMAT,
   DATEPICKER_VIEWS,
   isEmpty,
   isNotValidDate,
 } from "../../../utils/constants";
 
-import {reportFormToReport, reportToReportForm} from "../../../entities/report";
+import {reportToReportForm} from "../../../entities/report";
 import {getAutoCompleteOptionsFromModel} from "../../../utils/model";
 import {useForm} from "../../../utils/hooks";
 import {ReportDetailStyles, SampleFormStyles} from "./ReportsDetailStyles";
@@ -80,13 +79,11 @@ import {
 } from "../../../features/criteria/model/selector";
 import {useReportStore} from "../../../entities/report/model/store";
 import {
-  selectEditReport,
   selectError,
-  selectGetReports,
   selectIsLoadingReport,
   selectSelectedReport,
 } from "../../../entities/report/model/selector";
-import {useCreateReport} from "../../../features/reports";
+import {useCreateReport, useEditReport} from "../../../features/reports";
 import {useAnalysisMethodsStore} from "../../../features/analysisMethods/model/store";
 import {
   selectAnalysisMethods,
@@ -126,8 +123,6 @@ export const ReportDetail = ({
   const selectedReport = useReportStore(selectSelectedReport);
   const isLoading = useReportStore(selectIsLoadingReport);
   const error = useReportStore(selectError);
-  const getReports = useReportStore(selectGetReports);
-  const editReport = useReportStore(selectEditReport);
 
   const samples = useSampleStore(selectSamples);
   const selectedSample = useSampleStore(selectSelectedSample);
@@ -184,19 +179,6 @@ export const ReportDetail = ({
     setFormFieldsValidationFunctions,
     cleanForm,
   } = useForm();
-
-  const handleEdit = async () => {
-    const parsedReport = reportFormToReport(form, selectedReport?.id ?? "");
-    const updatedReport = await editReport(selectedReport?.id, parsedReport);
-    if (updatedReport !== null) {
-      handleCloseSideSection();
-      showSnackBarMessage(
-        SAMPLE_SUCCESSFULLY_UPDATED_TEXT,
-        SnackBarSeverity.SUCCESS,
-        getReports,
-      );
-    }
-  };
 
   const getBoxContainerProps = (
     isLessThanMediumScreen: boolean,
@@ -284,6 +266,7 @@ export const ReportDetail = ({
     };
 
   const {handleCreateReport} = useCreateReport(setIsReadOnlyMode);
+  const {handleEditReport} = useEditReport(setIsReadOnlyMode);
 
   useEffect(() => {
     setFormFieldsValidationFunctions({
@@ -525,7 +508,7 @@ export const ReportDetail = ({
           isReadOnlyMode={isReadOnlyMode}
           setIsReadOnlyMode={setIsReadOnlyMode}
           handleCreateReport={() => handleCreateReport(form)}
-          handleEdit={handleEdit}
+          handleEdit={() => handleEditReport(form)}
         />
       </Box>
     </Box>
