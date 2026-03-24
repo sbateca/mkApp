@@ -1,6 +1,5 @@
 import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 
-import * as useSideSectionModule from "../../../utils/hooks/useSideSection";
 import {Report} from "../../../model/Report";
 import {ReportsContent} from "./ReportsContent";
 import {Sample, SampleType, Analyte} from "../../../model";
@@ -27,12 +26,6 @@ const mockReports: Report[] = buildReportsData(1, {
   analyte: mockAnalytes[0].id,
 });
 
-const mockUseSideSectionArgs = {
-  isSideSectionOpen: false,
-  setIsSideSectionOpen: jest.fn(),
-  sideSectionTitle: "",
-  setSideSectionTitle: jest.fn(),
-};
 const mockedSamplesState = {
   samples: mockSamples,
   selectedSample: mockSamples[0],
@@ -187,11 +180,10 @@ describe("ReportsContent test", () => {
   });
 
   it("should render the report detail when click in details button", async () => {
-    jest.spyOn(useSideSectionModule, "useSideSection").mockReturnValue({
-      ...mockUseSideSectionArgs,
+    mockSideSectionStoreState = {
+      ...mockSideSectionStoreState,
       isSideSectionOpen: true,
-    });
-
+    };
     render(<ReportsContent />);
 
     const detailsButton = screen.queryByDisplayValue("View");

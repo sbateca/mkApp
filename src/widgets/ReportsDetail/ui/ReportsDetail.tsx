@@ -41,7 +41,6 @@ import {
   REPORT_DATE_LABEL_TEXT,
   REPORT_RESULT_LABEL_TEXT,
   SAMPLE_SUCCESSFULLY_UPDATED_TEXT,
-  REPORT_SUCCESSFULLY_CREATED_TEXT,
   DATEPICKER_FORMAT,
   DATEPICKER_VIEWS,
   isEmpty,
@@ -84,13 +83,13 @@ import {
 } from "../../../features/criteria/model/selector";
 import {useReportStore} from "../../../features/reports/model/store";
 import {
-  selectCreateReport,
   selectEditReport,
   selectError,
   selectGetReports,
   selectIsLoadingReport,
   selectSelectedReport,
 } from "../../../features/reports/model/selector";
+import {useCreateReport} from "../../../features/reports";
 import {useAnalysisMethodsStore} from "../../../features/analysisMethods/model/store";
 import {
   selectAnalysisMethods,
@@ -106,10 +105,7 @@ import {
   selectSetAnalytes,
 } from "../../../features/analyte/model/selectors";
 import {useSideSectionStore} from "../../../features/sideSection/model/store";
-import {
-  selectSetIsSideSectionOpen,
-  selectSideSectionTitle,
-} from "../../../features/sideSection/model/selectors";
+import {selectSideSectionTitle} from "../../../features/sideSection/model/selectors";
 import {selectShowSnackBarMessage} from "../../../features/snackbar/model/selectors";
 import {useSnackBarStore} from "../../../features/snackbar/model/store";
 import {
@@ -120,6 +116,7 @@ import {
   StackRowDirectionSpacingPropsProps,
 } from "./Types";
 import {ReportSideSectionButtons} from "./ReportsSideSectionButtons";
+import {useSideSection} from "../../../features/sideSection/model/useSideSection";
 
 export const ReportDetail = ({
   isReadOnlyMode,
@@ -133,7 +130,6 @@ export const ReportDetail = ({
   const isLoading = useReportStore(selectIsLoadingReport);
   const error = useReportStore(selectError);
   const getReports = useReportStore(selectGetReports);
-  const createReport = useReportStore(selectCreateReport);
   const editReport = useReportStore(selectEditReport);
 
   const samples = useSampleStore(selectSamples);
@@ -168,7 +164,7 @@ export const ReportDetail = ({
   const setCriterias = useCriteriaStore(selectSetCriterias);
 
   const sideSectionTitle = useSideSectionStore(selectSideSectionTitle);
-  const setIsSideSectionOpen = useSideSectionStore(selectSetIsSideSectionOpen);
+  const {handleCloseSideSection} = useSideSection(setIsReadOnlyMode);
 
   const showSnackBarMessage = useSnackBarStore(selectShowSnackBarMessage);
 
@@ -191,25 +187,6 @@ export const ReportDetail = ({
     setFormFieldsValidationFunctions,
     cleanForm,
   } = useForm();
-
-  const handleCloseSideSection = () => {
-    if (setIsSideSectionOpen) {
-      setIsSideSectionOpen(false);
-      setIsReadOnlyMode(true);
-    }
-  };
-
-  const handleCreateReport = async () => {
-    const newReport = await createReport(reportFormToReport(form, ""));
-    if (newReport !== null) {
-      showSnackBarMessage(
-        REPORT_SUCCESSFULLY_CREATED_TEXT,
-        SnackBarSeverity.SUCCESS,
-        getReports,
-      );
-      handleCloseSideSection();
-    }
-  };
 
   const handleEdit = async () => {
     const parsedReport = reportFormToReport(form, selectedReport?.id ?? "");
@@ -308,6 +285,8 @@ export const ReportDetail = ({
         }) ?? []
       );
     };
+
+  const {handleCreateReport} = useCreateReport(setIsReadOnlyMode);
 
   useEffect(() => {
     setFormFieldsValidationFunctions({
@@ -548,7 +527,7 @@ export const ReportDetail = ({
           report={selectedReport}
           isReadOnlyMode={isReadOnlyMode}
           setIsReadOnlyMode={setIsReadOnlyMode}
-          handleCreateReport={handleCreateReport}
+          handleCreateReport={() => handleCreateReport(form)}
           handleEdit={handleEdit}
         />
       </Box>
