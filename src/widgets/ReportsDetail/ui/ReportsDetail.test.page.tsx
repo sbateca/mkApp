@@ -20,7 +20,7 @@ import {buildFormData} from "../../../shared/test/builders/formDataBuilder";
 import {ClientsStore} from "../../../features/clients/model/types";
 import {SampleTypeStore} from "../../../features/sampleType/model/types";
 import {CriteriaStore} from "../../../features/criteria/model/types";
-import {ReportStore} from "../../../features/reports/model/types";
+import {ReportStore} from "../../../entities/report/model/types";
 import {AnalysisMethodStore} from "../../../features/analysisMethods/model/types";
 import {AnalyteStore} from "../../../features/analyte/model/types";
 import {SideSectionStore} from "../../../features/sideSection/model/types";
@@ -97,7 +97,7 @@ jest.mock("../../../features/samples/model/store", () => ({
   useSampleStore: (selector: any) => selector(mockedSamplesState),
 }));
 
-jest.mock("../../../features/reports/model/store", () => ({
+jest.mock("../../../entities/report/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useReportStore: (selector: any) => selector(mockedReportState),
 }));
@@ -248,13 +248,6 @@ export const renderReportDetail = async () => {
     showSnackBarMessage: jest.fn(),
     closeSnackBar: jest.fn(),
   };
-
-  jest.spyOn(hooks, "useSideSection").mockReturnValue({
-    setIsSideSectionOpen: jest.fn().mockReturnValue(true),
-    setSideSectionTitle: jest.fn().mockReturnValue("Mock title"),
-    isSideSectionOpen: true,
-    sideSectionTitle: "Mock title",
-  });
 
   jest.spyOn(hooks, "useForm").mockReturnValue({
     form: mockReportDetailData.form,

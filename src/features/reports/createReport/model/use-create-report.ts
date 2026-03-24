@@ -1,14 +1,17 @@
 import React from "react";
-import {reportFormToReport} from "../../../../adapters";
 import {
   FormProps,
   REPORT_SUCCESSFULLY_CREATED_TEXT,
 } from "../../../../utils/constants";
 import {SnackBarSeverity} from "../../../../utils/enums";
 import {selectShowSnackBarMessage, useSnackBarStore} from "../../../snackbar";
-import {selectCreateReport, selectGetReports} from "../../model/selector";
-import {useReportStore} from "../../model/store";
+import {
+  selectCreateReport,
+  selectGetReports,
+} from "../../../../entities/report/model/selector";
+import {useReportStore} from "../../../../entities/report/model/store";
 import {useSideSection} from "../../../sideSection/model/useSideSection";
+import {reportFormToReport} from "../../../../entities/report";
 
 export const useCreateReport = (
   setIsReadOnlyMode: React.Dispatch<React.SetStateAction<boolean>>,

@@ -11,7 +11,7 @@ import {
   buildReportsData,
   buildSamplesData,
   buildSampleTypesData,
-} from "../shared/test/builders";
+} from "../../../shared/test/builders";
 import {
   AnalysisMethod,
   Analyte,
@@ -19,9 +19,9 @@ import {
   Criteria,
   Sample,
   SampleType,
-} from "../model";
-import {buildAnalysisMethodsData} from "../shared/test/builders/analisysMethodBuilder";
-import {buildCriteriasData} from "../shared/test/builders/criteriaBuilder";
+} from "../../../model";
+import {buildAnalysisMethodsData} from "../../../shared/test/builders/analisysMethodBuilder";
+import {buildCriteriasData} from "../../../shared/test/builders/criteriaBuilder";
 
 const mockSampleTypes: SampleType[] = buildSampleTypesData(2);
 const mockAnalytes: Analyte[] = buildAnalytesData(2);
@@ -39,7 +39,7 @@ const mockReports = buildReportsData(2, {
   criteria: mockCriterias[0].id,
 });
 
-jest.mock("../config/EnvManager", () => ({
+jest.mock("../../../config/EnvManager", () => ({
   __esModule: true,
   default: {
     BACKEND_URL: "http://mockurl.com/api",

@@ -47,10 +47,7 @@ import {
   isNotValidDate,
 } from "../../../utils/constants";
 
-import {
-  reportFormToReport,
-  reportToReportForm,
-} from "../../../adapters/reports";
+import {reportFormToReport, reportToReportForm} from "../../../entities/report";
 import {getAutoCompleteOptionsFromModel} from "../../../utils/model";
 import {useForm} from "../../../utils/hooks";
 import {ReportDetailStyles, SampleFormStyles} from "./ReportsDetailStyles";
@@ -81,14 +78,14 @@ import {
   selectIsLoadingCriterias,
   selectSetCriterias,
 } from "../../../features/criteria/model/selector";
-import {useReportStore} from "../../../features/reports/model/store";
+import {useReportStore} from "../../../entities/report/model/store";
 import {
   selectEditReport,
   selectError,
   selectGetReports,
   selectIsLoadingReport,
   selectSelectedReport,
-} from "../../../features/reports/model/selector";
+} from "../../../entities/report/model/selector";
 import {useCreateReport} from "../../../features/reports";
 import {useAnalysisMethodsStore} from "../../../features/analysisMethods/model/store";
 import {

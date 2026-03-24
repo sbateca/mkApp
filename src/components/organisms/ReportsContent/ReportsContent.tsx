@@ -28,7 +28,7 @@ import {
   selectSamplesTypes,
   selectSetSampleTypes,
 } from "../../../features/sampleType/model/selectors";
-import {useReportStore} from "../../../features/reports/model/store";
+import {useReportStore} from "../../../entities/report/model/store";
 import {
   selectError,
   selectGetReports,
@@ -36,7 +36,7 @@ import {
   selectReports,
   selectSetReports,
   selectSetSelectedReport,
-} from "../../../features/reports/model/selector";
+} from "../../../entities/report/model/selector";
 import {useAnalyteStore} from "../../../features/analyte/model/store";
 import {
   selectAnalytes,

@@ -1,6 +1,6 @@
 import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 
-import {Report} from "../../../model/Report";
+import {Report} from "../../../entities/report/model/Report";
 import {ReportsContent} from "./ReportsContent";
 import {Sample, SampleType, Analyte} from "../../../model";
 import {
@@ -10,7 +10,7 @@ import {
   buildSamplesData,
   buildSampleTypesData,
 } from "../../../shared/test/builders";
-import {ReportStore} from "../../../features/reports/model/types";
+import {ReportStore} from "../../../entities/report/model/types";
 import {AnalyteStore} from "../../../features/analyte/model/types";
 import {SideSectionStore} from "../../../features/sideSection/model/types";
 
@@ -85,7 +85,7 @@ jest.mock("../../../widgets/ReportsDetail", () => ({
   ),
 }));
 
-jest.mock("../../../features/reports/model/store", () => ({
+jest.mock("../../../entities/report/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useReportStore: (selector: any) => selector(mockedReportsState),
 }));
