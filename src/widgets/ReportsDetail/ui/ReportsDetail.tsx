@@ -17,7 +17,6 @@ import dayjs from "dayjs";
 
 import {Typography, Button, Spinner, AutoComplete} from "../../../shared/ui";
 import {SampleReportDetails} from "../../../entities/sample/";
-import {AutoCompleteOption} from "../../../shared/ui/AutoComplete/types";
 import {
   ReportFormFields,
   SelectVariants,
@@ -54,50 +53,20 @@ import {useSampleStore} from "../../../features/samples/model/store";
 import {
   selectGetSampleById,
   selectIsLoading,
-  selectSamples,
   selectSelectedSample,
   selectSetSelectedSample,
 } from "../../../features/samples";
-import {
-  selectClients,
-  selectIsLoadingClient,
-  useClientStore,
-} from "../../../features/clients";
-import {useSampleTypeStore} from "../../../features/sampleType/model/store";
-import {
-  selectGetSampleTypes,
-  selectIsLoadingSampleTypes,
-  selectSamplesTypes,
-  selectSetSampleTypes,
-} from "../../../features/sampleType/model/selectors";
-import {useCriteriaStore} from "../../../features/criteria/model/store";
-import {
-  selectCriterias,
-  selectGetCriterias,
-  selectIsLoadingCriterias,
-  selectSetCriterias,
-} from "../../../features/criteria/model/selector";
 import {useReportStore} from "../../../entities/report/model/store";
 import {
   selectError,
   selectIsLoadingReport,
   selectSelectedReport,
 } from "../../../entities/report/model/selector";
-import {useCreateReport, useEditReport} from "../../../features/reports";
-import {useAnalysisMethodsStore} from "../../../features/analysisMethods/model/store";
 import {
-  selectAnalysisMethods,
-  selectGetAnalysisMethods,
-  selectIsLoadingAnalysisMethods,
-  selectSetAnalysisMethods,
-} from "../../../features/analysisMethods/model/selectors";
-import {useAnalyteStore} from "../../../features/analyte/model/store";
-import {
-  selectAnalytes,
-  selectGetAnalytes,
-  selectIsLoadingAnalytes,
-  selectSetAnalytes,
-} from "../../../features/analyte/model/selectors";
+  useCreateReport,
+  useEditReport,
+  useLoadReportDetailData,
+} from "../../../features/reports";
 import {useSideSectionStore} from "../../../features/sideSection/model/store";
 import {selectSideSectionTitle} from "../../../features/sideSection/model/selectors";
 import {selectShowSnackBarMessage} from "../../../features/snackbar/model/selectors";
@@ -124,48 +93,29 @@ export const ReportDetail = ({
   const isLoading = useReportStore(selectIsLoadingReport);
   const error = useReportStore(selectError);
 
-  const samples = useSampleStore(selectSamples);
   const selectedSample = useSampleStore(selectSelectedSample);
   const isLoadingSample = useSampleStore(selectIsLoading);
   const getSampleById = useSampleStore(selectGetSampleById);
   const setSelectedSample = useSampleStore(selectSetSelectedSample);
-
-  const clients = useClientStore(selectClients);
-  const isLoadingClients = useClientStore(selectIsLoadingClient);
-
-  const sampleTypes = useSampleTypeStore(selectSamplesTypes);
-  const getSampleTypes = useSampleTypeStore(selectGetSampleTypes);
-  const isLoadingSampleTypes = useSampleTypeStore(selectIsLoadingSampleTypes);
-  const setSampleTypes = useSampleTypeStore(selectSetSampleTypes);
-
-  const analysisMethods = useAnalysisMethodsStore(selectAnalysisMethods);
-  const isLoadingAnalysisMethods = useAnalysisMethodsStore(
-    selectIsLoadingAnalysisMethods,
-  );
-  const getAnalysisMethods = useAnalysisMethodsStore(selectGetAnalysisMethods);
-  const setAnalysisMethods = useAnalysisMethodsStore(selectSetAnalysisMethods);
-
-  const analytes = useAnalyteStore(selectAnalytes);
-  const isLoadingAnalytes = useAnalyteStore(selectIsLoadingAnalytes);
-  const getAnalytes = useAnalyteStore(selectGetAnalytes);
-  const setAnalytes = useAnalyteStore(selectSetAnalytes);
-
-  const criterias = useCriteriaStore(selectCriterias);
-  const isLoadingCriterias = useCriteriaStore(selectIsLoadingCriterias);
-  const getCriterias = useCriteriaStore(selectGetCriterias);
-  const setCriterias = useCriteriaStore(selectSetCriterias);
 
   const sideSectionTitle = useSideSectionStore(selectSideSectionTitle);
   const {handleCloseSideSection} = useSideSection(setIsReadOnlyMode);
 
   const showSnackBarMessage = useSnackBarStore(selectShowSnackBarMessage);
 
-  const isLoadingAll =
-    isLoadingClients ||
-    isLoadingSampleTypes ||
-    isLoadingAnalysisMethods ||
-    isLoadingAnalytes ||
-    isLoadingCriterias;
+  const {
+    clients,
+    analysisMethods,
+    analytes,
+    criterias,
+    sampleTypes,
+    isLoadingAll,
+    getSampleTypeAutoCompleteOptionsFromSamples,
+  } = useLoadReportDetailData();
+
+  const {handleCreateReport} = useCreateReport(setIsReadOnlyMode);
+
+  const {handleEditReport} = useEditReport(setIsReadOnlyMode);
 
   const {
     isNotValidForm,
@@ -250,24 +200,6 @@ export const ReportDetail = ({
     return null;
   };
 
-  const getSampleTypeAutoCompleteOptionsFromSamples =
-    (): AutoCompleteOption[] => {
-      return (
-        samples?.map((sample) => {
-          const sampleTypeFound = sampleTypes?.find(
-            (sampleType) => sampleType.id === sample.sampleTypeId,
-          );
-          return {
-            id: sample.id,
-            optionLabel: `${sample.sampleCode} - ${sampleTypeFound?.name}`,
-          };
-        }) ?? []
-      );
-    };
-
-  const {handleCreateReport} = useCreateReport(setIsReadOnlyMode);
-  const {handleEditReport} = useEditReport(setIsReadOnlyMode);
-
   useEffect(() => {
     setFormFieldsValidationFunctions({
       reportDate: [isEmpty, isNotValidDate],
@@ -312,40 +244,6 @@ export const ReportDetail = ({
     };
     run();
   }, [form.sampleId, getSampleById, setSelectedSample]);
-
-  useEffect(() => {
-    const getAllSampleTypes = async () => {
-      const sampleTypes = await getSampleTypes();
-      setSampleTypes(sampleTypes);
-    };
-    getAllSampleTypes();
-  }, [getSampleTypes, setSampleTypes]);
-
-  useEffect(() => {
-    const getAllCriterias = async () => {
-      const criterias = await getCriterias();
-      setCriterias(criterias);
-    };
-    getAllCriterias();
-  }, [getCriterias, setCriterias]);
-
-  useEffect(() => {
-    const getAllAnalysisMethods = async () => {
-      const analysisMethods = await getAnalysisMethods();
-      setAnalysisMethods(analysisMethods);
-    };
-
-    getAllAnalysisMethods();
-  }, [getAnalysisMethods, setAnalysisMethods]);
-
-  useEffect(() => {
-    const getAllAnalytes = async () => {
-      const analytes = await getAnalytes();
-      setAnalytes(analytes);
-    };
-
-    getAllAnalytes();
-  }, [getAnalytes, setAnalytes]);
 
   return (
     <Box sx={getBoxContainerProps(isLessThanMediumScreen) as SxProps}>
