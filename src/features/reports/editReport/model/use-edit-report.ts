@@ -19,14 +19,14 @@ export const useEditReport = (
   const getReports = useReportStore(selectGetReports);
   const editReport = useReportStore(selectEditReport);
   const selectedReport = useReportStore(selectSelectedReport);
-  const {handleCloseSideSection} = useSideSection(setIsReadOnlyMode);
+  const {onCloseSideSection} = useSideSection(setIsReadOnlyMode);
   const showSnackBarMessage = useSnackBarStore(selectShowSnackBarMessage);
 
   const handleEditReport = async (form: FormProps) => {
     const parsedReport = reportFormToReport(form, selectedReport?.id ?? "");
     const updatedReport = await editReport(selectedReport?.id, parsedReport);
     if (updatedReport !== null) {
-      handleCloseSideSection();
+      onCloseSideSection();
       showSnackBarMessage(
         SAMPLE_SUCCESSFULLY_UPDATED_TEXT,
         SnackBarSeverity.SUCCESS,

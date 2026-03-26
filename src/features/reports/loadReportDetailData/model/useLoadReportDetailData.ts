@@ -104,20 +104,19 @@ export const useLoadReportDetailData = () => {
     getAllAnalytes();
   }, [getAnalytes, setAnalytes]);
 
-  const getSampleTypeAutoCompleteOptionsFromSamples =
-    (): AutoCompleteOption[] => {
-      return (
-        samples?.map((sample) => {
-          const sampleTypeFound = sampleTypes?.find(
-            (sampleType) => sampleType.id === sample.sampleTypeId,
-          );
-          return {
-            id: sample.id,
-            optionLabel: `${sample.sampleCode} - ${sampleTypeFound?.name}`,
-          };
-        }) ?? []
-      );
-    };
+  const getSampleTypeOptionsFromSamples = (): AutoCompleteOption[] => {
+    return (
+      samples?.map((sample) => {
+        const sampleTypeFound = sampleTypes?.find(
+          (sampleType) => sampleType.id === sample.sampleTypeId,
+        );
+        return {
+          id: sample.id,
+          optionLabel: `${sample.sampleCode} - ${sampleTypeFound?.name}`,
+        };
+      }) ?? []
+    );
+  };
 
   return {
     clients,
@@ -126,6 +125,6 @@ export const useLoadReportDetailData = () => {
     criterias,
     sampleTypes,
     isLoadingAll,
-    getSampleTypeAutoCompleteOptionsFromSamples,
+    getSampleTypeOptionsFromSamples,
   };
 };

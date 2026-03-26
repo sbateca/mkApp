@@ -6,12 +6,12 @@ export const useSideSection = (
 ) => {
   const setIsSideSectionOpen = useSideSectionStore(selectSetIsSideSectionOpen);
 
-  const handleCloseSideSection = () => {
+  const onCloseSideSection = () => {
     if (setIsSideSectionOpen) {
       setIsSideSectionOpen(false);
       setIsReadOnlyMode(true);
     }
   };
 
-  return {handleCloseSideSection};
+  return {onCloseSideSection};
 };

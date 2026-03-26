@@ -19,7 +19,7 @@ export const useCreateReport = (
   const createReport = useReportStore(selectCreateReport);
   const showSnackBarMessage = useSnackBarStore(selectShowSnackBarMessage);
   const getReports = useReportStore(selectGetReports);
-  const {handleCloseSideSection} = useSideSection(setIsReadOnlyMode);
+  const {onCloseSideSection} = useSideSection(setIsReadOnlyMode);
 
   const handleCreateReport = async (form: FormProps) => {
     const newReport = await createReport(reportFormToReport(form, ""));
@@ -29,7 +29,7 @@ export const useCreateReport = (
         SnackBarSeverity.SUCCESS,
         getReports,
       );
-      handleCloseSideSection();
+      onCloseSideSection();
     }
   };
 
