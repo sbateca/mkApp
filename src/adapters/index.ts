@@ -3,7 +3,7 @@ export * from "./analyte";
 export * from "./clients";
 export * from "./criteria";
 export * from "./criteria";
-export * from "./reports";
+export * from "../entities/report/lib/reportMappers";
 export * from "./samples";
 export * from "./sampleType";
 export * from "./tableRow";

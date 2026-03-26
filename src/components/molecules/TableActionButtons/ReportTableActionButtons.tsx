@@ -21,7 +21,7 @@ import {
   REPORT_DELETE_CONFIRMATION_TEXT,
   SAMPLE_SUCCESSFULLY_DELETED_TEXT,
 } from "../../../utils/constants";
-import {useReportStore} from "../../../features/reports/model/store";
+import {useReportStore} from "../../../entities/report/model/store";
 import {
   selectDeleteReport,
   selectError,
@@ -29,7 +29,7 @@ import {
   selectGetReports,
   selectIsLoadingReport,
   selectSetSelectedReport,
-} from "../../../features/reports/model/selector";
+} from "../../../entities/report/model/selector";
 import {useSideSectionStore} from "../../../features/sideSection/model/store";
 import {
   selectSetIsSideSectionOpen,

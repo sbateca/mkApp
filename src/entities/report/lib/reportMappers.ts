@@ -5,7 +5,7 @@ import {Report} from "../model/Report";
 import {
   RESPONSE_DATA_NOT_VALID_ERROR,
   getInvalidDataErrorMessage,
-} from "../utils/constants";
+} from "../../../utils/constants";
 
 export const axiosResponseToReports = (
   response: AxiosResponse<unknown>,

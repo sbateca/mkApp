@@ -1,6 +1,6 @@
 import {render, screen} from "@testing-library/react";
 import {ReportTableActionButtons} from "./ReportTableActionButtons";
-import {ReportStore} from "../../../features/reports/model/types";
+import {ReportStore} from "../../../entities/report/model/types";
 import {SideSectionStore} from "../../../features/sideSection/model/types";
 
 let mockReportsStoreState: ReportStore = {
@@ -31,7 +31,7 @@ jest.mock("../../../config/EnvManager", () => ({
   },
 }));
 
-jest.mock("../../../features/reports/model/store", () => ({
+jest.mock("../../../entities/report/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useReportStore: (selector: any) => selector(mockReportsStoreState),
 }));

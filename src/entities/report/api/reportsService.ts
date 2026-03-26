@@ -1,8 +1,8 @@
 import axios from "axios";
 
-import EnvManager from "../config/EnvManager";
-import {Report} from "../model/Report";
-import {axiosResponseToReports} from "../adapters/reports";
+import EnvManager from "../../../config/EnvManager";
+import {axiosResponseToReports} from "../lib/reportMappers";
+import {Report} from "../../../model";
 
 export const getReportsService = async (): Promise<Report[]> => {
   try {

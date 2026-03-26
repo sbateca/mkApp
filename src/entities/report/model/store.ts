@@ -1,17 +1,17 @@
 import {create} from "zustand";
-import {ReportStore} from "./types";
+import {Report} from "./Report";
+import {
+  REPORT_ID_MISSING_TEXT,
+  REPORT_ID_OR_REPORTS_MISSING_TEXT,
+} from "../../../utils/constants";
 import {
   createReportService,
   deleteReportService,
   editReportService,
   getReportByIdService,
   getReportsService,
-} from "../../../services";
-import {Report} from "../../../model/Report";
-import {
-  REPORT_ID_MISSING_TEXT,
-  REPORT_ID_OR_REPORTS_MISSING_TEXT,
-} from "../../../utils/constants";
+} from "..";
+import {ReportStore} from "./types";
 
 export const useReportStore = create<ReportStore>((set) => ({
   reports: null,

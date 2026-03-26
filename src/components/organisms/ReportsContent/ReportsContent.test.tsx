@@ -1,7 +1,6 @@
 import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 
-import * as useSideSectionModule from "../../../utils/hooks/useSideSection";
-import {Report} from "../../../model/Report";
+import {Report} from "../../../entities/report/model/Report";
 import {ReportsContent} from "./ReportsContent";
 import {Sample, SampleType, Analyte} from "../../../model";
 import {
@@ -11,7 +10,7 @@ import {
   buildSamplesData,
   buildSampleTypesData,
 } from "../../../shared/test/builders";
-import {ReportStore} from "../../../features/reports/model/types";
+import {ReportStore} from "../../../entities/report/model/types";
 import {AnalyteStore} from "../../../features/analyte/model/types";
 import {SideSectionStore} from "../../../features/sideSection/model/types";
 
@@ -27,12 +26,6 @@ const mockReports: Report[] = buildReportsData(1, {
   analyte: mockAnalytes[0].id,
 });
 
-const mockUseSideSectionArgs = {
-  isSideSectionOpen: false,
-  setIsSideSectionOpen: jest.fn(),
-  sideSectionTitle: "",
-  setSideSectionTitle: jest.fn(),
-};
 const mockedSamplesState = {
   samples: mockSamples,
   selectedSample: mockSamples[0],
@@ -92,7 +85,7 @@ jest.mock("../../../widgets/ReportsDetail", () => ({
   ),
 }));
 
-jest.mock("../../../features/reports/model/store", () => ({
+jest.mock("../../../entities/report/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useReportStore: (selector: any) => selector(mockedReportsState),
 }));
@@ -187,11 +180,10 @@ describe("ReportsContent test", () => {
   });
 
   it("should render the report detail when click in details button", async () => {
-    jest.spyOn(useSideSectionModule, "useSideSection").mockReturnValue({
-      ...mockUseSideSectionArgs,
+    mockSideSectionStoreState = {
+      ...mockSideSectionStoreState,
       isSideSectionOpen: true,
-    });
-
+    };
     render(<ReportsContent />);
 
     const detailsButton = screen.queryByDisplayValue("View");
