@@ -1,14 +1,14 @@
 import {render, screen, waitFor} from "@testing-library/react";
 
 import {SamplesContent} from "./SamplesContent";
-import {Sample} from "../../../model/Sample";
+import {Sample} from "../../../entities/sample/model/Sample";
 import {SampleType} from "../../../model";
 import {
   buildClientsData,
   buildSamplesData,
   buildSampleTypesData,
 } from "../../../shared/test/builders";
-import {ClientsStore} from "../../../features/clients/model/types";
+import {ClientsStore} from "../../../entities/client/model/types";
 import {buildFormData} from "../../../shared/test/builders/formDataBuilder";
 import dayjs from "dayjs";
 import {SideSectionStore} from "../../../features/sideSection/model/types";
@@ -120,17 +120,17 @@ jest.mock("../../../Config/envManager", () => ({
   },
 }));
 
-jest.mock("../../../features/samples/model/store", () => ({
+jest.mock("../../../entities/sample/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSampleStore: (selector: any) => selector(mockSamplesStoreState),
 }));
 
-jest.mock("../../../features/clients/model/store", () => ({
+jest.mock("../../../entities/client/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useClientStore: (selector: any) => selector(mockClientStoreState),
 }));
 
-jest.mock("../../../features/sampleType/model/store", () => ({
+jest.mock("../../../entities/sampleType/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSampleTypeStore: (selector: any) => selector(mockSampleTypeStoreState),
 }));
@@ -145,7 +145,7 @@ jest.mock("../../../features/snackbar/model/store", () => ({
   useSnackBarStore: (selector: any) => selector(mockSnackBarStoreState),
 }));
 
-jest.mock("../SampleDetail/SampleDetail", () => ({
+jest.mock("../../../widgets/SampleDetail/ui/SampleDetail", () => ({
   SampleDetail: () => (
     <div data-testid="sampleDetail">Sample Detail Component</div>
   ),

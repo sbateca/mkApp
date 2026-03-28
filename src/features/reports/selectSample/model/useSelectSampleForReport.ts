@@ -6,7 +6,7 @@ import {
   selectSelectedSample,
   selectSetSelectedSample,
   useSampleStore,
-} from "../../../samples";
+} from "../../../../entities/sample";
 
 export const useSelectSampleForReport = (form: FormProps) => {
   const selectedSample = useSampleStore(selectSelectedSample);

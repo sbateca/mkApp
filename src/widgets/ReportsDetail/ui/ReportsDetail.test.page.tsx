@@ -5,8 +5,8 @@ import * as hooks from "../../../utils/hooks";
 import {SnackBarSeverity} from "../../../utils/enums";
 import dayjs from "dayjs";
 import {DATEPICKER_FORMAT} from "../../../utils/constants";
-import {SamplesStore} from "../../../features/samples/model/types";
-import {Analyte, Sample, SampleType} from "../../../model";
+import {SamplesStore} from "../../../entities/sample/model/types";
+import {Analyte} from "../../../model";
 import {
   buildAnalytesData,
   buildClientsData,
@@ -17,14 +17,16 @@ import {
 import {buildAnalysisMethodsData} from "../../../shared/test/builders/analisysMethodBuilder";
 import {buildCriteriasData} from "../../../shared/test/builders/criteriaBuilder";
 import {buildFormData} from "../../../shared/test/builders/formDataBuilder";
-import {ClientsStore} from "../../../features/clients/model/types";
-import {SampleTypeStore} from "../../../features/sampleType/model/types";
+import {ClientsStore} from "../../../entities/client/model/types";
+import {SampleTypeStore} from "../../../entities/sampleType/model/types";
 import {CriteriaStore} from "../../../features/criteria/model/types";
 import {ReportStore} from "../../../entities/report/model/types";
 import {AnalysisMethodStore} from "../../../features/analysisMethods/model/types";
 import {AnalyteStore} from "../../../features/analyte/model/types";
 import {SideSectionStore} from "../../../features/sideSection/model/types";
 import {SnackBarStore} from "../../../features/snackbar/model/types";
+import {Sample} from "../../../entities/sample";
+import {SampleType} from "../../../entities/sampleType";
 
 const today = dayjs();
 const RENDERED_FORMAT_DATE = "MM/DD/YYYY";
@@ -92,7 +94,7 @@ let mockAnalyteStoreState: AnalyteStore;
 let mockSideSectionStoreState: SideSectionStore;
 let mockSnackBarStoreState: SnackBarStore;
 
-jest.mock("../../../features/samples/model/store", () => ({
+jest.mock("../../../entities/sample/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSampleStore: (selector: any) => selector(mockedSamplesState),
 }));
@@ -102,12 +104,12 @@ jest.mock("../../../entities/report/model/store", () => ({
   useReportStore: (selector: any) => selector(mockedReportState),
 }));
 
-jest.mock("../../../features/clients/model/store", () => ({
+jest.mock("../../../entities/client/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useClientStore: (selector: any) => selector(mockClientStoreState),
 }));
 
-jest.mock("../../../features/sampleType/model/store", () => ({
+jest.mock("../../../entities/sampleType/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSampleTypeStore: (selector: any) => selector(mockSampleTypeStoreState),
 }));

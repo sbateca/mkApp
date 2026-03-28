@@ -1,6 +1,6 @@
 import {AxiosResponse} from "axios";
 
-import {SampleType} from "../model/SampleType";
+import {SampleType} from "../entities/sampleType/model/SampleType";
 import {
   RESPONSE_DATA_NOT_VALID_ERROR,
   getInvalidDataErrorMessage,

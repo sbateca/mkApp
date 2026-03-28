@@ -17,7 +17,7 @@ import {
   selectClients,
   selectIsLoadingClient,
   useClientStore,
-} from "../../../clients";
+} from "../../../../entities/client";
 import {
   selectCriterias,
   selectGetCriterias,
@@ -25,14 +25,14 @@ import {
   selectSetCriterias,
 } from "../../../criteria/model/selector";
 import {useCriteriaStore} from "../../../criteria/model/store";
-import {selectSamples, useSampleStore} from "../../../samples";
+import {selectSamples, useSampleStore} from "../../../../entities/sample";
 import {
   selectGetSampleTypes,
   selectIsLoadingSampleTypes,
   selectSamplesTypes,
   selectSetSampleTypes,
-} from "../../../sampleType/model/selectors";
-import {useSampleTypeStore} from "../../../sampleType/model/store";
+} from "../../../../entities/sampleType/model/selectors";
+import {useSampleTypeStore} from "../../../../entities/sampleType/model/store";
 import {AutoCompleteOption} from "../../../../shared/ui/AutoComplete/types";
 
 export const useLoadReportDetailData = () => {

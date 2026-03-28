@@ -90,12 +90,12 @@ jest.mock("../../../entities/report/model/store", () => ({
   useReportStore: (selector: any) => selector(mockedReportsState),
 }));
 
-jest.mock("../../../features/samples/model/store", () => ({
+jest.mock("../../../entities/sample/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSampleStore: (selector: any) => selector(mockedSamplesState),
 }));
 
-jest.mock("../../../features/sampleType/model/store", () => ({
+jest.mock("../../../entities/sampleType/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSampleTypeStore: (selector: any) => selector(mockSampleTypeStoreState),
 }));

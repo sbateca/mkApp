@@ -4,7 +4,6 @@ import {Box} from "@mui/material";
 
 import {Button, Spinner, Table, Typography} from "../../../shared/ui";
 import {SideSection} from "../../../shared/ui/SideSection/SideSection";
-import {SampleDetail} from "../SampleDetail";
 
 import {samplesToTableRows} from "../../../adapters/tableRow";
 import {
@@ -22,25 +21,25 @@ import {
 } from "../../../utils/constants";
 import {TableRowProps} from "../../molecules/TableRow/Types";
 import {SampleContentStyles} from "./SamplesContentStyles";
-import {useSampleStore} from "../../../features/samples/model/store";
+import {useSampleStore} from "../../../entities/sample/model/store";
 import {
   selectError,
   selectGetSamples,
   selectIsLoading,
   selectSamples,
   selectSetSelectedSample,
-} from "../../../features/samples/model/selectors";
+} from "../../../entities/sample/model/selectors";
 import {
   selectClients,
   selectGetClients,
   useClientStore,
-} from "../../../features/clients";
-import {useSampleTypeStore} from "../../../features/sampleType/model/store";
+} from "../../../entities/client";
+import {useSampleTypeStore} from "../../../entities/sampleType/model/store";
 import {
   selectGetSampleTypes,
   selectSamplesTypes,
   selectSetSampleTypes,
-} from "../../../features/sampleType/model/selectors";
+} from "../../../entities/sampleType/model/selectors";
 import {
   selectIsSideSectionOpen,
   selectSetIsSideSectionOpen,
@@ -49,6 +48,7 @@ import {
 import {useSideSectionStore} from "../../../features/sideSection/model/store";
 import {useSnackBarStore} from "../../../features/snackbar/model/store";
 import {selectShowSnackBarMessage} from "../../../features/snackbar/model/selectors";
+import {SampleDetail} from "../../../widgets/SampleDetail";
 
 export const SamplesContent = (): React.ReactElement => {
   const [rows, setRows] = useState<TableRowProps[]>([]);
