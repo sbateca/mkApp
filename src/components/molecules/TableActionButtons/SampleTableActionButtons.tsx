@@ -21,7 +21,7 @@ import {
   SAMPLE_DELETE_CONFIRMATION_TITLE,
   SAMPLE_DETAILS_TITLE_TEXT,
 } from "../../../utils/constants";
-import {useSampleStore} from "../../../features/samples/model/store";
+import {useSampleStore} from "../../../entities/sample/model/store";
 import {
   selectDeleteSample,
   selectError,
@@ -29,7 +29,7 @@ import {
   selectGetSamples,
   selectIsLoading,
   selectSetSelectedSample,
-} from "../../../features/samples/model/selectors";
+} from "../../../entities/sample/model/selectors";
 import {useSideSectionStore} from "../../../features/sideSection/model/store";
 import {
   selectSetIsSideSectionOpen,

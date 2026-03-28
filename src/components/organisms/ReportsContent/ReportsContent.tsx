@@ -20,14 +20,14 @@ import {
   SharedButtonVariants,
   SnackBarSeverity,
 } from "../../../utils/enums";
-import {useSampleStore} from "../../../features/samples/model/store";
-import {selectSamples} from "../../../features/samples/model/selectors";
-import {useSampleTypeStore} from "../../../features/sampleType/model/store";
+import {useSampleStore} from "../../../entities/sample/model/store";
+import {selectSamples} from "../../../entities/sample/model/selectors";
+import {useSampleTypeStore} from "../../../entities/sampleType/model/store";
 import {
   selectGetSampleTypes,
   selectSamplesTypes,
   selectSetSampleTypes,
-} from "../../../features/sampleType/model/selectors";
+} from "../../../entities/sampleType/model/selectors";
 import {useReportStore} from "../../../entities/report/model/store";
 import {
   selectError,

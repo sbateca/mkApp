@@ -55,7 +55,7 @@ jest.mock("../../../config/EnvManager", () => ({
   },
 }));
 
-jest.mock("../../../features/samples/model/store", () => ({
+jest.mock("../../../entities/sample/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSampleStore: (selector: any) => selector(mockSampleStoreState),
 }));
