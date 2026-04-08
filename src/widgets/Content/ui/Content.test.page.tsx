@@ -11,12 +11,9 @@ jest.mock("../../../config/EnvManager", () => ({
   },
 }));
 
-jest.mock(
-  "../../../components/organisms/SamplesContent/SamplesContent",
-  () => ({
-    SamplesContent: () => <div data-testid="samples-content" />,
-  }),
-);
+jest.mock("../../SamplesContent/ui/SamplesContent", () => ({
+  SamplesContent: () => <div data-testid="samples-content" />,
+}));
 
 jest.mock(
   "../../../components/organisms/ReportsContent/ReportsContent",

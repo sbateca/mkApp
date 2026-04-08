@@ -6,6 +6,10 @@ import {
   RESPONSE_DATA_NOT_VALID_ERROR,
   getInvalidDataErrorMessage,
 } from "../../../utils/constants";
+import {SampleType} from "../../sampleType";
+import {Client} from "../../client";
+import {TableRowProps} from "../../../components/molecules/TableRow/Types";
+import {findModelById} from "../../../utils/model";
 
 export const axiosResponseToSamples = (
   response: AxiosResponse<unknown>,
@@ -76,4 +80,24 @@ export const sampleToSampleForm = (sample: Sample): Record<string, string> => {
     sampleLocation: sample.sampleLocation,
     responsable: sample.responsable,
   };
+};
+
+export const samplesToTableRows = (
+  samples: Sample[],
+  sampleTypes: SampleType[] | null,
+  clients: Client[] | null,
+): TableRowProps[] => {
+  return samples.map((sample) => {
+    const sampleType = findModelById(sample.sampleTypeId, sampleTypes);
+    const client = findModelById(sample.clientId, clients);
+    return {
+      id: sample.id,
+      cells: [
+        {children: sampleType ? sampleType.name : "N/A", align: "left"},
+        {children: client ? client.name : "N/A", align: "left"},
+        {children: sample.getSampleDate, align: "left"},
+        {children: sample.receptionDate, align: "left"},
+      ],
+    };
+  });
 };

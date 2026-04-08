@@ -1,26 +1,9 @@
-import {Client, Sample, SampleType, Report, Analyte} from "../model";
 import {findModelById} from "../utils/model";
 import {TableRowProps} from "../components/molecules/TableRow/Types";
-
-export const samplesToTableRows = (
-  samples: Sample[],
-  sampleTypes: SampleType[] | null,
-  clients: Client[] | null,
-): TableRowProps[] => {
-  return samples.map((sample) => {
-    const sampleType = findModelById(sample.sampleTypeId, sampleTypes);
-    const client = findModelById(sample.clientId, clients);
-    return {
-      id: sample.id,
-      cells: [
-        {children: sampleType ? sampleType.name : "N/A", align: "left"},
-        {children: client ? client.name : "N/A", align: "left"},
-        {children: sample.getSampleDate, align: "left"},
-        {children: sample.receptionDate, align: "left"},
-      ],
-    };
-  });
-};
+import {Sample} from "../entities/sample";
+import {SampleType} from "../entities/sampleType";
+import {Analyte} from "../model";
+import {Report} from "../entities/report";
 
 export const reportsToTableRows = (
   reports: Report[],
