@@ -1,8 +1,7 @@
 import {render, screen, waitFor} from "@testing-library/react";
 
-import {SamplesContent} from "./SamplesContent";
+import {SamplesContent} from "../../SamplesContent";
 import {Sample} from "../../../entities/sample/model/Sample";
-import {SampleType} from "../../../model";
 import {
   buildClientsData,
   buildSamplesData,
@@ -13,6 +12,7 @@ import {buildFormData} from "../../../shared/test/builders/formDataBuilder";
 import dayjs from "dayjs";
 import {SideSectionStore} from "../../../features/sideSection/model/types";
 import {SnackBarSeverity} from "../../../utils/enums";
+import {SampleType} from "../../../entities/sampleType";
 
 const today = dayjs();
 const RENDERED_FORMAT_DATE = "MM/DD/YYYY";
