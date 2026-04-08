@@ -1,5 +1,4 @@
 import {useEffect, useState} from "react";
-import {TableRowProps} from "../../../components/molecules/TableRow/Types";
 import {
   reportsToTableRows,
   selectGetReports,
@@ -21,6 +20,7 @@ import {
   selectGetAnalytes,
   selectSetAnalytes,
 } from "../../../features/analyte/model/selectors";
+import {TableRowProps} from "../../../shared/ui/Table/TableRow";
 
 export const useLoadRepostsContentData = () => {
   const [rows, setRows] = useState<TableRowProps[]>([]);

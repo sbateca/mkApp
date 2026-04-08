@@ -1,16 +1,16 @@
 import {render, screen} from "@testing-library/react";
 
-import {TableCellProps} from "../../../shared/ui/Table/TableCell/Types";
-import TableRow from "./TableRow";
+import {TableRow} from "./TableRow";
+import {TableCellProps} from "../TableCell/Types";
 
-jest.mock("../../../config/EnvManager", () => ({
+jest.mock("../../../../config/EnvManager", () => ({
   __esModule: true,
   default: {
     BACKEND_URL: "http://example.com/api",
   },
 }));
 
-jest.mock("../../../features/menu", () => ({
+jest.mock("../../../../features/menu", () => ({
   __esModule: true,
   useMenuStore: jest.fn().mockReturnValue("SAMPLES"),
   selectSelectedMenuItem: jest.fn(),

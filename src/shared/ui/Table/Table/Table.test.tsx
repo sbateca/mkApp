@@ -1,17 +1,19 @@
 import {render, screen} from "@testing-library/react";
 
-import {TableRowProps} from "../../../../components/molecules/TableRow/Types";
 import {Table} from "./Table";
+import {TableRowProps} from "../TableRow/Types";
 
 const mockHeaderLabels = ["header1", "header2"];
 const mockRows: TableRowProps[] = [
   {
+    id: "row1",
     cells: [
       {children: "cell1", align: "left"},
       {children: "cell2", align: "left"},
     ],
   },
   {
+    id: "row2",
     cells: [
       {children: "cell3", align: "left"},
       {children: "cell4", align: "left"},
@@ -37,5 +39,19 @@ describe("Table", () => {
     render(<Table headerLabels={mockHeaderLabels} rows={[]} />);
 
     expect(screen.getByText("No records to display")).toBeInTheDocument();
+  });
+
+  it("should render actions when renderActions prop is provided", () => {
+    const renderActions = () => <button>Action</button>;
+
+    render(
+      <Table
+        headerLabels={mockHeaderLabels}
+        rows={mockRows}
+        renderActions={renderActions}
+      />,
+    );
+
+    expect(screen.getAllByText("Action")).toHaveLength(mockRows.length);
   });
 });

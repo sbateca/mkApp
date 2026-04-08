@@ -1,5 +1,4 @@
 import {useEffect, useState} from "react";
-import {TableRowProps} from "../../../components/molecules/TableRow/Types";
 import {
   samplesToTableRows,
   selectGetSamples,
@@ -18,6 +17,7 @@ import {
   selectSetSampleTypes,
   useSampleTypeStore,
 } from "../../../entities/sampleType";
+import {TableRowProps} from "../../../shared/ui/Table/TableRow";
 
 export const useLoadSamplesContentData = () => {
   const [rows, setRows] = useState<TableRowProps[]>([]);

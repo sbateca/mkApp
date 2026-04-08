@@ -9,8 +9,8 @@ import {
 import {Sample} from "../../sample";
 import {SampleType} from "../../sampleType";
 import {Analyte} from "../../../model";
-import {TableRowProps} from "../../../components/molecules/TableRow/Types";
 import {findModelById} from "../../../utils/model";
+import {TableRowProps} from "../../../shared/ui/Table/TableRow";
 
 export const axiosResponseToReports = (
   response: AxiosResponse<unknown>,
