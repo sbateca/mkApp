@@ -19,6 +19,7 @@ import {SampleContentStyles} from "./SamplesContentStyles";
 import {useLoadSamplesContentData} from "../model/useLoadSamplesContentData";
 import {useOpenSideSection} from "../model/useOpenSideSection";
 import {useSamplesContentErrorNotifier} from "../model/useSamplesContentErrorNotifier";
+import {SampleTableActionButtons} from "../../../components/molecules";
 
 export const SamplesContent = (): React.ReactElement => {
   const [isReadOnlyMode, setIsReadOnlyMode] = useState(true);
@@ -49,7 +50,13 @@ export const SamplesContent = (): React.ReactElement => {
           />
         </Box>
       </Box>
-      <Table headerLabels={SAMPLES_TABLE_HEADER_LABELS} rows={rows} />
+      <Table
+        headerLabels={SAMPLES_TABLE_HEADER_LABELS}
+        rows={rows}
+        renderActions={(row) => (
+          <SampleTableActionButtons sampleId={row.id ?? ""} />
+        )}
+      />
       <SideSection isOpen={isSideSectionOpen}>
         <SampleDetail
           isReadOnlyMode={isReadOnlyMode}

@@ -7,12 +7,16 @@ import {
 } from "@mui/material";
 
 import TableHead from "../TableHead/TableHead";
-import TableRow from "../../../../components/molecules/TableRow/TableRow";
 import {TableProps} from "./Types";
 import {TableStyles} from "./TableStyles";
 import {NO_RECORDS_MESSAGE} from "../../../../utils/constants";
+import {TableRow} from "../TableRow";
 
-export const Table = ({headerLabels, rows}: TableProps): React.ReactElement => {
+export const Table = ({
+  headerLabels,
+  rows,
+  renderActions,
+}: TableProps): React.ReactElement => {
   return (
     <TableContainer component={Paper}>
       {rows.length === 0 ? (
@@ -28,6 +32,7 @@ export const Table = ({headerLabels, rows}: TableProps): React.ReactElement => {
                 id={row.id}
                 key={`tablew-row-${index.toString()}`}
                 cells={row.cells}
+                actions={renderActions ? renderActions(row) : undefined}
               />
             ))}
           </TableBody>

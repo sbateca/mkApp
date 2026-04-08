@@ -8,8 +8,8 @@ import {
 } from "../../../utils/constants";
 import {SampleType} from "../../sampleType";
 import {Client} from "../../client";
-import {TableRowProps} from "../../../components/molecules/TableRow/Types";
 import {findModelById} from "../../../utils/model";
+import {TableRowProps} from "../../../shared/ui/Table/TableRow";
 
 export const axiosResponseToSamples = (
   response: AxiosResponse<unknown>,

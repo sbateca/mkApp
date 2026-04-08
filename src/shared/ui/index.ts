@@ -5,5 +5,6 @@ export * from "./Spinner";
 export * from "./Table/Table";
 export * from "./Table/TableCell";
 export * from "./Table/TableHead";
+export * from "./Table/TableRow";
 export * from "./TextField";
 export * from "./Typography";

@@ -20,6 +20,7 @@ import {ReportsContentStyles} from "./ReportsContentStyles";
 import {useOpenSideSection} from "../model/useOpenSideSection";
 import {useSamplesContentErrorNotifier} from "../model/useReportsContentErrorNotifier";
 import {useLoadRepostsContentData} from "../model/useLoadReportsContentData";
+import {ReportTableActionButtons} from "../../../components/molecules";
 
 export const ReportsContent = (): React.ReactElement => {
   const [isReadOnlyMode, setIsReadOnlyMode] = useState(true);
@@ -52,7 +53,13 @@ export const ReportsContent = (): React.ReactElement => {
           />
         </Box>
       </Box>
-      <Table headerLabels={REPORTS_TABLE_HEADER_LABELS} rows={rows} />
+      <Table
+        headerLabels={REPORTS_TABLE_HEADER_LABELS}
+        rows={rows}
+        renderActions={(row) => (
+          <ReportTableActionButtons reportId={row.id ?? ""} />
+        )}
+      />
       <SideSection isOpen={isSideSectionOpen}>
         <ReportDetail
           isReadOnlyMode={isReadOnlyMode}
