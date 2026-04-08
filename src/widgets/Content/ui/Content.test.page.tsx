@@ -15,12 +15,9 @@ jest.mock("../../SamplesContent/ui/SamplesContent", () => ({
   SamplesContent: () => <div data-testid="samples-content" />,
 }));
 
-jest.mock(
-  "../../../components/organisms/ReportsContent/ReportsContent",
-  () => ({
-    ReportsContent: () => <div data-testid="reports-content" />,
-  }),
-);
+jest.mock("../../ReportsContent/ui/ReportsContent", () => ({
+  ReportsContent: () => <div data-testid="reports-content" />,
+}));
 
 let mockedSelectedMenuItem: SharedMenuItems;
 
