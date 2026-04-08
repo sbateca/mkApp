@@ -2,7 +2,7 @@ import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 
 import {Report} from "../../../entities/report/model/Report";
 import {ReportsContent} from "./ReportsContent";
-import {Sample, SampleType, Analyte} from "../../../model";
+import {Analyte} from "../../../model";
 import {
   buildAnalytesData,
   buildClientData,
@@ -13,6 +13,8 @@ import {
 import {ReportStore} from "../../../entities/report/model/types";
 import {AnalyteStore} from "../../../features/analyte/model/types";
 import {SideSectionStore} from "../../../features/sideSection/model/types";
+import {SampleType} from "../../../entities/sampleType";
+import {Sample} from "../../../entities/sample";
 
 const mockSampleTypes: SampleType[] = buildSampleTypesData(1);
 const mockAnalytes: Analyte[] = buildAnalytesData(1);
@@ -78,6 +80,13 @@ const mockAnalyteStoreState: AnalyteStore = {
   isLoading: false,
   error: null,
 };
+
+jest.mock("../../../config/EnvManager", () => ({
+  __esModule: true,
+  default: {
+    BACKEND_URL: "http://example.com/api",
+  },
+}));
 
 jest.mock("../../../widgets/ReportsDetail", () => ({
   ReportDetail: () => (
