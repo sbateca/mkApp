@@ -19,7 +19,7 @@ import {SampleContentStyles} from "./SamplesContentStyles";
 import {useLoadSamplesContentData} from "../model/useLoadSamplesContentData";
 import {useOpenSideSection} from "../model/useOpenSideSection";
 import {useSamplesContentErrorNotifier} from "../model/useSamplesContentErrorNotifier";
-import {SampleTableActionButtons} from "../../../components/molecules";
+import {SampleTableActionButtons} from "../../../features/sample/TableActionButtons";
 
 export const SamplesContent = (): React.ReactElement => {
   const [isReadOnlyMode, setIsReadOnlyMode] = useState(true);

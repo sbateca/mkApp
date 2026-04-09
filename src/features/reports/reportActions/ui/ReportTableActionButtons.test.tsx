@@ -1,7 +1,7 @@
 import {render, screen} from "@testing-library/react";
 import {ReportTableActionButtons} from "./ReportTableActionButtons";
-import {ReportStore} from "../../../entities/report/model/types";
-import {SideSectionStore} from "../../../features/sideSection/model/types";
+import {ReportStore} from "../../../../entities/report";
+import {SideSectionStore} from "../../../sideSection";
 
 let mockReportsStoreState: ReportStore = {
   isLoading: false,
@@ -24,19 +24,19 @@ let mockSideSectionStoreState: SideSectionStore = {
   setSideSectionTitle: jest.fn(),
 };
 
-jest.mock("../../../config/EnvManager", () => ({
+jest.mock("../../../../config/EnvManager", () => ({
   __esModule: true,
   default: {
     BACKEND_URL: "http://example.com/api",
   },
 }));
 
-jest.mock("../../../entities/report/model/store", () => ({
+jest.mock("../../../../entities/report/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useReportStore: (selector: any) => selector(mockReportsStoreState),
 }));
 
-jest.mock("../../../features/sideSection/model/store", () => ({
+jest.mock("../../../../features/sideSection/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSideSectionStore: (selector: any) => selector(mockSideSectionStoreState),
 }));

@@ -1,5 +1,5 @@
 import {render, screen} from "@testing-library/react";
-import {SampleTableActionButtons} from "./SampleTableActionButtons";
+import {SampleTableActionButtons} from "../sampleActions/ui/SampleTableActionButtons";
 import {Sample} from "../../../model";
 import {SideSectionStore} from "../../../features/sideSection/model/types";
 
