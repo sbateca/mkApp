@@ -20,7 +20,7 @@ import {ReportsContentStyles} from "./ReportsContentStyles";
 import {useOpenSideSection} from "../model/useOpenSideSection";
 import {useSamplesContentErrorNotifier} from "../model/useReportsContentErrorNotifier";
 import {useLoadRepostsContentData} from "../model/useLoadReportsContentData";
-import {ReportTableActionButtons} from "../../../components/molecules";
+import {ReportTableActionButtons} from "../../../features/reports/reportActions";
 
 export const ReportsContent = (): React.ReactElement => {
   const [isReadOnlyMode, setIsReadOnlyMode] = useState(true);
