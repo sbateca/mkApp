@@ -27,9 +27,11 @@ import {
 import {AutoComplete} from "../../../shared/ui";
 import dayjs from "dayjs";
 import {getAutoCompleteOptionsFromModel} from "../../../utils/model";
-import {AnalysisMethod, Analyte, Criteria} from "../../../model";
 import {FormError} from "../../../utils/hooks";
 import {AutoCompleteOption} from "../../../shared/ui/AutoComplete/types";
+import {AnalysisMethod} from "../../../entities/analysisMethod/model/AnalysisMethod";
+import {Analyte} from "../../../entities/analyte/model/Analyte";
+import {Criteria} from "../../../entities/criteria";
 
 export type DetailFormProps = {
   isLessThanMediumScreen: boolean;

@@ -14,12 +14,12 @@ import {
   useSampleTypeStore,
 } from "../../../entities/sampleType";
 import {selectSamples, useSampleStore} from "../../../entities/sample";
-import {useAnalyteStore} from "../../../features/analyte/model/store";
+import {useAnalyteStore} from "../../../entities/analyte/model/store";
 import {
   selectAnalytes,
   selectGetAnalytes,
   selectSetAnalytes,
-} from "../../../features/analyte/model/selectors";
+} from "../../../entities/analyte/model/selectors";
 import {TableRowProps} from "../../../shared/ui/Table/TableRow";
 
 export const useLoadRepostsContentData = () => {

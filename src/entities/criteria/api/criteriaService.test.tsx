@@ -1,11 +1,11 @@
 import axios from "axios";
 import {getCriteriaByIdService, getCriteriasService} from "./criteriaService";
-import {buildCriteriasData} from "../shared/test/builders/criteriaBuilder";
-import {Criteria} from "../model";
+import {buildCriteriasData} from "../../../shared/test/builders/criteriaBuilder";
+import {Criteria} from "../model/Criteria";
 
 const mockCriterias: Criteria[] = buildCriteriasData(2);
 
-jest.mock("../config/EnvManager", () => ({
+jest.mock("../../../config/EnvManager", () => ({
   __esModule: true,
   default: {
     BACKEND_URL: "http://mockurl.com/api",

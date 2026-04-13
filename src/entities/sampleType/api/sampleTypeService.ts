@@ -3,7 +3,7 @@ import axios from "axios";
 import {Sample} from "../../../entities/sample/model/Sample";
 import EnvManager from "../../../config/EnvManager";
 import {SampleType} from "../model/SampleType";
-import {axiosResponseToSampleType} from "../../../adapters/sampleType";
+import {axiosResponseToSampleType} from "../lib/sampleTypeMappers";
 
 export const getSampleTypesService = async (): Promise<SampleType[]> => {
   try {

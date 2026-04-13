@@ -1,5 +1,7 @@
 import {useMemo} from "react";
-import {Client, Sample, SampleType} from "../../../model";
+import {Sample} from "./Sample";
+import {SampleType} from "../../sampleType";
+import {Client} from "../../client";
 
 interface SampleCardDetails {
   sampleCode: string;

@@ -1,7 +1,7 @@
 import {create} from "zustand";
 import {AnalyteStore} from "./types";
 import {Analyte} from "../../../model";
-import {getAnalyteByIdService, getAnalytesService} from "../../../services";
+import {getAnalyteByIdService, getAnalytesService} from "../api/analyteService";
 
 export const useAnalyteStore = create<AnalyteStore>()((set) => ({
   analytes: null,

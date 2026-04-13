@@ -1,10 +1,10 @@
 import {AxiosResponse} from "axios";
 
-import {SampleType} from "../entities/sampleType/model/SampleType";
+import {SampleType} from "../model/SampleType";
 import {
   RESPONSE_DATA_NOT_VALID_ERROR,
   getInvalidDataErrorMessage,
-} from "../utils/constants";
+} from "../../../utils/constants";
 
 export const axiosResponseToSampleType = (
   response: AxiosResponse<unknown>,

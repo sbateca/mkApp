@@ -1,4 +1,4 @@
-import {Sample} from "../../../model";
+import {Sample} from "./Sample";
 
 export type SamplesStore = {
   samples: Sample[] | null;

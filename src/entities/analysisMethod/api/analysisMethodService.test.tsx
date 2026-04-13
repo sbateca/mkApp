@@ -3,12 +3,12 @@ import {
   getAnalysisMethodService,
   getAnalysisMethodByIdService,
 } from "./analysisMethodService";
-import {buildAnalysisMethodsData} from "../shared/test/builders/analisysMethodBuilder";
-import {AnalysisMethod} from "../model";
+import {buildAnalysisMethodsData} from "../../../shared/test/builders/analisysMethodBuilder";
+import {AnalysisMethod} from "../model/AnalysisMethod";
 
 const mockAnalysisMethods: AnalysisMethod[] = buildAnalysisMethodsData(3);
 
-jest.mock("../config/EnvManager", () => ({
+jest.mock("../../../config/EnvManager", () => ({
   __esModule: true,
   default: {
     BACKEND_URL: "http://mockurl.com/api",
