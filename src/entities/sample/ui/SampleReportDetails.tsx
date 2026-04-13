@@ -1,8 +1,10 @@
 import {Card, CardContent, Grid, Typography} from "@mui/material";
 
-import {Client, Sample, SampleType} from "../../../model";
 import {Spinner} from "../../../shared/ui";
 import {useSampleReportDetails} from "../model/useSampleReportDetails";
+import {Sample} from "../model/Sample";
+import {SampleType} from "../../sampleType";
+import {Client} from "../../client";
 
 interface SampleReportDetailsProps {
   sample: Sample | null;

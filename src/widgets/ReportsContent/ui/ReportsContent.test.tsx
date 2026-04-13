@@ -2,7 +2,6 @@ import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 
 import {Report} from "../../../entities/report/model/Report";
 import {ReportsContent} from "./ReportsContent";
-import {Analyte} from "../../../model";
 import {
   buildAnalytesData,
   buildClientData,
@@ -11,10 +10,11 @@ import {
   buildSampleTypesData,
 } from "../../../shared/test/builders";
 import {ReportStore} from "../../../entities/report/model/types";
-import {AnalyteStore} from "../../../features/analyte/model/types";
+import {AnalyteStore} from "../../../entities/analyte/model/types";
 import {SideSectionStore} from "../../../features/sideSection/model/types";
 import {SampleType} from "../../../entities/sampleType";
 import {Sample} from "../../../entities/sample";
+import {Analyte} from "../../../entities/analyte/model/Analyte";
 
 const mockSampleTypes: SampleType[] = buildSampleTypesData(1);
 const mockAnalytes: Analyte[] = buildAnalytesData(1);
@@ -109,7 +109,7 @@ jest.mock("../../../entities/sampleType/model/store", () => ({
   useSampleTypeStore: (selector: any) => selector(mockSampleTypeStoreState),
 }));
 
-jest.mock("../../../features/analyte/model/store", () => ({
+jest.mock("../../../entities/analyte/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useAnalyteStore: (selector: any) => selector(mockAnalyteStoreState),
 }));

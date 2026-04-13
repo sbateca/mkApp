@@ -12,16 +12,12 @@ import {
   buildSamplesData,
   buildSampleTypesData,
 } from "../../../shared/test/builders";
-import {
-  AnalysisMethod,
-  Analyte,
-  Client,
-  Criteria,
-  Sample,
-  SampleType,
-} from "../../../model";
+import {AnalysisMethod, Analyte, Criteria} from "../../../model";
 import {buildAnalysisMethodsData} from "../../../shared/test/builders/analisysMethodBuilder";
 import {buildCriteriasData} from "../../../shared/test/builders/criteriaBuilder";
+import {SampleType} from "../../sampleType";
+import {Client} from "../../client";
+import {Sample} from "../../sample";
 
 const mockSampleTypes: SampleType[] = buildSampleTypesData(2);
 const mockAnalytes: Analyte[] = buildAnalytesData(2);

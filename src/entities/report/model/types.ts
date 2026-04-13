@@ -1,4 +1,4 @@
-import {Report} from "../../../model";
+import {Report} from "./Report";
 
 export type ReportStore = {
   reports: Report[] | null;

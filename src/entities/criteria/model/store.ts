@@ -1,7 +1,10 @@
 import {create} from "zustand";
 import {CriteriaStore} from "./types";
 import {Criteria} from "../../../model";
-import {getCriteriaByIdService, getCriteriasService} from "../../../services";
+import {
+  getCriteriaByIdService,
+  getCriteriasService,
+} from "../api/criteriaService";
 
 export const useCriteriaStore = create<CriteriaStore>((set) => ({
   criterias: null,

@@ -4,15 +4,15 @@ import {
   selectGetAnalysisMethods,
   selectIsLoadingAnalysisMethods,
   selectSetAnalysisMethods,
-} from "../../../analysisMethods/model/selectors";
-import {useAnalysisMethodsStore} from "../../../analysisMethods/model/store";
+} from "../../../../entities/analysisMethod/model/selectors";
+import {useAnalysisMethodsStore} from "../../../../entities/analysisMethod/model/store";
 import {
   selectAnalytes,
   selectGetAnalytes,
   selectIsLoadingAnalytes,
   selectSetAnalytes,
-} from "../../../analyte/model/selectors";
-import {useAnalyteStore} from "../../../analyte/model/store";
+} from "../../../../entities/analyte/model/selectors";
+import {useAnalyteStore} from "../../../../entities/analyte/model/store";
 import {
   selectClients,
   selectIsLoadingClient,
@@ -23,8 +23,8 @@ import {
   selectGetCriterias,
   selectIsLoadingCriterias,
   selectSetCriterias,
-} from "../../../criteria/model/selector";
-import {useCriteriaStore} from "../../../criteria/model/store";
+} from "../../../../entities/criteria/model/selector";
+import {useCriteriaStore} from "../../../../entities/criteria/model/store";
 import {selectSamples, useSampleStore} from "../../../../entities/sample";
 import {
   selectGetSampleTypes,

@@ -4,7 +4,7 @@ import {AnalysisMethod} from "../../../model";
 import {
   getAnalysisMethodByIdService,
   getAnalysisMethodService,
-} from "../../../services";
+} from "../api/analysisMethodService";
 
 export const useAnalysisMethodsStore = create<AnalysisMethodStore>((set) => ({
   analysisMethods: null,

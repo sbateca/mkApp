@@ -3,8 +3,8 @@ import {AxiosResponse} from "axios";
 import {
   RESPONSE_DATA_NOT_VALID_ERROR,
   getInvalidDataErrorMessage,
-} from "../utils/constants";
-import {Client} from "../entities/client/model/Client";
+} from "../../../utils/constants";
+import {Client} from "../model/Client";
 
 export const axiosResponseToClient = (
   response: AxiosResponse<unknown>,

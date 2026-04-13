@@ -1,8 +1,7 @@
 import axios from "axios";
-
-import EnvManager from "../config/EnvManager";
-import {axiosResponseToCriteria} from "../adapters/criteria";
-import {Criteria, Sample} from "../model";
+import EnvManager from "../../../config/EnvManager";
+import {axiosResponseToCriteria} from "../lib/criteriaMappers";
+import {Criteria} from "../model/Criteria";
 
 export const getCriteriasService = async (): Promise<Criteria[]> => {
   try {
@@ -21,7 +20,7 @@ export const getCriteriasService = async (): Promise<Criteria[]> => {
 
 export const getCriteriaByIdService = async (id: string): Promise<Criteria> => {
   try {
-    const response = await axios.get<Sample>(
+    const response = await axios.get<Criteria>(
       `${EnvManager.BACKEND_URL}/criterias/${id}`,
     );
     return axiosResponseToCriteria(response)[0];

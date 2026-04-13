@@ -1,4 +1,4 @@
-import {Client} from "../../../model";
+import {Client} from "./Client";
 
 export type ClientsStore = {
   clients: Client[] | null;

@@ -2,7 +2,7 @@ import {AxiosResponse} from "axios";
 import {
   RESPONSE_DATA_NOT_VALID_ERROR,
   getInvalidDataErrorMessage,
-} from "../utils/constants";
+} from "../../../utils/constants";
 import {AnalysisMethod} from "../model/AnalysisMethod";
 
 export const axiosResponseToAnalysisMethods = (

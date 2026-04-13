@@ -1,8 +1,7 @@
 import axios from "axios";
-
-import EnvManager from "../config/EnvManager";
+import EnvManager from "../../../config/EnvManager";
+import {axiosResponseToAnalyte} from "../lib/analyteMappers";
 import {Analyte} from "../model/Analyte";
-import {axiosResponseToAnalyte} from "../adapters/analyte";
 
 export const getAnalytesService = async (): Promise<Analyte[]> => {
   try {

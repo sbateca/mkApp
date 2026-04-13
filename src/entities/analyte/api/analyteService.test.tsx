@@ -1,11 +1,11 @@
 import axios from "axios";
 import {getAnalyteByIdService, getAnalytesService} from "./analyteService";
-import {buildAnalytesData} from "../shared/test/builders";
-import {Analyte} from "../model";
+import {buildAnalytesData} from "../../../shared/test/builders";
+import {Analyte} from "../model/Analyte";
 
 const mockAnalytes: Analyte[] = buildAnalytesData(2);
 
-jest.mock("../config/EnvManager", () => ({
+jest.mock("../../../config/EnvManager", () => ({
   __esModule: true,
   default: {
     BACKEND_URL: "http://mockurl.com/api",
