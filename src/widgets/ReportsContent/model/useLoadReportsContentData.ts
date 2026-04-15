@@ -4,21 +4,22 @@ import {
   selectGetReports,
   selectIsLoadingReport,
   selectReports,
-  selectSetReports,
   useReportStore,
 } from "../../../entities/report";
 import {
   selectGetSampleTypes,
   selectSamplesTypes,
-  selectSetSampleTypes,
   useSampleTypeStore,
 } from "../../../entities/sampleType";
-import {selectSamples, useSampleStore} from "../../../entities/sample";
+import {
+  selectGetSamples,
+  selectSamples,
+  useSampleStore,
+} from "../../../entities/sample";
 import {useAnalyteStore} from "../../../entities/analyte/model/store";
 import {
   selectAnalytes,
   selectGetAnalytes,
-  selectSetAnalytes,
 } from "../../../entities/analyte/model/selectors";
 import {TableRowProps} from "../../../shared/ui/Table/TableRow";
 
@@ -27,51 +28,38 @@ export const useLoadRepostsContentData = () => {
 
   const reports = useReportStore(selectReports);
   const getReports = useReportStore(selectGetReports);
-  const setReports = useReportStore(selectSetReports);
-
   const isLoading = useReportStore(selectIsLoadingReport);
 
   const sampleTypes = useSampleTypeStore(selectSamplesTypes);
   const getSampleTypes = useSampleTypeStore(selectGetSampleTypes);
-  const setSampleTypes = useSampleTypeStore(selectSetSampleTypes);
 
   const samples = useSampleStore(selectSamples);
+  const getSamples = useSampleStore(selectGetSamples);
 
   const analytes = useAnalyteStore(selectAnalytes);
   const getAnalytes = useAnalyteStore(selectGetAnalytes);
-  const setAnalytes = useAnalyteStore(selectSetAnalytes);
 
   useEffect(() => {
-    const getSamplTypes = async () => {
-      const sampleTypes = await getSampleTypes();
-      setSampleTypes(sampleTypes);
+    const loadData = async () => {
+      await Promise.all([
+        getReports(),
+        getSampleTypes(),
+        getSamples(),
+        getAnalytes(),
+      ]);
     };
-    getSamplTypes();
-  }, [getSampleTypes, setSampleTypes]);
+
+    loadData();
+  }, [getAnalytes, getReports, getSampleTypes, getSamples]);
 
   useEffect(() => {
-    if (reports) {
-      setRows(reportsToTableRows(reports, samples, sampleTypes, analytes));
+    if (!reports) {
+      setRows([]);
+      return;
     }
-  }, [reports, analytes, sampleTypes, samples]);
 
-  useEffect(() => {
-    const getAllReports = async () => {
-      const reports = await getReports();
-      setReports(reports);
-    };
-
-    getAllReports();
-  }, [getReports, setReports]);
-
-  useEffect(() => {
-    const getAllAnalytes = async () => {
-      const analytes = await getAnalytes();
-      setAnalytes(analytes);
-    };
-
-    getAllAnalytes();
-  }, [getAnalytes, setAnalytes]);
+    setRows(reportsToTableRows(reports, samples, sampleTypes, analytes));
+  }, [reports, samples, sampleTypes, analytes]);
 
   return {rows, isLoading};
 };

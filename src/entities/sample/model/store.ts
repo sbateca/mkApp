@@ -21,6 +21,8 @@ export const useSampleStore = create<SamplesStore>((set) => ({
 
   setSelectedSample: (sample: Sample | null) => set({selectedSample: sample}),
 
+  setSamples: (samples: Sample[] | null) => set({samples: samples}),
+
   getSamples: async () => {
     set({isLoading: true, error: null});
     try {

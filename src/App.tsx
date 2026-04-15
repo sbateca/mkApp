@@ -1,18 +1,10 @@
-import {Route, BrowserRouter as Router, Routes} from "react-router-dom";
+import {AppThemeProvider} from "./app/Providers/ThemeProvider";
+import {AppRouter} from "./app/Router/AppRouter";
 
-import {Admin, Login} from "./components/pages";
-import "./App.css";
-
-function App() {
+export const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/admin" element={<Admin />} />
-      </Routes>
-    </Router>
+    <AppThemeProvider>
+      <AppRouter />
+    </AppThemeProvider>
   );
-}
-
-export default App;
+};

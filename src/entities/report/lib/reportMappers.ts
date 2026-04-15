@@ -8,9 +8,9 @@ import {
 } from "../../../utils/constants";
 import {Sample} from "../../sample";
 import {SampleType} from "../../sampleType";
-import {Analyte} from "../../../model";
 import {findModelById} from "../../../utils/model";
 import {TableRowProps} from "../../../shared/ui/Table/TableRow";
+import {Analyte} from "../../analyte/model/Analyte";
 
 export const axiosResponseToReports = (
   response: AxiosResponse<unknown>,
@@ -106,7 +106,7 @@ const getSampleTypeCellContent = (
   samples: Sample[] | null,
   sampleTypes: SampleType[] | null,
 ): string => {
-  const filteredSample = samples?.filter((sample) => sample.id === sampleId)[0];
+  const filteredSample = samples?.find((sample) => sample.id === sampleId);
   const sampleTypeName = findModelById(
     filteredSample?.sampleTypeId,
     sampleTypes || [],
