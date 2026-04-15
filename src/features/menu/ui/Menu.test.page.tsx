@@ -1,4 +1,5 @@
 import {render, screen} from "@testing-library/react";
+import {MemoryRouter} from "react-router-dom";
 
 import {Menu} from "./Menu";
 import {SharedMenuItems} from "../../../utils/enums";
@@ -6,25 +7,29 @@ import {MenuProps} from "./MenuProps";
 import {MenuStore} from "../model/types";
 
 export const mockMenuItems: MenuProps = {
-  menuItems: [SharedMenuItems.REPORTS, SharedMenuItems.SAMPLES],
+  menuItems: [
+    {label: SharedMenuItems.REPORTS, actionPath: "/reports"},
+    {label: SharedMenuItems.SAMPLES, actionPath: "/samples"},
+  ],
 };
+
 jest.mock("../../../config/EnvManager", () => ({
   __esModule: true,
   default: {
     BACKEND_URL: "http://example.com/api",
   },
 }));
-let mockedMenuOpen: boolean = false;
+
+let mockedMenuOpen = false;
+
 jest.mock("../../../features/menu/model/store", () => ({
   __esModule: true,
-  useMenuStore: (selector: (state: MenuStore) => MenuStore) =>
+  useMenuStore: (selector: (state: MenuStore) => unknown) =>
     selector({
       menuOpen: mockedMenuOpen,
-      selectedMenuItem: SharedMenuItems.REPORTS,
       toggleMenu: jest.fn(),
       openMenu: jest.fn(),
       closeMenu: jest.fn(),
-      setSelectedMenuItem: jest.fn(),
     }),
 }));
 
@@ -32,10 +37,15 @@ export const updateUseMenu = (menuOpen: boolean) => {
   mockedMenuOpen = menuOpen;
 };
 
-export const renderMenu = async () => {
-  render(<Menu {...mockMenuItems} />);
+export const renderMenu = () => {
+  render(
+    <MemoryRouter initialEntries={["/samples"]}>
+      <Menu {...mockMenuItems} />
+    </MemoryRouter>,
+  );
+
   return {
-    mainMenu: await screen.queryByText("Reports"),
-    screen,
+    reportsItem: screen.queryByText("Reports"),
+    samplesItem: screen.queryByText("Samples"),
   };
 };

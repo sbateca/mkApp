@@ -3,6 +3,7 @@ import {Menu, MenuProps} from "../../../features/menu";
 import {SharedMenuItems} from "../../../utils/enums";
 import {Header} from "./Header";
 import {MenuStore} from "../../../features/menu/model/types";
+import {MemoryRouter} from "react-router-dom";
 
 export const mockData = {
   companyName: "Test Company",
@@ -15,16 +16,17 @@ export const mockData = {
 };
 
 export const mockMenuItems: MenuProps = {
-  menuItems: [SharedMenuItems.REPORTS, SharedMenuItems.SAMPLES],
+  menuItems: [
+    {label: SharedMenuItems.REPORTS, actionPath: "/reports"},
+    {label: SharedMenuItems.SAMPLES, actionPath: "/samples"},
+  ],
 };
 
 const mockMenuStoreStatus: MenuStore = {
   menuOpen: false,
-  selectedMenuItem: SharedMenuItems.SAMPLES,
   toggleMenu: () => jest.fn(),
   openMenu: () => jest.fn(),
   closeMenu: () => jest.fn(),
-  setSelectedMenuItem: () => jest.fn(),
 };
 
 export const setupMocks = () => {
@@ -50,7 +52,10 @@ export const renderHeader = async () => {
   render(
     <>
       <Header companyName={mockData.companyName} />
-      <Menu {...mockMenuItems} />
+      <MemoryRouter initialEntries={["/samples"]}>
+        <Menu {...mockMenuItems} />
+      </MemoryRouter>
+      ,
     </>,
   );
   return {

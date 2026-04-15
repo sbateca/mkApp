@@ -1,7 +1,7 @@
 import {create} from "zustand";
 import {AnalyteStore} from "./types";
-import {Analyte} from "../../../model";
 import {getAnalyteByIdService, getAnalytesService} from "../api/analyteService";
+import {Analyte} from "./Analyte";
 
 export const useAnalyteStore = create<AnalyteStore>()((set) => ({
   analytes: null,
@@ -17,7 +17,9 @@ export const useAnalyteStore = create<AnalyteStore>()((set) => ({
   getAnalytes: async () => {
     set({isLoading: true, error: null});
     try {
-      return await getAnalytesService();
+      const analytes = await getAnalytesService();
+      set({analytes: analytes});
+      return analytes;
     } catch (error) {
       set({error: (error as Error).message});
       return null;

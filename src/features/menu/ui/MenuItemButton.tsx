@@ -1,14 +1,16 @@
 import {ListItemButton} from "../../../shared/ui";
-import {useMenuItemButton} from "../model/useMenuItemButton";
-import {MenuItemButtonProps} from "./MenuItemButtonProps";
+import {SharedMenuItems} from "../../../utils/enums";
 
-export const MenuItemButton = ({item}: MenuItemButtonProps) => {
-  const {selected, onClick} = useMenuItemButton(item);
-  return (
-    <ListItemButton
-      label={item}
-      selected={selected === item}
-      onClick={onClick}
-    />
-  );
+type MenuItemButtonProps = {
+  item: SharedMenuItems;
+  selected: boolean;
+  onClick?: () => void;
+};
+
+export const MenuItemButton = ({
+  item,
+  selected,
+  onClick,
+}: MenuItemButtonProps) => {
+  return <ListItemButton label={item} selected={selected} onClick={onClick} />;
 };

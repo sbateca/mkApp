@@ -5,17 +5,19 @@ describe("Menu component", () => {
     jest.clearAllMocks();
   });
 
-  it("should render the menu with the elements passed by arguments successfully", async () => {
+  it("should render the menu with the elements passed by arguments successfully", () => {
     updateUseMenu(true);
-    const {mainMenu} = await renderMenu();
+    const {reportsItem, samplesItem} = renderMenu();
 
-    expect(mainMenu).toBeInTheDocument();
+    expect(reportsItem).toBeVisible();
+    expect(samplesItem).toBeVisible();
   });
 
-  it("should not render the menu when it is closed", async () => {
+  it("should not show the menu items when it is closed", () => {
     updateUseMenu(false);
-    const {mainMenu} = await renderMenu();
+    const {reportsItem, samplesItem} = renderMenu();
 
-    expect(mainMenu).not.toBeInTheDocument();
+    expect(reportsItem).not.toBeVisible();
+    expect(samplesItem).not.toBeVisible();
   });
 });

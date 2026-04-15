@@ -21,7 +21,9 @@ export const useSampleTypeStore = create<SampleTypeStore>((set) => ({
   getSampleTypes: async () => {
     set({isLoading: true, error: null});
     try {
-      return await getSampleTypesService();
+      const sampleTypes = await getSampleTypesService();
+      set({sampleTypes: sampleTypes ? [...sampleTypes] : null});
+      return sampleTypes;
     } catch (error) {
       set({error: (error as Error).message});
       return null;
