@@ -1,7 +1,7 @@
 import axios from "axios";
 
-import EnvManager from "../config/EnvManager";
-import {User} from "../entities/user/model/User";
+import EnvManager from "../../../../config/EnvManager";
+import {User} from "../../../../entities/user/model/User";
 
 interface getUserProps {
   [key: string]: string;

@@ -1,7 +1,7 @@
 import axios from "axios";
-import {AnalysisMethod} from "../../../model";
 import EnvManager from "../../../config/EnvManager";
 import {axiosResponseToAnalysisMethods} from "../lib/analysisMethodMappers";
+import {AnalysisMethod} from "../model/AnalysisMethod";
 
 export const getAnalysisMethodService = async (): Promise<AnalysisMethod[]> => {
   try {

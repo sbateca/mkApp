@@ -7,8 +7,8 @@ run-eslint: ## execute eslint
 .PHONY: fix-eslint 
 fix-eslint: ## fix eslint errors
 	npx eslint src --fix
-	
-.PHONY: start-server
-start-server:
+
+.PHONY: start
+start:
 	echo "Starting mocked server..."
-	npx json-server --watch mock-data.json --port 4000
+	node server.cjs

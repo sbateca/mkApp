@@ -13,3 +13,6 @@ export const REPORT_ANALYTE_LABEL_TEXT = "Analyte";
 export const REPORT_ANALYSIS_METHOD_LABEL_TEXT = "Analysis method";
 export const REPORT_CRITERIA_LABEL_TEXT = "Criteria";
 export const REPORT_RESULT_LABEL_TEXT = "Result";
+
+export const LOGIN_FORM_USERNAME_LABEL_TEXT = "Username";
+export const LOGIN_FORM_PASSWORD_LABEL_TEXT = "Password";

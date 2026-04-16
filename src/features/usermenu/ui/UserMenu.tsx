@@ -7,9 +7,9 @@ import {useUserMenuStore} from "../model/store";
 import {
   selectHandleMenu,
   selectHandleClose,
-  selectHandleLogout,
   selectAnchorEl,
 } from "../model/selectors";
+import {useUserMenu} from "../model/useUserMenu";
 
 type Props = {
   username: string;
@@ -18,8 +18,9 @@ type Props = {
 export const UserMenu = ({username}: Props): React.ReactElement => {
   const handleUserMenu = useUserMenuStore(selectHandleMenu);
   const handleClose = useUserMenuStore(selectHandleClose);
-  const handleLogout = useUserMenuStore(selectHandleLogout);
   const anchorElement = useUserMenuStore(selectAnchorEl);
+
+  const {handleLogout} = useUserMenu();
 
   return (
     <div style={UserMenuStyle}>

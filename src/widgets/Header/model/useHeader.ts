@@ -1,21 +1,19 @@
 import {useEffect, useState} from "react";
-import {localStorageToUser} from "../../../entities/user";
-import {LOCAL_STORAGE_USER_KEY} from "../../../utils/constants";
+import {useSessionStore} from "../../../entities/session/model/store";
+import {selectUser} from "../../../entities/session/model/selectors";
 
 export const useHeaderUser = () => {
   const [username, setUsername] = useState("");
-  const [userMenu, setUserMenu] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+
+  const user = useSessionStore(selectUser);
 
   useEffect(() => {
-    const user = localStorageToUser(
-      localStorage.getItem(LOCAL_STORAGE_USER_KEY),
-    );
-
     if (user) {
       setUsername(user.name);
-      setUserMenu(true);
+      setShowUserMenu(true);
     }
   }, []);
 
-  return {username, userMenu};
+  return {username, showUserMenu};
 };
