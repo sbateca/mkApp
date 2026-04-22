@@ -1,5 +1,11 @@
-import {Login} from "../../../features/Login/model/useLogin";
+import {SnackBarContainer} from "../../../features/snackbar";
+import {LoginPanel} from "../../../widgets/LoginPanel/ui/LoginPanel";
 
 export const LoginPage = () => {
-  return <Login />;
+  return (
+    <>
+      <LoginPanel />;
+      <SnackBarContainer />
+    </>
+  );
 };

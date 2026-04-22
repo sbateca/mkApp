@@ -13,7 +13,7 @@ import {
 import {StyledHeaderAppBar} from "./StyledHeaderAppBar";
 
 export const Header = ({companyName}: HeaderProps): React.ReactElement => {
-  const {username, userMenu} = useHeaderUser();
+  const {username, showUserMenu} = useHeaderUser();
   const toggleMenu = useMenuStore(selectToggleMenu);
   const menuOpen = useMenuStore(selectMenuOpen);
 
@@ -35,7 +35,7 @@ export const Header = ({companyName}: HeaderProps): React.ReactElement => {
           {companyName}
         </Typography>
 
-        {userMenu ? <UserMenu username={username} /> : null}
+        {showUserMenu ? <UserMenu username={username} /> : null}
       </Toolbar>
     </StyledHeaderAppBar>
   );

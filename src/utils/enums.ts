@@ -150,3 +150,8 @@ export enum ReportFormFields {
   CRITERIA = "criteria",
   RESULT = "result",
 }
+
+export enum SignInFormFields {
+  USERNAME = "username",
+  PASSWORD = "password",
+}

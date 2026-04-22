@@ -1,64 +1,61 @@
 import {render, fireEvent, screen} from "@testing-library/react";
 
 import {UserMenu} from "./UserMenu";
-import {LOCAL_STORAGE_USER_KEY} from "../../../utils/constants";
 import {UserMenuStore} from "../model/types";
+
+const mockHandleLogout = jest.fn();
 
 let mockUserMenuStoreStatus: UserMenuStore = {
   username: "",
   anchorEl: null,
   handleMenu: jest.fn(),
   handleClose: jest.fn(),
-  handleLogout: jest.fn(),
 };
 
-const mockReload = jest.fn();
-Object.defineProperty(window, "location", {
-  value: {reload: mockReload},
-});
-
-jest.mock("../../../features/usermenu/model/store", () => ({
-  __esModule: true,
+jest.mock("../model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useUserMenuStore: (selector: any) => selector(mockUserMenuStoreStatus),
 }));
 
+jest.mock("../model/useUserMenu", () => ({
+  useUserMenu: () => ({
+    handleLogout: mockHandleLogout,
+  }),
+}));
+
 describe("UserMenu component", () => {
   beforeEach(() => {
-    Storage.prototype.removeItem = jest.fn();
-    jest.spyOn(window.location, "reload").mockImplementation(() => {});
+    jest.clearAllMocks();
 
     mockUserMenuStoreStatus = {
       username: "",
       anchorEl: null,
       handleMenu: jest.fn(),
       handleClose: jest.fn(),
-      handleLogout: () => {
-        (localStorage.removeItem(LOCAL_STORAGE_USER_KEY),
-          window.location.reload());
-      },
     };
-
-    render(<UserMenu username="testuser" />);
   });
 
   it("renders username correctly", () => {
+    render(<UserMenu username="testuser" />);
+
     expect(screen.getByText("testuser")).toBeInTheDocument();
   });
 
-  it("opens the user menu when IconButton is clicked", () => {
-    fireEvent.click(screen.getByLabelText("account of current user"));
+  it("calls handleMenu when account button is clicked", () => {
+    render(<UserMenu username="testuser" />);
 
-    expect(screen.getByText("Logout")).toBeInTheDocument();
+    fireEvent.click(screen.getByLabelText(/account of current user/i));
+
+    expect(mockUserMenuStoreStatus.handleMenu).toHaveBeenCalled();
   });
 
-  it("calls cookies.remove and reloads the window when Logout is clicked", () => {
-    fireEvent.click(screen.getByLabelText("account of current user"));
-    fireEvent.click(screen.getByText("Logout"));
+  it("calls handleLogout when logout is clicked", () => {
+    mockUserMenuStoreStatus.anchorEl = document.createElement("div");
 
-    expect(localStorage.removeItem).toHaveBeenCalledWith(
-      LOCAL_STORAGE_USER_KEY,
-    );
-    expect(mockReload).toHaveBeenCalled();
+    render(<UserMenu username="testuser" />);
+
+    fireEvent.click(screen.getByText(/logout/i));
+
+    expect(mockHandleLogout).toHaveBeenCalled();
   });
 });
