@@ -15,9 +15,9 @@ export const ProtectedRoute = (): React.ReactElement => {
     return <Spinner />;
   }
 
-  if (!isAuthenticated) {
-    return <Navigate to={BaseRoutes.LOGIN} replace />;
-  }
-
-  return <Outlet />;
+  return isAuthenticated ? (
+    <Outlet />
+  ) : (
+    <Navigate to={BaseRoutes.LOGIN} replace />
+  );
 };

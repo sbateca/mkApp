@@ -4,14 +4,7 @@ import {
   selectMarkSessionResolved,
   selectSetSession,
 } from "../../entities/session/model/selectors";
-import {STORAGE_KEYS} from "../../config/storage";
-import {getFromStorage} from "../../utils/browserStorage";
-import {User} from "../../entities/user";
-
-type StoredSession = {
-  user: User | null;
-  accessToken: string | null;
-};
+import {getSession} from "../../entities/session/lib/sessionStorage";
 
 export const SessionInitializer = ({
   children,
@@ -20,7 +13,7 @@ export const SessionInitializer = ({
   const markSessionResolved = useSessionStore(selectMarkSessionResolved);
 
   useEffect(() => {
-    const storedSession = getFromStorage<StoredSession>(STORAGE_KEYS.SESSION);
+    const storedSession = getSession();
 
     if (storedSession?.user) {
       setSession({
@@ -31,7 +24,7 @@ export const SessionInitializer = ({
     }
 
     markSessionResolved();
-  }, []);
+  }, [markSessionResolved, setSession]);
 
   return <>{children}</>;
 };

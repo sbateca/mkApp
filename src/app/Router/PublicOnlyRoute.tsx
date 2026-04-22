@@ -15,9 +15,9 @@ export const PublicOnlyRoute = (): React.ReactElement => {
     return <Spinner />;
   }
 
-  if (isAuthenticated) {
-    return <Navigate to={BaseRoutes.HOME} replace />;
-  }
-
-  return <Outlet />;
+  return isAuthenticated ? (
+    <Navigate to={BaseRoutes.SAMPLES} replace />
+  ) : (
+    <Outlet />
+  );
 };

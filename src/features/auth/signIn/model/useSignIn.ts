@@ -1,9 +1,8 @@
 import {useState} from "react";
-import {LOGIN_ERROR_ACCESS_DENIED_MESSAGE} from "../../../../utils/constants";
-import {SignInRequest} from "../api/signInRequest";
 import {useSessionStore} from "../../../../entities/session/model/store";
 import {selectSetSession} from "../../../../entities/session/model/selectors";
 import {signInRequest} from "../api/authService";
+import {SignInRequest} from "../api/types";
 
 export const useSignIn = () => {
   const setSession = useSessionStore(selectSetSession);
@@ -17,11 +16,6 @@ export const useSignIn = () => {
 
     try {
       const response = await signInRequest(request);
-
-      if (!response?.user) {
-        setErrorMessage(LOGIN_ERROR_ACCESS_DENIED_MESSAGE);
-        return;
-      }
 
       setSession({
         user: response.user,

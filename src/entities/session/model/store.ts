@@ -1,7 +1,6 @@
 import {create} from "zustand";
 import {SessionStore} from "./types";
-import {STORAGE_KEYS} from "../../../config/storage";
-import {removeFromStorage, saveToStorage} from "../../../utils/browserStorage";
+import {clearStoredSession, saveSession} from "../lib/sessionStorage";
 
 export const useSessionStore = create<SessionStore>((set) => ({
   user: null,
@@ -10,17 +9,17 @@ export const useSessionStore = create<SessionStore>((set) => ({
   isSessionResolved: false,
 
   setSession: ({user, accessToken}) => {
-    saveToStorage(STORAGE_KEYS.SESSION, {user, accessToken});
+    saveSession({user, accessToken});
     set({
-      user,
-      accessToken,
+      user: user,
+      accessToken: accessToken,
       isAuthenticated: true,
       isSessionResolved: true,
     });
   },
 
   clearSession: () => {
-    removeFromStorage(STORAGE_KEYS.SESSION);
+    clearStoredSession();
 
     set({
       user: null,

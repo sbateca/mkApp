@@ -1,21 +1,29 @@
 import axios from "axios";
-import {SignInRequest, SignInResponse} from "./signInRequest";
-import EnvManager from "../../../../config/EnvManager";
+import {SignInRequest, SignInResponse, ErrorResponse} from "./types";
+import {apiClient} from "../../../../shared/api/apliClient";
 
 export const signInRequest = async (
-  signInRequest: SignInRequest,
+  request: SignInRequest,
 ): Promise<SignInResponse> => {
   try {
-    const response = await axios.post<SignInResponse>(
-      `${EnvManager.BACKEND_URL}/auth/login`,
-      signInRequest,
+    const response = await apiClient.post<SignInResponse>(
+      "/auth/login",
+      request,
     );
     return response.data;
   } catch (error) {
-    if (axios.isAxiosError(error)) {
-      throw new Error(error.response?.data?.message || "Error while login.");
+    if (axios.isAxiosError<ErrorResponse>(error)) {
+      if (error.response?.status === 401) {
+        throw new Error(error.response.data?.message || "Invalid credentials");
+      }
+
+      if (!error.response) {
+        throw new Error("Connection error");
+      }
+
+      throw new Error("Unexpected server error");
     }
 
-    throw new Error("An unknown error occurred when try to login.");
+    throw new Error("An unknown error occurred while trying to login.");
   }
 };

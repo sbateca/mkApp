@@ -11,7 +11,7 @@ const mockUsers = [
     username: "janedoe",
   },
 ];
-jest.mock("../config/EnvManager", () => ({
+jest.mock("../../../../config/EnvManager", () => ({
   __esModule: true,
   default: {
     BACKEND_URL: "http://mockurl.com/api",

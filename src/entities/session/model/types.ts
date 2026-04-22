@@ -1,12 +1,12 @@
-import {User} from "../../user";
+import {SessionUser} from "../../user";
 
 export interface SessionPayload {
-  user: User | null;
+  user: SessionUser | null;
   accessToken: string | null;
 }
 
 export interface SessionStore {
-  user: User | null;
+  user: SessionUser | null;
   accessToken: string | null;
   isAuthenticated: boolean;
   isSessionResolved: boolean;

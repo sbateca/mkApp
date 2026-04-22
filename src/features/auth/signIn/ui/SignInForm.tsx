@@ -62,10 +62,11 @@ export const SignInForm = () => {
 
   return (
     <Box sx={LoginFormStyles.container}>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} method="post" noValidate>
         <Box sx={LoginFormStyles.form}>
           <FormControl error={!!formFieldsErrors[SignInFormFields.USERNAME]}>
             <TextField
+              id="username"
               required
               name={SignInFormFields.USERNAME}
               label={LOGIN_FORM_USERNAME_LABEL_TEXT}
@@ -73,11 +74,14 @@ export const SignInForm = () => {
               value={form.username || ""}
               onChange={handleChange}
               error={!!formFieldsErrors[SignInFormFields.USERNAME]}
+              helperText={getTextFieldHelperText(SignInFormFields.USERNAME)}
+              autoComplete="username"
             />
           </FormControl>
 
           <FormControl error={!!formFieldsErrors[SignInFormFields.PASSWORD]}>
             <TextField
+              id="password"
               required
               name={SignInFormFields.PASSWORD}
               label={LOGIN_FORM_PASSWORD_LABEL_TEXT}
@@ -87,6 +91,7 @@ export const SignInForm = () => {
               onChange={handleChange}
               error={!!formFieldsErrors[SignInFormFields.PASSWORD]}
               helperText={getTextFieldHelperText(SignInFormFields.PASSWORD)}
+              autoComplete="current-password"
             />
           </FormControl>
           <Button

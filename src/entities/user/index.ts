@@ -1,2 +1,2 @@
 export * from "./lib/userAdapters";
-export * from "./model/User";
+export * from "./model/SessionUser";
