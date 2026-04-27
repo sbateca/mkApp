@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
   createReportService,
   editReportService,
@@ -12,12 +11,16 @@ import {
   buildSamplesData,
   buildSampleTypesData,
 } from "../../../shared/test/builders";
-import {AnalysisMethod, Analyte, Criteria} from "../../../model";
+
 import {buildAnalysisMethodsData} from "../../../shared/test/builders/analisysMethodBuilder";
 import {buildCriteriasData} from "../../../shared/test/builders/criteriaBuilder";
 import {SampleType} from "../../sampleType";
 import {Client} from "../../client";
 import {Sample} from "../../sample";
+import {Analyte} from "../../analyte/model/Analyte";
+import {AnalysisMethod} from "../../analysisMethod/model/AnalysisMethod";
+import {Criteria} from "../../criteria";
+import {apiClient} from "../../../shared/api/apliClient";
 
 const mockSampleTypes: SampleType[] = buildSampleTypesData(2);
 const mockAnalytes: Analyte[] = buildAnalytesData(2);
@@ -41,7 +44,15 @@ jest.mock("../../../config/EnvManager", () => ({
     BACKEND_URL: "http://mockurl.com/api",
   },
 }));
-jest.mock("axios");
+
+jest.mock("../../../shared/api/apliClient", () => ({
+  apiClient: {
+    get: jest.fn(),
+    post: jest.fn(),
+    put: jest.fn(),
+    delete: jest.fn(),
+  },
+}));
 
 describe("reportsService", () => {
   beforeEach(() => {
@@ -49,76 +60,82 @@ describe("reportsService", () => {
   });
 
   it("should return a list of reports", async () => {
-    jest.spyOn(axios, "get").mockResolvedValueOnce({data: mockReports});
+    const mockApiClientGet = apiClient.get as jest.Mock;
+    mockApiClientGet.mockResolvedValueOnce({data: mockReports});
     const expectedURL = "http://mockurl.com/api/reports";
 
     const reports = await getReportsService();
 
     expect(reports).toEqual(mockReports);
-    expect(axios.get).toHaveBeenCalledWith(expectedURL);
+    expect(apiClient.get).toHaveBeenCalledWith(expectedURL);
   });
 
   it("should return a report by id", async () => {
-    jest.spyOn(axios, "get").mockResolvedValueOnce({data: mockReports[0]});
+    const mockApiClientGet = apiClient.get as jest.Mock;
+    mockApiClientGet.mockResolvedValueOnce({data: mockReports[0]});
     const expectedURL = "http://mockurl.com/api/reports/1";
 
     const report = await getReportByIdService("1");
 
     expect(report).toEqual(mockReports[0]);
-    expect(axios.get).toHaveBeenCalledWith(expectedURL);
+    expect(apiClient.get).toHaveBeenCalledWith(expectedURL);
   });
 
   it("should create a report", async () => {
-    jest.spyOn(axios, "post").mockResolvedValueOnce({data: mockReports[0]});
+    const mockApiClientGet = apiClient.post as jest.Mock;
+    mockApiClientGet.mockResolvedValueOnce({data: mockReports[0]});
     const expectedURL = "http://mockurl.com/api/reports";
 
     const report = await createReportService(mockReports[0]);
 
     expect(report).toEqual(mockReports[0]);
-    expect(axios.post).toHaveBeenCalledWith(expectedURL, mockReports[0]);
+    expect(apiClient.post).toHaveBeenCalledWith(expectedURL, mockReports[0]);
   });
 
   it("should edit a report", async () => {
-    jest.spyOn(axios, "put").mockResolvedValueOnce({data: mockReports[0]});
+    const mockApiClientGet = apiClient.put as jest.Mock;
+    mockApiClientGet.mockResolvedValueOnce({data: mockReports[0]});
     const expectedURL = "http://mockurl.com/api/reports/1";
 
     const report = await editReportService("1", mockReports[0]);
 
     expect(report).toEqual(mockReports[0]);
-    expect(axios.put).toHaveBeenCalledWith(expectedURL, mockReports[0]);
+    expect(apiClient.put).toHaveBeenCalledWith(expectedURL, mockReports[0]);
   });
 
   it("should throw an error when an error occurs in get method", async () => {
-    jest.spyOn(axios, "get").mockRejectedValueOnce(new Error("Mock error"));
+    const mockErrorMessage = "Mock error";
+    const mockApiClientGet = apiClient.get as jest.Mock;
+    mockApiClientGet.mockRejectedValueOnce(new Error(mockErrorMessage));
 
     try {
       await getReportsService();
     } catch (error) {
-      expect((error as Error).message).toBe(
-        "Error retrieving reports: Mock error",
-      );
+      expect((error as Error).message).toBe("Mock error");
     }
   });
 
   it("should throw an error when an error occurs in create method", async () => {
-    jest.spyOn(axios, "post").mockRejectedValueOnce(new Error("Mock error"));
+    const mockErrorMessage = "Mock error";
+    const mockApiClientGet = apiClient.post as jest.Mock;
+    mockApiClientGet.mockRejectedValueOnce(new Error(mockErrorMessage));
 
     try {
       await createReportService(mockReports[0]);
     } catch (error) {
-      expect((error as Error).message).toBe(
-        "Error creating report: Mock error",
-      );
+      expect((error as Error).message).toBe(mockErrorMessage);
     }
   });
 
   it("should throw an error when an error occurs in edit method", async () => {
-    jest.spyOn(axios, "put").mockRejectedValueOnce(new Error("Mock error"));
+    const mockErrorMessage = "Mock error";
+    const mockApiClientGet = apiClient.put as jest.Mock;
+    mockApiClientGet.mockRejectedValueOnce(new Error(mockErrorMessage));
 
     try {
       await editReportService("1", mockReports[0]);
     } catch (error) {
-      expect((error as Error).message).toBe("Error editing report: Mock error");
+      expect((error as Error).message).toBe(mockErrorMessage);
     }
   });
 });

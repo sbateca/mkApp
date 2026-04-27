@@ -1,10 +1,10 @@
-import axios from "axios";
 import {
   getSampleTypeByIdService,
   getSampleTypesService,
 } from "./sampleTypeService";
 import {SampleType} from "../model/SampleType";
 import {buildSampleTypesData} from "../../../shared/test/builders";
+import {apiClient} from "../../../shared/api/apliClient";
 
 const mockSampleTypes: SampleType[] = buildSampleTypesData(2);
 
@@ -14,7 +14,15 @@ jest.mock("../../../config/EnvManager", () => ({
     BACKEND_URL: "http://mockurl.com/api",
   },
 }));
-jest.mock("axios");
+
+jest.mock("../../../shared/api/apliClient", () => ({
+  apiClient: {
+    get: jest.fn(),
+    post: jest.fn(),
+    put: jest.fn(),
+    delete: jest.fn(),
+  },
+}));
 
 describe("sampleTypeService", () => {
   beforeEach(() => {
@@ -22,34 +30,35 @@ describe("sampleTypeService", () => {
   });
 
   it("should return a list of sample types", async () => {
-    jest.spyOn(axios, "get").mockResolvedValueOnce({data: mockSampleTypes});
+    const mockApiClientGet = apiClient.get as jest.Mock;
+    mockApiClientGet.mockResolvedValueOnce({data: mockSampleTypes});
     const expectedURL = "http://mockurl.com/api/sampleTypes";
 
     const sampleTypes = await getSampleTypesService();
 
     expect(sampleTypes).toEqual(mockSampleTypes);
-    expect(axios.get).toHaveBeenCalledWith(expectedURL);
+    expect(mockApiClientGet).toHaveBeenCalledWith(expectedURL);
   });
 
   it("should return a sample type by id", async () => {
-    jest.spyOn(axios, "get").mockResolvedValueOnce({data: mockSampleTypes[0]});
+    const mockApiClientGet = apiClient.get as jest.Mock;
+    mockApiClientGet.mockResolvedValueOnce({data: mockSampleTypes});
     const expectedURL = "http://mockurl.com/api/sampleTypes/1";
 
     const sampleType = await getSampleTypeByIdService("1");
 
     expect(sampleType).toEqual(mockSampleTypes[0]);
-    expect(axios.get).toHaveBeenCalledWith(expectedURL);
+    expect(mockApiClientGet).toHaveBeenCalledWith(expectedURL);
   });
 
   it("should throw an error when an error occurs", async () => {
-    jest.spyOn(axios, "get").mockRejectedValueOnce(new Error("Mock error"));
+    const mockApiClientGet = apiClient.get as jest.Mock;
+    mockApiClientGet.mockRejectedValueOnce(new Error("Mock error"));
 
     try {
       await getSampleTypesService();
     } catch (error) {
-      expect((error as Error).message).toBe(
-        "Error retrieving sample types: Mock error",
-      );
+      expect((error as Error).message).toBe("Mock error");
     }
   });
 });

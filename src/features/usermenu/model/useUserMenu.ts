@@ -3,10 +3,10 @@ import {useUserMenuStore} from "./store";
 
 export const useUserMenu = () => {
   const {handleClose} = useUserMenuStore();
-  const {signOut} = useSignOut();
+  const {handleSignOut} = useSignOut();
 
   const handleLogout = () => {
-    signOut();
+    handleSignOut();
     handleClose();
   };
 

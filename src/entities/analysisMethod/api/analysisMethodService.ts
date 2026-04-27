@@ -1,40 +1,21 @@
-import axios from "axios";
 import EnvManager from "../../../config/EnvManager";
 import {axiosResponseToAnalysisMethods} from "../lib/analysisMethodMappers";
 import {AnalysisMethod} from "../model/AnalysisMethod";
+import {BaseRoutes} from "../../../utils/constants/baseRoutes";
+import {apiClient} from "../../../shared/api/apliClient";
 
 export const getAnalysisMethodService = async (): Promise<AnalysisMethod[]> => {
-  try {
-    const response = await axios.get<AnalysisMethod[]>(
-      `${EnvManager.BACKEND_URL}/analysisMethods`,
-    );
-    return axiosResponseToAnalysisMethods(response);
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(
-        `Error retrieving analysisMethod types: ${error.message}`,
-      );
-    } else {
-      throw new Error(
-        "An unknown error occurred retrieving analysisMethod types.",
-      );
-    }
-  }
+  const response = await apiClient.get<AnalysisMethod[]>(
+    `${EnvManager.BACKEND_URL}${BaseRoutes.ANALYSIS_METHODS}`,
+  );
+  return axiosResponseToAnalysisMethods(response);
 };
 
 export const getAnalysisMethodByIdService = async (
   id: string,
 ): Promise<AnalysisMethod> => {
-  try {
-    const response = await axios.get<AnalysisMethod>(
-      `${EnvManager.BACKEND_URL}/analysisMethods/${id}`,
-    );
-    return axiosResponseToAnalysisMethods(response)[0];
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(`Error retrieving analysisMethod type: ${error.message}`);
-    } else {
-      throw new Error("An unknown error occurred retrieving analysis methods.");
-    }
-  }
+  const response = await apiClient.get<AnalysisMethod>(
+    `${EnvManager.BACKEND_URL}${BaseRoutes.ANALYSIS_METHODS}/${id}`,
+  );
+  return axiosResponseToAnalysisMethods(response)[0];
 };

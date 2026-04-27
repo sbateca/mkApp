@@ -1,29 +1,57 @@
 import {render, screen} from "@testing-library/react";
 import {MemoryRouter, Route, Routes} from "react-router-dom";
+
 import {PublicOnlyRoute} from "./PublicOnlyRoute";
-import {useSessionStore} from "../../entities/session/model/store";
+import {useSessionStore} from "../../entities/auth/model/store";
+
+jest.mock("../../config/EnvManager", () => ({
+  __esModule: true,
+  default: {
+    BACKEND_URL: "http://mockurl.com/api",
+  },
+}));
+
+jest.mock("../../shared/ui", () => ({
+  Spinner: () => <div>Loading...</div>,
+}));
+
+const renderPublicOnlyRoute = () => {
+  render(
+    <MemoryRouter initialEntries={["/login"]}>
+      <Routes>
+        <Route path="/samples" element={<div>Samples page</div>} />
+        <Route element={<PublicOnlyRoute />}>
+          <Route path="/login" element={<div>Login page</div>} />
+        </Route>
+      </Routes>
+    </MemoryRouter>,
+  );
+};
 
 describe("PublicOnlyRoute", () => {
   beforeEach(() => {
+    jest.clearAllMocks();
+
     useSessionStore.setState({
       user: null,
-      accessToken: null,
       isAuthenticated: false,
       isSessionResolved: true,
     });
   });
 
+  it("should render loading state when session is not resolved", () => {
+    useSessionStore.setState({
+      isSessionResolved: false,
+      isAuthenticated: false,
+    });
+
+    renderPublicOnlyRoute();
+
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
+  });
+
   it("should render public content when user is not authenticated", () => {
-    render(
-      <MemoryRouter initialEntries={["/login"]}>
-        <Routes>
-          <Route path="/samples" element={<div>Samples page</div>} />
-          <Route element={<PublicOnlyRoute />}>
-            <Route path="/login" element={<div>Login page</div>} />
-          </Route>
-        </Routes>
-      </MemoryRouter>,
-    );
+    renderPublicOnlyRoute();
 
     expect(screen.getByText("Login page")).toBeInTheDocument();
   });
@@ -36,21 +64,11 @@ describe("PublicOnlyRoute", () => {
         name: "Admin",
         role: "admin",
       },
-      accessToken: "mock-token",
       isAuthenticated: true,
       isSessionResolved: true,
     });
 
-    render(
-      <MemoryRouter initialEntries={["/login"]}>
-        <Routes>
-          <Route path="/samples" element={<div>Samples page</div>} />
-          <Route element={<PublicOnlyRoute />}>
-            <Route path="/login" element={<div>Login page</div>} />
-          </Route>
-        </Routes>
-      </MemoryRouter>,
-    );
+    renderPublicOnlyRoute();
 
     expect(screen.getByText("Samples page")).toBeInTheDocument();
   });

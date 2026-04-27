@@ -1,35 +1,31 @@
-import {useState} from "react";
-import {useSessionStore} from "../../../../entities/session/model/store";
-import {selectSetSession} from "../../../../entities/session/model/selectors";
-import {signInRequest} from "../api/authService";
-import {SignInRequest} from "../api/types";
+import {useSessionStore} from "../../../../entities/auth/model/store";
+import {
+  selectIsSessionLoading,
+  selectLogin,
+  selectSessionError,
+} from "../../../../entities/auth/model/selectors";
+import {LoginRequest} from "../../../../entities/auth";
+import {useNavigate} from "react-router-dom";
+import {BaseRoutes} from "../../../../utils/constants/baseRoutes";
 
 export const useSignIn = () => {
-  const setSession = useSessionStore(selectSetSession);
+  const login = useSessionStore(selectLogin);
+  const errorMessage = useSessionStore(selectSessionError);
+  const isLoading = useSessionStore(selectIsSessionLoading);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
-  const signIn = async (request: SignInRequest): Promise<void> => {
-    setIsLoading(true);
-    setErrorMessage("");
-
+  const handleSignIn = async (loginRequest: LoginRequest): Promise<void> => {
     try {
-      const response = await signInRequest(request);
-
-      setSession({
-        user: response.user,
-        accessToken: response.accessToken ?? null,
-      });
-    } catch (error) {
-      setErrorMessage((error as Error).message);
-    } finally {
-      setIsLoading(false);
+      await login(loginRequest);
+      navigate(BaseRoutes.HOME, {replace: true});
+    } catch {
+      // error aldready handled. This is intentional
     }
   };
 
   return {
-    signIn,
+    handleSignIn,
     errorMessage,
     isLoading,
   };

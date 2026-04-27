@@ -1,7 +1,7 @@
-import axios from "axios";
 import {getCriteriaByIdService, getCriteriasService} from "./criteriaService";
 import {buildCriteriasData} from "../../../shared/test/builders/criteriaBuilder";
 import {Criteria} from "../model/Criteria";
+import {apiClient} from "../../../shared/api/apliClient";
 
 const mockCriterias: Criteria[] = buildCriteriasData(2);
 
@@ -11,7 +11,15 @@ jest.mock("../../../config/EnvManager", () => ({
     BACKEND_URL: "http://mockurl.com/api",
   },
 }));
-jest.mock("axios");
+
+jest.mock("../../../shared/api/apliClient", () => ({
+  apiClient: {
+    get: jest.fn(),
+    post: jest.fn(),
+    put: jest.fn(),
+    delete: jest.fn(),
+  },
+}));
 
 describe("criteriaService", () => {
   beforeEach(() => {
@@ -19,34 +27,36 @@ describe("criteriaService", () => {
   });
 
   it("should return a list of criterias", async () => {
-    jest.spyOn(axios, "get").mockResolvedValueOnce({data: mockCriterias});
+    const mockApiClientGet = apiClient.get as jest.Mock;
+    mockApiClientGet.mockResolvedValueOnce({data: mockCriterias});
     const expectedURL = "http://mockurl.com/api/criterias";
 
     const criterias = await getCriteriasService();
 
     expect(criterias).toEqual(mockCriterias);
-    expect(axios.get).toHaveBeenCalledWith(expectedURL);
+    expect(apiClient.get).toHaveBeenCalledWith(expectedURL);
   });
 
   it("should return a criteria by id", async () => {
-    jest.spyOn(axios, "get").mockResolvedValueOnce({data: mockCriterias[0]});
+    const mockApiClientGet = apiClient.get as jest.Mock;
+    mockApiClientGet.mockResolvedValueOnce({data: mockCriterias[0]});
     const expectedURL = "http://mockurl.com/api/criterias/1";
 
     const criteria = await getCriteriaByIdService("1");
 
     expect(criteria).toEqual(mockCriterias[0]);
-    expect(axios.get).toHaveBeenCalledWith(expectedURL);
+    expect(apiClient.get).toHaveBeenCalledWith(expectedURL);
   });
 
   it("should throw an error when an error occurs", async () => {
-    jest.spyOn(axios, "get").mockRejectedValueOnce(new Error("Mock error"));
+    const mockApiClientGet = apiClient.get as jest.Mock;
+    const mockErrorMessage = "Mock error";
+    mockApiClientGet.mockRejectedValueOnce(new Error(mockErrorMessage));
 
     try {
       await getCriteriasService();
     } catch (error) {
-      expect((error as Error).message).toBe(
-        "Error retrieving criterias: Mock error",
-      );
+      expect((error as Error).message).toBe(mockErrorMessage);
     }
   });
 });

@@ -6,14 +6,12 @@ const mockSignOut = jest.fn();
 const mockHandleClose = jest.fn();
 
 jest.mock("../../auth/signOut/model/useSignOut", () => ({
-  __esModule: true,
   useSignOut: () => ({
-    signOut: mockSignOut,
+    handleSignOut: mockSignOut,
   }),
 }));
 
 jest.mock("./store", () => ({
-  __esModule: true,
   useUserMenuStore: () => ({
     handleClose: mockHandleClose,
   }),

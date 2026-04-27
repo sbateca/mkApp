@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
-import {useSessionStore} from "../../../entities/session/model/store";
-import {selectUser} from "../../../entities/session/model/selectors";
+import {useSessionStore} from "../../../entities/auth/model/store";
+import {selectUser} from "../../../entities/auth/model/selectors";
 
 export const useHeaderUser = () => {
   const [username, setUsername] = useState("");

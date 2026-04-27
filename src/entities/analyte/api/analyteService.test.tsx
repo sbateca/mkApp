@@ -1,7 +1,7 @@
-import axios from "axios";
 import {getAnalyteByIdService, getAnalytesService} from "./analyteService";
 import {buildAnalytesData} from "../../../shared/test/builders";
 import {Analyte} from "../model/Analyte";
+import {apiClient} from "../../../shared/api/apliClient";
 
 const mockAnalytes: Analyte[] = buildAnalytesData(2);
 
@@ -11,7 +11,15 @@ jest.mock("../../../config/EnvManager", () => ({
     BACKEND_URL: "http://mockurl.com/api",
   },
 }));
-jest.mock("axios");
+
+jest.mock("../../../shared/api/apliClient", () => ({
+  apiClient: {
+    get: jest.fn(),
+    post: jest.fn(),
+    put: jest.fn(),
+    delete: jest.fn(),
+  },
+}));
 
 describe("analyteService", () => {
   beforeEach(() => {
@@ -19,34 +27,36 @@ describe("analyteService", () => {
   });
 
   it("should return a list of analytes", async () => {
-    jest.spyOn(axios, "get").mockResolvedValueOnce({data: mockAnalytes});
+    const mockApiClientGet = apiClient.get as jest.Mock;
+    mockApiClientGet.mockResolvedValueOnce({data: mockAnalytes});
     const expectedURL = "http://mockurl.com/api/analytes";
 
     const analytes = await getAnalytesService();
 
     expect(analytes).toEqual(mockAnalytes);
-    expect(axios.get).toHaveBeenCalledWith(expectedURL);
+    expect(apiClient.get).toHaveBeenCalledWith(expectedURL);
   });
 
   it("should return an analyte by id", async () => {
-    jest.spyOn(axios, "get").mockResolvedValueOnce({data: mockAnalytes[0]});
+    const mockApiClientGet = apiClient.get as jest.Mock;
+    mockApiClientGet.mockResolvedValueOnce({data: mockAnalytes[0]});
     const expectedURL = "http://mockurl.com/api/analytes/1";
 
     const analyte = await getAnalyteByIdService("1");
 
     expect(analyte).toEqual(mockAnalytes[0]);
-    expect(axios.get).toHaveBeenCalledWith(expectedURL);
+    expect(apiClient.get).toHaveBeenCalledWith(expectedURL);
   });
 
   it("should throw an error when an error occurs", async () => {
-    jest.spyOn(axios, "get").mockRejectedValueOnce(new Error("Mock error"));
+    const mockApiClientGet = apiClient.get as jest.Mock;
+    const mockErrorMessage = "Mock error";
+    mockApiClientGet.mockRejectedValueOnce(new Error(mockErrorMessage));
 
     try {
       await getAnalytesService();
     } catch (error) {
-      expect((error as Error).message).toBe(
-        "Error retrieving analyte types: Mock error",
-      );
+      expect((error as Error).message).toBe(mockErrorMessage);
     }
   });
 });

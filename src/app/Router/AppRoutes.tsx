@@ -16,15 +16,14 @@ export const AppRoutes = () => {
 
       <Route element={<ProtectedRoute />}>
         <Route element={<AdminLayout />}>
+          <Route
+            path={BaseRoutes.HOME}
+            element={<Navigate to={BaseRoutes.SAMPLES} replace />}
+          />
           <Route path={BaseRoutes.SAMPLES} element={<SamplesPage />} />
           <Route path={BaseRoutes.REPORTS} element={<ReportsPage />} />
         </Route>
       </Route>
-
-      <Route
-        path={BaseRoutes.HOME}
-        element={<Navigate to={BaseRoutes.SAMPLES} replace />}
-      />
     </Routes>
   );
 };

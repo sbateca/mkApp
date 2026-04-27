@@ -1,16 +1,15 @@
 import {useNavigate} from "react-router-dom";
-import {useSessionStore} from "../../../../entities/session/model/store";
-import {selectClearSession} from "../../../../entities/session/model/selectors";
 import {BaseRoutes} from "../../../../utils/constants/baseRoutes";
+import {selectLogout, useSessionStore} from "../../../../entities/auth";
 
 export const useSignOut = () => {
-  const clearSession = useSessionStore(selectClearSession);
   const navigate = useNavigate();
+  const logout = useSessionStore(selectLogout);
 
-  const signOut = (): void => {
-    clearSession();
+  const handleSignOut = async () => {
+    await logout();
     navigate(BaseRoutes.LOGIN, {replace: true});
   };
 
-  return {signOut};
+  return {handleSignOut};
 };
