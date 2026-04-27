@@ -6,6 +6,7 @@ import {AdminLayout} from "../../layouts/AdminLayout";
 import {ProtectedRoute} from "./ProtectedRoute";
 import {SamplesPage} from "../../pages/SamplesPage";
 import {ReportsPage} from "../../pages/ReportsPage";
+import {NotFoundPage} from "../../pages/NotFound/ui/NotFoundPage";
 
 export const AppRoutes = () => {
   return (
@@ -24,6 +25,8 @@ export const AppRoutes = () => {
           <Route path={BaseRoutes.REPORTS} element={<ReportsPage />} />
         </Route>
       </Route>
+
+      <Route path={BaseRoutes.ANY} element={<NotFoundPage />} />
     </Routes>
   );
 };
