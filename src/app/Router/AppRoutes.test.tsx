@@ -3,6 +3,7 @@ import {MemoryRouter} from "react-router-dom";
 
 import {AppRoutes} from "./AppRoutes";
 import {useSessionStore} from "../../entities/auth/model/store";
+import {NOT_FOUND_TEXT} from "../../utils/constants";
 
 jest.mock("../../config/EnvManager", () => ({
   __esModule: true,
@@ -21,6 +22,10 @@ jest.mock("../../pages/SamplesPage", () => ({
 
 jest.mock("../../pages/ReportsPage", () => ({
   ReportsPage: () => <div>Reports Page</div>,
+}));
+
+jest.mock("../../pages/NotFound", () => ({
+  NotFoundPage: () => <div>Not Found Page</div>,
 }));
 
 jest.mock("../../layouts/AdminLayout", () => {
@@ -108,5 +113,14 @@ describe("AppRoutes", () => {
 
     expect(screen.getByText("Admin Layout")).toBeInTheDocument();
     expect(screen.getByText("Reports Page")).toBeInTheDocument();
+  });
+
+  it("should render not found page for unsupported routes", () => {
+    const expectedPageText = NOT_FOUND_TEXT;
+    setAuthenticatedSession();
+
+    renderAppRoutes("/unsupported-route");
+
+    expect(screen.getByText(expectedPageText)).toBeInTheDocument();
   });
 });

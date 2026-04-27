@@ -60,10 +60,7 @@ server.get("/auth/me", (req, res) => {
   }
 
   const db = router.db;
-  const user = db
-    .get("users")
-    .find({id: Number(sessionUserId)})
-    .value();
+  const user = db.get("users").find({id: sessionUserId}).value();
 
   if (!user) {
     return res.status(401).json({

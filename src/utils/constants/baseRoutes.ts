@@ -1,4 +1,5 @@
 export enum BaseRoutes {
+  ANY = "*",
   HOME = "/",
   SAMPLES = "/samples",
   REPORTS = "/reports",
