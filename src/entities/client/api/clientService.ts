@@ -1,38 +1,22 @@
-import axios from "axios";
-
 import {Sample} from "../../sample/model/Sample";
 import EnvManager from "../../../config/EnvManager";
 import {Client} from "../model/Client";
 import {axiosResponseToClient} from "../lib/clientMappers";
+import {apiClient} from "../../../shared/api/apliClient";
+import {BaseRoutes} from "../../../utils/constants/baseRoutes";
 
 export const getClientsService = async (): Promise<Client[]> => {
-  try {
-    const response = await axios.get<Client[]>(
-      `${EnvManager.BACKEND_URL}/clients`,
-    );
-    return axiosResponseToClient(response);
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(`Error retrieving clients: ${error.message}`);
-    } else {
-      throw new Error("An unknown error occurred retrieving clients.");
-    }
-  }
+  const response = await apiClient.get<Client[]>(
+    `${EnvManager.BACKEND_URL}${BaseRoutes.CLIENTS}`,
+  );
+  return axiosResponseToClient(response);
 };
 
 export const getClientByIdService = async (
   sampleTypeId: string,
 ): Promise<Client> => {
-  try {
-    const response = await axios.get<Sample>(
-      `${EnvManager.BACKEND_URL}/clients/${sampleTypeId}`,
-    );
-    return axiosResponseToClient(response)[0];
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(`Error retrieving client by id: ${error.message}`);
-    } else {
-      throw new Error("An unknown error occurred retrieving clients.");
-    }
-  }
+  const response = await apiClient.get<Sample>(
+    `${EnvManager.BACKEND_URL}${BaseRoutes.CLIENTS}/${sampleTypeId}`,
+  );
+  return axiosResponseToClient(response)[0];
 };

@@ -5,6 +5,7 @@ import {
   getSampleTypeByIdService,
   getSampleTypesService,
 } from "../api/sampleTypeService";
+import {UNEXPECTED_ERROR} from "../../../utils/constants";
 
 export const useSampleTypeStore = create<SampleTypeStore>((set) => ({
   sampleTypes: null,
@@ -25,7 +26,8 @@ export const useSampleTypeStore = create<SampleTypeStore>((set) => ({
       set({sampleTypes: sampleTypes ? [...sampleTypes] : null});
       return sampleTypes;
     } catch (error) {
-      set({error: (error as Error).message});
+      const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
+      set({error: message});
       return null;
     } finally {
       set({isLoading: false});
@@ -36,7 +38,8 @@ export const useSampleTypeStore = create<SampleTypeStore>((set) => ({
     try {
       return getSampleTypeByIdService(sampleId);
     } catch (error) {
-      set({error: (error as Error).message});
+      const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
+      set({error: message});
       return null;
     } finally {
       set({isLoading: false});

@@ -1,36 +1,21 @@
-import axios from "axios";
 import EnvManager from "../../../config/EnvManager";
 import {axiosResponseToAnalyte} from "../lib/analyteMappers";
 import {Analyte} from "../model/Analyte";
+import {apiClient} from "../../../shared/api/apliClient";
+import {BaseRoutes} from "../../../utils/constants/baseRoutes";
 
 export const getAnalytesService = async (): Promise<Analyte[]> => {
-  try {
-    const response = await axios.get<Analyte[]>(
-      `${EnvManager.BACKEND_URL}/analytes`,
-    );
-    return axiosResponseToAnalyte(response);
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(`Error retrieving analyte types: ${error.message}`);
-    } else {
-      throw new Error("An unknown error occurred retrieving analyte types.");
-    }
-  }
+  const response = await apiClient.get<Analyte[]>(
+    `${EnvManager.BACKEND_URL}${BaseRoutes.ANALYTES}`,
+  );
+  return axiosResponseToAnalyte(response);
 };
 
 export const getAnalyteByIdService = async (
   analyteTypeId: string,
 ): Promise<Analyte> => {
-  try {
-    const response = await axios.get<Analyte>(
-      `${EnvManager.BACKEND_URL}/analytes/${analyteTypeId}`,
-    );
-    return axiosResponseToAnalyte(response)[0];
-  } catch (error) {
-    if (error instanceof Error) {
-      throw new Error(`Error retrieving analyte type: ${error.message}`);
-    } else {
-      throw new Error("An unknown error occurred retrieving analyte type.");
-    }
-  }
+  const response = await apiClient.get<Analyte[]>(
+    `${EnvManager.BACKEND_URL}${BaseRoutes.ANALYTES}/${analyteTypeId}`,
+  );
+  return axiosResponseToAnalyte(response)[0];
 };

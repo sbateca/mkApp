@@ -3,6 +3,7 @@ import {SamplesStore} from "./types";
 import {
   SAMPLE_ID_MISSING_TEXT,
   SAMPLE_ID_OR_SAMPLE_MISSING_TEXT,
+  UNEXPECTED_ERROR,
 } from "../../../utils/constants";
 import {Sample} from "./Sample";
 import {
@@ -28,8 +29,9 @@ export const useSampleStore = create<SamplesStore>((set) => ({
     try {
       const fetchedSamples = await getSamplesService();
       set({samples: fetchedSamples});
-    } catch (err) {
-      set({error: (err as Error).message});
+    } catch (error) {
+      const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
+      set({error: message});
     } finally {
       set({isLoading: false});
     }
@@ -39,8 +41,9 @@ export const useSampleStore = create<SamplesStore>((set) => ({
     set({isLoading: true, error: null});
     try {
       return await getSampleByIdService(sampleId);
-    } catch (e) {
-      set({error: (e as Error).message});
+    } catch (error) {
+      const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
+      set({error: message});
       return null;
     } finally {
       set({isLoading: false});
@@ -51,8 +54,9 @@ export const useSampleStore = create<SamplesStore>((set) => ({
     set({isLoading: true, error: null});
     try {
       return await createSampleService(sample);
-    } catch (e) {
-      set({error: (e as Error).message});
+    } catch (error) {
+      const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
+      set({error: message});
       return null;
     } finally {
       set({isLoading: false});
@@ -67,8 +71,9 @@ export const useSampleStore = create<SamplesStore>((set) => ({
         return null;
       }
       return await editSampleService(sampleId, sample);
-    } catch (e) {
-      set({error: (e as Error).message});
+    } catch (error) {
+      const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
+      set({error: message});
       return null;
     } finally {
       set({isLoading: false});
@@ -83,8 +88,9 @@ export const useSampleStore = create<SamplesStore>((set) => ({
         return null;
       }
       return await deleteSampleService(sampleId);
-    } catch (e) {
-      set({error: (e as Error).message});
+    } catch (error) {
+      const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
+      set({error: message});
       return null;
     } finally {
       set({isLoading: false});

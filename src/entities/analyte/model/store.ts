@@ -2,6 +2,7 @@ import {create} from "zustand";
 import {AnalyteStore} from "./types";
 import {getAnalyteByIdService, getAnalytesService} from "../api/analyteService";
 import {Analyte} from "./Analyte";
+import {UNEXPECTED_ERROR} from "../../../utils/constants";
 
 export const useAnalyteStore = create<AnalyteStore>()((set) => ({
   analytes: null,
@@ -21,7 +22,8 @@ export const useAnalyteStore = create<AnalyteStore>()((set) => ({
       set({analytes: analytes});
       return analytes;
     } catch (error) {
-      set({error: (error as Error).message});
+      const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
+      set({error: message});
       return null;
     } finally {
       set({isLoading: false});
@@ -33,7 +35,8 @@ export const useAnalyteStore = create<AnalyteStore>()((set) => ({
     try {
       return await getAnalyteByIdService(analyteId);
     } catch (error) {
-      set({error: (error as Error).message});
+      const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
+      set({error: message});
     } finally {
       set({isLoading: false});
     }

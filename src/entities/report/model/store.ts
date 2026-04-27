@@ -3,6 +3,7 @@ import {Report} from "./Report";
 import {
   REPORT_ID_MISSING_TEXT,
   REPORT_ID_OR_REPORTS_MISSING_TEXT,
+  UNEXPECTED_ERROR,
 } from "../../../utils/constants";
 import {
   createReportService,
@@ -29,7 +30,8 @@ export const useReportStore = create<ReportStore>((set) => ({
       set({reports: reports});
       return reports;
     } catch (error) {
-      set({error: (error as Error).message});
+      const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
+      set({error: message});
       return null;
     } finally {
       set({isLoading: false});
@@ -41,7 +43,8 @@ export const useReportStore = create<ReportStore>((set) => ({
     try {
       return await getReportByIdService(reportId);
     } catch (error) {
-      set({error: (error as Error).message});
+      const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
+      set({error: message});
       return null;
     } finally {
       set({isLoading: false});
@@ -53,7 +56,8 @@ export const useReportStore = create<ReportStore>((set) => ({
     try {
       return await createReportService(report);
     } catch (error) {
-      set({error: (error as Error).message});
+      const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
+      set({error: message});
       return null;
     } finally {
       set({isLoading: false});
@@ -69,7 +73,8 @@ export const useReportStore = create<ReportStore>((set) => ({
         set({error: REPORT_ID_OR_REPORTS_MISSING_TEXT});
       }
     } catch (error) {
-      set({error: (error as Error).message});
+      const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
+      set({error: message});
     } finally {
       set({isLoading: false});
     }
@@ -85,7 +90,8 @@ export const useReportStore = create<ReportStore>((set) => ({
         set({error: REPORT_ID_MISSING_TEXT});
       }
     } catch (error) {
-      set({error: (error as Error).message});
+      const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
+      set({error: message});
     } finally {
       set({isLoading: false});
     }

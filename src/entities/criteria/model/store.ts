@@ -1,10 +1,11 @@
 import {create} from "zustand";
 import {CriteriaStore} from "./types";
-import {Criteria} from "../../../model";
 import {
   getCriteriaByIdService,
   getCriteriasService,
 } from "../api/criteriaService";
+import {UNEXPECTED_ERROR} from "../../../utils/constants";
+import {Criteria} from "./Criteria";
 
 export const useCriteriaStore = create<CriteriaStore>((set) => ({
   criterias: null,
@@ -22,7 +23,8 @@ export const useCriteriaStore = create<CriteriaStore>((set) => ({
     try {
       return await getCriteriasService();
     } catch (error) {
-      set({error: (error as Error).message});
+      const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
+      set({error: message});
       return null;
     } finally {
       set({isLoading: false, error: null});
@@ -34,7 +36,8 @@ export const useCriteriaStore = create<CriteriaStore>((set) => ({
     try {
       return await getCriteriaByIdService(id);
     } catch (error) {
-      set({error: (error as Error).message});
+      const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
+      set({error: message});
       return null;
     } finally {
       set({isLoading: false, error: null});

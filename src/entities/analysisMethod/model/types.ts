@@ -1,4 +1,4 @@
-import {AnalysisMethod} from "../../../model";
+import {AnalysisMethod} from "./AnalysisMethod";
 
 export type AnalysisMethodStore = {
   analysisMethods: AnalysisMethod[] | null;

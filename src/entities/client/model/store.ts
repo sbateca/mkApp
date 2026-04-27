@@ -2,6 +2,7 @@ import {create} from "zustand";
 import {ClientsStore} from "./types";
 import {Client} from "./Client";
 import {getClientByIdService, getClientsService} from "../api/clientService";
+import {UNEXPECTED_ERROR} from "../../../utils/constants";
 
 export const useClientStore = create<ClientsStore>((set) => ({
   clients: null,
@@ -15,7 +16,8 @@ export const useClientStore = create<ClientsStore>((set) => ({
       const clients = await getClientsService();
       set({clients: clients});
     } catch (error) {
-      set({error: (error as Error).message});
+      const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
+      set({error: message});
     } finally {
       set({isLoading: false});
     }
@@ -25,7 +27,8 @@ export const useClientStore = create<ClientsStore>((set) => ({
     try {
       return await getClientByIdService(clientId);
     } catch (error) {
-      set({error: (error as Error).message});
+      const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
+      set({error: message});
       return null;
     } finally {
       set({isLoading: false});

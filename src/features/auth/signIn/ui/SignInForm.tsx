@@ -36,7 +36,7 @@ export const SignInForm = () => {
     setFormFieldsValidationFunctions,
   } = useForm();
 
-  const {signIn, isLoading, errorMessage} = useSignIn();
+  const {handleSignIn, isLoading, errorMessage} = useSignIn();
 
   const showSnackBarMessage = useSnackBarStore(selectShowSnackBarMessage);
 
@@ -53,7 +53,7 @@ export const SignInForm = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const signInRequest = formToSignInRequest(form);
-    await signIn(signInRequest);
+    await handleSignIn(signInRequest);
   };
 
   const getIsNotValidForm = () => {

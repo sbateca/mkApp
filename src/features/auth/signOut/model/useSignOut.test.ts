@@ -2,40 +2,48 @@ import {renderHook, act} from "@testing-library/react";
 
 import {useSignOut} from "./useSignOut";
 import {BaseRoutes} from "../../../../utils/constants/baseRoutes";
+import {useSessionStore} from "../../../../entities/auth/model/store";
 
 const mockNavigate = jest.fn();
-const mockClearSession = jest.fn();
+const mockLogout = jest.fn();
 
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useNavigate: () => mockNavigate,
 }));
 
-jest.mock("../../../../entities/session/model/store", () => ({
-  useSessionStore: jest.fn(),
+jest.mock("../../../../config/EnvManager", () => ({
+  __esModule: true,
+  default: {
+    BACKEND_URL: "http://mockurl.com/api",
+  },
 }));
 
-import {useSessionStore} from "../../../../entities/session/model/store";
+jest.mock("../../../../entities/auth/model/store", () => ({
+  useSessionStore: jest.fn(),
+}));
 
 describe("useSignOut", () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
+    mockLogout.mockResolvedValue(undefined);
+
     (useSessionStore as unknown as jest.Mock).mockImplementation((selector) =>
       selector({
-        clearSession: mockClearSession,
+        logout: mockLogout,
       }),
     );
   });
 
-  it("should clear session and navigate to login", () => {
+  it("should logout and navigate to login", async () => {
     const {result} = renderHook(() => useSignOut());
 
-    act(() => {
-      result.current.signOut();
+    await act(async () => {
+      await result.current.handleSignOut();
     });
 
-    expect(mockClearSession).toHaveBeenCalled();
+    expect(mockLogout).toHaveBeenCalledTimes(1);
     expect(mockNavigate).toHaveBeenCalledWith(BaseRoutes.LOGIN, {
       replace: true,
     });

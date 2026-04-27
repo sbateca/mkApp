@@ -1,9 +1,9 @@
 import {Navigate, Outlet} from "react-router-dom";
-import {useSessionStore} from "../../entities/session/model/store";
+import {useSessionStore} from "../../entities/auth/model/store";
 import {
   selectIsAuthenticated,
   selectIsSessionResolved,
-} from "../../entities/session/model/selectors";
+} from "../../entities/auth/model/selectors";
 import {BaseRoutes} from "../../utils/constants/baseRoutes";
 import {Spinner} from "../../shared/ui";
 
@@ -15,9 +15,9 @@ export const PublicOnlyRoute = (): React.ReactElement => {
     return <Spinner />;
   }
 
-  return isAuthenticated ? (
-    <Navigate to={BaseRoutes.SAMPLES} replace />
-  ) : (
-    <Outlet />
-  );
+  if (isAuthenticated) {
+    return <Navigate to={BaseRoutes.SAMPLES} replace />;
+  }
+
+  return <Outlet />;
 };

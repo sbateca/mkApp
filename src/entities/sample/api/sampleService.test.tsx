@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
   createSampleService,
   deleteSampleService,
@@ -14,6 +13,7 @@ import {
 } from "../../../shared/test/builders";
 import {Client} from "../../client";
 import {Sample} from "../model/Sample";
+import {apiClient} from "../../../shared/api/apliClient";
 
 const mockSampleTypes: SampleType[] = buildSampleTypesData(2);
 const mockClients: Client[] = buildClientsData(2);
@@ -28,7 +28,15 @@ jest.mock("../../../config/EnvManager", () => ({
     BACKEND_URL: "http://mockurl.com/api",
   },
 }));
-jest.mock("axios");
+
+jest.mock("../../../shared/api/apliClient", () => ({
+  apiClient: {
+    get: jest.fn(),
+    post: jest.fn(),
+    put: jest.fn(),
+    delete: jest.fn(),
+  },
+}));
 
 describe("sampleService", () => {
   beforeEach(() => {
@@ -36,88 +44,94 @@ describe("sampleService", () => {
   });
 
   it("should return a list of samples", async () => {
-    jest.spyOn(axios, "get").mockResolvedValueOnce({data: mockSamples});
+    const mockApiClientGet = apiClient.get as jest.Mock;
+    mockApiClientGet.mockResolvedValueOnce({data: mockSamples});
     const expectedURL = "http://mockurl.com/api/samples";
 
     const samples = await getSamplesService();
 
     expect(samples).toEqual(mockSamples);
-    expect(axios.get).toHaveBeenCalledWith(expectedURL);
+    expect(apiClient.get).toHaveBeenCalledWith(expectedURL);
   });
 
   it("should return a sample by id", async () => {
-    jest.spyOn(axios, "get").mockResolvedValueOnce({data: mockSamples[0]});
+    const mockApiClientGet = apiClient.get as jest.Mock;
+    mockApiClientGet.mockResolvedValueOnce({data: mockSamples[0]});
     const expectedURL = "http://mockurl.com/api/samples/1";
 
     const sample = await getSampleByIdService("1");
 
     expect(sample).toEqual(mockSamples[0]);
-    expect(axios.get).toHaveBeenCalledWith(expectedURL);
+    expect(apiClient.get).toHaveBeenCalledWith(expectedURL);
   });
 
   it("should create a sample", async () => {
-    jest.spyOn(axios, "post").mockResolvedValueOnce({data: mockSamples[0]});
+    const mockApiClientGet = apiClient.post as jest.Mock;
+    mockApiClientGet.mockResolvedValueOnce({data: mockSamples[0]});
     const expectedURL = "http://mockurl.com/api/samples";
 
     const sample = await createSampleService(mockSamples[0]);
 
     expect(sample).toEqual(mockSamples[0]);
-    expect(axios.post).toHaveBeenCalledWith(expectedURL, mockSamples[0]);
+    expect(apiClient.post).toHaveBeenCalledWith(expectedURL, mockSamples[0]);
   });
 
   it("should edit a sample", async () => {
-    jest.spyOn(axios, "put").mockResolvedValueOnce({data: mockSamples[0]});
+    const mockApiClientGet = apiClient.put as jest.Mock;
+    mockApiClientGet.mockResolvedValueOnce({data: mockSamples[0]});
     const expectedURL = "http://mockurl.com/api/samples/1";
 
     const sample = await editSampleService("1", mockSamples[0]);
 
     expect(sample).toEqual(mockSamples[0]);
-    expect(axios.put).toHaveBeenCalledWith(expectedURL, mockSamples[0]);
+    expect(apiClient.put).toHaveBeenCalledWith(expectedURL, mockSamples[0]);
   });
 
   it("should throw an error when an error occurs in get method", async () => {
-    jest.spyOn(axios, "get").mockRejectedValueOnce(new Error("Mock error"));
+    const mockErrorMessage = "Mock error";
+    const mockApiClientGet = apiClient.get as jest.Mock;
+    mockApiClientGet.mockRejectedValueOnce(new Error(mockErrorMessage));
 
     try {
       await getSamplesService();
     } catch (error) {
-      expect((error as Error).message).toBe(
-        "Error retrieving samples: Mock error",
-      );
+      expect((error as Error).message).toBe(mockErrorMessage);
     }
   });
 
   it("should throw an error when an error occurs in create", async () => {
-    jest.spyOn(axios, "post").mockRejectedValueOnce(new Error("Mock error"));
+    const mockErrorMessage = "Mock error";
+    const mockApiClientGet = apiClient.post as jest.Mock;
+    mockApiClientGet.mockRejectedValueOnce(new Error(mockErrorMessage));
 
     try {
       await createSampleService(mockSamples[0]);
     } catch (error) {
-      expect((error as Error).message).toBe(
-        "Error creating sample: Mock error",
-      );
+      expect((error as Error).message).toBe(mockErrorMessage);
     }
   });
 
   it("should throw an error when an error occurs in edit", async () => {
-    jest.spyOn(axios, "put").mockRejectedValueOnce(new Error("Mock error"));
+    const mockErrorMessage = "Mock error";
+    const mockApiClientGet = apiClient.put as jest.Mock;
+    mockApiClientGet.mockRejectedValueOnce(new Error(mockErrorMessage));
 
     try {
       await editSampleService("1", mockSamples[0]);
     } catch (error) {
-      expect((error as Error).message).toBe("Error editing sample: Mock error");
+      expect((error as Error).message).toBe(mockErrorMessage);
     }
   });
 
   it("should throw an error when an unknown error occurs in delete", async () => {
-    jest.spyOn(axios, "delete").mockRejectedValueOnce("Mock error");
+    const mockErrorMessage = "Mock error";
+    const mockApiClientGet = apiClient.delete as jest.Mock;
+    mockApiClientGet.mockRejectedValueOnce(new Error(mockErrorMessage));
 
     try {
       await deleteSampleService("1");
     } catch (error) {
-      expect((error as Error).message).toBe(
-        "An unknown error occurred deleting sample.",
-      );
+      expect((error as Error).message).toBe(mockErrorMessage);
     }
   });
 });

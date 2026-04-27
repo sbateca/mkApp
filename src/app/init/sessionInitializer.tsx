@@ -1,30 +1,13 @@
-import {PropsWithChildren, useEffect} from "react";
-import {useSessionStore} from "../../entities/session/model/store";
-import {
-  selectMarkSessionResolved,
-  selectSetSession,
-} from "../../entities/session/model/selectors";
-import {getSession} from "../../entities/session/lib/sessionStorage";
+import {PropsWithChildren, useEffect, useRef} from "react";
+import {useSessionStore} from "../../entities/auth/model/store";
 
 export const SessionInitializer = ({
   children,
 }: PropsWithChildren): React.ReactElement => {
-  const setSession = useSessionStore(selectSetSession);
-  const markSessionResolved = useSessionStore(selectMarkSessionResolved);
+  const checkSessionRef = useRef(useSessionStore.getState().checkSession);
 
   useEffect(() => {
-    const storedSession = getSession();
-
-    if (storedSession?.user) {
-      setSession({
-        user: storedSession.user,
-        accessToken: storedSession.accessToken,
-      });
-      return;
-    }
-
-    markSessionResolved();
-  }, [markSessionResolved, setSession]);
-
+    void checkSessionRef.current();
+  }, []);
   return <>{children}</>;
 };

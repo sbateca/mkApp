@@ -1,7 +1,7 @@
-import axios from "axios";
 import {getClientByIdService, getClientsService} from "./clientService";
 import {buildClientsData} from "../../../shared/test/builders";
 import {Client} from "../model/Client";
+import {apiClient} from "../../../shared/api/apliClient";
 
 const mockClients: Client[] = buildClientsData(2);
 
@@ -11,7 +11,15 @@ jest.mock("../../../config/EnvManager", () => ({
     BACKEND_URL: "http://mockurl.com/api",
   },
 }));
-jest.mock("axios");
+
+jest.mock("../../../shared/api/apliClient", () => ({
+  apiClient: {
+    get: jest.fn(),
+    post: jest.fn(),
+    put: jest.fn(),
+    delete: jest.fn(),
+  },
+}));
 
 describe("clientService", () => {
   beforeEach(() => {
@@ -19,34 +27,36 @@ describe("clientService", () => {
   });
 
   it("should return a list of clients", async () => {
-    jest.spyOn(axios, "get").mockResolvedValueOnce({data: mockClients});
+    const mockApiClientGet = apiClient.get as jest.Mock;
+    mockApiClientGet.mockResolvedValueOnce({data: mockClients});
     const expectedURL = "http://mockurl.com/api/clients";
 
     const clients = await getClientsService();
 
     expect(clients).toEqual(mockClients);
-    expect(axios.get).toHaveBeenCalledWith(expectedURL);
+    expect(apiClient.get).toHaveBeenCalledWith(expectedURL);
   });
 
   it("should return a client by id", async () => {
-    jest.spyOn(axios, "get").mockResolvedValueOnce({data: mockClients[0]});
+    const mockApiClientGet = apiClient.get as jest.Mock;
+    mockApiClientGet.mockResolvedValueOnce({data: mockClients[0]});
     const expectedURL = "http://mockurl.com/api/clients/1";
 
     const client = await getClientByIdService("1");
 
     expect(client).toEqual(mockClients[0]);
-    expect(axios.get).toHaveBeenCalledWith(expectedURL);
+    expect(apiClient.get).toHaveBeenCalledWith(expectedURL);
   });
 
   it("should throw an error when an error occurs", async () => {
-    jest.spyOn(axios, "get").mockRejectedValueOnce(new Error("Mock error"));
+    const mockApiClientGet = apiClient.get as jest.Mock;
+    const mockErrorMessage = "Mock error";
+    mockApiClientGet.mockRejectedValueOnce(new Error(mockErrorMessage));
 
     try {
       await getClientsService();
     } catch (error) {
-      expect((error as Error).message).toBe(
-        "Error retrieving clients: Mock error",
-      );
+      expect((error as Error).message).toBe(mockErrorMessage);
     }
   });
 });

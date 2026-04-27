@@ -1,10 +1,11 @@
 import {create} from "zustand";
 import {AnalysisMethodStore} from "./types";
-import {AnalysisMethod} from "../../../model";
 import {
   getAnalysisMethodByIdService,
   getAnalysisMethodService,
 } from "../api/analysisMethodService";
+import {AnalysisMethod} from "./AnalysisMethod";
+import {UNEXPECTED_ERROR} from "../../../utils/constants";
 
 export const useAnalysisMethodsStore = create<AnalysisMethodStore>((set) => ({
   analysisMethods: null,
@@ -23,7 +24,8 @@ export const useAnalysisMethodsStore = create<AnalysisMethodStore>((set) => ({
     try {
       return await getAnalysisMethodService();
     } catch (error) {
-      set({error: (error as Error).message});
+      const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
+      set({error: message});
       return null;
     } finally {
       set({isLoading: false});
@@ -35,7 +37,8 @@ export const useAnalysisMethodsStore = create<AnalysisMethodStore>((set) => ({
     try {
       return await getAnalysisMethodByIdService(clientId);
     } catch (error) {
-      set({error: (error as Error).message});
+      const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
+      set({error: message});
       return null;
     } finally {
       set({isLoading: false});
