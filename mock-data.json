@@ -71,6 +71,14 @@
     {
       "id": "eb3b3b3b-eb3b-eb3b-eb3b-eb3b3b3b3b3b",
       "name": "Pseudomonas aeruginosa"
+    },
+    {
+      "id": "df07f4ce-aed2-4552-b2a9-d67562c754f7",
+      "name": "Ph"
+    },
+    {
+      "id": "9241c299-94db-48ba-9521-280086910086",
+      "name": "Free residual chlorine"
     }
   ],
   "analysisMethods": [
@@ -81,6 +89,14 @@
     {
       "id": "1eed01d7-f23b-4e15-8ca7-6bf833c21873",
       "name": "Standard Methods"
+    },
+    {
+      "id": "54d6bd92-b02b-4b48-86b0-a3cffe7e6f48",
+      "name": "Hanna instruments - mobile device"
+    },
+    {
+      "id": "a894e41d-c14c-435d-8202-8a50494c21fe",
+      "name": "DPD - color comparator - mobile device"
     }
   ],
   "criterias": [
@@ -89,20 +105,40 @@
       "name": "0 UFC/100 ml"
     },
     {
-      "id": "b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3",
+      "id": "bb3870c0-1e88-4ca5-b827-13cf068bab73",
       "name": "0-100 UFC/100 ml"
     },
     {
       "id": "1b3b3b3b-1b3b-1b3b-1b3b-1b3b1b3b1b3b",
       "name": "30-300 UFC/100 ml"
+    },
+    {
+      "id": "85cb8ae5-43b1-43f8-8629-24c0a66119fd",
+      "name": "Minimun: 6,8 - Ideal: 7,3"
+    }
+  ],
+   "testTypes": [
+    {
+      "id": "66457660-c77d-4d63-a173-d8179231192c",
+      "name": "Microbiological"
+    },
+    {
+      "id": "f03c6e5a-30e0-4cad-9cd4-e18ae306254e",
+      "name": "Physical-Chemical"
     }
   ],
   "samples": [
     {
       "id": "7c4972a5-ace8-434e-99cf-f61f21912e4a",
       "sampleCode": "1001",
-      "sampleTypeId": "d52f2988-24a1-4e61-976a-cffe1838025b",
-      "clientId": "b078281c-ccee-4f44-a4f4-a05745aa70f3",
+      "sampleType": {
+        "id": "d52f2988-24a1-4e61-976a-cffe1838025b",
+        "name": "Bottled water"
+      },
+      "client": {
+        "id": "b078281c-ccee-4f44-a4f4-a05745aa70f3",
+        "name": "Hotel Casino Internacional"
+      },
       "getSampleDate": "2024-07-02",
       "receptionDate": "2023-10-01",
       "analysisDate": "2023-10-02",
@@ -112,8 +148,14 @@
     {
       "id": "bbd4a1e1-2340-431a-8055-e7dc33bbd81d",
       "sampleCode": "1002",
-      "sampleTypeId": "1f32d26e-2573-43cd-9aa0-fc7e76872541",
-      "clientId": "4bf96c94-f131-4d1a-aa90-6467600675f9",
+      "sampleType": {
+        "id": "1f32d26e-2573-43cd-9aa0-fc7e76872541",
+        "name": "Environmental"
+      },
+      "clientId": {
+        "id": "4bf96c94-f131-4d1a-aa90-6467600675f9",
+        "name": "Pasabocas D'Chic"
+      },
       "getSampleDate": "2024-02-12",
       "receptionDate": "2024-02-12",
       "analysisDate": "2024-02-12",
@@ -123,8 +165,14 @@
     {
       "id": "ce59c2ba-c7f2-4df5-a8db-7dd74b7381a9",
       "sampleCode": "1003",
-      "sampleTypeId": "76cf9fea-7d2c-4ac2-89ee-a353a1c10a7c",
-      "clientId": "ad2fcefb-ba2f-466f-9dff-331be532946b",
+      "sampleType": {
+        "id": "76cf9fea-7d2c-4ac2-89ee-a353a1c10a7c",
+        "name": "Surface"
+      },
+      "clientId": {
+        "id": "ad2fcefb-ba2f-466f-9dff-331be532946b",
+        "name": "Monterres"
+      },
       "getSampleDate": "2024-02-13",
       "receptionDate": "2024-02-13",
       "analysisDate": "2024-02-14",
@@ -134,8 +182,14 @@
     {
       "id": "8f129b91-08cf-4cbf-9d89-28545a1b1023",
       "sampleCode": "1004",
-      "sampleTypeId": "f1b3b3b4-1b3b-4b3b-8b3b-1b3b3b3b3b3b",
-      "clientId": "e950af36-1c5a-4b83-a3a0-a927ebe02459",
+      "sampleType": {
+        "id": "f1b3b3b4-1b3b-4b3b-8b3b-1b3b3b3b3b3b",
+        "name": "Pool water"
+      },
+      "clientId": {
+        "id": "e950af36-1c5a-4b83-a3a0-a927ebe02459",
+        "name": "Fábrica de Galletas La Moderna"
+      },
       "getSampleDate": "2023-09-20",
       "receptionDate": "2023-09-21",
       "analysisDate": "2023-09-22",
@@ -145,8 +199,14 @@
     {
       "id": "e3d05cb2-343d-4ad5-a617-c7dbba54f4b5",
       "sampleCode": "1005",
-      "sampleTypeId": "1f32d26e-2573-43cd-9aa0-fc7e76872541",
-      "clientId": "ad2fcefb-ba2f-466f-9dff-331be532946b",
+      "sampleType": {
+        "id": "1f32d26e-2573-43cd-9aa0-fc7e76872541",
+        "name": "Environmental"
+      },
+      "clientId": {
+        "id": "ad2fcefb-ba2f-466f-9dff-331be532946b",
+        "name": "Monterres"
+      },
       "getSampleDate": "2023-08-10",
       "receptionDate": "2023-08-11",
       "analysisDate": "2023-08-12",
@@ -154,33 +214,418 @@
       "responsable": "Ana Gómez"
     }
   ],
-  "reports": [
+  "tests": [
     {
-      "id": "14860e3c-56df-4a31-96cc-100dc2a8f749",
-      "reportDate": "2024-08-05",
+      "id": "025494db-6dd1-441e-bd83-70ef72e405bf",
+      "testType": {
+        "id": "66457660-c77d-4d63-a173-d8179231192c",
+        "name": "Microbiological"
+      },
       "sampleId": "ce59c2ba-c7f2-4df5-a8db-7dd74b7381a9",
-      "analyte": "ab3b3b3b-ab3b-ab3b-ab3b-ab3b3b3b3b3b",
-      "analysisMethod": "c461270c-6682-4f51-9148-efb9fbaab44e",
-      "criteria": "b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3",
+      "analyte": {
+        "id": "ab3b3b3b-ab3b-ab3b-ab3b-ab3b3b3b3b3b",
+        "name": "Aerobious mesophilic"
+      },
+      "analysisMethod": {
+        "id": "c461270c-6682-4f51-9148-efb9fbaab44e",
+        "name": "NTC"
+      },
+      "criteria": {
+        "id": "b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3",
+        "name": "0 UFC/100 ml"
+      },
       "result": "0 UFC/g"
     },
     {
-      "id": "83401a31-d691-4549-809b-908d7b72ffa6",
-      "reportDate": "2024-08-05",
+      "id": "77207e4d-a8cb-4a93-9241-cc388cba0027",
+      "testType": {
+        "id": "66457660-c77d-4d63-a173-d8179231192c",
+        "name": "Microbiological"
+      },
+      "sampleId": "ce59c2ba-c7f2-4df5-a8db-7dd74b7381a9",
+      "analyte": {
+        "id": "1b3b3b3b-1b3b-1b3b-1b3b-1b3b1b3b1b3b",
+        "name": "E. coli"
+      },
+      "analysisMethod": {
+        "id": "c461270c-6682-4f51-9148-efb9fbaab44e",
+        "name": "NTC"
+      },
+      "criteria": {
+        "id": "b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3",
+        "name": "0 UFC/100 ml"
+      },
+      "result": "0,5 UFC/g"
+    },
+    {
+      "id": "77207e4d-a8cb-4a93-9241-cc388cba0027",
+      "testType": {
+        "id": "f03c6e5a-30e0-4cad-9cd4-e18ae306254e",
+        "name": "Physical-Chemical"
+      },
+      "sampleId": "ce59c2ba-c7f2-4df5-a8db-7dd74b7381a9",
+      "analyte": {
+        "id": "df07f4ce-aed2-4552-b2a9-d67562c754f7",
+        "name": "Ph"
+      },
+      "analysisMethod": {
+        "id": "54d6bd92-b02b-4b48-86b0-a3cffe7e6f48",
+        "name": "Hanna instruments - mobile device"
+      },
+      "criteria": {
+        "id": "85cb8ae5-43b1-43f8-8629-24c0a66119fd",
+        "name": "Minimun: 6,8 - Ideal: 7,3"
+      },
+      "result": "7,0"
+    },
+
+    {
+      "id": "025494db-6dd1-441e-bd83-70ef72e405bf",
+      "testType": {
+        "id": "66457660-c77d-4d63-a173-d8179231192c",
+        "name": "Microbiological"
+      },
       "sampleId": "7c4972a5-ace8-434e-99cf-f61f21912e4a",
-      "analyte": "ab3b3b3b-ab3b-ab3b-ab3b-ab3b3b3b3b3b",
-      "analysisMethod": "1eed01d7-f23b-4e15-8ca7-6bf833c21873",
-      "criteria": "1b3b3b3b-1b3b-1b3b-1b3b-1b3b1b3b1b3b",
-      "result": "30 UFC/100 ml"
+      "analyte": {
+        "id": "ab3b3b3b-ab3b-ab3b-ab3b-ab3b3b3b3b3b",
+        "name": "Aerobious mesophilic"
+      },
+      "analysisMethod": {
+        "id": "c461270c-6682-4f51-9148-efb9fbaab44e",
+        "name": "NTC"
+      },
+      "criteria": {
+        "id": "b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3",
+        "name": "0 UFC/100 ml"
+      },
+      "result": "0 UFC/g"
+    },
+    {
+      "id": "77207e4d-a8cb-4a93-9241-cc388cba0027",
+      "testType": {
+        "id": "66457660-c77d-4d63-a173-d8179231192c",
+        "name": "Microbiological"
+      },
+      "sampleId": "7c4972a5-ace8-434e-99cf-f61f21912e4a",
+      "analyte": {
+        "id": "1b3b3b3b-1b3b-1b3b-1b3b-1b3b1b3b1b3b",
+        "name": "E. coli"
+      },
+      "analysisMethod": {
+        "id": "c461270c-6682-4f51-9148-efb9fbaab44e",
+        "name": "NTC"
+      },
+      "criteria": {
+        "id": "b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3",
+        "name": "0 UFC/100 ml"
+      },
+      "result": "0,5 UFC/g"
+    },
+    {
+      "id": "24d5b373-2a7c-4c5d-a8b7-8b8733aa17d1",
+      "testTypeId": {
+        "id": "f03c6e5a-30e0-4cad-9cd4-e18ae306254e",
+        "name": "Physical-Chemical"
+      },
+      "sampleId": "7c4972a5-ace8-434e-99cf-f61f21912e4a",
+      "analyte": {
+        "id": "df07f4ce-aed2-4552-b2a9-d67562c754f7",
+        "name": "Ph"
+      },
+      "analysisMethod": {
+        "id": "54d6bd92-b02b-4b48-86b0-a3cffe7e6f48",
+        "name": "Hanna instruments - mobile device"
+      },
+      "criteria": {
+        "id": "85cb8ae5-43b1-43f8-8629-24c0a66119fd",
+        "name": "Minimun: 6,8 - Ideal: 7,3"
+      },
+      "result": "7,1"
+    },
+
+    {
+      "id": "025494db-6dd1-441e-bd83-70ef72e405bf",
+      "testType": {
+        "id": "66457660-c77d-4d63-a173-d8179231192c",
+        "name": "Microbiological"
+      },
+      "sampleId": "e3d05cb2-343d-4ad5-a617-c7dbba54f4b5",
+      "analyte": {
+        "id": "ab3b3b3b-ab3b-ab3b-ab3b-ab3b3b3b3b3b",
+        "name": "Aerobious mesophilic"
+      },
+      "analysisMethod": {
+        "id": "c461270c-6682-4f51-9148-efb9fbaab44e",
+        "name": "NTC"
+      },
+      "criteria": {
+        "id": "b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3",
+        "name": "0 UFC/100 ml"
+      },
+      "result": "0 UFC/g"
+    },
+    {
+      "id": "77207e4d-a8cb-4a93-9241-cc388cba0027",
+      "testType": {
+        "id": "66457660-c77d-4d63-a173-d8179231192c",
+        "name": "Microbiological"
+      },
+      "sampleId": "e3d05cb2-343d-4ad5-a617-c7dbba54f4b5",
+      "analyte": {
+        "id": "1b3b3b3b-1b3b-1b3b-1b3b-1b3b1b3b1b3b",
+        "name": "E. coli"
+      },
+      "analysisMethod": {
+        "id": "c461270c-6682-4f51-9148-efb9fbaab44e",
+        "name": "NTC"
+      },
+      "criteria": {
+        "id": "b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3",
+        "name": "0 UFC/100 ml"
+      },
+      "result": "0,5 UFC/g"
+    }
+  ],
+  "reports": [
+    {
+      "id": "14860e3c-56df-4a31-96cc-100dc2a8f749",
+      "reportNumber": "FE 3157 - 361",
+      "reportDate": "2024-08-05",
+      "sample": {
+        "id": "ce59c2ba-c7f2-4df5-a8db-7dd74b7381a9",
+        "sampleCode": "1003",
+        "sampleType": {
+          "id": "76cf9fea-7d2c-4ac2-89ee-a353a1c10a7c",
+          "name": "Surface"
+        },
+        "client": {
+          "id": "ad2fcefb-ba2f-466f-9dff-331be532946b",
+          "name": "Monterres"
+        },
+        "getSampleDate": "2024-02-13",
+        "receptionDate": "2024-02-13",
+        "analysisDate": "2024-02-14",
+        "sampleLocation": "Water vault",
+        "responsable": "Juan Pérez"
+      },
+      "tests": [
+        {
+          "id": "025494db-6dd1-441e-bd83-70ef72e405bf",
+          "testType": {
+            "id": "66457660-c77d-4d63-a173-d8179231192c",
+            "name": "Microbiological"
+          },
+          "sampleId": "ce59c2ba-c7f2-4df5-a8db-7dd74b7381a9",
+          "analyte": {
+            "id": "ab3b3b3b-ab3b-ab3b-ab3b-ab3b3b3b3b3b",
+            "name": "Aerobious mesophilic"
+          },
+          "analysisMethod": {
+            "id": "c461270c-6682-4f51-9148-efb9fbaab44e",
+            "name": "NTC"
+          },
+          "criteria": {
+            "id": "b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3",
+            "name": "0 UFC/100 ml"
+          },
+          "result": "0 UFC/g"
+        },
+        {
+          "id": "77207e4d-a8cb-4a93-9241-cc388cba0027",
+          "testType": {
+            "id": "66457660-c77d-4d63-a173-d8179231192c",
+            "name": "Microbiological"
+          },
+          "sampleId": "ce59c2ba-c7f2-4df5-a8db-7dd74b7381a9",
+          "analyte": {
+            "id": "1b3b3b3b-1b3b-1b3b-1b3b-1b3b1b3b1b3b",
+            "name": "E. coli"
+          },
+          "analysisMethod": {
+            "id": "c461270c-6682-4f51-9148-efb9fbaab44e",
+            "name": "NTC"
+          },
+          "criteria": {
+            "id": "b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3",
+            "name": "0 UFC/100 ml"
+          },
+          "result": "0,5 UFC/g"
+        },
+        {
+          "id": "77207e4d-a8cb-4a93-9241-cc388cba0027",
+          "testType": {
+            "id": "f03c6e5a-30e0-4cad-9cd4-e18ae306254e",
+            "name": "Physical-Chemical"
+          },
+          "sampleId": "ce59c2ba-c7f2-4df5-a8db-7dd74b7381a9",
+          "analyte": {
+            "id": "df07f4ce-aed2-4552-b2a9-d67562c754f7",
+            "name": "Ph"
+          },
+          "analysisMethod": {
+            "id": "54d6bd92-b02b-4b48-86b0-a3cffe7e6f48",
+            "name": "Hanna instruments - mobile device"
+          },
+          "criteria": {
+            "id": "85cb8ae5-43b1-43f8-8629-24c0a66119fd",
+            "name": "Minimun: 6,8 - Ideal: 7,3"
+          },
+          "result": "7,0"
+        }
+      ]
+    },
+    {
+      "id": "83401a31-d691-4549-809b-908d7b72ffa6",
+      "reportNumber": "FE 3157 - 362",
+      "reportDate": "2024-08-05",
+      "sample": {
+        "id": "7c4972a5-ace8-434e-99cf-f61f21912e4a",
+        "sampleCode": "1001",
+        "sampleType": {
+          "id": "d52f2988-24a1-4e61-976a-cffe1838025b",
+          "name": "Bottled water"
+        },
+        "client": {
+          "id": "b078281c-ccee-4f44-a4f4-a05745aa70f3",
+          "name": "Hotel Casino Internacional"
+        },
+        "getSampleDate": "2024-07-02",
+        "receptionDate": "2023-10-01",
+        "analysisDate": "2023-10-02",
+        "sampleLocation": "Hotel's restaurant",
+        "responsable": "Karen Martinez"
+      },
+      "tests": [
+        {
+          "id": "025494db-6dd1-441e-bd83-70ef72e405bf",
+          "testType": {
+            "id": "66457660-c77d-4d63-a173-d8179231192c",
+            "name": "Microbiological"
+          },
+          "sampleId": "7c4972a5-ace8-434e-99cf-f61f21912e4a",
+          "analyte": {
+            "id": "ab3b3b3b-ab3b-ab3b-ab3b-ab3b3b3b3b3b",
+            "name": "Aerobious mesophilic"
+          },
+          "analysisMethod": {
+            "id": "c461270c-6682-4f51-9148-efb9fbaab44e",
+            "name": "NTC"
+          },
+          "criteria": {
+            "id": "b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3",
+            "name": "0 UFC/100 ml"
+          },
+          "result": "0 UFC/g"
+        },
+        {
+          "id": "77207e4d-a8cb-4a93-9241-cc388cba0027",
+          "testType": {
+            "id": "66457660-c77d-4d63-a173-d8179231192c",
+            "name": "Microbiological"
+          },
+          "sampleId": "7c4972a5-ace8-434e-99cf-f61f21912e4a",
+          "analyte": {
+            "id": "1b3b3b3b-1b3b-1b3b-1b3b-1b3b1b3b1b3b",
+            "name": "E. coli"
+          },
+          "analysisMethod": {
+            "id": "c461270c-6682-4f51-9148-efb9fbaab44e",
+            "name": "NTC"
+          },
+          "criteria": {
+            "id": "b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3",
+            "name": "0 UFC/100 ml"
+          },
+          "result": "0,5 UFC/g"
+        },
+        {
+          "id": "24d5b373-2a7c-4c5d-a8b7-8b8733aa17d1",
+          "testTypeId": {
+            "id": "f03c6e5a-30e0-4cad-9cd4-e18ae306254e",
+            "name": "Physical-Chemical"
+          },
+          "sampleId": "7c4972a5-ace8-434e-99cf-f61f21912e4a",
+          "analyte": {
+            "id": "df07f4ce-aed2-4552-b2a9-d67562c754f7",
+            "name": "Ph"
+          },
+          "analysisMethod": {
+            "id": "54d6bd92-b02b-4b48-86b0-a3cffe7e6f48",
+            "name": "Hanna instruments - mobile device"
+          },
+          "criteria": {
+            "id": "85cb8ae5-43b1-43f8-8629-24c0a66119fd",
+            "name": "Minimun: 6,8 - Ideal: 7,3"
+          },
+          "result": "7,1"
+        }
+      ]
     },
     {
       "id": "36ac9f35-b193-4bf2-a712-45f6f7332890",
+      "reportNumber": "FE 3157 - 361",
       "reportDate": "2024-08-05",
-      "sampleId": "e3d05cb2-343d-4ad5-a617-c7dbba54f4b5",
-      "analyte": "642f6e79-64b6-4dc4-b829-966d2232a5b3",
-      "analysisMethod": "c461270c-6682-4f51-9148-efb9fbaab44e",
-      "criteria": "b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3",
-      "result": "0"
+      "sample": {
+        "id": "e3d05cb2-343d-4ad5-a617-c7dbba54f4b5",
+        "sampleCode": "1005",
+        "sampleType": {
+          "id": "1f32d26e-2573-43cd-9aa0-fc7e76872541",
+          "name": "Environmental"
+        },
+        "clientId": {
+          "id": "ad2fcefb-ba2f-466f-9dff-331be532946b",
+          "name": "Monterres"
+        },
+        "getSampleDate": "2023-08-10",
+        "receptionDate": "2023-08-11",
+        "analysisDate": "2023-08-12",
+        "sampleLocation": "Brewery",
+        "responsable": "Ana Gómez"
+      },
+      "tests": [
+        {
+          "id": "025494db-6dd1-441e-bd83-70ef72e405bf",
+          "testType": {
+            "id": "66457660-c77d-4d63-a173-d8179231192c",
+            "name": "Microbiological"
+          },
+          "sampleId": "e3d05cb2-343d-4ad5-a617-c7dbba54f4b5",
+          "analyte": {
+            "id": "ab3b3b3b-ab3b-ab3b-ab3b-ab3b3b3b3b3b",
+            "name": "Aerobious mesophilic"
+          },
+          "analysisMethod": {
+            "id": "c461270c-6682-4f51-9148-efb9fbaab44e",
+            "name": "NTC"
+          },
+          "criteria": {
+            "id": "b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3",
+            "name": "0 UFC/100 ml"
+          },
+          "result": "0 UFC/g"
+        },
+        {
+          "id": "77207e4d-a8cb-4a93-9241-cc388cba0027",
+          "testType": {
+            "id": "66457660-c77d-4d63-a173-d8179231192c",
+            "name": "Microbiological"
+          },
+          "sampleId": "e3d05cb2-343d-4ad5-a617-c7dbba54f4b5",
+          "analyte": {
+            "id": "1b3b3b3b-1b3b-1b3b-1b3b-1b3b1b3b1b3b",
+            "name": "E. coli"
+          },
+          "analysisMethod": {
+            "id": "c461270c-6682-4f51-9148-efb9fbaab44e",
+            "name": "NTC"
+          },
+          "criteria": {
+            "id": "b3b3b3b3-b3b3-b3b3-b3b3-b3b3b3b3b3b3",
+            "name": "0 UFC/100 ml"
+          },
+          "result": "0,5 UFC/g"
+        }
+      ]
     }
   ],
   "users": [
