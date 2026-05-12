@@ -5,6 +5,7 @@ import {
   getInvalidDataErrorMessage,
 } from "../../../utils/constants";
 import {Analyte} from "../model/Analyte";
+import {TestType} from "../../testType";
 
 export const axiosResponseToAnalyte = (
   response: AxiosResponse<unknown>,
@@ -34,7 +35,19 @@ const isValidAnalyte = (analyte: unknown): analyte is Analyte => {
   if (typeof analyte === "object" && analyte !== null) {
     const analyteObj = analyte as Record<string, unknown>;
     return (
-      typeof analyteObj.id === "string" && typeof analyteObj.name === "string"
+      typeof analyteObj.id === "string" &&
+      typeof analyteObj.name === "string" &&
+      isValidTestType(analyteObj.testType)
+    );
+  }
+  return false;
+};
+
+const isValidTestType = (testType: unknown): testType is TestType => {
+  if (typeof testType === "object" && testType !== null) {
+    const testTypeObj = testType as Record<string, unknown>;
+    return (
+      typeof testTypeObj.id === "string" && typeof testTypeObj.name === "string"
     );
   }
   return false;

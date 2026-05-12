@@ -10,6 +10,8 @@ export enum BaseRoutes {
   CLIENTS = "/clients",
   CRITERIAS = "/criterias",
   SAMPLE_TYPES = "/sampleTypes",
+  TESTS = "/tests",
+  TEST_TYPES = "/testTypes",
 }
 
 export enum Routes {

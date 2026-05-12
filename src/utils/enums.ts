@@ -54,6 +54,7 @@ export enum SharedButtonCommonLabels {
   DELETE = "Delete",
   CLOSE = "Close",
   VIEW = "View",
+  ADD = "Add",
 }
 
 export enum SharedTypographyVariants {
@@ -139,16 +140,24 @@ export enum IconNames {
   CLOSE = "close",
   SAVE = "save",
   SEARCH = "search",
+  ADD = "add",
 }
 
 export enum ReportFormFields {
   REPORT_DATE = "reportDate",
+  REPORT_NUMBER = "reportNumber",
+  TEST_TYPE = "testType",
   SAMPLE_ID = "sampleId",
   SAMPLE_TYPE = "sampleType",
   ANALYTE = "analyte",
   ANALYSIS_METHOD = "analysisMethod",
   CRITERIA = "criteria",
   RESULT = "result",
+}
+
+export enum TestType {
+  PHYSICAL = "Physical",
+  MICROBIOLOGICAL = "Microbiological",
 }
 
 export enum SignInFormFields {

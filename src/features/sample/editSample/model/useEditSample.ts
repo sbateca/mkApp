@@ -1,3 +1,4 @@
+import {Client} from "../../../../entities/client";
 import {
   sampleFormToSample,
   selectEditSample,
@@ -5,6 +6,7 @@ import {
   selectSelectedSample,
   useSampleStore,
 } from "../../../../entities/sample";
+import {SampleType} from "../../../../entities/sampleType";
 import {
   FormProps,
   SAMPLE_SUCCESSFULLY_UPDATED_TEXT,
@@ -24,8 +26,17 @@ export const useEditSample = (
 
   const showSnackBarMessage = useSnackBarStore(selectShowSnackBarMessage);
 
-  const handleEditSample = async (form: FormProps) => {
-    const parsedSample = sampleFormToSample(form, selectedSample?.id ?? "");
+  const handleEditSample = async (
+    form: FormProps,
+    clients: Client[] | null,
+    sampleTypes: SampleType[] | null,
+  ) => {
+    const parsedSample = sampleFormToSample(
+      form,
+      selectedSample?.id ?? "",
+      clients,
+      sampleTypes,
+    );
     const updatedSample = await editSample(selectedSample?.id, parsedSample);
     if (updatedSample !== null) {
       onCloseSideSection();

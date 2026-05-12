@@ -1,3 +1,4 @@
+import {Client} from "../../../../entities/client";
 import {
   sampleFormToSample,
   selectCreateSample,
@@ -5,6 +6,7 @@ import {
   selectSelectedSample,
   useSampleStore,
 } from "../../../../entities/sample";
+import {SampleType} from "../../../../entities/sampleType";
 import {
   FormProps,
   SAMPLE_SUCCESSFULLY_CREATED_TEXT,
@@ -24,9 +26,13 @@ export const useCreateSample = (
 
   const {onCloseSideSection} = useSideSection(setIsReadOnlyMode);
 
-  const handleCreateSample = async (form: FormProps) => {
+  const handleCreateSample = async (
+    form: FormProps,
+    clients: Client[] | null,
+    sampleTypes: SampleType[] | null,
+  ) => {
     const newSample = await createSample(
-      sampleFormToSample(form, selectedSample?.id ?? ""),
+      sampleFormToSample(form, selectedSample?.id ?? "", clients, sampleTypes),
     );
     if (newSample !== null) {
       showSnackBarMessage(

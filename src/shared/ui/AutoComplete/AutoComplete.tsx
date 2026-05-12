@@ -15,6 +15,7 @@ export const AutoComplete = ({
   required,
   error,
   helperText,
+  sx,
 }: AutoCompleteProps) => {
   const [selectedOption, setSelectedOption] =
     useState<AutoCompleteOption | null>(
@@ -24,7 +25,7 @@ export const AutoComplete = ({
   useEffect(() => {
     const selected = options.find((option) => option.id === value) || null;
     setSelectedOption(selected);
-  }, [options]);
+  }, [options, value]);
 
   const handleChange = (
     event: SyntheticEvent,
@@ -54,6 +55,7 @@ export const AutoComplete = ({
       )}
       isOptionEqualToValue={(option, value) => option.id === value.id}
       readOnly={readOnly}
+      sx={sx}
     />
   );
 };

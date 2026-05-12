@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {AxiosResponse} from "axios";
 import {v4 as uuidv4} from "uuid";
 
@@ -35,32 +36,62 @@ const getSamplesFromData = (data: unknown): Sample[] => {
   }
 };
 
-const isValidSample = (sample: unknown): sample is Sample => {
-  if (typeof sample === "object" && sample !== null) {
-    const sampleObj = sample as Record<string, unknown>;
-    return (
-      typeof sampleObj.id === "string" &&
-      typeof sampleObj.sampleCode === "string" &&
-      typeof sampleObj.clientId === "string" &&
-      typeof sampleObj.getSampleDate === "string" &&
-      typeof sampleObj.receptionDate === "string" &&
-      typeof sampleObj.analysisDate === "string" &&
-      typeof sampleObj.sampleLocation === "string" &&
-      typeof sampleObj.responsable === "string"
-    );
-  }
-  return false;
+export const isValidSample = (sample: unknown): sample is Sample => {
+  if (typeof sample !== "object" || sample === null) return false;
+
+  const s = sample as Record<string, unknown>;
+
+  return (
+    typeof s.id === "string" &&
+    typeof s.sampleCode === "string" &&
+    isValidSampleType(s.sampleType) &&
+    isValidClient(s.client) &&
+    typeof s.getSampleDate === "string" &&
+    typeof s.receptionDate === "string" &&
+    typeof s.analysisDate === "string" &&
+    typeof s.sampleLocation === "string" &&
+    typeof s.responsable === "string"
+  );
+};
+
+const isValidClient = (client: unknown): client is Client => {
+  return (
+    typeof client === "object" &&
+    client !== null &&
+    typeof (client as any).id === "string" &&
+    typeof (client as any).name === "string"
+  );
+};
+
+const isValidSampleType = (sampleType: unknown): sampleType is SampleType => {
+  return (
+    typeof sampleType === "object" &&
+    sampleType !== null &&
+    typeof (sampleType as any).id === "string" &&
+    typeof (sampleType as any).name === "string"
+  );
 };
 
 export const sampleFormToSample = (
   form: Record<string, unknown>,
   sampleId: string,
+  clients: Client[] | null,
+  samplesTypes: SampleType[] | null,
 ): Sample => {
+  const client = clients?.find((client) => client.id === form.client);
+  const sampleType = samplesTypes?.find(
+    (sampleType) => sampleType.id === form.sampleType,
+  );
+
+  if (!client || !sampleType) {
+    throw new Error("Invalid sample form references");
+  }
+
   return {
     id: sampleId || uuidv4(),
     sampleCode: form.sampleCode as string,
-    sampleTypeId: form.sampleType as string,
-    clientId: form.client as string,
+    sampleType: sampleType,
+    client: client,
     getSampleDate: form.getSampleDate as string,
     receptionDate: form.receptionDate as string,
     analysisDate: form.analysisDate as string,
@@ -72,8 +103,8 @@ export const sampleFormToSample = (
 export const sampleToSampleForm = (sample: Sample): Record<string, string> => {
   return {
     sampleCode: sample.sampleCode,
-    sampleType: sample.sampleTypeId,
-    client: sample.clientId,
+    sampleType: sample.sampleType.id,
+    client: sample.client.id,
     getSampleDate: sample.getSampleDate,
     receptionDate: sample.receptionDate,
     analysisDate: sample.analysisDate,
@@ -82,19 +113,15 @@ export const sampleToSampleForm = (sample: Sample): Record<string, string> => {
   };
 };
 
-export const samplesToTableRows = (
-  samples: Sample[],
-  sampleTypes: SampleType[] | null,
-  clients: Client[] | null,
-): TableRowProps[] => {
+export const samplesToTableRows = (samples: Sample[]): TableRowProps[] => {
   return samples.map((sample) => {
-    const sampleType = findModelById(sample.sampleTypeId, sampleTypes);
-    const client = findModelById(sample.clientId, clients);
+    // const sampleType = findModelById(sample.sampleType.id, sampleTypes);
+    // const client = findModelById(sample.client.id, clients);
     return {
       id: sample.id,
       cells: [
-        {children: sampleType ? sampleType.name : "N/A", align: "left"},
-        {children: client ? client.name : "N/A", align: "left"},
+        {children: sample.sampleType.name, align: "left"},
+        {children: sample.client.name, align: "left"},
         {children: sample.getSampleDate, align: "left"},
         {children: sample.receptionDate, align: "left"},
       ],

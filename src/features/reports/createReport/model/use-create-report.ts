@@ -11,7 +11,10 @@ import {
 } from "../../../../entities/report/model/selector";
 import {useReportStore} from "../../../../entities/report/model/store";
 import {useSideSection} from "../../../sideSection/model/useSideSection";
-import {reportFormToReport} from "../../../../entities/report";
+import {
+  ReportDetailDataProps,
+  reportFormToReport,
+} from "../../../../entities/report";
 
 export const useCreateReport = (
   setIsReadOnlyMode: React.Dispatch<React.SetStateAction<boolean>>,
@@ -21,8 +24,13 @@ export const useCreateReport = (
   const getReports = useReportStore(selectGetReports);
   const {onCloseSideSection} = useSideSection(setIsReadOnlyMode);
 
-  const handleCreateReport = async (form: FormProps) => {
-    const newReport = await createReport(reportFormToReport(form, ""));
+  const handleCreateReport = async (
+    form: FormProps,
+    reportDetailData: ReportDetailDataProps,
+  ) => {
+    const newReport = await createReport(
+      reportFormToReport(form, "", reportDetailData),
+    );
     if (newReport !== null) {
       showSnackBarMessage(
         REPORT_SUCCESSFULLY_CREATED_TEXT,

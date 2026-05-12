@@ -1,6 +1,10 @@
 import {create} from "zustand";
 import {AnalyteStore} from "./types";
-import {getAnalyteByIdService, getAnalytesService} from "../api/analyteService";
+import {
+  getAnalyteByIdService,
+  getAnalytesByTestTypeIdService,
+  getAnalytesService,
+} from "../api/analyteService";
 import {Analyte} from "./Analyte";
 import {UNEXPECTED_ERROR} from "../../../utils/constants";
 
@@ -41,5 +45,16 @@ export const useAnalyteStore = create<AnalyteStore>()((set) => ({
       set({isLoading: false});
     }
     return null;
+  },
+
+  getAnalytesByTestTypeId: async (testTypeId: string) => {
+    set({error: null});
+    try {
+      return await getAnalytesByTestTypeIdService(testTypeId);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
+      set({error: message});
+      return null;
+    }
   },
 }));

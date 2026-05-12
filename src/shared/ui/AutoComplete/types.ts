@@ -20,4 +20,5 @@ export interface AutoCompleteProps {
   required: boolean;
   error: boolean;
   helperText: string;
+  sx?: object;
 }

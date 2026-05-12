@@ -24,3 +24,27 @@ export const getAutoCompleteOptionsFromModel = <T extends GenericModelWithId>(
     }) ?? []
   );
 };
+
+export const filterModelsById = <T extends {id: string}>(
+  items: T[],
+  id: string,
+): T => {
+  const filtered = items.filter((item) => item.id === id);
+  if (filtered.length === 0) {
+    throw new Error(`Item with id ${id} not found`);
+  }
+  return filtered[0];
+};
+
+export const filterModelsByIds = <T extends {id: string}>(
+  items: T[],
+  ids: string[],
+): T[] => {
+  const filtered = items.filter((item) => ids.includes(item.id));
+  if (filtered.length !== ids.length) {
+    throw new Error(
+      `Some items with ids ${ids.join(", ")} were not found. Found ${filtered.length} items.`,
+    );
+  }
+  return filtered;
+};

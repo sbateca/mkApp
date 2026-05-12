@@ -3,14 +3,32 @@ import {v4 as uuidv4} from "uuid";
 
 import {Report} from "../model/Report";
 import {
+  N_A,
   RESPONSE_DATA_NOT_VALID_ERROR,
   getInvalidDataErrorMessage,
 } from "../../../utils/constants";
 import {Sample} from "../../sample";
 import {SampleType} from "../../sampleType";
-import {findModelById} from "../../../utils/model";
+import {filterModelsById} from "../../../utils/model";
 import {TableRowProps} from "../../../shared/ui/Table/TableRow";
 import {Analyte} from "../../analyte/model/Analyte";
+import {Client} from "../../client";
+import {TestType} from "../../testType";
+import {AnalysisMethod} from "../../analysisMethod/model/AnalysisMethod";
+import {Criteria} from "../../criteria";
+import {Test} from "../../test";
+import {SharedTypographyAlign} from "../../../utils/enums";
+
+export type ReportDetailDataProps = {
+  clients: Client[] | null;
+  analysisMethods: AnalysisMethod[] | null;
+  analytes: Analyte[] | null;
+  criterias: Criteria[] | null;
+  sampleTypes: SampleType[] | null;
+  samples: Sample[] | null;
+  tests: Test[] | null;
+  testTypes: TestType[] | null;
+};
 
 export const axiosResponseToReports = (
   response: AxiosResponse<unknown>,
@@ -35,83 +53,123 @@ const isValidReport = (report: unknown): report is Report => {
     const reportObj = report as Record<string, unknown>;
     return (
       typeof reportObj.id === "string" &&
+      typeof reportObj.reportNumber === "string" &&
       typeof reportObj.reportDate === "string" &&
-      typeof reportObj.sampleId === "string" &&
-      typeof reportObj.analyte === "string" &&
-      typeof reportObj.analysisMethod === "string" &&
-      typeof reportObj.criteria === "string" &&
-      typeof reportObj.result === "string"
+      typeof reportObj.sample === "object" &&
+      typeof reportObj.tests === "object"
     );
   }
   return false;
 };
 
 export const reportFormToReport = (
-  form: Record<string, unknown>,
+  form: Record<string, string>,
   reportId: string,
+  reportDetailData: ReportDetailDataProps,
 ): Report => {
+  const sample = filterModelsById(
+    reportDetailData.samples || [],
+    form.sampleId,
+  );
   return {
     id: reportId || uuidv4(),
+    reportNumber: form.reportNumber || "",
     reportDate: form.reportDate as string,
-    sampleId: form.sampleId as string,
-    analyte: form.analyte as string,
-    analysisMethod: form.analysisMethod as string,
-    criteria: form.criteria as string,
-    result: form.result as string,
+    sample: sample,
+    tests: buildTestsFromData(form, reportDetailData),
   };
 };
 
-export const reportToReportForm = (report: Report): Record<string, string> => {
+const buildTestsFromData = (
+  form: Record<string, unknown>,
+  reportDetailData: ReportDetailDataProps,
+) => {
+  const testType = filterModelsById(
+    reportDetailData.testTypes || [],
+    form.testType as string,
+  );
+  const analyte = filterModelsById(
+    reportDetailData.analytes || [],
+    form.analyte as string,
+  );
+  const analysisMethod = filterModelsById(
+    reportDetailData.analysisMethods || [],
+    form.analysisMethod as string,
+  );
+  const criteria = filterModelsById(
+    reportDetailData.criterias || [],
+    form.criteria as string,
+  );
+
+  const testIds = form.testIds as string[];
+
+  const tests: Test[] = testIds.map((testId) => {
+    return {
+      id: testId || uuidv4(),
+      testType: testType,
+      sampleId: form.sampleId as string,
+      analyte: analyte,
+      analysisMethod: analysisMethod,
+      criteria: criteria,
+      result: form.result as string,
+    };
+  });
+  return tests;
+};
+
+export const reportToReportForm = (report: Report): Record<string, unknown> => {
   return {
+    reportNumber: report.reportNumber,
     reportDate: report.reportDate,
-    sampleId: report.sampleId,
-    analyte: report.analyte,
-    analysisMethod: report.analysisMethod,
-    criteria: report.criteria,
-    result: report.result,
+    sampleId: report.sample.id,
+    tests: report.tests.map((test) => ({
+      testTypeId: test.testType.id,
+      sampleId: test.sampleId,
+      analyteId: test.analyte.id,
+      analysisMethodId: test.analysisMethod.id,
+      criteriaId: test.criteria.id,
+      result: test.result,
+    })),
   };
 };
 
-export const reportsToTableRows = (
-  reports: Report[],
-  samples: Sample[] | null,
-  sampleTypes: SampleType[] | null,
-  analytes: Analyte[] | null,
-): TableRowProps[] => {
+export const reportsToTableRows = (reports: Report[]): TableRowProps[] => {
   return reports.map((report) => {
-    const sampleTypeCellContent = getSampleTypeCellContent(
-      report.sampleId,
-      samples,
-      sampleTypes,
-    );
-    const analyteCellContent =
-      analytes?.find((analyte) => analyte.id === report.analyte)?.name ?? "N/A";
     return {
       id: report.id,
       cells: [
-        {children: report.reportDate, align: "left"},
         {
-          children: sampleTypeCellContent,
-          align: "left",
+          children: report.reportNumber || N_A,
+          align: SharedTypographyAlign.LEFT,
         },
-        {children: analyteCellContent, align: "left"},
-        {children: report.result, align: "left"},
+        {children: report.reportDate || N_A, align: SharedTypographyAlign.LEFT},
+        {
+          children: report.sample.client.name || N_A,
+          align: SharedTypographyAlign.LEFT,
+        },
+        {
+          children: report.sample.getSampleDate || N_A,
+          align: SharedTypographyAlign.LEFT,
+        },
+        {
+          children: report.sample.receptionDate || N_A,
+          align: SharedTypographyAlign.LEFT,
+        },
+        {
+          children: report.sample.responsable || N_A,
+          align: SharedTypographyAlign.LEFT,
+        },
+        {
+          children: report.sample.analysisDate || N_A,
+          align: SharedTypographyAlign.LEFT,
+        },
+        {
+          children:
+            `${report.sample.sampleType.name} - ${report.sample.sampleLocation}` ||
+            N_A,
+          align: SharedTypographyAlign.LEFT,
+        },
       ],
     };
   });
-};
-
-const getSampleTypeCellContent = (
-  sampleId: string,
-  samples: Sample[] | null,
-  sampleTypes: SampleType[] | null,
-): string => {
-  const filteredSample = samples?.find((sample) => sample.id === sampleId);
-  const sampleTypeName = findModelById(
-    filteredSample?.sampleTypeId,
-    sampleTypes || [],
-  );
-  return filteredSample
-    ? `${filteredSample.sampleCode} - ${sampleTypeName?.name}`
-    : "N/A";
 };

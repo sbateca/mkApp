@@ -1,4 +1,4 @@
-import {Analyte} from "../../../model";
+import {Analyte} from "./Analyte";
 
 export type AnalyteStore = {
   analytes: Analyte[] | null;
@@ -7,6 +7,7 @@ export type AnalyteStore = {
   setAnalytes: (analytes: Analyte[] | null) => void;
   getAnalytes: () => Promise<Analyte[] | null>;
   getAnalyteById: (analyteId: string) => Promise<Analyte | null>;
+  getAnalytesByTestTypeId: (testTypeId: string) => Promise<Analyte[] | null>;
   isLoading: boolean;
   error: string | null;
 };

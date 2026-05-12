@@ -1,6 +1,7 @@
-import {Stack, TextField} from "@mui/material";
+import {Box, Stack, TextField} from "@mui/material";
 import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+
 import {
   getStackContainerProps,
   getStackFieldProps,
@@ -10,11 +11,8 @@ import {
 import {
   DATEPICKER_VIEWS,
   FormProps,
-  REPORT_ANALYSIS_METHOD_LABEL_TEXT,
-  REPORT_ANALYTE_LABEL_TEXT,
-  REPORT_CRITERIA_LABEL_TEXT,
   REPORT_DATE_LABEL_TEXT,
-  REPORT_RESULT_LABEL_TEXT,
+  REPORT_NUMBER_LABEL_TEXT,
   REPORT_SAMPLE_LABEL_TEXT,
 } from "../../../utils/constants";
 import {
@@ -26,48 +24,147 @@ import {
 } from "../../../utils/enums";
 import {AutoComplete} from "../../../shared/ui";
 import dayjs from "dayjs";
-import {getAutoCompleteOptionsFromModel} from "../../../utils/model";
-import {FormError} from "../../../utils/hooks";
-import {AutoCompleteOption} from "../../../shared/ui/AutoComplete/types";
-import {AnalysisMethod} from "../../../entities/analysisMethod/model/AnalysisMethod";
-import {Analyte} from "../../../entities/analyte/model/Analyte";
+import {Sample, SampleReportDetails} from "../../../entities/sample";
+import {ReportTestForm} from "./ReportTestForm";
+import {useReportDetailController} from "../model/useReportDetailController";
+import {Analyte} from "../../../entities/analyte";
+import React, {useEffect, useRef, useState} from "react";
+import {Client} from "../../../entities/client";
+import {AnalysisMethod} from "../../../entities/analysisMethod";
 import {Criteria} from "../../../entities/criteria";
+import {SampleType} from "../../../entities/sampleType";
+import {Test} from "../../../entities/test";
+import {AutoCompleteOption} from "../../../shared/ui/AutoComplete/types";
+import {FieldValidations, FormError} from "../../../utils/hooks";
+import {TestType} from "../../../entities/testType";
+
+export type ReportDetailCatalogsProps = {
+  clients: Client[] | null;
+  analysisMethods: AnalysisMethod[] | null;
+  analytes: Analyte[] | null;
+  criterias: Criteria[] | null;
+  samples: Sample[] | null;
+  sampleTypes: SampleType[] | null;
+  tests: Test[] | null;
+  testTypes: TestType[] | null;
+  isLoadingAll: boolean;
+  sampleTypeOptionsFromSamples: AutoCompleteOption[];
+  getTestTypeOptions: () => AutoCompleteOption[];
+  getTestOptions: () => AutoCompleteOption[];
+  getAnalysisMethodOptions: () => AutoCompleteOption[];
+  getCriteriaOptions: () => AutoCompleteOption[];
+  getAnalytesByTestTypeId: (testTypeId: string) => Promise<Analyte[] | null>;
+};
+
+export type ReportDetailFormStateProps = {
+  isNotValidForm: boolean;
+  form: FormProps;
+  setForm: React.Dispatch<React.SetStateAction<FormProps>>;
+  formFieldsErrors: FormError;
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleDateChange: (value: dayjs.Dayjs | null, fieldName: string) => void;
+  handleAutoCompleteChange: (
+    _: React.SyntheticEvent,
+    newValue: AutoCompleteOption | null,
+    name: string,
+  ) => void;
+  getTextFieldHelperText: (fieldName: string) => string;
+  setFormFieldsValidationFunctions: React.Dispatch<
+    React.SetStateAction<FieldValidations>
+  >;
+  cleanForm: (defaultFormVFieldValues: FormProps) => void;
+};
 
 export type DetailFormProps = {
   isLessThanMediumScreen: boolean;
   isReadOnlyMode: boolean;
-  form: FormProps;
-  analysisMethods: AnalysisMethod[] | null;
-  analytes: Analyte[] | null;
-  criterias: Criteria[] | null;
-  formFieldsErrors: FormError;
-  getSampleTypeAutoCompleteOptionsFromSamples: () => AutoCompleteOption[];
-  getTextFieldHelperText: (fieldName: string) => string;
-
-  handleAutoCompleteChange: (
-    _: React.SyntheticEvent<Element, Event>,
-    newValue: AutoCompleteOption | null,
-    name: string,
-  ) => void;
-
-  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleDateChange: (value: dayjs.Dayjs | null, fieldName: string) => void;
+  catalogs: ReportDetailCatalogsProps;
+  detailForm: ReportDetailFormStateProps;
+  state: ReturnType<typeof useReportDetailController>["state"];
 };
 
 export const ReportDetailForm = ({
   isLessThanMediumScreen,
   isReadOnlyMode,
-  form,
-  analysisMethods,
-  analytes,
-  criterias,
-  formFieldsErrors,
-  getSampleTypeAutoCompleteOptionsFromSamples,
-  getTextFieldHelperText,
-  handleAutoCompleteChange,
-  handleChange,
-  handleDateChange,
+  catalogs,
+  detailForm,
+  state,
 }: DetailFormProps): React.ReactElement => {
+  const [analytesByTestType, setAnalytesByTestType] = useState<
+    Record<string, Analyte[]>
+  >({});
+  const formTitles = ["Microbiological Analysis", "Physical-Chemical Analysis"];
+  const loadedTestTypeIdsRef = useRef("");
+
+  const {
+    analysisMethods,
+    clients,
+    criterias,
+    sampleTypes,
+    testTypes,
+    sampleTypeOptionsFromSamples,
+    getAnalytesByTestTypeId,
+  } = catalogs;
+
+  const {
+    form,
+    setForm,
+    formFieldsErrors,
+    handleChange,
+    handleDateChange,
+    handleAutoCompleteChange,
+    getTextFieldHelperText,
+    setFormFieldsValidationFunctions,
+  } = detailForm;
+
+  const {isLoadingSample, selectedSample} = state;
+  const testTypeIds = testTypes?.map((testType) => testType.id).join("|") ?? "";
+
+  useEffect(() => {
+    if (!testTypes?.length) {
+      loadedTestTypeIdsRef.current = "";
+      setAnalytesByTestType((prevAnalytesByTestType) =>
+        Object.keys(prevAnalytesByTestType).length
+          ? {}
+          : prevAnalytesByTestType,
+      );
+      return;
+    }
+
+    if (loadedTestTypeIdsRef.current === testTypeIds) {
+      return;
+    }
+
+    let shouldIgnoreResult = false;
+
+    const loadAnalytesByTestType = async () => {
+      const analyteEntries = await Promise.all(
+        testTypes.map(async ({id}) => {
+          const analytes = await getAnalytesByTestTypeId(id);
+          return [id, analytes ?? []] as const;
+        }),
+      );
+
+      if (shouldIgnoreResult) {
+        return;
+      }
+
+      const nextAnalytesByTestType: Record<string, Analyte[]> = {};
+      analyteEntries.forEach(([testTypeId, analytes]) => {
+        nextAnalytesByTestType[testTypeId] = analytes;
+      });
+
+      setAnalytesByTestType(nextAnalytesByTestType);
+      loadedTestTypeIdsRef.current = testTypeIds;
+    };
+
+    loadAnalytesByTestType();
+
+    return () => {
+      shouldIgnoreResult = true;
+    };
+  }, [testTypes, testTypeIds, getAnalytesByTestTypeId]);
+
   return (
     <Stack {...getStackContainerProps(isLessThanMediumScreen)}>
       <Stack {...getStackRowProps(isLessThanMediumScreen)}>
@@ -97,10 +194,29 @@ export const ReportDetailForm = ({
           </LocalizationProvider>
         </Stack>
         <Stack {...getStackFieldProps()}>
+          <TextField
+            required
+            error={!!formFieldsErrors[ReportFormFields.REPORT_NUMBER]}
+            label={REPORT_NUMBER_LABEL_TEXT}
+            type="string"
+            color={SharedButtonColors.PRIMARY}
+            size={SharedButtonSizes.SMALL}
+            onChange={handleChange}
+            name={ReportFormFields.REPORT_NUMBER}
+            helperText={getTextFieldHelperText(ReportFormFields.REPORT_NUMBER)}
+            value={form[ReportFormFields.REPORT_NUMBER] ?? ""}
+            variant={SharedTextFieldVariants.STANDARD}
+            fullWidth={true}
+            InputProps={{
+              readOnly: isReadOnlyMode,
+            }}
+          />
+        </Stack>
+        <Stack {...getStackFieldProps()}>
           <AutoComplete
-            options={getSampleTypeAutoCompleteOptionsFromSamples()}
+            options={sampleTypeOptionsFromSamples}
             label={REPORT_SAMPLE_LABEL_TEXT}
-            value={form.sampleId}
+            value={`${form[ReportFormFields.SAMPLE_ID] ?? ""}`}
             variant={SelectVariants.STANDARD}
             onChange={handleAutoCompleteChange}
             name={ReportFormFields.SAMPLE_ID}
@@ -112,72 +228,43 @@ export const ReportDetailForm = ({
         </Stack>
       </Stack>
       <Stack {...getStackRowProps(isLessThanMediumScreen)}>
-        <Stack {...getStackFieldProps()}>
-          <AutoComplete
-            options={getAutoCompleteOptionsFromModel(analytes)}
-            label={REPORT_ANALYTE_LABEL_TEXT}
-            value={form.analyte}
-            variant={SelectVariants.STANDARD}
-            onChange={handleAutoCompleteChange}
-            name={ReportFormFields.ANALYTE}
-            readOnly={isReadOnlyMode}
-            required
-            error={!!formFieldsErrors[ReportFormFields.ANALYTE]}
-            helperText={getTextFieldHelperText(ReportFormFields.ANALYTE)}
+        <Box {...getStackFieldProps()}>
+          <SampleReportDetails
+            sample={selectedSample}
+            clients={clients || []}
+            sampleTypes={sampleTypes || []}
+            isLoadingSample={isLoadingSample}
           />
-        </Stack>
-        <Stack {...getStackFieldProps()}>
-          <AutoComplete
-            options={getAutoCompleteOptionsFromModel(analysisMethods)}
-            label={REPORT_ANALYSIS_METHOD_LABEL_TEXT}
-            value={form.analysisMethod}
-            variant={SelectVariants.STANDARD}
-            onChange={handleAutoCompleteChange}
-            name={ReportFormFields.ANALYSIS_METHOD}
-            readOnly={isReadOnlyMode}
-            required
-            error={!!formFieldsErrors[ReportFormFields.ANALYSIS_METHOD]}
-            helperText={getTextFieldHelperText(
-              ReportFormFields.ANALYSIS_METHOD,
-            )}
-          />
-        </Stack>
+        </Box>
       </Stack>
-      <Stack {...getStackRowProps(isLessThanMediumScreen)}>
-        <Stack {...getStackFieldProps()}>
-          <AutoComplete
-            options={getAutoCompleteOptionsFromModel(criterias)}
-            label={REPORT_CRITERIA_LABEL_TEXT}
-            value={form.criteria}
-            variant={SelectVariants.STANDARD}
-            onChange={handleAutoCompleteChange}
-            name={ReportFormFields.CRITERIA}
-            readOnly={isReadOnlyMode}
-            required
-            error={!!formFieldsErrors[ReportFormFields.CRITERIA]}
-            helperText={getTextFieldHelperText(ReportFormFields.CRITERIA)}
-          />
-        </Stack>
-        <Stack {...getStackFieldProps()}>
-          <TextField
-            required
-            error={!!formFieldsErrors[ReportFormFields.RESULT]}
-            label={REPORT_RESULT_LABEL_TEXT}
-            type="string"
-            color={SharedButtonColors.PRIMARY}
-            size={SharedButtonSizes.SMALL}
-            onChange={handleChange}
-            name={ReportFormFields.RESULT}
-            helperText={getTextFieldHelperText(ReportFormFields.RESULT)}
-            value={form.result ?? ""}
-            variant={SharedTextFieldVariants.STANDARD}
-            fullWidth={true}
-            InputProps={{
-              readOnly: isReadOnlyMode,
-            }}
-          />
-        </Stack>
-      </Stack>
+      {Object.entries(analytesByTestType).map(
+        ([testTypeId, analytes], index) => {
+          return (
+            <Stack
+              key={testTypeId}
+              {...getStackRowProps(isLessThanMediumScreen)}
+            >
+              <ReportTestForm
+                form={form}
+                setForm={setForm}
+                isReadonly={isReadOnlyMode}
+                analytes={analytes}
+                criterias={criterias}
+                analysisMethods={analysisMethods}
+                formIndex={index}
+                formFieldsErrors={formFieldsErrors}
+                setFormFieldsValidationFunctions={
+                  setFormFieldsValidationFunctions
+                }
+                handleChange={handleChange}
+                handleAutoCompleteChange={handleAutoCompleteChange}
+                getTextFieldHelperText={getTextFieldHelperText}
+                title={formTitles[index]}
+              />
+            </Stack>
+          );
+        },
+      )}
     </Stack>
   );
 };

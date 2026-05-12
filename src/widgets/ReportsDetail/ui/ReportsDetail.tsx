@@ -4,9 +4,8 @@ import {Box, Divider, Theme, useMediaQuery, useTheme} from "@mui/material";
 import {SxProps} from "@mui/material/styles";
 
 import {Spinner} from "../../../shared/ui";
-import {SampleReportDetails} from "../../../entities/sample/";
 
-import {getBoxContainerProps, ReportDetailStyles} from "./ReportsDetailStyles";
+import {getBoxContainerProps} from "./ReportsDetailStyles";
 import {ReportDetailProps} from "./Types";
 import {ReportSideSectionButtons} from "./ReportsSideSectionButtons";
 import {useReportDetailController} from "../model/useReportDetailController";
@@ -24,34 +23,9 @@ export const ReportDetail = ({
     setIsReadOnlyMode,
   });
 
-  const {
-    clients,
-    analysisMethods,
-    analytes,
-    criterias,
-    sampleTypes,
-    isLoadingAll,
-    getSampleTypeOptionsFromSamples,
-  } = catalogs;
-
-  const {
-    form,
-    isNotValidForm,
-    formFieldsErrors,
-    handleChange,
-    handleDateChange,
-    handleAutoCompleteChange,
-    getTextFieldHelperText,
-  } = detailForm;
-
-  const {
-    isLoading,
-    isLoadingSample,
-    selectedReport,
-    selectedSample,
-    sideSectionTitle,
-  } = state;
-
+  const {isLoadingAll} = catalogs;
+  const {isNotValidForm} = detailForm;
+  const {isLoading, selectedReport, sideSectionTitle} = state;
   const {onCloseSideSection, onCreateReport, onEditReport} = actions;
 
   return (
@@ -70,28 +44,11 @@ export const ReportDetail = ({
         <ReportDetailForm
           isLessThanMediumScreen={isLessThanMediumScreen}
           isReadOnlyMode={isReadOnlyMode}
-          form={form}
-          analysisMethods={analysisMethods}
-          analytes={analytes}
-          criterias={criterias}
-          formFieldsErrors={formFieldsErrors}
-          getSampleTypeAutoCompleteOptionsFromSamples={
-            getSampleTypeOptionsFromSamples
-          }
-          getTextFieldHelperText={getTextFieldHelperText}
-          handleAutoCompleteChange={handleAutoCompleteChange}
-          handleChange={handleChange}
-          handleDateChange={handleDateChange}
+          catalogs={catalogs}
+          detailForm={detailForm}
+          state={state}
         />
       )}
-      <Box sx={ReportDetailStyles.sampleDetailsContainer}>
-        <SampleReportDetails
-          sample={selectedSample}
-          clients={clients || []}
-          sampleTypes={sampleTypes || []}
-          isLoadingSample={isLoadingSample}
-        />
-      </Box>
       <Box
         sx={{
           display: "flex",

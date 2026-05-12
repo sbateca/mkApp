@@ -1,4 +1,4 @@
-import {Report} from "../../../model";
+import {Report} from "../../../entities/report/model/Report";
 
 export interface SampleDetailProps {
   isReadOnlyMode: boolean;

@@ -12,10 +12,19 @@ export const getAnalytesService = async (): Promise<Analyte[]> => {
 };
 
 export const getAnalyteByIdService = async (
-  analyteTypeId: string,
+  analyteId: string,
 ): Promise<Analyte> => {
   const response = await apiClient.get<Analyte[]>(
-    `${EnvManager.BACKEND_URL}${BaseRoutes.ANALYTES}/${analyteTypeId}`,
+    `${EnvManager.BACKEND_URL}${BaseRoutes.ANALYTES}/${analyteId}`,
   );
   return axiosResponseToAnalyte(response)[0];
+};
+
+export const getAnalytesByTestTypeIdService = async (
+  testTypeId: string,
+): Promise<Analyte[]> => {
+  const response = await apiClient.get<Analyte[]>(
+    `${EnvManager.BACKEND_URL}${BaseRoutes.ANALYTES}?testType.id=${testTypeId}`,
+  );
+  return axiosResponseToAnalyte(response);
 };

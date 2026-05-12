@@ -15,11 +15,8 @@ export const useReportDetailForm = (selectedReport: Report | null) => {
   const formValidations = useMemo(
     () => ({
       reportDate: [isEmpty, isNotValidDate],
+      reportNumber: [isEmpty],
       sampleId: [isEmpty],
-      analyte: [isEmpty],
-      analysisMethod: [isEmpty],
-      criteria: [isEmpty],
-      result: [isEmpty],
     }),
     [],
   );
@@ -27,11 +24,8 @@ export const useReportDetailForm = (selectedReport: Report | null) => {
   const emptyForm = useMemo(
     () => ({
       reportDate: today.format(DATEPICKER_FORMAT),
+      reportNumber: "",
       sampleId: "",
-      analyte: "",
-      analysisMethod: "",
-      criteria: "",
-      result: "",
     }),
     [today],
   );
@@ -54,7 +48,7 @@ export const useReportDetailForm = (selectedReport: Report | null) => {
   }, [setFormFieldsValidationFunctions, formValidations]);
 
   useEffect(() => {
-    if (selectedReport) {
+    if (selectedReport || form.reportType) {
       setForm(reportToReportForm(selectedReport));
       return;
     }
@@ -65,6 +59,7 @@ export const useReportDetailForm = (selectedReport: Report | null) => {
     isNotValidForm,
     form,
     setForm,
+    formValidations,
     formFieldsErrors,
     handleChange,
     handleDateChange,

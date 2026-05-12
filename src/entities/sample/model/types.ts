@@ -6,7 +6,8 @@ export type SamplesStore = {
   isLoading: boolean;
   error: string | null;
   setSelectedSample: (sample: Sample | null) => void;
-  getSamples: () => Promise<void>;
+  setSamples: (samples: Sample[] | null) => void;
+  getSamples: () => Promise<Sample[] | null>;
   getSampleById: (sampleId: string) => Promise<Sample | null>;
   createSample: (sample: Sample) => Promise<Sample | null>;
   editSample: (sampleId?: string, sample?: Sample) => Promise<Sample | null>;

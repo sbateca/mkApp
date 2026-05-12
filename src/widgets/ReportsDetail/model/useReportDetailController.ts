@@ -1,5 +1,6 @@
 import {useCallback} from "react";
 import {
+  ReportDetailDataProps,
   selectError,
   selectIsLoadingReport,
   selectSelectedReport,
@@ -41,8 +42,18 @@ export const useReportDetailController = ({
   useReportErrorNotifier(error);
 
   const onCreateReport = useCallback(() => {
-    handleCreateReport(form);
-  }, [form, handleCreateReport]);
+    const reportDetail: ReportDetailDataProps = {
+      clients: reportDetailData.clients || null,
+      analysisMethods: reportDetailData.analysisMethods || null,
+      analytes: reportDetailData.analytes || null,
+      criterias: reportDetailData.criterias || null,
+      sampleTypes: reportDetailData.sampleTypes || null,
+      samples: reportDetailData.samples || null,
+      tests: reportDetailData.tests || null,
+      testTypes: reportDetailData.testTypes || null,
+    };
+    handleCreateReport(form, reportDetail);
+  }, [form, reportDetailData, handleCreateReport]);
 
   const onEditReport = useCallback(() => {
     handleEditReport(form);

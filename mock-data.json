@@ -46,39 +46,75 @@
   "analytes": [
     {
       "id": "1863060e-4d92-4ff5-b04f-57d4d6d2825a",
-      "name": "Salmonella spp."
+      "name": "Salmonella spp.",
+      "testType": {
+        "id": "66457660-c77d-4d63-a173-d8179231192c",
+        "name": "Microbiological"
+      }
     },
     {
       "id": "1b3b3b3b-1b3b-1b3b-1b3b-1b3b1b3b1b3b",
-      "name": "E. coli"
+      "name": "E. coli",
+      "testType": {
+        "id": "66457660-c77d-4d63-a173-d8179231192c",
+        "name": "Microbiological"
+      }
     },
     {
       "id": "6c549aca-fa2e-436e-ac1c-519318766b45",
-      "name": "Total coliforms"
+      "name": "Total coliforms",
+      "testType": {
+        "id": "66457660-c77d-4d63-a173-d8179231192c",
+        "name": "Microbiological"
+      }
     },
     {
       "id": "2e1d3034-bb36-4606-b455-7bb6cd9171e7",
-      "name": "Faecal coliforms"
+      "name": "Faecal coliforms",
+      "testType": {
+        "id": "66457660-c77d-4d63-a173-d8179231192c",
+        "name": "Microbiological"
+      }
     },
     {
       "id": "ab3b3b3b-ab3b-ab3b-ab3b-ab3b3b3b3b3b",
-      "name": "Aerobious mesophilic"
+      "name": "Aerobious mesophilic",
+      "testType": {
+        "id": "66457660-c77d-4d63-a173-d8179231192c",
+        "name": "Microbiological"
+      }
     },
     {
       "id": "642f6e79-64b6-4dc4-b829-966d2232a5b3",
-      "name": "Mods and Campylobacter"
+      "name": "Mods and Campylobacter",
+      "testType": {
+        "id": "66457660-c77d-4d63-a173-d8179231192c",
+        "name": "Microbiological"
+      }
     },
     {
       "id": "eb3b3b3b-eb3b-eb3b-eb3b-eb3b3b3b3b3b",
-      "name": "Pseudomonas aeruginosa"
+      "name": "Pseudomonas aeruginosa",
+      "testType": {
+        "id": "66457660-c77d-4d63-a173-d8179231192c",
+        "name": "Microbiological"
+      }
     },
     {
       "id": "df07f4ce-aed2-4552-b2a9-d67562c754f7",
-      "name": "Ph"
+      "name": "Ph",
+      "testType": {
+        "id": "f03c6e5a-30e0-4cad-9cd4-e18ae306254e",
+        "name": "Physical-Chemical"
+      }
     },
     {
       "id": "9241c299-94db-48ba-9521-280086910086",
-      "name": "Free residual chlorine"
+      "name": "Free residual chlorine",
+      "testType": {
+        "id": "f03c6e5a-30e0-4cad-9cd4-e18ae306254e",
+        "name": "Physical-Chemical"
+      }
     }
   ],
   "analysisMethods": [
@@ -117,7 +153,7 @@
       "name": "Minimun: 6,8 - Ideal: 7,3"
     }
   ],
-   "testTypes": [
+  "testTypes": [
     {
       "id": "66457660-c77d-4d63-a173-d8179231192c",
       "name": "Microbiological"
@@ -152,7 +188,7 @@
         "id": "1f32d26e-2573-43cd-9aa0-fc7e76872541",
         "name": "Environmental"
       },
-      "clientId": {
+      "client": {
         "id": "4bf96c94-f131-4d1a-aa90-6467600675f9",
         "name": "Pasabocas D'Chic"
       },
@@ -169,7 +205,7 @@
         "id": "76cf9fea-7d2c-4ac2-89ee-a353a1c10a7c",
         "name": "Surface"
       },
-      "clientId": {
+      "client": {
         "id": "ad2fcefb-ba2f-466f-9dff-331be532946b",
         "name": "Monterres"
       },
@@ -186,7 +222,7 @@
         "id": "f1b3b3b4-1b3b-4b3b-8b3b-1b3b3b3b3b3b",
         "name": "Pool water"
       },
-      "clientId": {
+      "client": {
         "id": "e950af36-1c5a-4b83-a3a0-a927ebe02459",
         "name": "Fábrica de Galletas La Moderna"
       },
@@ -203,7 +239,7 @@
         "id": "1f32d26e-2573-43cd-9aa0-fc7e76872541",
         "name": "Environmental"
       },
-      "clientId": {
+      "client": {
         "id": "ad2fcefb-ba2f-466f-9dff-331be532946b",
         "name": "Monterres"
       },
@@ -278,7 +314,6 @@
       },
       "result": "7,0"
     },
-
     {
       "id": "025494db-6dd1-441e-bd83-70ef72e405bf",
       "testType": {
@@ -323,7 +358,7 @@
     },
     {
       "id": "24d5b373-2a7c-4c5d-a8b7-8b8733aa17d1",
-      "testTypeId": {
+      "testType": {
         "id": "f03c6e5a-30e0-4cad-9cd4-e18ae306254e",
         "name": "Physical-Chemical"
       },
@@ -342,7 +377,6 @@
       },
       "result": "7,1"
     },
-
     {
       "id": "025494db-6dd1-441e-bd83-70ef72e405bf",
       "testType": {
@@ -572,7 +606,7 @@
           "id": "1f32d26e-2573-43cd-9aa0-fc7e76872541",
           "name": "Environmental"
         },
-        "clientId": {
+        "client": {
           "id": "ad2fcefb-ba2f-466f-9dff-331be532946b",
           "name": "Monterres"
         },
