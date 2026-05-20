@@ -3,6 +3,8 @@ import {v4 as uuidv4} from "uuid";
 
 import {Report} from "../model/Report";
 import {
+  FormProps,
+  getFormStringValue,
   N_A,
   RESPONSE_DATA_NOT_VALID_ERROR,
   getInvalidDataErrorMessage,
@@ -17,7 +19,7 @@ import {TestType} from "../../testType";
 import {AnalysisMethod} from "../../analysisMethod/model/AnalysisMethod";
 import {Criteria} from "../../criteria";
 import {Test} from "../../test";
-import {SharedTypographyAlign} from "../../../utils/enums";
+import {ReportFormFields, SharedTypographyAlign} from "../../../utils/enums";
 
 export type ReportDetailDataProps = {
   clients: Client[] | null;
@@ -63,27 +65,36 @@ const isValidReport = (report: unknown): report is Report => {
 };
 
 export const reportFormToReport = (
-  form: Record<string, string>,
+  form: FormProps,
   reportId: string,
   reportDetailData: ReportDetailDataProps,
 ): Report => {
-  const sample = filterModelsById(
-    reportDetailData.samples || [],
-    form.sampleId,
-  );
+  const sampleId = getFormStringValue(form, ReportFormFields.SAMPLE_ID);
+  const sample = filterModelsById(reportDetailData.samples || [], sampleId);
+
   return {
     id: reportId || uuidv4(),
-    reportNumber: form.reportNumber || "",
-    reportDate: form.reportDate as string,
+    reportNumber: getFormStringValue(form, ReportFormFields.REPORT_NUMBER),
+    reportDate: getFormStringValue(form, ReportFormFields.REPORT_DATE),
     sample: sample,
     tests: buildTestsFromData(form, reportDetailData),
   };
 };
 
 const buildTestsFromData = (
-  form: Record<string, unknown>,
+  form: FormProps,
   reportDetailData: ReportDetailDataProps,
 ) => {
+  const reportTestGroups = getReportTestGroups(form);
+
+  if (reportTestGroups) {
+    return buildTestsFromReportTestGroups(
+      form,
+      reportDetailData,
+      reportTestGroups,
+    );
+  }
+
   const testType = filterModelsById(
     reportDetailData.testTypes || [],
     form.testType as string,
@@ -117,19 +128,107 @@ const buildTestsFromData = (
   return tests;
 };
 
-export const reportToReportForm = (report: Report): Record<string, unknown> => {
+type ReportTestFormRow = {
+  id?: unknown;
+  analyteId?: unknown;
+  analysisMethodId?: unknown;
+  result?: unknown;
+  criteriaId?: unknown;
+};
+
+type ReportTestGroupsFormValue = Record<string, ReportTestFormRow[]>;
+
+const buildTestsFromReportTestGroups = (
+  form: FormProps,
+  reportDetailData: ReportDetailDataProps,
+  reportTestGroups: ReportTestGroupsFormValue,
+): Test[] => {
+  const sampleId = getFormStringValue(form, ReportFormFields.SAMPLE_ID);
+
+  return Object.entries(reportTestGroups).flatMap(([testTypeId, rows]) => {
+    const testType = filterModelsById(
+      reportDetailData.testTypes || [],
+      testTypeId,
+    );
+
+    return rows.filter(isCompleteReportTestRow).map((row) => ({
+      id: getRowStringValue(row.id) || uuidv4(),
+      testType,
+      sampleId,
+      analyte: filterModelsById(
+        reportDetailData.analytes || [],
+        getRowStringValue(row.analyteId),
+      ),
+      analysisMethod: filterModelsById(
+        reportDetailData.analysisMethods || [],
+        getRowStringValue(row.analysisMethodId),
+      ),
+      criteria: filterModelsById(
+        reportDetailData.criterias || [],
+        getRowStringValue(row.criteriaId),
+      ),
+      result: getRowStringValue(row.result),
+    }));
+  });
+};
+
+const getRowStringValue = (value: unknown): string => {
+  return typeof value === "string" ? value : "";
+};
+
+const getReportTestGroups = (
+  form: FormProps,
+): ReportTestGroupsFormValue | null => {
+  const reportTestGroups = form[ReportFormFields.REPORT_TEST_GROUPS];
+
+  if (!reportTestGroups || typeof reportTestGroups !== "object") {
+    return null;
+  }
+
+  const hasOnlyRowArrays = Object.values(reportTestGroups).every((rows) =>
+    Array.isArray(rows),
+  );
+
+  return hasOnlyRowArrays
+    ? (reportTestGroups as ReportTestGroupsFormValue)
+    : null;
+};
+
+const isCompleteReportTestRow = (row: ReportTestFormRow): boolean => {
+  return (
+    !!getRowStringValue(row.analyteId).trim() &&
+    !!getRowStringValue(row.analysisMethodId).trim() &&
+    !!getRowStringValue(row.result).trim() &&
+    !!getRowStringValue(row.criteriaId).trim()
+  );
+};
+
+export const reportToReportForm = (report: Report): FormProps => {
   return {
     reportNumber: report.reportNumber,
     reportDate: report.reportDate,
     sampleId: report.sample.id,
-    tests: report.tests.map((test) => ({
-      testTypeId: test.testType.id,
-      sampleId: test.sampleId,
-      analyteId: test.analyte.id,
-      analysisMethodId: test.analysisMethod.id,
-      criteriaId: test.criteria.id,
-      result: test.result,
-    })),
+    reportTestGroups: report.tests.reduce<ReportTestGroupsFormValue>(
+      (reportTestGroups, test) => {
+        const testTypeId = test.testType.id;
+        const rows = reportTestGroups[testTypeId] ?? [];
+
+        return {
+          ...reportTestGroups,
+          [testTypeId]: [
+            ...rows,
+            {
+              id: test.id,
+              analyteId: test.analyte.id,
+              analysisMethodId: test.analysisMethod.id,
+              criteriaId: test.criteria.id,
+              result: test.result,
+            },
+          ],
+        };
+      },
+      {},
+    ),
   };
 };
 

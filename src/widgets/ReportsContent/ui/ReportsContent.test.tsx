@@ -34,6 +34,7 @@ const mockedSamplesState = {
   isLoading: false,
   error: null,
   setSelectedSample: jest.fn(),
+  setSamples: jest.fn(),
   getSamples: jest.fn(),
   getSampleById: jest.fn().mockResolvedValue(mockSamples[0] as Sample),
   createSample: jest.fn().mockResolvedValue(mockSamples[0] as Sample),
@@ -77,6 +78,7 @@ const mockAnalyteStoreState: AnalyteStore = {
   setAnalytes: jest.fn(),
   getAnalytes: jest.fn().mockReturnValue(mockAnalytes),
   getAnalyteById: jest.fn().mockReturnValue(mockAnalytes[0]),
+  getAnalytesByTestTypeId: jest.fn().mockResolvedValue(mockAnalytes),
   isLoading: false,
   error: null,
 };
@@ -131,20 +133,26 @@ describe("ReportsContent test", () => {
   });
 
   it("should render reports data successfully", async () => {
+    const expectedReportNumber = mockReports[0].reportNumber;
     const expectedReportDate = mockReports[0].reportDate;
-    const sampleCode = mockSamples[0].sampleCode;
-    const sampleTypeName = mockSampleTypes[0].name;
-    const expectedSampleCodeAndType = `${sampleCode} - ${sampleTypeName}`;
-    const expectedAnalyteName = mockAnalytes[0].name;
-    const expectedResult = mockReports[0].result;
+    const expectedClientName = mockReports[0].sample.client.name;
+    const expectedSampleDate = mockReports[0].sample.getSampleDate;
+    const expectedReceptionDate = mockReports[0].sample.receptionDate;
+    const expectedSampleTypeAndLocation = `${mockReports[0].sample.sampleType.name} - ${mockReports[0].sample.sampleLocation}`;
 
     render(<ReportsContent />);
 
     await waitFor(() => {
-      expect(screen.getByText(expectedReportDate)).toBeInTheDocument();
-      expect(screen.getByText(expectedSampleCodeAndType)).toBeInTheDocument();
-      expect(screen.getByText(expectedAnalyteName)).toBeInTheDocument();
-      expect(screen.getByText(expectedResult)).toBeInTheDocument();
+      expect(screen.getByText(expectedReportNumber)).toBeInTheDocument();
+      expect(screen.getAllByText(expectedReportDate).length).toBeGreaterThan(0);
+      expect(screen.getByText(expectedClientName)).toBeInTheDocument();
+      expect(screen.getAllByText(expectedSampleDate).length).toBeGreaterThan(0);
+      expect(screen.getAllByText(expectedReceptionDate).length).toBeGreaterThan(
+        0,
+      );
+      expect(
+        screen.getByText(expectedSampleTypeAndLocation),
+      ).toBeInTheDocument();
     });
   });
 

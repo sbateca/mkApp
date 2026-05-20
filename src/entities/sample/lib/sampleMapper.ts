@@ -9,7 +9,6 @@ import {
 } from "../../../utils/constants";
 import {SampleType} from "../../sampleType";
 import {Client} from "../../client";
-import {findModelById} from "../../../utils/model";
 import {TableRowProps} from "../../../shared/ui/Table/TableRow";
 
 export const axiosResponseToSamples = (

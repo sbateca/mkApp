@@ -1,32 +1,19 @@
 import {render, screen} from "@testing-library/react";
 import {SampleTableActionButtons} from "../sampleActions/ui/SampleTableActionButtons";
-import {Sample} from "../../../model";
+import {Sample} from "../../../entities/sample";
 import {SideSectionStore} from "../../../features/sideSection/model/types";
+import {
+  buildClientsData,
+  buildSamplesData,
+  buildSampleTypesData,
+} from "../../../shared/test/builders";
 
-const mockSamples: Sample[] = [
-  {
-    id: "1",
-    sampleCode: "001",
-    sampleTypeId: "1",
-    clientId: "1",
-    getSampleDate: "2021-09-01",
-    receptionDate: "2021-09-01",
-    analysisDate: "2021-09-01",
-    sampleLocation: "Mock location",
-    responsable: "Mock responsable",
-  },
-  {
-    id: "2",
-    sampleCode: "002",
-    sampleTypeId: "2",
-    clientId: "2",
-    getSampleDate: "2021-09-01",
-    receptionDate: "2021-09-01",
-    analysisDate: "2021-09-01",
-    sampleLocation: "Mock location",
-    responsable: "Mock responsable",
-  },
-];
+const mockClients = buildClientsData(2);
+const mockSampleTypes = buildSampleTypesData(2);
+const mockSamples: Sample[] = buildSamplesData(2, {
+  client: mockClients[0],
+  sampleType: mockSampleTypes[0],
+});
 
 const mockSampleStoreState = {
   samples: mockSamples,
@@ -34,6 +21,7 @@ const mockSampleStoreState = {
   isLoading: false,
   error: null,
   setSelectedSample: jest.fn(),
+  setSamples: jest.fn(),
   getSamples: jest.fn(),
   getSampleById: jest.fn().mockResolvedValue(mockSamples[0] as Sample),
   createSample: jest.fn().mockResolvedValue(mockSamples[0] as Sample),

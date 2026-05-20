@@ -16,6 +16,14 @@ export const REPORT_CRITERIA_LABEL_TEXT = "Criteria";
 export const REPORT_RESULT_LABEL_TEXT = "Result";
 export const REPORT_NUMBER_LABEL_TEXT = "Report number";
 
+export const REPORT_TEST_LABELS = {
+  TEST: "Test",
+  ANALYSIS_METHOD: "Analysis Method",
+  RESULT: "Result",
+  CRITERIA: "Criteria",
+  ACTION: "Action",
+} as const;
+
 export const LOGIN_FORM_USERNAME_LABEL_TEXT = "Username";
 export const LOGIN_FORM_PASSWORD_LABEL_TEXT = "Password";
 
@@ -26,3 +34,10 @@ export const BUTTON_LABELS = {
   EDIT_REPORT: "Edit Report",
   ADD_TEST: "Add Test",
 } as const;
+
+export const FORM_TITLES = [
+  "Microbiological Analysis",
+  "Physical-Chemical Analysis",
+];
+
+export const ANALYSIS_TITLE = "Analysis";

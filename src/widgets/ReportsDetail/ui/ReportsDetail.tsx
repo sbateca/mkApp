@@ -7,7 +7,6 @@ import {Spinner} from "../../../shared/ui";
 
 import {getBoxContainerProps} from "./ReportsDetailStyles";
 import {ReportDetailProps} from "./Types";
-import {ReportSideSectionButtons} from "./ReportsSideSectionButtons";
 import {useReportDetailController} from "../model/useReportDetailController";
 import {ReportDetailHeader} from "./ReportDetailHeader";
 import {ReportDetailForm} from "./ReportDetailForm";
@@ -24,9 +23,8 @@ export const ReportDetail = ({
   });
 
   const {isLoadingAll} = catalogs;
-  const {isNotValidForm} = detailForm;
   const {isLoading, selectedReport, sideSectionTitle} = state;
-  const {onCloseSideSection, onCreateReport, onEditReport} = actions;
+  const {onCloseSideSection} = actions;
 
   return (
     <Box sx={getBoxContainerProps(isLessThanMediumScreen) as SxProps}>
@@ -44,28 +42,13 @@ export const ReportDetail = ({
         <ReportDetailForm
           isLessThanMediumScreen={isLessThanMediumScreen}
           isReadOnlyMode={isReadOnlyMode}
+          setIsReadOnlyMode={setIsReadOnlyMode}
           catalogs={catalogs}
           detailForm={detailForm}
           state={state}
+          actions={actions}
         />
       )}
-      <Box
-        sx={{
-          display: "flex",
-          alignSelf: "flex-end",
-          justifyContent: "flex-end",
-          marginTop: "10px",
-        }}
-      >
-        <ReportSideSectionButtons
-          isNotValidForm={isNotValidForm}
-          report={selectedReport}
-          isReadOnlyMode={isReadOnlyMode}
-          setIsReadOnlyMode={setIsReadOnlyMode}
-          handleCreateReport={onCreateReport}
-          handleEdit={onEditReport}
-        />
-      </Box>
     </Box>
   );
 };

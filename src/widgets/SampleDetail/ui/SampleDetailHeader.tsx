@@ -1,6 +1,6 @@
 import {Chip, Stack} from "@mui/material";
 import {Button, Typography} from "../../../shared/ui";
-import {Sample} from "../../../model";
+import {Sample} from "../../../entities/sample";
 import {
   SharedButtonColors,
   SharedButtonCommonLabels,

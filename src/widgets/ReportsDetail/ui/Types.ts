@@ -43,6 +43,19 @@ export interface BoxContainerProps {
   height: string;
 }
 
+export interface SideSectionButtonsProps {
+  display: string;
+  alignSelf: string;
+  justifyContent: string;
+  marginTop: string;
+}
+
+export interface TestFormButtonProps {
+  display: string;
+  justifyContent: string;
+  marginTop: number;
+}
+
 export interface ReportSideSectionActionsProps {
   isNotValidForm: boolean;
   report: Report | null;

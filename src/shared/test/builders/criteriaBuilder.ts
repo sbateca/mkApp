@@ -1,5 +1,5 @@
 import {faker} from "@faker-js/faker/.";
-import {Criteria} from "../../../model";
+import {Criteria} from "../../../entities/criteria";
 
 export const buildCriteriaData = (
   overrides: Partial<Criteria> = {},

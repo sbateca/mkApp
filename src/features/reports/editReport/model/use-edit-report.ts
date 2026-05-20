@@ -1,4 +1,5 @@
 import {
+  ReportDetailDataProps,
   reportFormToReport,
   selectEditReport,
   selectGetReports,
@@ -22,8 +23,15 @@ export const useEditReport = (
   const {onCloseSideSection} = useSideSection(setIsReadOnlyMode);
   const showSnackBarMessage = useSnackBarStore(selectShowSnackBarMessage);
 
-  const handleEditReport = async (form: FormProps) => {
-    const parsedReport = reportFormToReport(form, selectedReport?.id ?? "");
+  const handleEditReport = async (
+    form: FormProps,
+    reportDetailData: ReportDetailDataProps,
+  ) => {
+    const parsedReport = reportFormToReport(
+      form,
+      selectedReport?.id ?? "",
+      reportDetailData,
+    );
     const updatedReport = await editReport(selectedReport?.id, parsedReport);
     if (updatedReport !== null) {
       onCloseSideSection();

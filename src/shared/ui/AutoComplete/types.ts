@@ -18,7 +18,7 @@ export interface AutoCompleteProps {
   name: string;
   readOnly: boolean;
   required: boolean;
-  error: boolean;
-  helperText: string;
+  error?: boolean;
+  helperText?: string;
   sx?: object;
 }

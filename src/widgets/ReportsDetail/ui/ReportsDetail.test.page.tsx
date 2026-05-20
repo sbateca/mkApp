@@ -27,6 +27,8 @@ import {SnackBarStore} from "../../../features/snackbar/model/types";
 import {Sample} from "../../../entities/sample";
 import {SampleType} from "../../../entities/sampleType";
 import {Analyte} from "../../../entities/analyte/model/Analyte";
+import {TestTypeStore} from "../../../entities/testType/model/types";
+import {TestStore} from "../../../entities/test/model/types";
 
 const today = dayjs();
 const RENDERED_FORMAT_DATE = "MM/DD/YYYY";
@@ -46,17 +48,32 @@ const mockReports = buildReportsData(2, {
   analysisMethod: mockAnalysisMethods[0].id,
   criteria: mockCriterias[0].id,
 });
+const mockTests = mockReports.flatMap((report) => report.tests);
+const mockTestTypes = mockTests.map((test) => test.testType);
+const mockReportTestGroups = {
+  [mockTests[0].testType.id]: [
+    {
+      id: mockTests[0].id,
+      analyteId: mockAnalytes[0].id,
+      analysisMethodId: mockAnalysisMethods[0].id,
+      criteriaId: mockCriterias[0].id,
+      result: mockTests[0].result,
+    },
+  ],
+};
 const mockFormData = buildFormData({
   reportDate: today.format(DATEPICKER_FORMAT),
   sampleId: mockSamples[0].id,
+  reportTestGroups: mockReportTestGroups,
   analyte: mockAnalytes[0].id,
   analysisMethod: mockAnalysisMethods[0].id,
   criteria: mockCriterias[0].id,
-  result: mockReports[0].result,
+  result: mockTests[0].result,
 });
 const mockDefaultFormData = buildFormData({
   reportDate: today.format(DATEPICKER_FORMAT),
   sampleId: "",
+  reportTestGroups: {},
   analyte: "",
   analysisMethod: "",
   criteria: "",
@@ -80,7 +97,7 @@ export const mockReportDetailData = {
     analyte: mockAnalytes[0].name,
     analysisMethod: mockAnalysisMethods[0].name,
     criteria: mockCriterias[0].name,
-    result: mockReports[0].result,
+    result: mockTests[0].result,
   },
 };
 
@@ -91,6 +108,8 @@ let mockSampleTypeStoreState: SampleTypeStore;
 let mockCriteriaStoreState: CriteriaStore;
 let mockAnalysisMethodsStoreState: AnalysisMethodStore;
 let mockAnalyteStoreState: AnalyteStore;
+let mockTestTypeStoreState: TestTypeStore;
+let mockTestStoreState: TestStore;
 let mockSideSectionStoreState: SideSectionStore;
 let mockSnackBarStoreState: SnackBarStore;
 
@@ -130,6 +149,16 @@ jest.mock("../../../entities/analysisMethod/model/store", () => ({
     selector(mockAnalysisMethodsStoreState),
 }));
 
+jest.mock("../../../entities/testType/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useTestTypeStore: (selector: any) => selector(mockTestTypeStoreState),
+}));
+
+jest.mock("../../../entities/test/model/store", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  useTestStore: (selector: any) => selector(mockTestStoreState),
+}));
+
 jest.mock("../../../features/sideSection/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSideSectionStore: (selector: any) => selector(mockSideSectionStoreState),
@@ -154,6 +183,7 @@ export const renderReportDetail = async () => {
     isLoading: false,
     error: null,
     setSelectedSample: jest.fn(),
+    setSamples: jest.fn(),
     getSamples: jest.fn(),
     getSampleById: jest
       .fn()
@@ -231,8 +261,36 @@ export const renderReportDetail = async () => {
     setAnalytes: jest.fn(),
     getAnalytes: jest.fn().mockReturnValue(mockAnalytes),
     getAnalyteById: jest.fn().mockReturnValue(mockAnalytes[0]),
+    getAnalytesByTestTypeId: jest.fn().mockResolvedValue(mockAnalytes),
     isLoading: false,
     error: null,
+  };
+
+  mockTestTypeStoreState = {
+    testTypes: mockTestTypes,
+    selectedTestType: mockTestTypes[0],
+    isLoading: false,
+    error: null,
+    setTestTypes: jest.fn(),
+    getTestTypes: jest.fn().mockResolvedValue(mockTestTypes),
+    getTestTypeById: jest.fn().mockResolvedValue(mockTestTypes[0]),
+    createTestType: jest.fn().mockResolvedValue(mockTestTypes[0]),
+    editTestType: jest.fn().mockResolvedValue(mockTestTypes[0]),
+    deleteTestType: jest.fn().mockResolvedValue(undefined),
+  };
+
+  mockTestStoreState = {
+    tests: mockTests,
+    selectedTest: mockTests[0],
+    isLoading: false,
+    error: null,
+    setTests: jest.fn(),
+    setSelectedTest: jest.fn(),
+    getTests: jest.fn().mockResolvedValue(mockTests),
+    getTestById: jest.fn().mockResolvedValue(mockTests[0]),
+    createTest: jest.fn().mockResolvedValue(mockTests[0]),
+    editTest: jest.fn().mockResolvedValue(mockTests[0]),
+    deleteTest: jest.fn().mockResolvedValue(undefined),
   };
 
   mockSideSectionStoreState = {

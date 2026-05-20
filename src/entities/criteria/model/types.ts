@@ -1,4 +1,4 @@
-import {Criteria} from "../../../model";
+import {Criteria} from "./Criteria";
 
 export type CriteriaStore = {
   criterias: Criteria[] | null;

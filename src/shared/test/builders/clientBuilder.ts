@@ -1,5 +1,5 @@
 import {faker} from "@faker-js/faker";
-import {Client} from "../../../model";
+import {Client} from "../../../entities/client";
 
 export const buildClientData = (overrides: Partial<Client> = {}) => ({
   id: faker.string.uuid(),

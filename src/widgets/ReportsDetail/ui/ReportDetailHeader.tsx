@@ -12,7 +12,7 @@ import {
   SharedTypographyVariants,
 } from "../../../utils/enums";
 import {ReportDetailStyles} from "./ReportsDetailStyles";
-import {Report} from "../../../model";
+import {Report} from "../../../entities/report";
 
 export type HeaderProps = {
   isReadOnlyMode: boolean;

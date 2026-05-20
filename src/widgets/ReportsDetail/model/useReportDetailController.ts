@@ -6,6 +6,7 @@ import {
   selectSelectedReport,
   useReportStore,
 } from "../../../entities/report";
+import {ReportFormFields} from "../../../utils/enums";
 import {
   useCreateReport,
   useEditReport,
@@ -15,7 +16,7 @@ import {useSelectSampleForReport} from "../../../features/reports/selectSample/m
 import {selectSideSectionTitle} from "../../../features/sideSection/model/selectors";
 import {useSideSectionStore} from "../../../features/sideSection/model/store";
 import {useSideSection} from "../../../features/sideSection/model/useSideSection";
-import {ReportDetailControllerProps} from "./types";
+import {ReportDetailControllerProps, ReportTestGroups} from "./types";
 import {useReportDetailForm} from "./useReportDetailForm";
 import {useReportErrorNotifier} from "./useReportErrorNotifier";
 
@@ -28,7 +29,11 @@ export const useReportDetailController = ({
 
   const reportDetailData = useLoadReportDetailData();
 
-  const reportFormState = useReportDetailForm(selectedReport);
+  const reportFormState = useReportDetailForm(
+    selectedReport,
+    reportDetailData.testTypes,
+    reportDetailData.getAnalytesByTestTypeId,
+  );
   const {form} = reportFormState;
 
   const sideSectionTitle = useSideSectionStore(selectSideSectionTitle);
@@ -41,8 +46,8 @@ export const useReportDetailController = ({
 
   useReportErrorNotifier(error);
 
-  const onCreateReport = useCallback(() => {
-    const reportDetail: ReportDetailDataProps = {
+  const getReportDetail = useCallback((): ReportDetailDataProps => {
+    return {
       clients: reportDetailData.clients || null,
       analysisMethods: reportDetailData.analysisMethods || null,
       analytes: reportDetailData.analytes || null,
@@ -52,12 +57,37 @@ export const useReportDetailController = ({
       tests: reportDetailData.tests || null,
       testTypes: reportDetailData.testTypes || null,
     };
-    handleCreateReport(form, reportDetail);
-  }, [form, reportDetailData, handleCreateReport]);
+  }, [reportDetailData]);
 
-  const onEditReport = useCallback(() => {
-    handleEditReport(form);
-  }, [form, handleEditReport]);
+  const onCreateReport = useCallback(
+    (reportTestGroups: ReportTestGroups) => {
+      const reportDetail: ReportDetailDataProps = {
+        clients: reportDetailData.clients || null,
+        analysisMethods: reportDetailData.analysisMethods || null,
+        analytes: reportDetailData.analytes || null,
+        criterias: reportDetailData.criterias || null,
+        sampleTypes: reportDetailData.sampleTypes || null,
+        samples: reportDetailData.samples || null,
+        tests: reportDetailData.tests || null,
+        testTypes: reportDetailData.testTypes || null,
+      };
+      handleCreateReport(
+        {...form, [ReportFormFields.REPORT_TEST_GROUPS]: reportTestGroups},
+        reportDetail,
+      );
+    },
+    [form, reportDetailData, handleCreateReport],
+  );
+
+  const onEditReport = useCallback(
+    (reportTestGroups: ReportTestGroups) => {
+      handleEditReport(
+        {...form, [ReportFormFields.REPORT_TEST_GROUPS]: reportTestGroups},
+        getReportDetail(),
+      );
+    },
+    [form, getReportDetail, handleEditReport],
+  );
 
   return {
     catalogs: reportDetailData,

@@ -1,5 +1,6 @@
 import {useEffect} from "react";
-import {FormProps} from "../../../../utils/constants";
+import {FormProps, getFormStringValue} from "../../../../utils/constants";
+import {ReportFormFields} from "../../../../utils/enums";
 import {
   selectGetSampleById,
   selectIsLoading,
@@ -13,18 +14,19 @@ export const useSelectSampleForReport = (form: FormProps) => {
   const isLoadingSample = useSampleStore(selectIsLoading);
   const getSampleById = useSampleStore(selectGetSampleById);
   const setSelectedSample = useSampleStore(selectSetSelectedSample);
+  const sampleId = getFormStringValue(form, ReportFormFields.SAMPLE_ID);
 
   useEffect(() => {
     const run = async () => {
-      if (!form.sampleId) {
+      if (!sampleId) {
         setSelectedSample(null);
         return;
       }
-      const sample = await getSampleById(form.sampleId);
+      const sample = await getSampleById(sampleId);
       setSelectedSample(sample);
     };
     run();
-  }, [form.sampleId, getSampleById, setSelectedSample]);
+  }, [sampleId, getSampleById, setSelectedSample]);
 
   return {
     selectedSample,

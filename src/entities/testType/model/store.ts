@@ -15,6 +15,7 @@ export const useTestTypeStore = create<TestTypeStore>((set) => ({
   error: null,
   isLoading: false,
   selectedTestType: null,
+  setTestTypes: (testTypes: TestType[] | null) => set({testTypes}),
 
   getTestTypes: async () => {
     try {

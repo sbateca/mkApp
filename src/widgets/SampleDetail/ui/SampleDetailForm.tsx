@@ -11,6 +11,7 @@ import {
 import {
   DATEPICKER_VIEWS,
   FormProps,
+  getFormStringValue,
   SAMPLE_ANALYSIS_DATE_LABEL_TEXT,
   SAMPLE_CLIENT_LABEL_TEXT,
   SAMPLE_CODE_LABEL_TEXT,
@@ -75,6 +76,9 @@ export const SampleDetailForm = ({
   sampleTypes,
 }: DetailFormProps) => {
   const today = React.useMemo(() => dayjs(), []);
+  const getValue = (fieldName: string): string =>
+    getFormStringValue(form, fieldName);
+
   return (
     <Stack {...getStackContainerProps(isLessThanMediumScreen)}>
       <Stack {...getStackRowProps(isLessThanMediumScreen)}>
@@ -88,7 +92,7 @@ export const SampleDetailForm = ({
             name={SamplesFormFields.SAMPLE_CODE}
             onChange={handleChange}
             helperText={getTextFieldHelperText(SamplesFormFields.SAMPLE_CODE)}
-            value={form?.sampleCode ?? ""}
+            value={getValue(SamplesFormFields.SAMPLE_CODE)}
             variant={SharedTextFieldVariants.STANDARD}
             fullWidth={true}
             InputProps={{
@@ -101,7 +105,7 @@ export const SampleDetailForm = ({
           <AutoComplete
             options={getAutoCompleteOptionsFromModel(sampleTypes)}
             label={SAMPLE_TYPE_LABEL_TEXT}
-            value={form.sampleType}
+            value={getValue(SamplesFormFields.SAMPLE_TYPE)}
             variant={SelectVariants.STANDARD}
             onChange={handleAutoCompleteChange}
             name={SamplesFormFields.SAMPLE_TYPE}
@@ -117,7 +121,7 @@ export const SampleDetailForm = ({
           <AutoComplete
             options={getAutoCompleteOptionsFromModel(clients)}
             label={SAMPLE_CLIENT_LABEL_TEXT}
-            value={form.client}
+            value={getValue(SamplesFormFields.CLIENT)}
             variant={SelectVariants.STANDARD}
             onChange={handleAutoCompleteChange}
             name={SamplesFormFields.CLIENT}
@@ -148,7 +152,11 @@ export const SampleDetailForm = ({
                 },
               }}
               readOnly={isReadOnlyMode}
-              value={form.getSampleDate ? dayjs(form.getSampleDate) : null}
+              value={
+                getValue(SamplesFormFields.GET_SAMPLE_DATE)
+                  ? dayjs(getValue(SamplesFormFields.GET_SAMPLE_DATE))
+                  : null
+              }
               data-testid={SamplesFormFields.GET_SAMPLE_DATE}
             />
           </LocalizationProvider>
@@ -176,7 +184,11 @@ export const SampleDetailForm = ({
                   variant: SharedTextFieldVariants.STANDARD,
                 },
               }}
-              value={dayjs(form.receptionDate) ?? null}
+              value={
+                getValue(SamplesFormFields.RECEPTION_DATE)
+                  ? dayjs(getValue(SamplesFormFields.RECEPTION_DATE))
+                  : null
+              }
               readOnly={isReadOnlyMode}
             />
           </LocalizationProvider>
@@ -202,7 +214,11 @@ export const SampleDetailForm = ({
                   variant: SharedTextFieldVariants.STANDARD,
                 },
               }}
-              value={dayjs(form.analysisDate) ?? null}
+              value={
+                getValue(SamplesFormFields.ANALYSIS_DATE)
+                  ? dayjs(getValue(SamplesFormFields.ANALYSIS_DATE))
+                  : null
+              }
               readOnly={isReadOnlyMode}
             />
           </LocalizationProvider>
@@ -220,7 +236,7 @@ export const SampleDetailForm = ({
           name={SamplesFormFields.SAMPLE_LOCATION}
           onChange={handleChange}
           helperText={getTextFieldHelperText(SamplesFormFields.SAMPLE_LOCATION)}
-          value={form.sampleLocation ?? ""}
+          value={getValue(SamplesFormFields.SAMPLE_LOCATION)}
           variant={SharedTextFieldVariants.STANDARD}
           InputProps={{
             readOnly: isReadOnlyMode,
@@ -238,7 +254,7 @@ export const SampleDetailForm = ({
             name={SamplesFormFields.RESPONSABLE}
             onChange={handleChange}
             helperText={getTextFieldHelperText(SamplesFormFields.RESPONSABLE)}
-            value={form.responsable ?? ""}
+            value={getValue(SamplesFormFields.RESPONSABLE)}
             variant={SharedTextFieldVariants.STANDARD}
             InputProps={{
               readOnly: isReadOnlyMode,
