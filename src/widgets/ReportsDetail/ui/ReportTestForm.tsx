@@ -284,7 +284,7 @@ export const ReportTestForm = ({
         <Box {...testFormButtonProps()}>
           <Typography
             variant={SharedTypographyVariants.CAPTION}
-            color={SharedTypographyColors.SECONDARY}
+            color={SharedTypographyColors.TEXT_SECONDARY}
           >
             {ADD_MORE_TESTS_HINT_TEXT}
           </Typography>
