@@ -45,7 +45,7 @@ import {
   getRequiredReportTestFieldError,
   removeReportTestRow,
   updateReportTestRow,
-} from "../model/reportTestGroups";
+} from "../model/useReportTestGroups";
 
 type ReportTestFormProps = {
   isReadonly: boolean;
