@@ -1,6 +1,7 @@
 import {SamplesStore} from "./types";
 
 export const selectSamples = (store: SamplesStore) => store.samples;
+export const selectSetSamples = (store: SamplesStore) => store.setSamples;
 export const selectSelectedSample = (store: SamplesStore) =>
   store.selectedSample;
 export const selectIsLoading = (store: SamplesStore) => store.isLoading;

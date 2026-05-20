@@ -1,5 +1,5 @@
 import {faker} from "@faker-js/faker";
-import {SampleType} from "../../../model";
+import {SampleType} from "../../../entities/sampleType";
 
 export const buildSampleTypeData = (
   overrides: Partial<SampleType> = {},

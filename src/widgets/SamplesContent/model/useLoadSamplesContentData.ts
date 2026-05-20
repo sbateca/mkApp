@@ -53,7 +53,8 @@ export const useLoadSamplesContentData = () => {
 
   useEffect(() => {
     if (samples) {
-      setRows(samplesToTableRows(samples, sampleTypes, clients));
+      const rows = samplesToTableRows(samples);
+      setRows(rows);
     }
   }, [samples, clients, sampleTypes]);
 

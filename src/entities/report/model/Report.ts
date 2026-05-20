@@ -1,9 +1,10 @@
+import {Sample} from "../../sample";
+import {Test} from "../../test";
+
 export interface Report {
   id: string;
+  reportNumber: string;
   reportDate: string;
-  sampleId: string;
-  analyte: string;
-  analysisMethod: string;
-  criteria: string;
-  result: string;
+  sample: Sample;
+  tests: Test[];
 }

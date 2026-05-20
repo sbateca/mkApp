@@ -29,9 +29,11 @@ export const useSampleStore = create<SamplesStore>((set) => ({
     try {
       const fetchedSamples = await getSamplesService();
       set({samples: fetchedSamples});
+      return fetchedSamples;
     } catch (error) {
       const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
       set({error: message});
+      return null;
     } finally {
       set({isLoading: false});
     }

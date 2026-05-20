@@ -1,5 +1,5 @@
 import {faker} from "@faker-js/faker/.";
-import {AnalysisMethod} from "../../../model";
+import {AnalysisMethod} from "../../../entities/analysisMethod";
 
 export const buildAnalysisMethodData = (
   overrides: Partial<AnalysisMethod> = {},

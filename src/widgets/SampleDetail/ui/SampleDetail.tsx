@@ -45,11 +45,11 @@ export const SampleDetail = ({
   const {onCloseSideSection, handleCreateSample, handleEditSample} = actions;
 
   const createSample = () => {
-    handleCreateSample(form);
+    handleCreateSample(form, clients, sampleTypes);
   };
 
   const editSample = () => {
-    handleEditSample(form);
+    handleEditSample(form, clients, sampleTypes);
   };
 
   useSampleErrorNotifier();

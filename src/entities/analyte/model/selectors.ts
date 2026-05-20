@@ -11,3 +11,5 @@ export const selectSetAnalytes = (store: AnalyteStore) => store.setAnalytes;
 export const selectGetAnalytes = (store: AnalyteStore) => store.getAnalytes;
 export const selectGetAnalyteById = (store: AnalyteStore) =>
   store.getAnalyteById;
+export const selectGetAnalytesByTestTypeId = (store: AnalyteStore) =>
+  store.getAnalytesByTestTypeId;

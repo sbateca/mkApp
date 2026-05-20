@@ -1,8 +1,10 @@
 import {
   BoxContainerProps,
+  SideSectionButtonsProps,
   StackContainerProps,
   StackFieldProps,
   StackRowDirectionSpacingPropsProps,
+  TestFormButtonProps,
 } from "./Types";
 
 export const ReportDetailStyles = {
@@ -84,4 +86,17 @@ export const getStackFieldProps = (): StackFieldProps => {
   return {
     width: "100%",
   };
+};
+
+export const getSideSectionButtonsProps = (): SideSectionButtonsProps => {
+  return {
+    display: "flex",
+    alignSelf: "flex-end",
+    justifyContent: "flex-end",
+    marginTop: "10px",
+  };
+};
+
+export const testFormButtonProps = (): TestFormButtonProps => {
+  return {display: "flex", justifyContent: "flex-end", marginTop: 2};
 };

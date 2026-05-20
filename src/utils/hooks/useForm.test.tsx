@@ -3,7 +3,7 @@ import {useEffect} from "react";
 import {fireEvent, render, screen} from "@testing-library/react";
 
 import {useForm} from "./useForm";
-import {isEmpty} from "../constants";
+import {getFormStringValue, isEmpty} from "../constants";
 
 const TestComponent = () => {
   const {
@@ -29,7 +29,7 @@ const TestComponent = () => {
         data-testid="inputField"
         type="text"
         name="name"
-        value={form.name}
+        value={getFormStringValue(form, "name")}
         onChange={handleChange}
       />
     </div>

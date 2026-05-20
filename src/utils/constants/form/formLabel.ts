@@ -9,10 +9,35 @@ export const SAMPLE_RESPONSABLE_LABEL_TEXT = "Responsable";
 
 export const REPORT_DATE_LABEL_TEXT = "Report date";
 export const REPORT_SAMPLE_LABEL_TEXT = "Sample";
+export const REPORT_TEST_TYPE_LABEL_TEXT = "Test type";
 export const REPORT_ANALYTE_LABEL_TEXT = "Analyte";
 export const REPORT_ANALYSIS_METHOD_LABEL_TEXT = "Analysis method";
 export const REPORT_CRITERIA_LABEL_TEXT = "Criteria";
 export const REPORT_RESULT_LABEL_TEXT = "Result";
+export const REPORT_NUMBER_LABEL_TEXT = "Report number";
+
+export const REPORT_TEST_LABELS = {
+  TEST: "Test",
+  ANALYSIS_METHOD: "Analysis Method",
+  RESULT: "Result",
+  CRITERIA: "Criteria",
+  ACTION: "Action",
+} as const;
 
 export const LOGIN_FORM_USERNAME_LABEL_TEXT = "Username";
 export const LOGIN_FORM_PASSWORD_LABEL_TEXT = "Password";
+
+export const BUTTON_LABELS = {
+  LOGIN: "Login",
+  LOGOUT: "Logout",
+  CREATE_REPORT: "Create Report",
+  EDIT_REPORT: "Edit Report",
+  ADD_TEST: "Add Test",
+} as const;
+
+export const FORM_TITLES = [
+  "Microbiological Analysis",
+  "Physical-Chemical Analysis",
+];
+
+export const ANALYSIS_TITLE = "Analysis";

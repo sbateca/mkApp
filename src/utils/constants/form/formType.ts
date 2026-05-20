@@ -1,4 +1,19 @@
+export type FormValue =
+  | string
+  | string[]
+  | Record<string, unknown>
+  | null
+  | undefined;
+
 export interface FormProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: string;
+  [key: string]: FormValue;
 }
+
+export const getFormStringValue = (
+  form: FormProps,
+  fieldName: string,
+): string => {
+  const value = form[fieldName];
+
+  return typeof value === "string" ? value : "";
+};

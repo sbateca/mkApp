@@ -1,4 +1,4 @@
-import {Report} from "../../../model";
+import {Report} from "../../../entities/report/model/Report";
 
 export interface SampleDetailProps {
   isReadOnlyMode: boolean;
@@ -41,6 +41,19 @@ export interface BoxContainerProps {
   padding: string;
   width: string;
   height: string;
+}
+
+export interface SideSectionButtonsProps {
+  display: string;
+  alignSelf: string;
+  justifyContent: string;
+  marginTop: string;
+}
+
+export interface TestFormButtonProps {
+  display: string;
+  justifyContent: string;
+  marginTop: number;
 }
 
 export interface ReportSideSectionActionsProps {

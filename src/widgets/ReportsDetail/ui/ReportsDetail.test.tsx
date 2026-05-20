@@ -34,7 +34,11 @@ describe("SampleDetail", () => {
     );
 
     expect(
-      (screen.getByDisplayValue(expectedData.result) as HTMLInputElement).value,
+      (
+        (await screen.findByDisplayValue(
+          expectedData.result,
+        )) as HTMLInputElement
+      ).value,
     ).toBe(expectedData.result);
   });
 
@@ -61,18 +65,18 @@ describe("SampleDetail", () => {
     const sampleValue = screen.getByDisplayValue(
       expectedData.sampleId,
     ) as HTMLInputElement;
-    const analyteValue = screen.getByDisplayValue(
+    const analyteValue = (await screen.findByDisplayValue(
       expectedData.analyte,
-    ) as HTMLInputElement;
-    const analysisMethodValue = screen.getByDisplayValue(
+    )) as HTMLInputElement;
+    const analysisMethodValue = (await screen.findByDisplayValue(
       expectedData.analysisMethod,
-    ) as HTMLInputElement;
-    const criteriaValue = screen.getByDisplayValue(
+    )) as HTMLInputElement;
+    const criteriaValue = (await screen.findByDisplayValue(
       expectedData.criteria,
-    ) as HTMLInputElement;
-    const resultValue = screen.getByDisplayValue(
+    )) as HTMLInputElement;
+    const resultValue = (await screen.findByDisplayValue(
       expectedData.result,
-    ) as HTMLInputElement;
+    )) as HTMLInputElement;
     const datePickers = screen.getAllByPlaceholderText("MM/DD/YYYY");
     const reportDateValue = datePickers[0] as HTMLInputElement;
 
