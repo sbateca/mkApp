@@ -16,7 +16,7 @@ import {
   getFormReportTestGroups,
   hasValidReportTests,
   isCompleteReportTestRow,
-} from "./reportTestGroups";
+} from "./useReportTestGroups";
 
 export const useReportDetailForm = (
   selectedReport: Report | null,
