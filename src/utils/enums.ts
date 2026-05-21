@@ -55,6 +55,8 @@ export enum SharedButtonCommonLabels {
   CLOSE = "Close",
   VIEW = "View",
   ADD = "Add",
+  APPROVE = "Approve",
+  DOWNLOAD = "Download",
 }
 
 export enum SharedTypographyVariants {
@@ -141,6 +143,8 @@ export enum IconNames {
   SAVE = "save",
   SEARCH = "search",
   ADD = "add",
+  APPROVED = "approved",
+  DOWNLOAD = "download",
 }
 
 export enum ReportFormFields {
@@ -175,4 +179,10 @@ export enum HttpStatus {
   FORBIDDEN = 403,
   NOT_FOUND = 404,
   INTERNAL_SERVER_ERROR = 500,
+}
+
+export enum ReportStatus {
+  APPROVED = "approved",
+  DRATF = "draft",
+  ISSUED = "issued",
 }

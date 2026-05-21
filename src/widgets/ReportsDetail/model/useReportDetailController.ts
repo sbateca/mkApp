@@ -19,6 +19,8 @@ import {useSideSection} from "../../../features/sideSection/model/useSideSection
 import {ReportDetailControllerProps, ReportTestGroups} from "./types";
 import {useReportDetailForm} from "./useReportDetailForm";
 import {useReportErrorNotifier} from "./useReportErrorNotifier";
+import {useApproveReport} from "../../../features/reports/approveReport/model/useApproveReport";
+import {useDownloadReport} from "../../../features/reports/downloadReport/model/useDownloadReport";
 
 export const useReportDetailController = ({
   setIsReadOnlyMode,
@@ -43,6 +45,8 @@ export const useReportDetailController = ({
 
   const {handleCreateReport} = useCreateReport(setIsReadOnlyMode);
   const {handleEditReport} = useEditReport(setIsReadOnlyMode);
+  const {handleApproveReport} = useApproveReport();
+  const {handleDownloadReport} = useDownloadReport();
 
   useReportErrorNotifier(error);
 
@@ -89,6 +93,20 @@ export const useReportDetailController = ({
     [form, getReportDetail, handleEditReport],
   );
 
+  const onApproveReport = useCallback(
+    (reportId: string) => {
+      handleApproveReport(reportId);
+    },
+    [handleApproveReport],
+  );
+
+  const onDownloadReport = useCallback(
+    (reportId: string) => {
+      handleDownloadReport(reportId);
+    },
+    [handleDownloadReport],
+  );
+
   return {
     catalogs: reportDetailData,
     detailForm: reportFormState,
@@ -103,6 +121,8 @@ export const useReportDetailController = ({
       onCloseSideSection,
       onCreateReport,
       onEditReport,
+      onApproveReport,
+      onDownloadReport,
     },
   };
 };

@@ -3,7 +3,7 @@ import {
   FormProps,
   REPORT_SUCCESSFULLY_CREATED_TEXT,
 } from "../../../../utils/constants";
-import {SnackBarSeverity} from "../../../../utils/enums";
+import {ReportStatus, SnackBarSeverity} from "../../../../utils/enums";
 import {selectShowSnackBarMessage, useSnackBarStore} from "../../../snackbar";
 import {
   selectCreateReport,
@@ -29,7 +29,7 @@ export const useCreateReport = (
     reportDetailData: ReportDetailDataProps,
   ) => {
     const newReport = await createReport(
-      reportFormToReport(form, "", reportDetailData),
+      reportFormToReport(form, "", reportDetailData, ReportStatus.DRATF),
     );
     if (newReport !== null) {
       showSnackBarMessage(

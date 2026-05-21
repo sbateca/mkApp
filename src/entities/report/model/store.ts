@@ -6,13 +6,16 @@ import {
   UNEXPECTED_ERROR,
 } from "../../../utils/constants";
 import {
+  approveReportService,
   createReportService,
   deleteReportService,
+  downloadReportService,
   editReportService,
   getReportByIdService,
   getReportsService,
 } from "..";
 import {ReportStore} from "./types";
+import {AttachedReport} from "./AttachedReport";
 
 export const useReportStore = create<ReportStore>((set) => ({
   reports: null,
@@ -94,6 +97,36 @@ export const useReportStore = create<ReportStore>((set) => ({
       set({error: message});
     } finally {
       set({isLoading: false});
+    }
+    return null;
+  },
+
+  approveReport: async (reportId: string) => {
+    try {
+      set({error: null});
+      if (reportId) {
+        return await approveReportService(reportId);
+      } else {
+        set({error: REPORT_ID_MISSING_TEXT});
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
+      set({error: message});
+    }
+    return null;
+  },
+
+  downloadReport: async (reportId: string): Promise<AttachedReport | null> => {
+    try {
+      set({error: null});
+      if (reportId) {
+        return await downloadReportService(reportId);
+      } else {
+        set({error: REPORT_ID_MISSING_TEXT});
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
+      set({error: message});
     }
     return null;
   },

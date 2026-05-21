@@ -3,6 +3,8 @@ import {axiosResponseToReports} from "../lib/reportMappers";
 import {Report} from "../model/Report";
 import {apiClient} from "../../../shared/api/apliClient";
 import {BaseRoutes} from "../../../utils/constants/baseRoutes";
+import {ReportStatus} from "../../../utils/enums";
+import {AttachedReport} from "../model/AttachedReport";
 
 export const getReportsService = async (): Promise<Report[]> => {
   const response = await apiClient.get<Report[]>(
@@ -46,6 +48,24 @@ export const deleteReportService = async (
 ): Promise<Report | null> => {
   const response = await apiClient.delete<Report>(
     `${EnvManager.BACKEND_URL}${BaseRoutes.REPORTS}/${reportId}`,
+  );
+  return response.data;
+};
+
+export const approveReportService = async (
+  reportId: string,
+): Promise<ReportStatus> => {
+  const response = await apiClient.post<ReportStatus>(
+    `${EnvManager.BACKEND_URL}${BaseRoutes.REPORTS}/${reportId}/approve`,
+  );
+  return response.data;
+};
+
+export const downloadReportService = async (
+  reportId: string,
+): Promise<AttachedReport> => {
+  const response = await apiClient.get<AttachedReport>(
+    `${EnvManager.BACKEND_URL}${BaseRoutes.ATTACHED_REPORT}/${reportId}`,
   );
   return response.data;
 };

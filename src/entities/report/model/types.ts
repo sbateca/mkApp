@@ -1,3 +1,5 @@
+import {ReportStatus} from "../../../utils/enums";
+import {AttachedReport} from "./AttachedReport";
 import {Report} from "./Report";
 
 export type ReportStore = {
@@ -12,4 +14,6 @@ export type ReportStore = {
   createReport: (report: Report) => Promise<Report | null>;
   editReport: (reportId?: string, report?: Report) => Promise<Report | null>;
   deleteReport: (reportId?: string) => Promise<Report | null>;
+  approveReport: (reportId: string) => Promise<ReportStatus | null>;
+  downloadReport: (reportId: string) => Promise<AttachedReport | null>;
 };

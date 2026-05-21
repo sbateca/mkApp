@@ -66,7 +66,8 @@ export const ReportDetailForm = ({
   } = detailForm;
 
   const {isLoadingSample, selectedReport, selectedSample} = state;
-  const {onCreateReport, onEditReport} = actions;
+  const {onCreateReport, onEditReport, onApproveReport, onDownloadReport} =
+    actions;
   const reportDate = getFormStringValue(form, ReportFormFields.REPORT_DATE);
   return (
     <>
@@ -179,6 +180,8 @@ export const ReportDetailForm = ({
           setIsReadOnlyMode={setIsReadOnlyMode}
           handleCreateReport={() => onCreateReport(reportTestGroups)}
           handleEdit={() => onEditReport(reportTestGroups)}
+          handleApprove={() => onApproveReport(selectedReport?.id || "")}
+          handleDownload={() => onDownloadReport(selectedReport?.id || "")}
         />
       </Box>
     </>

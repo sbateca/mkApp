@@ -10,7 +10,7 @@ import {
   FormProps,
   SAMPLE_SUCCESSFULLY_UPDATED_TEXT,
 } from "../../../../utils/constants";
-import {SnackBarSeverity} from "../../../../utils/enums";
+import {ReportStatus, SnackBarSeverity} from "../../../../utils/enums";
 import {useSideSection} from "../../../sideSection/model/useSideSection";
 import {selectShowSnackBarMessage, useSnackBarStore} from "../../../snackbar";
 
@@ -31,6 +31,7 @@ export const useEditReport = (
       form,
       selectedReport?.id ?? "",
       reportDetailData,
+      ReportStatus.DRATF,
     );
     const updatedReport = await editReport(selectedReport?.id, parsedReport);
     if (updatedReport !== null) {

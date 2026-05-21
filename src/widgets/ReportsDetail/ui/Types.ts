@@ -63,4 +63,6 @@ export interface ReportSideSectionActionsProps {
   setIsReadOnlyMode: React.Dispatch<React.SetStateAction<boolean>>;
   handleCreateReport: () => void;
   handleEdit: () => void;
+  handleApprove: (reportId: string) => void;
+  handleDownload: (reportId: string) => void;
 }

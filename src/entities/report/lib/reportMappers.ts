@@ -19,7 +19,11 @@ import {TestType} from "../../testType";
 import {AnalysisMethod} from "../../analysisMethod/model/AnalysisMethod";
 import {Criteria} from "../../criteria";
 import {Test} from "../../test";
-import {ReportFormFields, SharedTypographyAlign} from "../../../utils/enums";
+import {
+  ReportFormFields,
+  ReportStatus,
+  SharedTypographyAlign,
+} from "../../../utils/enums";
 
 export type ReportDetailDataProps = {
   clients: Client[] | null;
@@ -68,6 +72,7 @@ export const reportFormToReport = (
   form: FormProps,
   reportId: string,
   reportDetailData: ReportDetailDataProps,
+  status: ReportStatus,
 ): Report => {
   const sampleId = getFormStringValue(form, ReportFormFields.SAMPLE_ID);
   const sample = filterModelsById(reportDetailData.samples || [], sampleId);
@@ -76,6 +81,7 @@ export const reportFormToReport = (
     id: reportId || uuidv4(),
     reportNumber: getFormStringValue(form, ReportFormFields.REPORT_NUMBER),
     reportDate: getFormStringValue(form, ReportFormFields.REPORT_DATE),
+    status: status,
     sample: sample,
     tests: buildTestsFromData(form, reportDetailData),
   };

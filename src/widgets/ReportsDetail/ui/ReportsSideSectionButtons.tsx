@@ -3,6 +3,7 @@ import {Box} from "@mui/material";
 import {Button} from "../../../shared/ui";
 import {
   IconNames,
+  ReportStatus,
   SharedButtonColors,
   SharedButtonCommonLabels,
   SharedButtonSizes,
@@ -18,6 +19,8 @@ export const ReportSideSectionButtons = ({
   setIsReadOnlyMode,
   handleCreateReport,
   handleEdit,
+  handleApprove,
+  handleDownload,
 }: ReportSideSectionActionsProps): React.ReactElement => {
   const handleSwitchReadOnlyMode = () => {
     setIsReadOnlyMode(!isReadOnlyMode);
@@ -29,7 +32,7 @@ export const ReportSideSectionButtons = ({
         <Button
           icon={IconNames.EDIT}
           label={EDIT_REPORTS_BUTTON_LABEL}
-          disabled={isNotValidForm}
+          disabled={isNotValidForm || report.status !== ReportStatus.DRATF}
           variant={SharedButtonVariants.OUTLINED}
           size={SharedButtonSizes.SMALL}
           color={SharedButtonColors.PRIMARY}
@@ -66,6 +69,32 @@ export const ReportSideSectionButtons = ({
           size={SharedButtonSizes.SMALL}
           color={SharedButtonColors.SUCCESS}
           onClick={handleCreateReport}
+        />
+      ) : null}
+      {report?.status && isReadOnlyMode ? (
+        <Button
+          icon={IconNames.APPROVED}
+          label={SharedButtonCommonLabels.APPROVE}
+          disabled={isNotValidForm || report?.status !== ReportStatus.DRATF}
+          variant={SharedButtonVariants.OUTLINED}
+          size={SharedButtonSizes.SMALL}
+          color={SharedButtonColors.SUCCESS}
+          onClick={() => handleApprove(report?.id || "")}
+        />
+      ) : null}
+      {report?.status && isReadOnlyMode ? (
+        <Button
+          icon={IconNames.DOWNLOAD}
+          label={SharedButtonCommonLabels.DOWNLOAD}
+          disabled={
+            isNotValidForm ||
+            (report?.status !== ReportStatus.APPROVED &&
+              report?.status !== ReportStatus.ISSUED)
+          }
+          variant={SharedButtonVariants.OUTLINED}
+          size={SharedButtonSizes.SMALL}
+          color={SharedButtonColors.SUCCESS}
+          onClick={() => handleDownload(report?.id || "")}
         />
       ) : null}
     </Box>
