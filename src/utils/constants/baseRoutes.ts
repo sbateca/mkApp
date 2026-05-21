@@ -3,6 +3,7 @@ export enum BaseRoutes {
   HOME = "/",
   SAMPLES = "/samples",
   REPORTS = "/reports",
+  ATTACHED_REPORT = "/attachedReport",
   LOGIN = "/login",
   AUTH = "/auth",
   ANALYSIS_METHODS = "/analysisMethods",

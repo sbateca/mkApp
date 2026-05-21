@@ -14,6 +14,8 @@ let mockReportsStoreState: ReportStore = {
   selectedReport: null,
   createReport: jest.fn(),
   editReport: jest.fn(),
+  approveReport: jest.fn(),
+  downloadReport: jest.fn(),
   setReports: jest.fn(),
 };
 

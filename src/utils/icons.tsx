@@ -1,4 +1,12 @@
-import {Search, Close, Edit, Add, Save, Delete} from "@mui/icons-material";
+import {
+  Search,
+  Close,
+  Edit,
+  Add,
+  Save,
+  Delete,
+  Check,
+} from "@mui/icons-material";
 import {IconNames} from "./enums";
 
 export const getIcon = (icon: string) => {
@@ -15,6 +23,8 @@ export const getIcon = (icon: string) => {
       return <Delete />;
     case IconNames.CLOSE:
       return <Close />;
+    case IconNames.APPROVED:
+      return <Check />;
     default:
       return "";
   }

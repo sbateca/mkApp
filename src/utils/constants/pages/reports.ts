@@ -46,3 +46,10 @@ export const REPORT_ID_OR_REPORTS_MISSING_TEXT =
   "Report Id or Report is missing";
 export const REPORT_ID_MISSING_TEXT = "Report Id is missing";
 export const REPORT_PAGE_DETAIL_TITLE = "Report details";
+
+export const REPORT_SUCCESSFULLY_APPROVED_TEXT = "Report approved successfully";
+export const REPORT_SUCCESSFULLY_DOWNLOAD_START_TEXT =
+  "Report download is starting...";
+export const REPORT_FAILED_DOWNLOAD_TEXT =
+  "Was not possible to download the report";
+export const REPORT_CONTENT_NOT_FOUND = "Report PDF content was not found";

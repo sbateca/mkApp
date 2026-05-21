@@ -83,6 +83,32 @@ server.post("/auth/logout", (_req, res) => {
   });
 });
 
+server.post("/reports/:reportId/approve", (req, res) => {
+  const {reportId} = req.params;
+
+  const db = router.db;
+
+  const report = db
+    .get("reports")
+    .find((report) => String(report.id) === String(reportId))
+    .value();
+
+  if (!report) {
+    return res.status(404).json({
+      message: "Report not found",
+    });
+  }
+
+  db.get("reports")
+    .find((report) => String(report.id) === String(reportId))
+    .assign({
+      status: "approved",
+    })
+    .write();
+
+  return res.status(200).json("approved");
+});
+
 server.use(router);
 
 server.listen(4000, () => {
