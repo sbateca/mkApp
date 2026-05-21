@@ -1,5 +1,7 @@
 import {
+  approveReportService,
   createReportService,
+  downloadReportService,
   editReportService,
   getReportByIdService,
   getReportsService,
@@ -21,6 +23,7 @@ import {Analyte} from "../../analyte/model/Analyte";
 import {AnalysisMethod} from "../../analysisMethod/model/AnalysisMethod";
 import {Criteria} from "../../criteria";
 import {apiClient} from "../../../shared/api/apliClient";
+import {ReportStatus} from "../../../utils/enums";
 
 const mockSampleTypes: SampleType[] = buildSampleTypesData(2);
 const mockAnalytes: Analyte[] = buildAnalytesData(2);
@@ -101,6 +104,34 @@ describe("reportsService", () => {
 
     expect(report).toEqual(mockReports[0]);
     expect(apiClient.put).toHaveBeenCalledWith(expectedURL, mockReports[0]);
+  });
+
+  it("should approve a report", async () => {
+    const mockApiClientPost = apiClient.post as jest.Mock;
+    mockApiClientPost.mockResolvedValueOnce({data: ReportStatus.APPROVED});
+    const expectedURL = "http://mockurl.com/api/reports/1/approve";
+
+    const status = await approveReportService("1");
+
+    expect(status).toBe(ReportStatus.APPROVED);
+    expect(apiClient.post).toHaveBeenCalledWith(expectedURL);
+  });
+
+  it("should download an attached report", async () => {
+    const attachedReport = {
+      id: "1",
+      content: "JVBERi0xLjQ=",
+      createdAt: "2026-05-21",
+      createdBy: "Sergio",
+    };
+    const mockApiClientGet = apiClient.get as jest.Mock;
+    mockApiClientGet.mockResolvedValueOnce({data: attachedReport});
+    const expectedURL = "http://mockurl.com/api/attachedReport/1";
+
+    const report = await downloadReportService("1");
+
+    expect(report).toEqual(attachedReport);
+    expect(apiClient.get).toHaveBeenCalledWith(expectedURL);
   });
 
   it("should throw an error when an error occurs in get method", async () => {

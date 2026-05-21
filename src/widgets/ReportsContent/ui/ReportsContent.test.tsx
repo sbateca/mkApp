@@ -53,6 +53,8 @@ let mockedReportsState: ReportStore = {
   createReport: jest.fn().mockReturnValue(mockReports[0]),
   editReport: jest.fn().mockReturnValue(mockReports[0]),
   deleteReport: jest.fn().mockReturnValue(mockReports[0]),
+  approveReport: jest.fn().mockReturnValue(mockReports[0].status ?? null),
+  downloadReport: jest.fn().mockReturnValue(null),
 };
 let mockSideSectionStoreState: SideSectionStore = {
   isSideSectionOpen: false,
