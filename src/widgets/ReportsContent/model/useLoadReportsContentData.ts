@@ -7,9 +7,19 @@ import {
   useReportStore,
 } from "../../../entities/report";
 import {TableRowProps} from "../../../shared/ui/Table/TableRow";
+import {useTableControls} from "../../../shared/ui/Table/Table/useTableControls";
 
 export const useLoadRepostsContentData = () => {
   const [rows, setRows] = useState<TableRowProps[]>([]);
+  const {
+    page,
+    rowsPerPage,
+    order,
+    orderBy,
+    handleChangePage,
+    handleChangeRowsPerPage,
+    handleRequestSort,
+  } = useTableControls();
 
   const reports = useReportStore(selectReports);
   const getReports = useReportStore(selectGetReports);
@@ -31,5 +41,15 @@ export const useLoadRepostsContentData = () => {
     setRows(tableRows);
   }, [reports]);
 
-  return {rows, isLoading};
+  return {
+    rows,
+    isLoading,
+    page,
+    rowsPerPage,
+    order,
+    orderBy,
+    handleChangePage,
+    handleChangeRowsPerPage,
+    handleRequestSort,
+  };
 };

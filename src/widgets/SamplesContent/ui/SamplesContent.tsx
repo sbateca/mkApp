@@ -24,7 +24,17 @@ import {SampleTableActionButtons} from "../../../features/sample/TableActionButt
 export const SamplesContent = (): React.ReactElement => {
   const [isReadOnlyMode, setIsReadOnlyMode] = useState(true);
 
-  const {rows, isLoading} = useLoadSamplesContentData();
+  const {
+    rows,
+    isLoading,
+    rowsPerPage,
+    page,
+    handleChangePage,
+    handleChangeRowsPerPage,
+    handleRequestSort,
+    orderBy,
+    order,
+  } = useLoadSamplesContentData();
   const {handleOpenSideSection, isSideSectionOpen} = useOpenSideSection();
   useSamplesContentErrorNotifier();
 
@@ -53,6 +63,13 @@ export const SamplesContent = (): React.ReactElement => {
       <Table
         headerLabels={SAMPLES_TABLE_HEADER_LABELS}
         rows={rows}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        order={order}
+        handleChangePage={handleChangePage}
+        handleChangeRowsPerPage={handleChangeRowsPerPage}
+        handleRequestSort={handleRequestSort}
+        orderBy={orderBy}
         renderActions={(row) => (
           <SampleTableActionButtons sampleId={row.id ?? ""} />
         )}

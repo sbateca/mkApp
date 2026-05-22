@@ -25,7 +25,17 @@ import {ReportTableActionButtons} from "../../../features/reports/reportActions"
 export const ReportsContent = (): React.ReactElement => {
   const [isReadOnlyMode, setIsReadOnlyMode] = useState(true);
 
-  const {rows, isLoading} = useLoadRepostsContentData();
+  const {
+    rows,
+    isLoading,
+    rowsPerPage,
+    page,
+    handleChangePage,
+    handleChangeRowsPerPage,
+    handleRequestSort,
+    orderBy,
+    order,
+  } = useLoadRepostsContentData();
   const {isSideSectionOpen, handleOpenSideSection} = useOpenSideSection();
   const {error} = useSamplesContentErrorNotifier();
 
@@ -56,6 +66,13 @@ export const ReportsContent = (): React.ReactElement => {
       <Table
         headerLabels={REPORTS_TABLE_HEADER_LABELS}
         rows={rows}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        order={order}
+        handleChangePage={handleChangePage}
+        handleChangeRowsPerPage={handleChangeRowsPerPage}
+        handleRequestSort={handleRequestSort}
+        orderBy={orderBy}
         renderActions={(row) => (
           <ReportTableActionButtons reportId={row.id ?? ""} />
         )}

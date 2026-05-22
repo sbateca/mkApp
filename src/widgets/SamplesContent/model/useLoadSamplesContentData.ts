@@ -18,9 +18,19 @@ import {
   useSampleTypeStore,
 } from "../../../entities/sampleType";
 import {TableRowProps} from "../../../shared/ui/Table/TableRow";
+import {useTableControls} from "../../../shared/ui/Table/Table/useTableControls";
 
 export const useLoadSamplesContentData = () => {
   const [rows, setRows] = useState<TableRowProps[]>([]);
+  const {
+    page,
+    rowsPerPage,
+    order,
+    orderBy,
+    handleChangePage,
+    handleChangeRowsPerPage,
+    handleRequestSort,
+  } = useTableControls();
 
   const samples = useSampleStore(selectSamples);
   const isLoading = useSampleStore(selectIsLoading);
@@ -58,5 +68,15 @@ export const useLoadSamplesContentData = () => {
     }
   }, [samples, clients, sampleTypes]);
 
-  return {rows, isLoading};
+  return {
+    rows,
+    isLoading,
+    page,
+    rowsPerPage,
+    order,
+    orderBy,
+    handleChangePage,
+    handleChangeRowsPerPage,
+    handleRequestSort,
+  };
 };
