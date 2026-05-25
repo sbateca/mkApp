@@ -43,7 +43,7 @@ const ControlledTable = ({
   rows: TableRowProps[];
   renderActions?: (row: TableRowProps) => React.ReactElement;
 }) => {
-  const tableControls = useTableControls();
+  const tableControls = useTableControls(rows);
 
   return (
     <Table

@@ -30,7 +30,11 @@ export const useLoadSamplesContentData = () => {
     handleChangePage,
     handleChangeRowsPerPage,
     handleRequestSort,
-  } = useTableControls();
+    handleSearch,
+    visibleRows,
+    filteredRowsCount,
+    searchValue,
+  } = useTableControls(rows);
 
   const samples = useSampleStore(selectSamples);
   const isLoading = useSampleStore(selectIsLoading);
@@ -78,5 +82,9 @@ export const useLoadSamplesContentData = () => {
     handleChangePage,
     handleChangeRowsPerPage,
     handleRequestSort,
+    handleSearch,
+    visibleRows,
+    filteredRowsCount,
+    searchValue,
   };
 };

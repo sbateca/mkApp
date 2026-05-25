@@ -19,7 +19,11 @@ export const useLoadRepostsContentData = () => {
     handleChangePage,
     handleChangeRowsPerPage,
     handleRequestSort,
-  } = useTableControls();
+    handleSearch,
+    visibleRows,
+    searchValue,
+    filteredRowsCount,
+  } = useTableControls(rows);
 
   const reports = useReportStore(selectReports);
   const getReports = useReportStore(selectGetReports);
@@ -51,5 +55,9 @@ export const useLoadRepostsContentData = () => {
     handleChangePage,
     handleChangeRowsPerPage,
     handleRequestSort,
+    handleSearch,
+    visibleRows,
+    filteredRowsCount,
+    searchValue,
   };
 };

@@ -33,8 +33,12 @@ export const ReportsContent = (): React.ReactElement => {
     handleChangePage,
     handleChangeRowsPerPage,
     handleRequestSort,
+    handleSearch,
     orderBy,
     order,
+    visibleRows,
+    filteredRowsCount,
+    searchValue,
   } = useLoadRepostsContentData();
   const {isSideSectionOpen, handleOpenSideSection} = useOpenSideSection();
   const {error} = useSamplesContentErrorNotifier();
@@ -66,13 +70,17 @@ export const ReportsContent = (): React.ReactElement => {
       <Table
         headerLabels={REPORTS_TABLE_HEADER_LABELS}
         rows={rows}
+        visibleRows={visibleRows}
         rowsPerPage={rowsPerPage}
+        filteredRowsCount={filteredRowsCount}
         page={page}
         order={order}
+        orderBy={orderBy}
+        searchValue={searchValue}
         handleChangePage={handleChangePage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
         handleRequestSort={handleRequestSort}
-        orderBy={orderBy}
+        handleSearch={handleSearch}
         renderActions={(row) => (
           <ReportTableActionButtons reportId={row.id ?? ""} />
         )}
