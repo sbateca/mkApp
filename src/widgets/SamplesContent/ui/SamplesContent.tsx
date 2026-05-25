@@ -34,6 +34,10 @@ export const SamplesContent = (): React.ReactElement => {
     handleRequestSort,
     orderBy,
     order,
+    handleSearch,
+    visibleRows,
+    filteredRowsCount,
+    searchValue,
   } = useLoadSamplesContentData();
   const {handleOpenSideSection, isSideSectionOpen} = useOpenSideSection();
   useSamplesContentErrorNotifier();
@@ -66,10 +70,14 @@ export const SamplesContent = (): React.ReactElement => {
         rowsPerPage={rowsPerPage}
         page={page}
         order={order}
+        searchValue={searchValue}
         handleChangePage={handleChangePage}
         handleChangeRowsPerPage={handleChangeRowsPerPage}
         handleRequestSort={handleRequestSort}
         orderBy={orderBy}
+        handleSearch={handleSearch}
+        visibleRows={visibleRows}
+        filteredRowsCount={filteredRowsCount}
         renderActions={(row) => (
           <SampleTableActionButtons sampleId={row.id ?? ""} />
         )}

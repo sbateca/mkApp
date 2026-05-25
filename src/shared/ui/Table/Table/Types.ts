@@ -13,6 +13,10 @@ export interface TableProps {
   orderBy: number | undefined;
   order: Order;
   renderActions?: (row: TableRowProps) => React.ReactElement;
+  handleSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  visibleRows: TableRowProps[];
+  filteredRowsCount: number;
+  searchValue: string;
 }
 
 export type Order = "asc" | "desc";
