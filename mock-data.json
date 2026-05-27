@@ -2,23 +2,23 @@
   "clients": [
     {
       "id": "b078281c-ccee-4f44-a4f4-a05745aa70f3",
-      "name": "Hotel Casino Internacional"
+      "name": "Maximum Hotel"
     },
     {
       "id": "4bf96c94-f131-4d1a-aa90-6467600675f9",
-      "name": "Pasabocas D'Chic"
+      "name": "D'Chic Flavorss"
     },
     {
       "id": "ad2fcefb-ba2f-466f-9dff-331be532946b",
-      "name": "Monterres"
+      "name": "C&C Inc."
     },
     {
       "id": "e950af36-1c5a-4b83-a3a0-a927ebe02459",
-      "name": "Fábrica de Galletas La Moderna"
+      "name": "The sugar's factory"
     },
     {
       "id": "1981945c-826a-4e65-9110-eed433da0313",
-      "name": "Cervecería Artesanal La Buena Espuma"
+      "name": "Beer company"
     }
   ],
   "sampleTypes": [
@@ -173,13 +173,13 @@
       },
       "client": {
         "id": "b078281c-ccee-4f44-a4f4-a05745aa70f3",
-        "name": "Hotel Casino Internacional"
+        "name": "Maximum Hotel"
       },
       "getSampleDate": "2024-07-02",
       "receptionDate": "2023-10-01",
       "analysisDate": "2023-10-02",
       "sampleLocation": "Hotel's restaurant",
-      "responsable": "Karen Martinez"
+      "responsable": "John Lenon"
     },
     {
       "id": "bbd4a1e1-2340-431a-8055-e7dc33bbd81d",
@@ -196,7 +196,7 @@
       "receptionDate": "2024-02-12",
       "analysisDate": "2024-02-12",
       "sampleLocation": "Main Vault",
-      "responsable": "Karen Martinez"
+      "responsable": "John Lenon"
     },
     {
       "id": "ce59c2ba-c7f2-4df5-a8db-7dd74b7381a9",
@@ -207,13 +207,13 @@
       },
       "client": {
         "id": "ad2fcefb-ba2f-466f-9dff-331be532946b",
-        "name": "Monterres"
+        "name": "C&C Inc."
       },
       "getSampleDate": "2024-02-13",
       "receptionDate": "2024-02-13",
       "analysisDate": "2024-02-14",
       "sampleLocation": "Water vault",
-      "responsable": "Juan Pérez"
+      "responsable": "Juan Stand"
     },
     {
       "id": "8f129b91-08cf-4cbf-9d89-28545a1b1023",
@@ -224,13 +224,13 @@
       },
       "client": {
         "id": "e950af36-1c5a-4b83-a3a0-a927ebe02459",
-        "name": "Fábrica de Galletas La Moderna"
+        "name": "The sugar's factory"
       },
       "getSampleDate": "2023-09-20",
       "receptionDate": "2023-09-21",
       "analysisDate": "2023-09-22",
       "sampleLocation": "Production Line",
-      "responsable": "David López"
+      "responsable": "David Bowie"
     },
     {
       "id": "e3d05cb2-343d-4ad5-a617-c7dbba54f4b5",
@@ -241,13 +241,13 @@
       },
       "client": {
         "id": "ad2fcefb-ba2f-466f-9dff-331be532946b",
-        "name": "Monterres"
+        "name": "C&C Inc."
       },
       "getSampleDate": "2023-08-10",
       "receptionDate": "2023-08-11",
       "analysisDate": "2023-08-12",
       "sampleLocation": "Brewery",
-      "responsable": "Ana Gómez"
+      "responsable": "Hanna Hartman"
     }
   ],
   "tests": [
@@ -425,7 +425,7 @@
       "id": "14860e3c-56df-4a31-96cc-100dc2a8f749",
       "reportNumber": "FE 3157 - 361",
       "reportDate": "2024-08-05",
-      "status": "approved",
+      "status": "draft",
       "sample": {
         "id": "ce59c2ba-c7f2-4df5-a8db-7dd74b7381a9",
         "sampleCode": "1003",
@@ -435,13 +435,13 @@
         },
         "client": {
           "id": "ad2fcefb-ba2f-466f-9dff-331be532946b",
-          "name": "Monterres"
+          "name": "C&C Inc."
         },
         "getSampleDate": "2024-02-13",
         "receptionDate": "2024-02-13",
         "analysisDate": "2024-02-14",
         "sampleLocation": "Water vault",
-        "responsable": "Juan Pérez"
+        "responsable": "Juan Stand"
       },
       "tests": [
         {
@@ -535,13 +535,13 @@
         },
         "client": {
           "id": "b078281c-ccee-4f44-a4f4-a05745aa70f3",
-          "name": "Hotel Casino Internacional"
+          "name": "Maximum Hotel"
         },
         "getSampleDate": "2024-07-02",
         "receptionDate": "2023-10-01",
         "analysisDate": "2023-10-02",
         "sampleLocation": "Hotel's restaurant",
-        "responsable": "Karen Martinez"
+        "responsable": "John Lenon"
       },
       "tests": [
         {
@@ -623,13 +623,13 @@
         },
         "client": {
           "id": "ad2fcefb-ba2f-466f-9dff-331be532946b",
-          "name": "Monterres"
+          "name": "C&C Inc."
         },
         "getSampleDate": "2023-08-10",
         "receptionDate": "2023-08-11",
         "analysisDate": "2023-08-12",
         "sampleLocation": "Brewery",
-        "responsable": "Ana Gómez"
+        "responsable": "Hanna Hartman"
       },
       "tests": [
         {
