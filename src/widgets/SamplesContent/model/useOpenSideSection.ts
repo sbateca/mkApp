@@ -8,7 +8,7 @@ import {
   selectSetSideSectionTitle,
   useSideSectionStore,
 } from "../../../features/sideSection";
-import {CREATE_SAMPLE_TITLE_TEXT} from "../../../utils/constants";
+import {CREATE_SAMPLE_TYPE_TITLE_TEXT} from "../../../utils/constants";
 
 export const useOpenSideSection = () => {
   const setSelectedSample = useSampleStore(selectSetSelectedSample);
@@ -19,7 +19,7 @@ export const useOpenSideSection = () => {
 
   const handleOpenSideSection = () => {
     setSelectedSample(null);
-    setSideSectionTitle(CREATE_SAMPLE_TITLE_TEXT);
+    setSideSectionTitle(CREATE_SAMPLE_TYPE_TITLE_TEXT);
     setIsSideSectionOpen(true);
   };
 

@@ -17,7 +17,7 @@ import {AutoComplete} from "../../../shared/ui";
 import {AnalysisMethod} from "../../../entities/analysisMethod";
 import {Analyte} from "../../../entities/analyte";
 import {Criteria} from "../../../entities/criteria";
-import {getStackFieldProps, testFormButtonProps} from "./ReportsDetailStyles";
+import {testFormButtonProps} from "./ReportsDetailStyles";
 import {getAutoCompleteOptionsFromModel} from "../../../utils/model";
 import {
   ADD_MORE_TESTS_HINT_TEXT,
@@ -46,6 +46,7 @@ import {
   removeReportTestRow,
   updateReportTestRow,
 } from "../model/useReportTestGroups";
+import {getStackFieldProps} from "../../../shared/commonStyles";
 
 type ReportTestFormProps = {
   isReadonly: boolean;

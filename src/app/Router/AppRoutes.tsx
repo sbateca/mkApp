@@ -7,6 +7,7 @@ import {ProtectedRoute} from "./ProtectedRoute";
 import {SamplesPage} from "../../pages/SamplesPage";
 import {ReportsPage} from "../../pages/ReportsPage";
 import {NotFoundPage} from "../../pages/NotFound/ui/NotFoundPage";
+import {SampleTypePage} from "../../pages/SampleType/ui/SampleTypePage";
 
 export const AppRoutes = () => {
   return (
@@ -21,6 +22,7 @@ export const AppRoutes = () => {
             path={BaseRoutes.HOME}
             element={<Navigate to={BaseRoutes.SAMPLES} replace />}
           />
+          <Route path={BaseRoutes.SAMPLE_TYPES} element={<SampleTypePage />} />
           <Route path={BaseRoutes.SAMPLES} element={<SamplesPage />} />
           <Route path={BaseRoutes.REPORTS} element={<ReportsPage />} />
         </Route>

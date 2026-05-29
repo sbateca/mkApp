@@ -56,6 +56,9 @@ describe("SampleDetail", () => {
       setFormFieldsValidationFunctions: jest.fn(),
       setDefaultFormFieldsValues: jest.fn(),
       isNotValidForm: true,
+      isReadOnlyMode: false,
+      setIsReadOnlyMode: jest.fn(),
+      handleReadOnlyModeChange: jest.fn(),
     });
     const expectedData = {
       ...mockReportDetailData.expectedData,

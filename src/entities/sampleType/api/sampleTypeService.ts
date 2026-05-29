@@ -20,3 +20,33 @@ export const getSampleTypeByIdService = async (
   );
   return axiosResponseToSampleType(response)[0];
 };
+
+export const createSampleTypeService = async (
+  sampleType: SampleType,
+): Promise<SampleType> => {
+  const response = await apiClient.post<SampleType>(
+    `${EnvManager.BACKEND_URL}${BaseRoutes.SAMPLE_TYPES}`,
+    sampleType,
+  );
+  return axiosResponseToSampleType(response)[0];
+};
+
+export const editSampleTypeService = async (
+  sampleType: SampleType,
+  sampleTypeId: string,
+): Promise<SampleType> => {
+  const response = await apiClient.put<SampleType>(
+    `${EnvManager.BACKEND_URL}${BaseRoutes.SAMPLE_TYPES}/${sampleTypeId}`,
+    sampleType,
+  );
+  return axiosResponseToSampleType(response)[0];
+};
+
+export const deleteSampleTypeService = async (
+  sampleTypeId: string,
+): Promise<SampleType> => {
+  const response = await apiClient.delete<SampleType>(
+    `${EnvManager.BACKEND_URL}${BaseRoutes.SAMPLE_TYPES}/${sampleTypeId}`,
+  );
+  return axiosResponseToSampleType(response)[0];
+};

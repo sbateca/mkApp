@@ -28,6 +28,7 @@ export const useForm = () => {
   const [isNotValidForm, setIsNotValidForm] = useState<boolean>(true);
   const [formFieldsValidationFunctions, setFormFieldsValidationFunctions] =
     useState<FieldValidations>({});
+  const [isReadOnlyMode, setIsReadOnlyMode] = useState(true);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {name, value} = event.target;
@@ -144,6 +145,10 @@ export const useForm = () => {
     });
   };
 
+  const handleReadOnlyModeChange = () => {
+    setIsReadOnlyMode(!isReadOnlyMode);
+  };
+
   useEffect(() => {
     setIsNotValidForm(checkNotValidForm(formFieldsErrors));
   }, [formFieldsErrors, formFieldsValidationFunctions]);
@@ -161,5 +166,8 @@ export const useForm = () => {
     setFormFieldsValidationFunctions,
     setDefaultFormFieldsValues,
     isNotValidForm,
+    isReadOnlyMode,
+    setIsReadOnlyMode,
+    handleReadOnlyModeChange,
   };
 };

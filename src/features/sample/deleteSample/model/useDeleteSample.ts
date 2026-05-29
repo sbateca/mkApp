@@ -9,6 +9,7 @@ import {
   SAMPLE_DELETE_CONFIRMATION_TEXT,
   SAMPLE_DELETE_CONFIRMATION_TITLE,
   SAMPLE_SUCCESSFULLY_DELETED_TEXT,
+  SWEET_ALERT_PARAMS,
 } from "../../../../utils/constants";
 import {SnackBarSeverity, SweetAlertIcon} from "../../../../utils/enums";
 import {selectShowSnackBarMessage, useSnackBarStore} from "../../../snackbar";
@@ -25,8 +26,8 @@ export const useDeleteSample = () => {
       text: SAMPLE_DELETE_CONFIRMATION_SUBTITLE,
       icon: SweetAlertIcon.WARNING,
       showCancelButton: true,
-      confirmButtonColor: "#1976d2",
-      cancelButtonColor: "#d33",
+      confirmButtonColor: SWEET_ALERT_PARAMS.CONFIRM_BUTTON_COLOR,
+      cancelButtonColor: SWEET_ALERT_PARAMS.CANCEL_BUTTON_COLOR,
       confirmButtonText: SAMPLE_DELETE_CONFIRMATION_TEXT,
     }).then((result) => {
       if (result.isConfirmed) {

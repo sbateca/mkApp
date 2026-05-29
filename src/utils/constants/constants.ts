@@ -29,3 +29,8 @@ export const REPORT_FORM_LABELS = {
 
 export const ADD_MORE_TESTS_HINT_TEXT =
   "*You can add more than one test by selecting the 'Add Test' button below.";
+
+export const SWEET_ALERT_PARAMS = {
+  CONFIRM_BUTTON_COLOR: "#1976d2",
+  CANCEL_BUTTON_COLOR: "#d33",
+};

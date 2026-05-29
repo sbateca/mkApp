@@ -14,3 +14,9 @@ export const selectGetSampleTypes = (store: SampleTypeStore) =>
   store.getSampleTypes;
 export const selectGetSampleTypeById = (store: SampleTypeStore) =>
   store.getSampleTypeById;
+export const selectCreateSampleType = (store: SampleTypeStore) =>
+  store.createSampleType;
+export const selectDeleteSampleType = (store: SampleTypeStore) =>
+  store.deleteSampleType;
+export const selectEditSampleType = (store: SampleTypeStore) =>
+  store.editSampleType;

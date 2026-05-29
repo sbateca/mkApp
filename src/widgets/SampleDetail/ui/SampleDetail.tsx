@@ -6,13 +6,13 @@ import {Box, Divider, Theme, useMediaQuery, useTheme} from "@mui/material";
 import {Spinner} from "../../../shared/ui";
 import SampleSideSectionButtons from "./SampleSideSectionActions";
 import {SampleDetailProps} from "./Types";
-import {getBoxContainerProps} from "./SampleDetailStyles";
 import {useSampleStore} from "../../../entities/sample/model/store";
 import {selectSelectedSample} from "../../../entities/sample/model/selectors";
 import {SampleDetailHeader} from "./SampleDetailHeader";
 import {SampleDetailForm} from "./SampleDetailForm";
 import {useSampleErrorNotifier} from "../model/useSampleErrorNotifier";
 import {useSampleDetailController} from "../model/useSampleDetailController";
+import {getBoxContainerProps} from "../../../shared/commonStyles";
 
 export const SampleDetail = ({
   isReadOnlyMode,

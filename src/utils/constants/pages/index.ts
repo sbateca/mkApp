@@ -4,3 +4,4 @@ export * from "./reports";
 export * from "./samples";
 export * from "./shared";
 export * from "./notFound";
+export * from "./sampleType";

@@ -5,11 +5,11 @@ import {SxProps} from "@mui/material/styles";
 
 import {Spinner} from "../../../shared/ui";
 
-import {getBoxContainerProps} from "./ReportsDetailStyles";
 import {ReportDetailProps} from "./Types";
 import {useReportDetailController} from "../model/useReportDetailController";
 import {ReportDetailHeader} from "./ReportDetailHeader";
 import {ReportDetailForm} from "./ReportDetailForm";
+import {getBoxContainerProps} from "../../../shared/commonStyles";
 
 export const ReportDetail = ({
   isReadOnlyMode,
