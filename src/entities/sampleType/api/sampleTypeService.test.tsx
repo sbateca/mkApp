@@ -1,4 +1,7 @@
 import {
+  createSampleTypeService,
+  deleteSampleTypeService,
+  editSampleTypeService,
   getSampleTypeByIdService,
   getSampleTypesService,
 } from "./sampleTypeService";
@@ -49,6 +52,45 @@ describe("sampleTypeService", () => {
 
     expect(sampleType).toEqual(mockSampleTypes[0]);
     expect(mockApiClientGet).toHaveBeenCalledWith(expectedURL);
+  });
+
+  it("should create a sample type", async () => {
+    const mockApiClientPost = apiClient.post as jest.Mock;
+    mockApiClientPost.mockResolvedValueOnce({data: mockSampleTypes[0]});
+    const expectedURL = "http://mockurl.com/api/sampleTypes";
+
+    const sampleType = await createSampleTypeService(mockSampleTypes[0]);
+
+    expect(sampleType).toEqual(mockSampleTypes[0]);
+    expect(mockApiClientPost).toHaveBeenCalledWith(
+      expectedURL,
+      mockSampleTypes[0],
+    );
+  });
+
+  it("should edit a sample type", async () => {
+    const mockApiClientPut = apiClient.put as jest.Mock;
+    mockApiClientPut.mockResolvedValueOnce({data: mockSampleTypes[0]});
+    const expectedURL = "http://mockurl.com/api/sampleTypes/1";
+
+    const sampleType = await editSampleTypeService(mockSampleTypes[0], "1");
+
+    expect(sampleType).toEqual(mockSampleTypes[0]);
+    expect(mockApiClientPut).toHaveBeenCalledWith(
+      expectedURL,
+      mockSampleTypes[0],
+    );
+  });
+
+  it("should delete a sample type", async () => {
+    const mockApiClientDelete = apiClient.delete as jest.Mock;
+    mockApiClientDelete.mockResolvedValueOnce({data: mockSampleTypes[0]});
+    const expectedURL = "http://mockurl.com/api/sampleTypes/1";
+
+    const sampleType = await deleteSampleTypeService("1");
+
+    expect(sampleType).toEqual(mockSampleTypes[0]);
+    expect(mockApiClientDelete).toHaveBeenCalledWith(expectedURL);
   });
 
   it("should throw an error when an error occurs", async () => {

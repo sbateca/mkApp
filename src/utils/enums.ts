@@ -1,18 +1,11 @@
+// Menu
 export enum SharedMenuItems {
+  SAMPLE_TYPES = "Sample types",
   SAMPLES = "Samples",
   REPORTS = "Reports",
 }
+// Button
 export enum SharedButtonColors {
-  PRIMARY = "primary",
-  SECONDARY = "secondary",
-  ERROR = "error",
-  INFO = "info",
-  SUCCESS = "success",
-  WARNING = "warning",
-  DEFAULT = "default",
-}
-
-export enum SharedChipColors {
   PRIMARY = "primary",
   SECONDARY = "secondary",
   ERROR = "error",
@@ -30,12 +23,6 @@ export enum SharedButtonIcons {
 }
 
 export enum SharedButtonSizes {
-  SMALL = "small",
-  MEDIUM = "medium",
-  LARGE = "large",
-}
-
-export enum SharedChipSizes {
   SMALL = "small",
   MEDIUM = "medium",
   LARGE = "large",
@@ -59,6 +46,24 @@ export enum SharedButtonCommonLabels {
   DOWNLOAD = "Download",
 }
 
+// Chip
+export enum SharedChipColors {
+  PRIMARY = "primary",
+  SECONDARY = "secondary",
+  ERROR = "error",
+  INFO = "info",
+  SUCCESS = "success",
+  WARNING = "warning",
+  DEFAULT = "default",
+}
+
+export enum SharedChipSizes {
+  SMALL = "small",
+  MEDIUM = "medium",
+  LARGE = "large",
+}
+
+// Typography
 export enum SharedTypographyVariants {
   H1 = "h1",
   H2 = "h2",
@@ -87,17 +92,7 @@ export enum SharedTypographyAlign {
   JUSTIFY = "justify",
 }
 
-export enum SamplesFormFields {
-  SAMPLE_CODE = "sampleCode",
-  SAMPLE_TYPE = "sampleType",
-  CLIENT = "client",
-  GET_SAMPLE_DATE = "getSampleDate",
-  RECEPTION_DATE = "receptionDate",
-  ANALYSIS_DATE = "analysisDate",
-  SAMPLE_LOCATION = "sampleLocation",
-  RESPONSABLE = "responsable",
-}
-
+// Snackbar
 export enum SnackBarSeverity {
   ERROR = "error",
   SUCCESS = "success",
@@ -105,6 +100,7 @@ export enum SnackBarSeverity {
   WARNING = "warning",
 }
 
+// SweetAlert
 export enum SweetAlertIcon {
   ERROR = "error",
   SUCCESS = "success",
@@ -122,6 +118,7 @@ export enum SampleDetailsFields {
   RESPONSABLE = "Responsable",
 }
 
+// TextField
 export enum SharedTextFieldVariants {
   STANDARD = "standard",
   FILLED = "filled",
@@ -134,6 +131,13 @@ export enum SelectVariants {
   OUTLINED = "outlined",
 }
 
+export enum TextFieldSizes {
+  SMALL = "small",
+  MEDIUM = "medium",
+  LARGE = "large",
+}
+
+// Icons
 export enum IconNames {
   VIEW = "view",
   EDIT = "edit",
@@ -147,6 +151,7 @@ export enum IconNames {
   DOWNLOAD = "download",
 }
 
+// Reports
 export enum ReportFormFields {
   REPORT_DATE = "reportDate",
   REPORT_NUMBER = "reportNumber",
@@ -160,16 +165,46 @@ export enum ReportFormFields {
   RESULT = "result",
 }
 
+export enum ReportStatus {
+  APPROVED = "approved",
+  DRATF = "draft",
+  ISSUED = "issued",
+}
+
+// Samples
+export enum SamplesFormFields {
+  SAMPLE_CODE = "sampleCode",
+  SAMPLE_TYPE = "sampleType",
+  CLIENT = "client",
+  GET_SAMPLE_DATE = "getSampleDate",
+  RECEPTION_DATE = "receptionDate",
+  ANALYSIS_DATE = "analysisDate",
+  SAMPLE_LOCATION = "sampleLocation",
+  RESPONSABLE = "responsable",
+}
+
+// Sample types
+export enum SampleTypeFormFields {
+  NAME = "name",
+}
+
+export enum SampleTypeFormFieldLabels {
+  NAME = "Name",
+}
+
+// Test types
 export enum TestType {
   PHYSICAL = "Physical",
   MICROBIOLOGICAL = "Microbiological",
 }
 
+// Auth
 export enum SignInFormFields {
   USERNAME = "username",
   PASSWORD = "password",
 }
 
+// HTTP
 export enum HttpStatus {
   OK = 200,
   CREATED = 201,
@@ -179,10 +214,4 @@ export enum HttpStatus {
   FORBIDDEN = 403,
   NOT_FOUND = 404,
   INTERNAL_SERVER_ERROR = 500,
-}
-
-export enum ReportStatus {
-  APPROVED = "approved",
-  DRATF = "draft",
-  ISSUED = "issued",
 }

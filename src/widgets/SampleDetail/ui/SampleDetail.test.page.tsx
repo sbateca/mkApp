@@ -128,6 +128,9 @@ export const renderSampleDetail = () => {
     setSelectedSampleType: jest.fn(),
     getSampleTypes: jest.fn().mockReturnValue(mockSampleTypes),
     getSampleTypeById: jest.fn().mockReturnValue(mockSampleTypes[0]),
+    createSampleType: jest.fn().mockResolvedValue(mockSampleTypes[0]),
+    editSampleType: jest.fn().mockResolvedValue(mockSampleTypes[0]),
+    deleteSampleType: jest.fn().mockResolvedValue(mockSampleTypes[0]),
   };
   mockSnackBarStoreState = {
     isSnackBarOpen: false,
@@ -151,6 +154,9 @@ export const renderSampleDetail = () => {
     setFormFieldsValidationFunctions: jest.fn(),
     setDefaultFormFieldsValues: jest.fn(),
     isNotValidForm: false,
+    isReadOnlyMode: false,
+    setIsReadOnlyMode: jest.fn(),
+    handleReadOnlyModeChange: jest.fn(),
   };
 
   render(

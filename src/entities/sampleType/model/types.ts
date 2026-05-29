@@ -9,4 +9,10 @@ export type SampleTypeStore = {
   setSelectedSampleType: (sampleType: SampleType | null) => void;
   getSampleTypes: () => Promise<SampleType[] | null>;
   getSampleTypeById: (sampleId: string) => Promise<SampleType | null>;
+  createSampleType: (sampleType: SampleType) => Promise<SampleType | null>;
+  deleteSampleType: (sampleTypeId: string) => Promise<SampleType | null>;
+  editSampleType: (
+    sampleType: SampleType,
+    sampleTypeId: string,
+  ) => Promise<SampleType | null>;
 };

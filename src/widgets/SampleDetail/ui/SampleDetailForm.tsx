@@ -22,13 +22,7 @@ import {
   SAMPLE_TYPE_LABEL_TEXT,
 } from "../../../utils/constants";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
-import {
-  getStackContainerProps,
-  getStackFieldProps,
-  getStackRowProps,
-  SampleDetailStyles,
-  SampleFormStyles,
-} from "./SampleDetailStyles";
+import {SampleDetailStyles, SampleFormStyles} from "./SampleDetailStyles";
 import dayjs from "dayjs";
 import React from "react";
 import {FormError} from "../../../utils/hooks";
@@ -36,6 +30,11 @@ import {GenericModelWithId} from "../../../utils/model";
 import {AutoCompleteOption} from "../../../shared/ui/AutoComplete/types";
 import {Client} from "../../../entities/client";
 import {SampleType} from "../../../entities/sampleType";
+import {
+  getStackContainerProps,
+  getStackFieldProps,
+  getStackRowProps,
+} from "../../../shared/commonStyles";
 
 export type DetailFormProps = {
   clients: Client[] | null;

@@ -6,9 +6,6 @@ import dayjs from "dayjs";
 
 import {
   getSideSectionButtonsProps,
-  getStackContainerProps,
-  getStackFieldProps,
-  getStackRowProps,
   SampleFormStyles,
 } from "./ReportsDetailStyles";
 import {
@@ -32,6 +29,11 @@ import {SampleReportDetails} from "../../../entities/sample";
 import {ReportTestForm} from "./ReportTestForm";
 import {ReportSideSectionButtons} from "./ReportsSideSectionButtons";
 import {DetailFormProps} from "../model/types";
+import {
+  getStackContainerProps,
+  getStackFieldProps,
+  getStackRowProps,
+} from "../../../shared/commonStyles";
 
 export const ReportDetailForm = ({
   isLessThanMediumScreen,
@@ -171,19 +173,19 @@ export const ReportDetailForm = ({
             );
           },
         )}
+        <Box {...getSideSectionButtonsProps()}>
+          <ReportSideSectionButtons
+            isNotValidForm={detailForm.isNotValidForm || !areReportTestsValid}
+            report={selectedReport}
+            isReadOnlyMode={isReadOnlyMode}
+            setIsReadOnlyMode={setIsReadOnlyMode}
+            handleCreateReport={() => onCreateReport(reportTestGroups)}
+            handleEdit={() => onEditReport(reportTestGroups)}
+            handleApprove={() => onApproveReport(selectedReport?.id || "")}
+            handleDownload={() => onDownloadReport(selectedReport?.id || "")}
+          />
+        </Box>
       </Stack>
-      <Box {...getSideSectionButtonsProps()}>
-        <ReportSideSectionButtons
-          isNotValidForm={detailForm.isNotValidForm || !areReportTestsValid}
-          report={selectedReport}
-          isReadOnlyMode={isReadOnlyMode}
-          setIsReadOnlyMode={setIsReadOnlyMode}
-          handleCreateReport={() => onCreateReport(reportTestGroups)}
-          handleEdit={() => onEditReport(reportTestGroups)}
-          handleApprove={() => onApproveReport(selectedReport?.id || "")}
-          handleDownload={() => onDownloadReport(selectedReport?.id || "")}
-        />
-      </Box>
     </>
   );
 };
