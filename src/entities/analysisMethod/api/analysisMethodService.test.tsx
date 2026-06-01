@@ -1,4 +1,7 @@
 import {
+  createAnalysisMethodService,
+  deleteAnalysisMethodService,
+  editAnalysisMethodService,
   getAnalysisMethodService,
   getAnalysisMethodByIdService,
 } from "./analysisMethodService";
@@ -45,6 +48,50 @@ describe("analysisMethodService", () => {
 
     expect(analysisMethod).toEqual(mockAnalysisMethods[0]);
     expect(apiClient.get).toHaveBeenCalledWith(expectedURL);
+  });
+
+  it("should create an analysis method", async () => {
+    const mockApiClientPost = apiClient.post as jest.Mock;
+    mockApiClientPost.mockResolvedValueOnce({data: mockAnalysisMethods[0]});
+    const expectedURL = "http://mockurl.com/api/analysisMethods";
+
+    const analysisMethod = await createAnalysisMethodService(
+      mockAnalysisMethods[0],
+    );
+
+    expect(analysisMethod).toEqual(mockAnalysisMethods[0]);
+    expect(mockApiClientPost).toHaveBeenCalledWith(
+      expectedURL,
+      mockAnalysisMethods[0],
+    );
+  });
+
+  it("should edit an analysis method", async () => {
+    const mockApiClientPut = apiClient.put as jest.Mock;
+    mockApiClientPut.mockResolvedValueOnce({data: mockAnalysisMethods[0]});
+    const expectedURL = "http://mockurl.com/api/analysisMethods/1";
+
+    const analysisMethod = await editAnalysisMethodService(
+      mockAnalysisMethods[0],
+      "1",
+    );
+
+    expect(analysisMethod).toEqual(mockAnalysisMethods[0]);
+    expect(mockApiClientPut).toHaveBeenCalledWith(
+      expectedURL,
+      mockAnalysisMethods[0],
+    );
+  });
+
+  it("should delete an analysis method", async () => {
+    const mockApiClientDelete = apiClient.delete as jest.Mock;
+    mockApiClientDelete.mockResolvedValueOnce({data: mockAnalysisMethods[0]});
+    const expectedURL = "http://mockurl.com/api/analysisMethods/1";
+
+    const analysisMethod = await deleteAnalysisMethodService("1");
+
+    expect(analysisMethod).toEqual(mockAnalysisMethods[0]);
+    expect(mockApiClientDelete).toHaveBeenCalledWith(expectedURL);
   });
 
   it("should throw an error when an error occurs", async () => {
