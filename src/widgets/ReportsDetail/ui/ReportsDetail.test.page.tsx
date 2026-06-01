@@ -280,6 +280,9 @@ export const renderReportDetail = async () => {
     getAnalytes: jest.fn().mockReturnValue(mockAnalytes),
     getAnalyteById: jest.fn().mockReturnValue(mockAnalytes[0]),
     getAnalytesByTestTypeId: jest.fn().mockResolvedValue(mockAnalytes),
+    createAnalyte: jest.fn().mockResolvedValue(mockAnalytes[0]),
+    editAnalyte: jest.fn().mockResolvedValue(mockAnalytes[0]),
+    deleteAnalyte: jest.fn().mockResolvedValue(mockAnalytes[0]),
     isLoading: false,
     error: null,
   };

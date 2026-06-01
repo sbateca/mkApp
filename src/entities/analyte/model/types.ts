@@ -8,6 +8,9 @@ export type AnalyteStore = {
   getAnalytes: () => Promise<Analyte[] | null>;
   getAnalyteById: (analyteId: string) => Promise<Analyte | null>;
   getAnalytesByTestTypeId: (testTypeId: string) => Promise<Analyte[] | null>;
+  createAnalyte: (analyte: Analyte) => Promise<Analyte | null>;
+  editAnalyte: (analyte: Analyte, analyteId: string) => Promise<Analyte | null>;
+  deleteAnalyte: (analyteId: string) => Promise<Analyte | null>;
   isLoading: boolean;
   error: string | null;
 };

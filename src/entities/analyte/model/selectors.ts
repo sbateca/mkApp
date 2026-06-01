@@ -13,3 +13,6 @@ export const selectGetAnalyteById = (store: AnalyteStore) =>
   store.getAnalyteById;
 export const selectGetAnalytesByTestTypeId = (store: AnalyteStore) =>
   store.getAnalytesByTestTypeId;
+export const selectCreateAnalyte = (store: AnalyteStore) => store.createAnalyte;
+export const selectEditAnalyte = (store: AnalyteStore) => store.editAnalyte;
+export const selectDeleteAnalyte = (store: AnalyteStore) => store.deleteAnalyte;

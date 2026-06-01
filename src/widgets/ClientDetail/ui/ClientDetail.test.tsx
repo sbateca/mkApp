@@ -39,6 +39,7 @@ jest.mock("../../../features/snackbar/model/store", () => ({
 jest.mock("../../../features/sideSection", () => ({
   useSideSection: () => ({
     onCloseSideSection: jest.fn(),
+    sideSectionTitle: "Mock title",
   }),
 }));
 
@@ -91,7 +92,6 @@ describe("ClientDetail", () => {
     render(
       <ClientDetail
         handleCloseSideSection={jest.fn()}
-        sideSectionTitle="Mock title"
         selectedClient={mockClients[0]}
         isLoading={false}
         isLessThanMediumScreen={false}
@@ -108,7 +108,6 @@ describe("ClientDetail", () => {
     render(
       <ClientDetail
         handleCloseSideSection={jest.fn()}
-        sideSectionTitle="Mock title"
         selectedClient={mockClients[0]}
         isLoading
         isLessThanMediumScreen={false}

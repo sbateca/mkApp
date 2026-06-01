@@ -5,6 +5,7 @@ export const UNEXPECTED_ERROR = "Unexpected error";
 export const ELEMENT_NOT_FOUND_MESSAGE = "Element not found";
 export const N_A = "N/A";
 export const CLIENT_NOT_PROVIDED = "Client not provided";
+export const ANALYTE_NOT_PROVIDED = "Analyte not provided";
 
 export const REPORT_FORM_FIELDS = {
   SAMPLE_CODE: "sampleCode",

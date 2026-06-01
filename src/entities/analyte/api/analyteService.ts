@@ -28,3 +28,33 @@ export const getAnalytesByTestTypeIdService = async (
   );
   return axiosResponseToAnalyte(response);
 };
+
+export const createAnalyteService = async (
+  analyte: Analyte,
+): Promise<Analyte> => {
+  const response = await apiClient.post<Analyte>(
+    `${EnvManager.BACKEND_URL}${BaseRoutes.ANALYTES}`,
+    analyte,
+  );
+  return axiosResponseToAnalyte(response)[0];
+};
+
+export const editAnalyteService = async (
+  analyte: Analyte,
+  analyteId: string,
+): Promise<Analyte> => {
+  const response = await apiClient.put<Analyte>(
+    `${EnvManager.BACKEND_URL}${BaseRoutes.ANALYTES}/${analyteId}`,
+    analyte,
+  );
+  return axiosResponseToAnalyte(response)[0];
+};
+
+export const deleteAnalyteService = async (
+  analyteId: string,
+): Promise<Analyte> => {
+  const response = await apiClient.delete<Analyte>(
+    `${EnvManager.BACKEND_URL}${BaseRoutes.ANALYTES}/${analyteId}`,
+  );
+  return axiosResponseToAnalyte(response)[0];
+};

@@ -28,6 +28,12 @@ jest.mock("../../../sideSection", () => ({
     store.setIsSideSectionOpen,
   selectSetSideSectionTitle: (store: SideSectionStore) =>
     store.setSideSectionTitle,
+  useSideSection: () => ({
+    isSideSectionOpen: mockSideSectionStoreState.isSideSectionOpen,
+    sideSectionTitle: mockSideSectionStoreState.sideSectionTitle,
+    onCloseSideSection: jest.fn(),
+    onOpenSideSection: jest.fn(),
+  }),
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSideSectionStore: (selector: any) => selector(mockSideSectionStoreState),
 }));

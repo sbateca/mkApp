@@ -9,6 +9,7 @@ import {ReportsPage} from "../../pages/ReportsPage";
 import {NotFoundPage} from "../../pages/NotFound/ui/NotFoundPage";
 import {SampleTypePage} from "../../pages/SampleType/ui/SampleTypePage";
 import {ClientsPage} from "../../pages/ClientsPage";
+import {AnalytesPage} from "../../pages/AnalytesPage";
 
 export const AppRoutes = () => {
   return (
@@ -25,6 +26,7 @@ export const AppRoutes = () => {
           />
           <Route path={BaseRoutes.CLIENTS} element={<ClientsPage />} />
           <Route path={BaseRoutes.SAMPLE_TYPES} element={<SampleTypePage />} />
+          <Route path={BaseRoutes.ANALYTES} element={<AnalytesPage />} />
           <Route path={BaseRoutes.SAMPLES} element={<SamplesPage />} />
           <Route path={BaseRoutes.REPORTS} element={<ReportsPage />} />
         </Route>
