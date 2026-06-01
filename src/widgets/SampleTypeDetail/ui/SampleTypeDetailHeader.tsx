@@ -14,10 +14,10 @@ import {
 import {SampleType} from "../../../entities/sampleType";
 import {CommonDetailStyles} from "../../../utils/constants";
 import {useReadOnlyMode} from "../../../features/readOnlyMode";
+import {useSideSection} from "../../../features/sideSection";
 
 export type HeaderProps = {
   handleCloseSideSection: () => void;
-  sideSectionTitle: string;
   selectedSampleType: SampleType | null;
   isLoading: boolean;
   isLessThanMediumScreen: boolean;
@@ -25,11 +25,11 @@ export type HeaderProps = {
 
 export const SampleTypeDetailHeader = ({
   handleCloseSideSection,
-  sideSectionTitle,
   selectedSampleType,
   isLoading,
 }: HeaderProps): React.ReactElement => {
   const {isReadOnlyMode} = useReadOnlyMode();
+  const {sideSectionTitle} = useSideSection();
 
   const getEditModeChip = (): React.ReactNode => {
     if (selectedSampleType) {

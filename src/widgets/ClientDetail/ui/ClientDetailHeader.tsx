@@ -14,21 +14,21 @@ import {
 import {Client} from "../../../entities/client";
 import {CommonDetailStyles} from "../../../utils/constants";
 import {useReadOnlyMode} from "../../../features/readOnlyMode";
+import {useSideSection} from "../../../features/sideSection";
 
 export type ClientDetailHeaderProps = {
   handleCloseSideSection: () => void;
-  sideSectionTitle: string;
   selectedClient: Client | null;
   isLoading: boolean;
 };
 
 export const ClientDetailHeader = ({
   handleCloseSideSection,
-  sideSectionTitle,
   selectedClient,
   isLoading,
 }: ClientDetailHeaderProps): React.ReactElement => {
   const {isReadOnlyMode} = useReadOnlyMode();
+  const {sideSectionTitle} = useSideSection();
 
   const getEditModeChip = (): React.ReactNode => {
     if (selectedClient) {

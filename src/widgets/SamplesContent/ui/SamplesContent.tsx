@@ -9,6 +9,7 @@ import {
   SharedButtonVariants,
 } from "../../../utils/enums";
 import {
+  CREATE_SAMPLE_TYPE_TITLE_TEXT,
   SAMPLES_CREATE_BUTTON_LABEL,
   SAMPLES_TABLE_HEADER_LABELS,
   SAMPLES_TITLE_CONFIG,
@@ -16,14 +17,11 @@ import {
 import {SampleDetail} from "../../SampleDetail";
 import {SampleContentStyles} from "./SamplesContentStyles";
 import {useLoadSamplesContentData} from "../model/useLoadSamplesContentData";
-import {useOpenSideSection} from "../model/useOpenSideSection";
 import {useSamplesContentErrorNotifier} from "../model/useSamplesContentErrorNotifier";
 import {SampleTableActionButtons} from "../../../features/sample/TableActionButtons";
-import {useReadOnlyMode} from "../../../features/readOnlyMode";
+import {useSideSection} from "../../../features/sideSection";
 
 export const SamplesContent = (): React.ReactElement => {
-  const {setIsReadOnlyMode} = useReadOnlyMode();
-
   const {
     rows,
     isLoading,
@@ -39,12 +37,11 @@ export const SamplesContent = (): React.ReactElement => {
     filteredRowsCount,
     searchValue,
   } = useLoadSamplesContentData();
-  const {handleOpenSideSection, isSideSectionOpen} = useOpenSideSection();
+  const {isSideSectionOpen, onOpenSideSection} = useSideSection();
   useSamplesContentErrorNotifier();
 
   const openSideSection = () => {
-    setIsReadOnlyMode(false);
-    handleOpenSideSection();
+    onOpenSideSection(CREATE_SAMPLE_TYPE_TITLE_TEXT, true);
   };
 
   return isLoading ? (
