@@ -12,15 +12,11 @@ import {useSideSection} from "../../../sideSection";
 import {useSnackBarStore} from "../../../snackbar";
 import {formToSampleType} from "../../lib/sampleTypeMappers";
 
-export const useEditSampleType = (
-  form: FormProps,
-  sampleTypeId: string,
-  setIsReadOnlyMode: React.Dispatch<React.SetStateAction<boolean>>,
-) => {
+export const useEditSampleType = (form: FormProps, sampleTypeId: string) => {
   const editSampleType = useSampleTypeStore(selectEditSampleType);
   const getSampleTypes = useSampleTypeStore(selectGetSampleTypes);
 
-  const {onCloseSideSection} = useSideSection(setIsReadOnlyMode);
+  const {onCloseSideSection} = useSideSection();
   const {showSnackBarMessage} = useSnackBarStore();
 
   const handleEditSampleType = () => {

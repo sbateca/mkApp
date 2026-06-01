@@ -159,12 +159,7 @@ export const renderSampleDetail = () => {
     handleReadOnlyModeChange: jest.fn(),
   };
 
-  render(
-    <SampleDetail
-      isReadOnlyMode={mockData.readonly}
-      setIsReadOnlyMode={() => {}}
-    />,
-  );
+  render(<SampleDetail />);
 
   return {screen};
 };

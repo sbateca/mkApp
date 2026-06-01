@@ -12,10 +12,6 @@ import {FormProps} from "../../../utils/constants";
 import {FieldValidations, FormError} from "../../../utils/hooks";
 import {useReportDetailController} from "./useReportDetailController";
 
-export type ReportDetailControllerProps = {
-  setIsReadOnlyMode: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
 export type ReportDetailCatalogsProps = {
   clients: Client[] | null;
   analysisMethods: AnalysisMethod[] | null;
@@ -61,8 +57,6 @@ export type ReportDetailFormStateProps = {
 
 export type DetailFormProps = {
   isLessThanMediumScreen: boolean;
-  isReadOnlyMode: boolean;
-  setIsReadOnlyMode: React.Dispatch<React.SetStateAction<boolean>>;
   catalogs: ReportDetailCatalogsProps;
   detailForm: ReportDetailFormStateProps;
   state: ReturnType<typeof useReportDetailController>["state"];

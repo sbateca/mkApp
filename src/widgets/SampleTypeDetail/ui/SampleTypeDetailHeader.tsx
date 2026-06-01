@@ -13,9 +13,9 @@ import {
 } from "../../../utils/enums";
 import {SampleType} from "../../../entities/sampleType";
 import {CommonDetailStyles} from "../../../utils/constants";
+import {useReadOnlyMode} from "../../../features/readOnlyMode";
 
 export type HeaderProps = {
-  isReadOnlyMode: boolean;
   handleCloseSideSection: () => void;
   sideSectionTitle: string;
   selectedSampleType: SampleType | null;
@@ -24,12 +24,13 @@ export type HeaderProps = {
 };
 
 export const SampleTypeDetailHeader = ({
-  isReadOnlyMode,
   handleCloseSideSection,
   sideSectionTitle,
   selectedSampleType,
   isLoading,
 }: HeaderProps): React.ReactElement => {
+  const {isReadOnlyMode} = useReadOnlyMode();
+
   const getEditModeChip = (): React.ReactNode => {
     if (selectedSampleType) {
       return (

@@ -15,14 +15,12 @@ import {SnackBarSeverity} from "../../../../utils/enums";
 import {useSideSection} from "../../../sideSection/model/useSideSection";
 import {selectShowSnackBarMessage, useSnackBarStore} from "../../../snackbar";
 
-export const useEditSample = (
-  setIsReadOnlyMode: React.Dispatch<React.SetStateAction<boolean>>,
-) => {
+export const useEditSample = () => {
   const selectedSample = useSampleStore(selectSelectedSample);
   const editSample = useSampleStore(selectEditSample);
   const getSamples = useSampleStore(selectGetSamples);
 
-  const {onCloseSideSection} = useSideSection(setIsReadOnlyMode);
+  const {onCloseSideSection} = useSideSection();
 
   const showSnackBarMessage = useSnackBarStore(selectShowSnackBarMessage);
 

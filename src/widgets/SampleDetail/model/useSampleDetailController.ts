@@ -6,22 +6,19 @@ import {useSampleDetailForm} from "./useSampleDetailForm";
 
 export type SampleDetailControllerProps = {
   selectedSample: Sample | null;
-  setIsReadOnlyMode: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const useSampleDetailController = ({
   selectedSample,
-  setIsReadOnlyMode,
 }: SampleDetailControllerProps) => {
   const sampleFormState = useSampleDetailForm(selectedSample);
 
   const sampleDetailData = useLoadSampleDetailData();
 
-  const {sideSectionTitle, onCloseSideSection} =
-    useSideSection(setIsReadOnlyMode);
+  const {sideSectionTitle, onCloseSideSection} = useSideSection();
 
-  const {handleCreateSample} = useCreateSample(setIsReadOnlyMode);
-  const {handleEditSample} = useEditSample(setIsReadOnlyMode);
+  const {handleCreateSample} = useCreateSample();
+  const {handleEditSample} = useEditSample();
 
   return {
     sampleDetailForm: sampleFormState,

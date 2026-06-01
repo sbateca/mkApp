@@ -4,9 +4,18 @@ import {ReportSideSectionButtons} from "./ReportsSideSectionButtons";
 import {buildReportData} from "../../../shared/test/builders";
 import {ReportStatus} from "../../../utils/enums";
 
+let mockIsReadOnlyMode = true;
+const mockHandleSwitchReadOnlyMode = jest.fn();
+
+jest.mock("../../../features/readOnlyMode", () => ({
+  useReadOnlyMode: () => ({
+    isReadOnlyMode: mockIsReadOnlyMode,
+    handleSwitchReadOnlyMode: mockHandleSwitchReadOnlyMode,
+  }),
+}));
+
 describe("ReportSideSectionButtons", () => {
   const defaultActions = {
-    setIsReadOnlyMode: jest.fn(),
     handleCreateReport: jest.fn(),
     handleEdit: jest.fn(),
     handleApprove: jest.fn(),
@@ -15,6 +24,7 @@ describe("ReportSideSectionButtons", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockIsReadOnlyMode = true;
   });
 
   it("should render approval action enabled and download action disabled for draft reports", () => {
@@ -27,7 +37,6 @@ describe("ReportSideSectionButtons", () => {
       <ReportSideSectionButtons
         isNotValidForm={false}
         report={report}
-        isReadOnlyMode={true}
         {...defaultActions}
       />,
     );
@@ -53,7 +62,6 @@ describe("ReportSideSectionButtons", () => {
       <ReportSideSectionButtons
         isNotValidForm={false}
         report={report}
-        isReadOnlyMode={true}
         {...defaultActions}
       />,
     );
@@ -70,6 +78,7 @@ describe("ReportSideSectionButtons", () => {
   });
 
   it("should not render approval and download actions while editing", () => {
+    mockIsReadOnlyMode = false;
     const report = buildReportData({
       status: ReportStatus.DRATF,
     });
@@ -78,7 +87,6 @@ describe("ReportSideSectionButtons", () => {
       <ReportSideSectionButtons
         isNotValidForm={false}
         report={report}
-        isReadOnlyMode={false}
         {...defaultActions}
       />,
     );

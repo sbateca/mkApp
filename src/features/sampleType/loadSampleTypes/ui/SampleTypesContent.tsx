@@ -3,7 +3,6 @@ import {Button, Spinner, Table, Typography} from "../../../../shared/ui";
 import {useLoadSampleTypesData} from "../model/useLoadSampleTypesData";
 import {SideSection} from "../../../../shared/ui/SideSection";
 import {useOpenSideSection} from "../model/useOpenSideSection";
-import {useState} from "react";
 import {CommonContentStyles} from "../../../../shared/commonStyles";
 import {
   SAMPLE_TYPE_CREATE_BUTTON_LABEL,
@@ -23,6 +22,7 @@ import {
   selectSelectedSampleType,
   useSampleTypeStore,
 } from "../../../../entities/sampleType";
+import {useReadOnlyMode} from "../../../readOnlyMode";
 
 export const SampleTypesContent = () => {
   const {
@@ -45,7 +45,7 @@ export const SampleTypesContent = () => {
   const isLessThanMediumScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const selectedSampleType = useSampleTypeStore(selectSelectedSampleType);
 
-  const [isReadOnlyMode, setIsReadOnlyMode] = useState(true);
+  const {setIsReadOnlyMode} = useReadOnlyMode();
   const {isSideSectionOpen, handleOpenSideSection, handleCloseSideSection} =
     useOpenSideSection();
 
@@ -91,8 +91,6 @@ export const SampleTypesContent = () => {
       />
       <SideSection isOpen={isSideSectionOpen}>
         <SampleTypeDetail
-          isReadOnlyMode={isReadOnlyMode}
-          setIsReadOnlyMode={setIsReadOnlyMode}
           handleCloseSideSection={handleCloseSideSection}
           sideSectionTitle={SAMPLES_TYPE_PAGE_DETAIL_TITLE}
           selectedSampleType={selectedSampleType}

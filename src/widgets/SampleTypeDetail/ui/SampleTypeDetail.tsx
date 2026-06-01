@@ -6,8 +6,6 @@ import {getBoxContainerProps} from "../../../shared/commonStyles";
 import {SampleType} from "../../../entities/sampleType";
 
 type SampleTypeDetailProps = {
-  isReadOnlyMode: boolean;
-  setIsReadOnlyMode: React.Dispatch<React.SetStateAction<boolean>>;
   handleCloseSideSection: () => void;
   sideSectionTitle: string;
   isLessThanMediumScreen: boolean;
@@ -16,8 +14,6 @@ type SampleTypeDetailProps = {
 };
 
 export const SampleTypeDetail = ({
-  isReadOnlyMode,
-  setIsReadOnlyMode,
   handleCloseSideSection,
   sideSectionTitle,
   isLessThanMediumScreen,
@@ -27,7 +23,6 @@ export const SampleTypeDetail = ({
   return (
     <Box sx={getBoxContainerProps(isLessThanMediumScreen) as SxProps}>
       <SampleTypeDetailHeader
-        isReadOnlyMode={isReadOnlyMode}
         handleCloseSideSection={handleCloseSideSection}
         sideSectionTitle={sideSectionTitle}
         selectedSampleType={selectedSampleType}
@@ -38,11 +33,7 @@ export const SampleTypeDetail = ({
       {isLoading ? (
         <Spinner />
       ) : (
-        <SampleTypeForm
-          isLessThanMediumScreen={isLessThanMediumScreen}
-          isReadOnlyMode={isReadOnlyMode}
-          setIsReadOnlyMode={setIsReadOnlyMode}
-        />
+        <SampleTypeForm isLessThanMediumScreen={isLessThanMediumScreen} />
       )}
     </Box>
   );

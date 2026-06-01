@@ -59,8 +59,6 @@ export interface TestFormButtonProps {
 export interface ReportSideSectionActionsProps {
   isNotValidForm: boolean;
   report: Report | null;
-  isReadOnlyMode: boolean;
-  setIsReadOnlyMode: React.Dispatch<React.SetStateAction<boolean>>;
   handleCreateReport: () => void;
   handleEdit: () => void;
   handleApprove: (reportId: string) => void;

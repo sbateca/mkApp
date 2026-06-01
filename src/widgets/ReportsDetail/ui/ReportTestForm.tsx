@@ -47,9 +47,9 @@ import {
   updateReportTestRow,
 } from "../model/useReportTestGroups";
 import {getStackFieldProps} from "../../../shared/commonStyles";
+import {useReadOnlyMode} from "../../../features/readOnlyMode";
 
 type ReportTestFormProps = {
-  isReadonly: boolean;
   hasCompleteReportTestRow: boolean;
   analytes: Analyte[] | null;
   criterias: Criteria[] | null;
@@ -60,7 +60,6 @@ type ReportTestFormProps = {
 };
 
 export const ReportTestForm = ({
-  isReadonly,
   hasCompleteReportTestRow,
   analytes,
   criterias,
@@ -69,6 +68,8 @@ export const ReportTestForm = ({
   rows,
   onRowsChange,
 }: ReportTestFormProps): React.ReactElement => {
+  const {isReadOnlyMode} = useReadOnlyMode();
+
   const handleAddTestFields = () => {
     onRowsChange(addReportTestRow(rows));
   };
@@ -135,25 +136,25 @@ export const ReportTestForm = ({
               row,
               ReportFormFields.ANALYTE_ID,
               hasCompleteReportTestRow,
-              isReadonly,
+              isReadOnlyMode,
             );
             const analysisMethodError = getRequiredReportTestFieldError(
               row,
               ReportFormFields.ANALYSIS_METHOD_ID,
               hasCompleteReportTestRow,
-              isReadonly,
+              isReadOnlyMode,
             );
             const resultError = getRequiredReportTestFieldError(
               row,
               ReportFormFields.RESULT,
               hasCompleteReportTestRow,
-              isReadonly,
+              isReadOnlyMode,
             );
             const criteriaError = getRequiredReportTestFieldError(
               row,
               ReportFormFields.CRITERIA_ID,
               hasCompleteReportTestRow,
-              isReadonly,
+              isReadOnlyMode,
             );
 
             return (
@@ -176,7 +177,7 @@ export const ReportTestForm = ({
                         )
                       }
                       name={ReportFormFields.ANALYTE_ID}
-                      readOnly={isReadonly}
+                      readOnly={isReadOnlyMode}
                       required
                       error={!!analyteError}
                       helperText={analyteError}
@@ -202,7 +203,7 @@ export const ReportTestForm = ({
                         )
                       }
                       name={ReportFormFields.ANALYSIS_METHOD_ID}
-                      readOnly={isReadonly}
+                      readOnly={isReadOnlyMode}
                       required
                       error={!!analysisMethodError}
                       helperText={analysisMethodError}
@@ -232,7 +233,7 @@ export const ReportTestForm = ({
                       error={!!resultError}
                       helperText={resultError}
                       InputProps={{
-                        readOnly: isReadonly,
+                        readOnly: isReadOnlyMode,
                       }}
                     />
                   </Stack>
@@ -256,7 +257,7 @@ export const ReportTestForm = ({
                         )
                       }
                       name={ReportFormFields.CRITERIA_ID}
-                      readOnly={isReadonly}
+                      readOnly={isReadOnlyMode}
                       required
                       error={!!criteriaError}
                       helperText={criteriaError}
@@ -270,7 +271,7 @@ export const ReportTestForm = ({
                       aria-label={SharedButtonCommonLabels.DELETE}
                       color={SharedButtonColors.ERROR}
                       size={SharedButtonSizes.SMALL}
-                      disabled={isReadonly}
+                      disabled={isReadOnlyMode}
                       onClick={() => handleRemoveTestFields(row.id)}
                     >
                       <DeleteIcon />
@@ -294,7 +295,7 @@ export const ReportTestForm = ({
         <Box {...testFormButtonProps()}>
           <Button
             variant="text"
-            disabled={isReadonly}
+            disabled={isReadOnlyMode}
             onClick={handleAddTestFields}
           >
             {BUTTON_LABELS.ADD_TEST}

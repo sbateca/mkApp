@@ -9,11 +9,11 @@ import {
   SharedButtonVariants,
 } from "../../../utils/enums";
 import {EDIT_SAMPLE_TYPE_BUTTON_LABEL} from "../../../utils/constants";
+import {useReadOnlyMode} from "../../../features/readOnlyMode";
 
 type SampleTypeDetailButtonsProps = {
   isNotValidForm: boolean;
   sampleType: SampleType | null;
-  isReadOnlyMode: boolean;
   handleReadOnlyModeChange: () => void;
   handleCreateSampleType: () => void;
   handleEditSampleType: () => void;
@@ -22,11 +22,11 @@ type SampleTypeDetailButtonsProps = {
 export const SampleTypeDetailButtons = ({
   isNotValidForm,
   sampleType,
-  isReadOnlyMode,
   handleReadOnlyModeChange,
   handleCreateSampleType,
   handleEditSampleType,
 }: SampleTypeDetailButtonsProps) => {
+  const {isReadOnlyMode} = useReadOnlyMode();
   return (
     <Box>
       {isReadOnlyMode && sampleType ? (

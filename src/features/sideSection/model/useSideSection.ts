@@ -1,9 +1,10 @@
+import {useReadOnlyMode} from "../../readOnlyMode";
 import {selectSetIsSideSectionOpen, selectSideSectionTitle} from "./selectors";
 import {useSideSectionStore} from "./store";
 
-export const useSideSection = (
-  setIsReadOnlyMode: React.Dispatch<React.SetStateAction<boolean>>,
-) => {
+export const useSideSection = () => {
+  const {setIsReadOnlyMode} = useReadOnlyMode();
+
   const setIsSideSectionOpen = useSideSectionStore(selectSetIsSideSectionOpen);
   const sideSectionTitle = useSideSectionStore(selectSideSectionTitle);
 

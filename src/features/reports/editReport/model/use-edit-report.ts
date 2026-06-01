@@ -14,13 +14,11 @@ import {ReportStatus, SnackBarSeverity} from "../../../../utils/enums";
 import {useSideSection} from "../../../sideSection/model/useSideSection";
 import {selectShowSnackBarMessage, useSnackBarStore} from "../../../snackbar";
 
-export const useEditReport = (
-  setIsReadOnlyMode: React.Dispatch<React.SetStateAction<boolean>>,
-) => {
+export const useEditReport = () => {
   const getReports = useReportStore(selectGetReports);
   const editReport = useReportStore(selectEditReport);
   const selectedReport = useReportStore(selectSelectedReport);
-  const {onCloseSideSection} = useSideSection(setIsReadOnlyMode);
+  const {onCloseSideSection} = useSideSection();
   const showSnackBarMessage = useSnackBarStore(selectShowSnackBarMessage);
 
   const handleEditReport = async (

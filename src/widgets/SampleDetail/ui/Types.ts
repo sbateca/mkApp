@@ -8,8 +8,6 @@ export interface SampleDetailProps {
 export interface SampleSideSectionActionsProps {
   isNotValidForm: boolean;
   sample: Sample | null;
-  isReadOnlyMode: boolean;
-  setIsReadOnlyMode: React.Dispatch<React.SetStateAction<boolean>>;
   handleCreateSample: () => void;
   handleEdit: () => void;
 }
