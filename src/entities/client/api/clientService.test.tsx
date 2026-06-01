@@ -1,4 +1,10 @@
-import {getClientByIdService, getClientsService} from "./clientService";
+import {
+  createClientService,
+  deleteClientService,
+  editClientService,
+  getClientByIdService,
+  getClientsService,
+} from "./clientService";
 import {buildClientsData} from "../../../shared/test/builders";
 import {Client} from "../model/Client";
 import {apiClient} from "../../../shared/api/apliClient";
@@ -46,6 +52,39 @@ describe("clientService", () => {
 
     expect(client).toEqual(mockClients[0]);
     expect(apiClient.get).toHaveBeenCalledWith(expectedURL);
+  });
+
+  it("should create a client", async () => {
+    const mockApiClientPost = apiClient.post as jest.Mock;
+    mockApiClientPost.mockResolvedValueOnce({data: mockClients[0]});
+    const expectedURL = "http://mockurl.com/api/clients";
+
+    const client = await createClientService(mockClients[0]);
+
+    expect(client).toEqual(mockClients[0]);
+    expect(mockApiClientPost).toHaveBeenCalledWith(expectedURL, mockClients[0]);
+  });
+
+  it("should edit a client", async () => {
+    const mockApiClientPut = apiClient.put as jest.Mock;
+    mockApiClientPut.mockResolvedValueOnce({data: mockClients[0]});
+    const expectedURL = "http://mockurl.com/api/clients/1";
+
+    const client = await editClientService(mockClients[0], "1");
+
+    expect(client).toEqual(mockClients[0]);
+    expect(mockApiClientPut).toHaveBeenCalledWith(expectedURL, mockClients[0]);
+  });
+
+  it("should delete a client", async () => {
+    const mockApiClientDelete = apiClient.delete as jest.Mock;
+    mockApiClientDelete.mockResolvedValueOnce({data: mockClients[0]});
+    const expectedURL = "http://mockurl.com/api/clients/1";
+
+    const client = await deleteClientService("1");
+
+    expect(client).toEqual(mockClients[0]);
+    expect(mockApiClientDelete).toHaveBeenCalledWith(expectedURL);
   });
 
   it("should throw an error when an error occurs", async () => {

@@ -1,4 +1,3 @@
-import {Sample} from "../../sample/model/Sample";
 import EnvManager from "../../../config/EnvManager";
 import {Client} from "../model/Client";
 import {axiosResponseToClient} from "../lib/clientMappers";
@@ -13,10 +12,38 @@ export const getClientsService = async (): Promise<Client[]> => {
 };
 
 export const getClientByIdService = async (
-  sampleTypeId: string,
+  clientId: string,
 ): Promise<Client> => {
-  const response = await apiClient.get<Sample>(
-    `${EnvManager.BACKEND_URL}${BaseRoutes.CLIENTS}/${sampleTypeId}`,
+  const response = await apiClient.get<Client>(
+    `${EnvManager.BACKEND_URL}${BaseRoutes.CLIENTS}/${clientId}`,
+  );
+  return axiosResponseToClient(response)[0];
+};
+
+export const createClientService = async (client: Client): Promise<Client> => {
+  const response = await apiClient.post<Client>(
+    `${EnvManager.BACKEND_URL}${BaseRoutes.CLIENTS}`,
+    client,
+  );
+  return axiosResponseToClient(response)[0];
+};
+
+export const editClientService = async (
+  client: Client,
+  clientId: string,
+): Promise<Client> => {
+  const response = await apiClient.put<Client>(
+    `${EnvManager.BACKEND_URL}${BaseRoutes.CLIENTS}/${clientId}`,
+    client,
+  );
+  return axiosResponseToClient(response)[0];
+};
+
+export const deleteClientService = async (
+  clientId: string,
+): Promise<Client> => {
+  const response = await apiClient.delete<Client>(
+    `${EnvManager.BACKEND_URL}${BaseRoutes.CLIENTS}/${clientId}`,
   );
   return axiosResponseToClient(response)[0];
 };

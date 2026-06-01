@@ -66,9 +66,13 @@ export const mockData = {
 const mockClientStoreState: ClientsStore = {
   clients: mockData.clients,
   selectedClient: mockData.clients[0],
+  setClients: jest.fn(),
   setSelectedClient: jest.fn(),
   getClients: jest.fn().mockReturnValue(mockData.clients),
   getClientById: jest.fn(),
+  createClient: jest.fn().mockResolvedValue(mockData.clients[0]),
+  editClient: jest.fn().mockResolvedValue(mockData.clients[0]),
+  deleteClient: jest.fn().mockResolvedValue(mockData.clients[0]),
   isLoading: false,
   error: null,
 };

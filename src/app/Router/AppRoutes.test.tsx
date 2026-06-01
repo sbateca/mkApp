@@ -24,6 +24,10 @@ jest.mock("../../pages/ReportsPage", () => ({
   ReportsPage: () => <div>Reports Page</div>,
 }));
 
+jest.mock("../../pages/ClientsPage", () => ({
+  ClientsPage: () => <div>Clients Page</div>,
+}));
+
 jest.mock("../../pages/NotFound", () => ({
   NotFoundPage: () => <div>Not Found Page</div>,
 }));
@@ -113,6 +117,15 @@ describe("AppRoutes", () => {
 
     expect(screen.getByText("Admin Layout")).toBeInTheDocument();
     expect(screen.getByText("Reports Page")).toBeInTheDocument();
+  });
+
+  it("should render clients page when user is authenticated", () => {
+    setAuthenticatedSession();
+
+    renderAppRoutes("/clients");
+
+    expect(screen.getByText("Admin Layout")).toBeInTheDocument();
+    expect(screen.getByText("Clients Page")).toBeInTheDocument();
   });
 
   it("should render not found page for unsupported routes", () => {
