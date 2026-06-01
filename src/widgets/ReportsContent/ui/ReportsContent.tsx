@@ -1,5 +1,3 @@
-import {useState} from "react";
-
 import {Box} from "@mui/material";
 
 import {Button, Spinner, Table, Typography} from "../../../shared/ui";
@@ -21,9 +19,10 @@ import {useOpenSideSection} from "../model/useOpenSideSection";
 import {useSamplesContentErrorNotifier} from "../model/useReportsContentErrorNotifier";
 import {useLoadRepostsContentData} from "../model/useLoadReportsContentData";
 import {ReportTableActionButtons} from "../../../features/reports/reportActions";
+import {useReadOnlyMode} from "../../../features/readOnlyMode";
 
 export const ReportsContent = (): React.ReactElement => {
-  const [isReadOnlyMode, setIsReadOnlyMode] = useState(true);
+  const {setIsReadOnlyMode} = useReadOnlyMode();
 
   const {
     rows,
@@ -86,10 +85,7 @@ export const ReportsContent = (): React.ReactElement => {
         )}
       />
       <SideSection isOpen={isSideSectionOpen}>
-        <ReportDetail
-          isReadOnlyMode={isReadOnlyMode}
-          setIsReadOnlyMode={setIsReadOnlyMode}
-        />
+        <ReportDetail />
       </SideSection>
     </Box>
   );

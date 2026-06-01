@@ -13,6 +13,7 @@ const mockSampleTypes: SampleType[] = buildSampleTypesData(1, {
 
 let mockSampleTypeStoreState: SampleTypeStore;
 let mockSnackBarStoreState: SnackBarStore;
+let mockIsReadOnlyMode = true;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let mockUseForm: any;
 
@@ -48,9 +49,18 @@ jest.mock("../../../features/sideSection", () => ({
   }),
 }));
 
+jest.mock("../../../features/readOnlyMode", () => ({
+  useReadOnlyMode: () => ({
+    isReadOnlyMode: mockIsReadOnlyMode,
+    setIsReadOnlyMode: jest.fn(),
+    handleSwitchReadOnlyMode: jest.fn(),
+  }),
+}));
+
 describe("SampleTypeDetail", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockIsReadOnlyMode = true;
     mockSampleTypeStoreState = {
       sampleTypes: mockSampleTypes,
       selectedSampleType: mockSampleTypes[0],
@@ -87,8 +97,6 @@ describe("SampleTypeDetail", () => {
   it("should render selected sample type details successfully", () => {
     render(
       <SampleTypeDetail
-        isReadOnlyMode
-        setIsReadOnlyMode={jest.fn()}
         handleCloseSideSection={jest.fn()}
         sideSectionTitle="Mock title"
         selectedSampleType={mockSampleTypes[0]}
@@ -106,8 +114,6 @@ describe("SampleTypeDetail", () => {
   it("should render loading spinner when sample type detail is loading", () => {
     render(
       <SampleTypeDetail
-        isReadOnlyMode
-        setIsReadOnlyMode={jest.fn()}
         handleCloseSideSection={jest.fn()}
         sideSectionTitle="Mock title"
         selectedSampleType={mockSampleTypes[0]}

@@ -22,17 +22,14 @@ import {useCreateSampleType} from "../model/useCreateSampleType";
 import {SampleTypeDetailButtons} from "../../../../widgets/SampleTypeDetail/ui/SampleTypeDetailButtons";
 import {useEditSampleType} from "../../editSampleType";
 import {sampleTypeToForm} from "../../lib/sampleTypeMappers";
+import {useReadOnlyMode} from "../../../readOnlyMode";
 
 type SampleTypeFormProps = {
   isLessThanMediumScreen: boolean;
-  isReadOnlyMode: boolean;
-  setIsReadOnlyMode: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const SampleTypeForm = ({
   isLessThanMediumScreen,
-  isReadOnlyMode,
-  setIsReadOnlyMode,
 }: SampleTypeFormProps) => {
   const {
     isNotValidForm,
@@ -45,12 +42,13 @@ export const SampleTypeForm = ({
     cleanForm,
   } = useForm();
 
+  const {isReadOnlyMode, handleSwitchReadOnlyMode} = useReadOnlyMode();
+
   const selectedSampleType = useSampleTypeStore(selectSelectedSampleType);
   const {handleCreateSampleType} = useCreateSampleType(form);
   const {handleEditSampleType} = useEditSampleType(
     form,
     selectedSampleType?.id || "",
-    setIsReadOnlyMode,
   );
 
   const formValidations = useMemo(
@@ -75,10 +73,6 @@ export const SampleTypeForm = ({
   useEffect(() => {
     setFormFieldsValidationFunctions(formValidations);
   }, [setFormFieldsValidationFunctions, formValidations]);
-
-  const handleReadOnlyModeChange = () => {
-    setIsReadOnlyMode(!isReadOnlyMode);
-  };
 
   return (
     <Stack
@@ -110,8 +104,7 @@ export const SampleTypeForm = ({
         <SampleTypeDetailButtons
           isNotValidForm={isNotValidForm}
           sampleType={selectedSampleType}
-          isReadOnlyMode={isReadOnlyMode}
-          handleReadOnlyModeChange={handleReadOnlyModeChange}
+          handleReadOnlyModeChange={handleSwitchReadOnlyMode}
           handleCreateSampleType={handleCreateSampleType}
           handleEditSampleType={handleEditSampleType}
         />

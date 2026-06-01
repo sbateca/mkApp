@@ -5,7 +5,6 @@ import {Box, Divider, Theme, useMediaQuery, useTheme} from "@mui/material";
 
 import {Spinner} from "../../../shared/ui";
 import SampleSideSectionButtons from "./SampleSideSectionActions";
-import {SampleDetailProps} from "./Types";
 import {useSampleStore} from "../../../entities/sample/model/store";
 import {selectSelectedSample} from "../../../entities/sample/model/selectors";
 import {SampleDetailHeader} from "./SampleDetailHeader";
@@ -14,18 +13,15 @@ import {useSampleErrorNotifier} from "../model/useSampleErrorNotifier";
 import {useSampleDetailController} from "../model/useSampleDetailController";
 import {getBoxContainerProps} from "../../../shared/commonStyles";
 
-export const SampleDetail = ({
-  isReadOnlyMode,
-  setIsReadOnlyMode,
-}: SampleDetailProps): React.ReactElement => {
+export const SampleDetail = (): React.ReactElement => {
   const theme = useTheme<Theme>();
   const isLessThanMediumScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   const selectedSample = useSampleStore(selectSelectedSample);
 
   const {sampleDetailForm, catalog, uiElements, actions} =
     useSampleDetailController({
       selectedSample,
-      setIsReadOnlyMode,
     });
 
   const {
@@ -58,7 +54,6 @@ export const SampleDetail = ({
     <Box sx={getBoxContainerProps(isLessThanMediumScreen) as SxProps}>
       <SampleDetailHeader
         selectedSample={selectedSample}
-        isReadOnlyMode={isReadOnlyMode}
         sideSectionTitle={sideSectionTitle}
         isLoading={isLoading}
         handleCloseSideSection={onCloseSideSection}
@@ -77,7 +72,6 @@ export const SampleDetail = ({
           handleChange={handleChange}
           handleDateChange={handleDateChange}
           isLessThanMediumScreen={isLessThanMediumScreen}
-          isReadOnlyMode={isReadOnlyMode}
           sampleTypes={sampleTypes}
         />
       )}
@@ -91,8 +85,6 @@ export const SampleDetail = ({
         <SampleSideSectionButtons
           isNotValidForm={isNotValidForm}
           sample={selectedSample}
-          isReadOnlyMode={isReadOnlyMode}
-          setIsReadOnlyMode={setIsReadOnlyMode}
           handleCreateSample={createSample}
           handleEdit={editSample}
         />

@@ -5,22 +5,16 @@ import {SxProps} from "@mui/material/styles";
 
 import {Spinner} from "../../../shared/ui";
 
-import {ReportDetailProps} from "./Types";
 import {useReportDetailController} from "../model/useReportDetailController";
 import {ReportDetailHeader} from "./ReportDetailHeader";
 import {ReportDetailForm} from "./ReportDetailForm";
 import {getBoxContainerProps} from "../../../shared/commonStyles";
 
-export const ReportDetail = ({
-  isReadOnlyMode,
-  setIsReadOnlyMode,
-}: ReportDetailProps): React.ReactElement => {
+export const ReportDetail = (): React.ReactElement => {
   const theme = useTheme<Theme>();
   const isLessThanMediumScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const {catalogs, detailForm, state, actions} = useReportDetailController({
-    setIsReadOnlyMode,
-  });
+  const {catalogs, detailForm, state, actions} = useReportDetailController();
 
   const {isLoadingAll} = catalogs;
   const {isLoading, selectedReport, sideSectionTitle} = state;
@@ -29,7 +23,6 @@ export const ReportDetail = ({
   return (
     <Box sx={getBoxContainerProps(isLessThanMediumScreen) as SxProps}>
       <ReportDetailHeader
-        isReadOnlyMode={isReadOnlyMode}
         handleCloseSideSection={onCloseSideSection}
         isLoading={isLoading}
         selectedReport={selectedReport}
@@ -41,8 +34,6 @@ export const ReportDetail = ({
       ) : (
         <ReportDetailForm
           isLessThanMediumScreen={isLessThanMediumScreen}
-          isReadOnlyMode={isReadOnlyMode}
-          setIsReadOnlyMode={setIsReadOnlyMode}
           catalogs={catalogs}
           detailForm={detailForm}
           state={state}

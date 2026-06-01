@@ -29,6 +29,7 @@ import {SampleType} from "../../../entities/sampleType";
 import {Analyte} from "../../../entities/analyte/model/Analyte";
 import {TestTypeStore} from "../../../entities/testType/model/types";
 import {TestStore} from "../../../entities/test/model/types";
+import {ReadOnlyModeStore} from "../../../features/readOnlyMode/model/types";
 
 const today = dayjs();
 const RENDERED_FORMAT_DATE = "MM/DD/YYYY";
@@ -112,6 +113,7 @@ let mockTestTypeStoreState: TestTypeStore;
 let mockTestStoreState: TestStore;
 let mockSideSectionStoreState: SideSectionStore;
 let mockSnackBarStoreState: SnackBarStore;
+let mockReadOnlyModeStoreState: ReadOnlyModeStore;
 
 jest.mock("../../../entities/sample/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -167,6 +169,13 @@ jest.mock("../../../features/sideSection/model/store", () => ({
 jest.mock("../../../features/snackbar/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSnackBarStore: (selector: any) => selector(mockSnackBarStoreState),
+}));
+
+jest.mock("../../../features/readOnlyMode", () => ({
+  useReadOnlyMode: () => ({
+    isReadOnlyMode: mockReadOnlyModeStoreState.isReadOnlyMode,
+    setIsReadOnlyMode: mockReadOnlyModeStoreState.setIsReadOnlyMode,
+  }),
 }));
 
 jest.mock("../../../utils/hooks", () => ({
@@ -314,6 +323,12 @@ export const renderReportDetail = async () => {
     closeSnackBar: jest.fn(),
   };
 
+  mockReadOnlyModeStoreState = {
+    isReadOnlyMode: mockReportDetailData.readonly,
+    setIsReadOnlyMode: jest.fn(),
+    handleSwitchReadOnlyMode: jest.fn(),
+  };
+
   jest.spyOn(hooks, "useForm").mockReturnValue({
     form: mockReportDetailData.form,
     setForm: jest.fn().mockReturnValue(mockReportDetailData.form),
@@ -327,17 +342,9 @@ export const renderReportDetail = async () => {
     setFormFieldsValidationFunctions: jest.fn(),
     setDefaultFormFieldsValues: jest.fn(),
     isNotValidForm: false,
-    isReadOnlyMode: false,
-    setIsReadOnlyMode: jest.fn(),
-    handleReadOnlyModeChange: jest.fn(),
   });
 
-  const container = render(
-    <ReportDetail
-      isReadOnlyMode={mockReportDetailData.readonly}
-      setIsReadOnlyMode={() => {}}
-    />,
-  );
+  const container = render(<ReportDetail />);
 
   return {
     container,

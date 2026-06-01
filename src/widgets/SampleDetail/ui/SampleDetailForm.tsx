@@ -35,6 +35,7 @@ import {
   getStackFieldProps,
   getStackRowProps,
 } from "../../../shared/commonStyles";
+import {useReadOnlyMode} from "../../../features/readOnlyMode";
 
 export type DetailFormProps = {
   clients: Client[] | null;
@@ -57,7 +58,6 @@ export type DetailFormProps = {
 
   handleDateChange: (value: dayjs.Dayjs | null, fieldName: string) => void;
   isLessThanMediumScreen: boolean;
-  isReadOnlyMode: boolean;
   sampleTypes: SampleType[] | null;
 };
 
@@ -71,12 +71,13 @@ export const SampleDetailForm = ({
   handleChange,
   handleDateChange,
   isLessThanMediumScreen,
-  isReadOnlyMode,
   sampleTypes,
 }: DetailFormProps) => {
   const today = React.useMemo(() => dayjs(), []);
   const getValue = (fieldName: string): string =>
     getFormStringValue(form, fieldName);
+
+  const {isReadOnlyMode} = useReadOnlyMode();
 
   return (
     <Stack {...getStackContainerProps(isLessThanMediumScreen)}>

@@ -34,11 +34,10 @@ import {
   getStackFieldProps,
   getStackRowProps,
 } from "../../../shared/commonStyles";
+import {useReadOnlyMode} from "../../../features/readOnlyMode";
 
 export const ReportDetailForm = ({
   isLessThanMediumScreen,
-  isReadOnlyMode,
-  setIsReadOnlyMode,
   catalogs,
   detailForm,
   state,
@@ -66,6 +65,8 @@ export const ReportDetailForm = ({
     getReportTestRows,
     handleTestRowsChange,
   } = detailForm;
+
+  const {isReadOnlyMode} = useReadOnlyMode();
 
   const {isLoadingSample, selectedReport, selectedSample} = state;
   const {onCreateReport, onEditReport, onApproveReport, onDownloadReport} =
@@ -158,7 +159,6 @@ export const ReportDetailForm = ({
                 {...getStackRowProps(isLessThanMediumScreen)}
               >
                 <ReportTestForm
-                  isReadonly={isReadOnlyMode}
                   analytes={analytes}
                   criterias={criterias}
                   analysisMethods={analysisMethods}
@@ -177,8 +177,6 @@ export const ReportDetailForm = ({
           <ReportSideSectionButtons
             isNotValidForm={detailForm.isNotValidForm || !areReportTestsValid}
             report={selectedReport}
-            isReadOnlyMode={isReadOnlyMode}
-            setIsReadOnlyMode={setIsReadOnlyMode}
             handleCreateReport={() => onCreateReport(reportTestGroups)}
             handleEdit={() => onEditReport(reportTestGroups)}
             handleApprove={() => onApproveReport(selectedReport?.id || "")}

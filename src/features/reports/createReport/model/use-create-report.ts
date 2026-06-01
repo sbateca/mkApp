@@ -1,4 +1,3 @@
-import React from "react";
 import {
   FormProps,
   REPORT_SUCCESSFULLY_CREATED_TEXT,
@@ -16,13 +15,11 @@ import {
   reportFormToReport,
 } from "../../../../entities/report";
 
-export const useCreateReport = (
-  setIsReadOnlyMode: React.Dispatch<React.SetStateAction<boolean>>,
-) => {
+export const useCreateReport = () => {
   const createReport = useReportStore(selectCreateReport);
   const showSnackBarMessage = useSnackBarStore(selectShowSnackBarMessage);
   const getReports = useReportStore(selectGetReports);
-  const {onCloseSideSection} = useSideSection(setIsReadOnlyMode);
+  const {onCloseSideSection} = useSideSection();
 
   const handleCreateReport = async (
     form: FormProps,

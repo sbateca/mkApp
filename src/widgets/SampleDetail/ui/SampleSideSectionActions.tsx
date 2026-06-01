@@ -10,18 +10,15 @@ import {
 } from "../../../utils/enums";
 import {EDIT_SAMPLE_BUTTON_LABEL} from "../../../utils/constants";
 import {SampleSideSectionActionsProps} from "./Types";
+import {useReadOnlyMode} from "../../../features/readOnlyMode";
 
 function SampleSideSectionButtons({
   isNotValidForm,
   sample,
-  isReadOnlyMode,
-  setIsReadOnlyMode,
   handleCreateSample,
   handleEdit,
 }: SampleSideSectionActionsProps): React.ReactElement {
-  const handleSwitchReadOnlyMode = () => {
-    setIsReadOnlyMode(!isReadOnlyMode);
-  };
+  const {isReadOnlyMode, handleSwitchReadOnlyMode} = useReadOnlyMode();
 
   return (
     <Box>

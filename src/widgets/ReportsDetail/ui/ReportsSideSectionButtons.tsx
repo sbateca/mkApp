@@ -11,20 +11,17 @@ import {
 } from "../../../utils/enums";
 import {ReportSideSectionActionsProps} from "./Types";
 import {EDIT_REPORTS_BUTTON_LABEL} from "../../../utils/constants";
+import {useReadOnlyMode} from "../../../features/readOnlyMode";
 
 export const ReportSideSectionButtons = ({
   isNotValidForm,
   report,
-  isReadOnlyMode,
-  setIsReadOnlyMode,
   handleCreateReport,
   handleEdit,
   handleApprove,
   handleDownload,
 }: ReportSideSectionActionsProps): React.ReactElement => {
-  const handleSwitchReadOnlyMode = () => {
-    setIsReadOnlyMode(!isReadOnlyMode);
-  };
+  const {isReadOnlyMode, handleSwitchReadOnlyMode} = useReadOnlyMode();
 
   return (
     <Box>

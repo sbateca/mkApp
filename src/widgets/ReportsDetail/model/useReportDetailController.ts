@@ -16,15 +16,13 @@ import {useSelectSampleForReport} from "../../../features/reports/selectSample/m
 import {selectSideSectionTitle} from "../../../features/sideSection/model/selectors";
 import {useSideSectionStore} from "../../../features/sideSection/model/store";
 import {useSideSection} from "../../../features/sideSection/model/useSideSection";
-import {ReportDetailControllerProps, ReportTestGroups} from "./types";
+import {ReportTestGroups} from "./types";
 import {useReportDetailForm} from "./useReportDetailForm";
 import {useReportErrorNotifier} from "./useReportErrorNotifier";
 import {useApproveReport} from "../../../features/reports/approveReport/model/useApproveReport";
 import {useDownloadReport} from "../../../features/reports/downloadReport/model/useDownloadReport";
 
-export const useReportDetailController = ({
-  setIsReadOnlyMode,
-}: ReportDetailControllerProps) => {
+export const useReportDetailController = () => {
   const selectedReport = useReportStore(selectSelectedReport);
   const isLoading = useReportStore(selectIsLoadingReport);
   const error = useReportStore(selectError);
@@ -39,12 +37,12 @@ export const useReportDetailController = ({
   const {form} = reportFormState;
 
   const sideSectionTitle = useSideSectionStore(selectSideSectionTitle);
-  const {onCloseSideSection} = useSideSection(setIsReadOnlyMode);
+  const {onCloseSideSection} = useSideSection();
 
   const {selectedSample, isLoadingSample} = useSelectSampleForReport(form);
 
-  const {handleCreateReport} = useCreateReport(setIsReadOnlyMode);
-  const {handleEditReport} = useEditReport(setIsReadOnlyMode);
+  const {handleCreateReport} = useCreateReport();
+  const {handleEditReport} = useEditReport();
   const {handleApproveReport} = useApproveReport();
   const {handleDownloadReport} = useDownloadReport();
 
