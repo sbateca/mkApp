@@ -2,6 +2,7 @@
 export enum SharedMenuItems {
   CLIENTS = "Clients",
   SAMPLE_TYPES = "Sample types",
+  ANALYTES = "Analytes",
   SAMPLES = "Samples",
   REPORTS = "Reports",
 }
@@ -200,6 +201,17 @@ export enum ClientFormFields {
 
 export enum ClientFormFieldLabels {
   NAME = "Name",
+}
+
+// Analytes
+export enum AnalyteFormFields {
+  NAME = "name",
+  TEST_TYPE = "testType",
+}
+
+export enum AnalyteFormFieldLabels {
+  NAME = "Name",
+  TEST_TYPE = "Test type",
 }
 
 // Test types

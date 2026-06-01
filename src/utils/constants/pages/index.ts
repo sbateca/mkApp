@@ -6,3 +6,4 @@ export * from "./shared";
 export * from "./notFound";
 export * from "./sampleType";
 export * from "./client";
+export * from "./analyte";

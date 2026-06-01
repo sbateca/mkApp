@@ -27,6 +27,9 @@ jest.mock("../../../../entities/client", () => ({
 jest.mock("../../../sideSection", () => ({
   selectSetIsSideSectionOpen: () => mockSetIsSideSectionOpen,
   selectSetSideSectionTitle: () => mockSetSideSectionTitle,
+  useSideSection: () => ({
+    onOpenSideSection: jest.fn(),
+  }),
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSideSectionStore: (selector: any) => selector({}),
 }));
