@@ -1,12 +1,19 @@
 import {useReadOnlyMode} from "../../readOnlyMode";
-import {selectSetIsSideSectionOpen, selectSideSectionTitle} from "./selectors";
+import {
+  selectIsSideSectionOpen,
+  selectSetIsSideSectionOpen,
+  selectSetSideSectionTitle,
+  selectSideSectionTitle,
+} from "./selectors";
 import {useSideSectionStore} from "./store";
 
 export const useSideSection = () => {
   const {setIsReadOnlyMode} = useReadOnlyMode();
 
-  const setIsSideSectionOpen = useSideSectionStore(selectSetIsSideSectionOpen);
+  const isSideSectionOpen = useSideSectionStore(selectIsSideSectionOpen);
   const sideSectionTitle = useSideSectionStore(selectSideSectionTitle);
+  const setIsSideSectionOpen = useSideSectionStore(selectSetIsSideSectionOpen);
+  const setSideSectionTitle = useSideSectionStore(selectSetSideSectionTitle);
 
   const onCloseSideSection = () => {
     if (setIsSideSectionOpen) {
@@ -15,5 +22,18 @@ export const useSideSection = () => {
     }
   };
 
-  return {onCloseSideSection, sideSectionTitle};
+  const onOpenSideSection = (title: string, isReadOnlyMode: boolean) => {
+    if (setIsSideSectionOpen && setSideSectionTitle) {
+      setSideSectionTitle(title);
+      setIsSideSectionOpen(true);
+      setIsReadOnlyMode(isReadOnlyMode);
+    }
+  };
+
+  return {
+    isSideSectionOpen,
+    sideSectionTitle,
+    onCloseSideSection,
+    onOpenSideSection,
+  };
 };

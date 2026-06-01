@@ -2,13 +2,12 @@ import {Box, Theme, useMediaQuery, useTheme} from "@mui/material";
 import {Button, Spinner, Table, Typography} from "../../../../shared/ui";
 import {useLoadSampleTypesData} from "../model/useLoadSampleTypesData";
 import {SideSection} from "../../../../shared/ui/SideSection";
-import {useOpenSideSection} from "../model/useOpenSideSection";
 import {CommonContentStyles} from "../../../../shared/commonStyles";
 import {
+  CREATE_SAMPLE_TYPE_TITLE_TEXT,
   SAMPLE_TYPE_CREATE_BUTTON_LABEL,
   SAMPLE_TYPES_TABLE_HEADER_LABELS,
   SAMPLE_TYPES_TITLE_CONFIG,
-  SAMPLES_TYPE_PAGE_DETAIL_TITLE,
 } from "../../../../utils/constants";
 import {
   SharedButtonColors,
@@ -22,7 +21,7 @@ import {
   selectSelectedSampleType,
   useSampleTypeStore,
 } from "../../../../entities/sampleType";
-import {useReadOnlyMode} from "../../../readOnlyMode";
+import {useSideSection} from "../../../sideSection";
 
 export const SampleTypesContent = () => {
   const {
@@ -45,13 +44,11 @@ export const SampleTypesContent = () => {
   const isLessThanMediumScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const selectedSampleType = useSampleTypeStore(selectSelectedSampleType);
 
-  const {setIsReadOnlyMode} = useReadOnlyMode();
-  const {isSideSectionOpen, handleOpenSideSection, handleCloseSideSection} =
-    useOpenSideSection();
+  const {isSideSectionOpen, onOpenSideSection, onCloseSideSection} =
+    useSideSection();
 
   const openSideSection = () => {
-    setIsReadOnlyMode(false);
-    handleOpenSideSection();
+    onOpenSideSection(CREATE_SAMPLE_TYPE_TITLE_TEXT, false);
   };
 
   return isLoading ? (
@@ -91,8 +88,7 @@ export const SampleTypesContent = () => {
       />
       <SideSection isOpen={isSideSectionOpen}>
         <SampleTypeDetail
-          handleCloseSideSection={handleCloseSideSection}
-          sideSectionTitle={SAMPLES_TYPE_PAGE_DETAIL_TITLE}
+          handleCloseSideSection={onCloseSideSection}
           selectedSampleType={selectedSampleType}
           isLoading={isLoading}
           isLessThanMediumScreen={isLessThanMediumScreen}

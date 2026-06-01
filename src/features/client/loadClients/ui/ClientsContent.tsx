@@ -4,9 +4,9 @@ import {SideSection} from "../../../../shared/ui/SideSection";
 import {CommonContentStyles} from "../../../../shared/commonStyles";
 import {
   CLIENT_CREATE_BUTTON_LABEL,
-  CLIENT_DETAILS_TITLE_TEXT,
   CLIENTS_TABLE_HEADER_LABELS,
   CLIENTS_TITLE_CONFIG,
+  CREATE_CLIENT_TITLE_TEXT,
 } from "../../../../utils/constants";
 import {
   SharedButtonColors,
@@ -16,13 +16,13 @@ import {
 } from "../../../../utils/enums";
 import {
   selectSelectedClient,
+  selectSetSelectedClient,
   useClientStore,
 } from "../../../../entities/client";
-import {useReadOnlyMode} from "../../../readOnlyMode";
 import {useLoadClientsData} from "../model/useLoadClientsData";
-import {useOpenSideSection} from "../model/useOpenSideSection";
 import {ClientTableActionButtons} from "../../clientActions";
 import {ClientDetail} from "../../../../widgets/ClientDetail";
+import {useSideSection} from "../../../sideSection";
 
 export const ClientsContent = () => {
   const {
@@ -44,13 +44,14 @@ export const ClientsContent = () => {
   const theme = useTheme<Theme>();
   const isLessThanMediumScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const selectedClient = useClientStore(selectSelectedClient);
-  const {setIsReadOnlyMode} = useReadOnlyMode();
-  const {isSideSectionOpen, handleOpenSideSection, handleCloseSideSection} =
-    useOpenSideSection();
+  const setSelectedClient = useClientStore(selectSetSelectedClient);
+
+  const {isSideSectionOpen, onCloseSideSection, onOpenSideSection} =
+    useSideSection();
 
   const openSideSection = () => {
-    setIsReadOnlyMode(false);
-    handleOpenSideSection();
+    setSelectedClient(null);
+    onOpenSideSection(CREATE_CLIENT_TITLE_TEXT, false);
   };
 
   return isLoading ? (
@@ -90,8 +91,7 @@ export const ClientsContent = () => {
       />
       <SideSection isOpen={isSideSectionOpen}>
         <ClientDetail
-          handleCloseSideSection={handleCloseSideSection}
-          sideSectionTitle={CLIENT_DETAILS_TITLE_TEXT}
+          handleCloseSideSection={onCloseSideSection}
           selectedClient={selectedClient}
           isLoading={isLoading}
           isLessThanMediumScreen={isLessThanMediumScreen}

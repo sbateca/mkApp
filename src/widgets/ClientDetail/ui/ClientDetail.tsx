@@ -7,7 +7,6 @@ import {ClientDetailHeader} from "./ClientDetailHeader";
 
 type ClientDetailProps = {
   handleCloseSideSection: () => void;
-  sideSectionTitle: string;
   isLessThanMediumScreen: boolean;
   isLoading: boolean;
   selectedClient: Client | null;
@@ -15,7 +14,6 @@ type ClientDetailProps = {
 
 export const ClientDetail = ({
   handleCloseSideSection,
-  sideSectionTitle,
   isLessThanMediumScreen,
   isLoading,
   selectedClient,
@@ -24,7 +22,6 @@ export const ClientDetail = ({
     <Box sx={getBoxContainerProps(isLessThanMediumScreen) as SxProps}>
       <ClientDetailHeader
         handleCloseSideSection={handleCloseSideSection}
-        sideSectionTitle={sideSectionTitle}
         selectedClient={selectedClient}
         isLoading={isLoading}
       />

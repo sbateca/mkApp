@@ -7,7 +7,6 @@ import {SampleType} from "../../../entities/sampleType";
 
 type SampleTypeDetailProps = {
   handleCloseSideSection: () => void;
-  sideSectionTitle: string;
   isLessThanMediumScreen: boolean;
   isLoading: boolean;
   selectedSampleType: SampleType | null;
@@ -15,7 +14,6 @@ type SampleTypeDetailProps = {
 
 export const SampleTypeDetail = ({
   handleCloseSideSection,
-  sideSectionTitle,
   isLessThanMediumScreen,
   isLoading,
   selectedSampleType,
@@ -24,7 +22,6 @@ export const SampleTypeDetail = ({
     <Box sx={getBoxContainerProps(isLessThanMediumScreen) as SxProps}>
       <SampleTypeDetailHeader
         handleCloseSideSection={handleCloseSideSection}
-        sideSectionTitle={sideSectionTitle}
         selectedSampleType={selectedSampleType}
         isLoading={isLoading}
         isLessThanMediumScreen={isLessThanMediumScreen}

@@ -6,6 +6,7 @@ import {
   REPORTS_TITLE_CONFIG,
   REPORTS_TABLE_HEADER_LABELS,
   REPORT_CREATE_BUTTON_LABEL,
+  CREATE_REPORT_TITLE_TEXT,
 } from "../../../utils/constants";
 import {
   SharedButtonColors,
@@ -15,11 +16,15 @@ import {
 } from "../../../utils/enums";
 import {ReportDetail} from "../../ReportsDetail";
 import {ReportsContentStyles} from "./ReportsContentStyles";
-import {useOpenSideSection} from "../model/useOpenSideSection";
 import {useSamplesContentErrorNotifier} from "../model/useReportsContentErrorNotifier";
 import {useLoadRepostsContentData} from "../model/useLoadReportsContentData";
 import {ReportTableActionButtons} from "../../../features/reports/reportActions";
 import {useReadOnlyMode} from "../../../features/readOnlyMode";
+import {useSideSection} from "../../../features/sideSection";
+import {
+  selectSetSelectedReport,
+  useReportStore,
+} from "../../../entities/report";
 
 export const ReportsContent = (): React.ReactElement => {
   const {setIsReadOnlyMode} = useReadOnlyMode();
@@ -39,12 +44,15 @@ export const ReportsContent = (): React.ReactElement => {
     filteredRowsCount,
     searchValue,
   } = useLoadRepostsContentData();
-  const {isSideSectionOpen, handleOpenSideSection} = useOpenSideSection();
   const {error} = useSamplesContentErrorNotifier();
 
+  const {isSideSectionOpen, onOpenSideSection} = useSideSection();
+  const setSelectedReport = useReportStore(selectSetSelectedReport);
+
   const openSideSection = () => {
+    setSelectedReport(null);
     setIsReadOnlyMode(false);
-    handleOpenSideSection();
+    onOpenSideSection(CREATE_REPORT_TITLE_TEXT, false);
   };
 
   if (error) return <Typography text={error} variant="h6" />;
