@@ -268,6 +268,9 @@ export const renderReportDetail = async () => {
     setSelectedAnalysisMethod: jest.fn(),
     getAnalysisMethods: jest.fn().mockReturnValue(mockAnalysisMethods),
     getAnalysisMethodById: jest.fn().mockReturnValue(mockAnalysisMethods[0]),
+    createAnalysisMethod: jest.fn().mockResolvedValue(mockAnalysisMethods[0]),
+    editAnalysisMethod: jest.fn().mockResolvedValue(mockAnalysisMethods[0]),
+    deleteAnalysisMethod: jest.fn().mockResolvedValue(mockAnalysisMethods[0]),
     isLoading: false,
     error: null,
   };
