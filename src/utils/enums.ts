@@ -1,5 +1,6 @@
 // Menu
 export enum SharedMenuItems {
+  CLIENTS = "Clients",
   SAMPLE_TYPES = "Sample types",
   SAMPLES = "Samples",
   REPORTS = "Reports",
@@ -189,6 +190,15 @@ export enum SampleTypeFormFields {
 }
 
 export enum SampleTypeFormFieldLabels {
+  NAME = "Name",
+}
+
+// Clients
+export enum ClientFormFields {
+  NAME = "name",
+}
+
+export enum ClientFormFieldLabels {
   NAME = "Name",
 }
 

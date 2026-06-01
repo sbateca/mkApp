@@ -225,9 +225,13 @@ export const renderReportDetail = async () => {
   mockClientStoreState = {
     clients: mockClients,
     selectedClient: mockClients[0],
+    setClients: jest.fn(),
     setSelectedClient: jest.fn(),
     getClients: jest.fn().mockReturnValue(mockClients),
     getClientById: jest.fn(),
+    createClient: jest.fn().mockResolvedValue(mockClients[0]),
+    editClient: jest.fn().mockResolvedValue(mockClients[0]),
+    deleteClient: jest.fn().mockResolvedValue(mockClients[0]),
     isLoading: false,
     error: null,
   };
