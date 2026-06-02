@@ -1,1 +1,1 @@
-export * from "./ui/AnalysisMethodsContent";
+export * from "./model/useLoadAnalysisMethodsData";

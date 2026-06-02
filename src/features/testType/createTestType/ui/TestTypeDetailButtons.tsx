@@ -1,38 +1,38 @@
 import {Box} from "@mui/material";
-import {AnalysisMethod} from "../../../entities/analysisMethod";
-import {Button} from "../../../shared/ui";
+import {TestType} from "../../../../entities/testType";
+import {Button} from "../../../../shared/ui";
 import {
   IconNames,
   SharedButtonColors,
   SharedButtonCommonLabels,
   SharedButtonSizes,
   SharedButtonVariants,
-} from "../../../utils/enums";
-import {EDIT_ANALYSIS_METHOD_BUTTON_LABEL} from "../../../utils/constants";
-import {useReadOnlyMode} from "../../../features/readOnlyMode";
+} from "../../../../utils/enums";
+import {EDIT_TEST_TYPE_BUTTON_LABEL} from "../../../../utils/constants";
+import {useReadOnlyMode} from "../../../readOnlyMode";
 
-type AnalysisMethodDetailButtonsProps = {
+type TestTypeDetailButtonsProps = {
   isNotValidForm: boolean;
-  analysisMethod: AnalysisMethod | null;
+  testType: TestType | null;
   handleReadOnlyModeChange: () => void;
-  handleCreateAnalysisMethod: () => void;
-  handleEditAnalysisMethod: () => void;
+  handleCreateTestType: () => void;
+  handleEditTestType: () => void;
 };
 
-export const AnalysisMethodDetailButtons = ({
+export const TestTypeDetailButtons = ({
   isNotValidForm,
-  analysisMethod,
+  testType,
   handleReadOnlyModeChange,
-  handleCreateAnalysisMethod,
-  handleEditAnalysisMethod,
-}: AnalysisMethodDetailButtonsProps) => {
+  handleCreateTestType,
+  handleEditTestType,
+}: TestTypeDetailButtonsProps) => {
   const {isReadOnlyMode} = useReadOnlyMode();
   return (
     <Box>
-      {isReadOnlyMode && analysisMethod ? (
+      {isReadOnlyMode && testType ? (
         <Button
           icon={IconNames.EDIT}
-          label={EDIT_ANALYSIS_METHOD_BUTTON_LABEL}
+          label={EDIT_TEST_TYPE_BUTTON_LABEL}
           disabled={isNotValidForm}
           variant={SharedButtonVariants.OUTLINED}
           size={SharedButtonSizes.SMALL}
@@ -40,7 +40,7 @@ export const AnalysisMethodDetailButtons = ({
           onClick={handleReadOnlyModeChange}
         />
       ) : null}
-      {!isReadOnlyMode && analysisMethod ? (
+      {!isReadOnlyMode && testType ? (
         <>
           <Button
             icon={IconNames.SAVE}
@@ -49,7 +49,7 @@ export const AnalysisMethodDetailButtons = ({
             variant={SharedButtonVariants.OUTLINED}
             size={SharedButtonSizes.SMALL}
             color={SharedButtonColors.SUCCESS}
-            onClick={handleEditAnalysisMethod}
+            onClick={handleEditTestType}
           />
           <Button
             label={SharedButtonCommonLabels.CANCEL}
@@ -61,7 +61,7 @@ export const AnalysisMethodDetailButtons = ({
           />
         </>
       ) : null}
-      {!isReadOnlyMode && !analysisMethod ? (
+      {!isReadOnlyMode && !testType ? (
         <Button
           icon={IconNames.SAVE}
           label={SharedButtonCommonLabels.SAVE}
@@ -69,7 +69,7 @@ export const AnalysisMethodDetailButtons = ({
           variant={SharedButtonVariants.OUTLINED}
           size={SharedButtonSizes.SMALL}
           color={SharedButtonColors.SUCCESS}
-          onClick={handleCreateAnalysisMethod}
+          onClick={handleCreateTestType}
         />
       ) : null}
     </Box>

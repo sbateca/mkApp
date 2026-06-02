@@ -1,7 +1,7 @@
 import {render, screen, waitFor} from "@testing-library/react";
 
-import {SideSectionStore} from "../../../sideSection/model/types";
-import {TestType, TestTypeStore} from "../../../../entities/testType";
+import {SideSectionStore} from "../../../features/sideSection/model/types";
+import {TestType, TestTypeStore} from "../../../entities/testType";
 import {TestTypesContent} from "./TestTypesContent";
 
 const mockTestTypes: TestType[] = [{id: "test-type-id", name: "Physical"}];
@@ -9,7 +9,7 @@ const mockTestTypes: TestType[] = [{id: "test-type-id", name: "Physical"}];
 let mockTestTypeStoreState: TestTypeStore;
 let mockSideSectionStoreState: SideSectionStore;
 
-jest.mock("../../../../entities/testType", () => ({
+jest.mock("../../../entities/testType", () => ({
   selectTestTypes: (store: TestTypeStore) => store.testTypes,
   selectGetTestTypes: (store: TestTypeStore) => store.getTestTypes,
   selectIsLoadingTestTypes: (store: TestTypeStore) => store.isLoading,
@@ -20,7 +20,7 @@ jest.mock("../../../../entities/testType", () => ({
   useTestTypeStore: (selector: any) => selector(mockTestTypeStoreState),
 }));
 
-jest.mock("../../../sideSection", () => ({
+jest.mock("../../../features/sideSection", () => ({
   useSideSection: () => ({
     isSideSectionOpen: mockSideSectionStoreState.isSideSectionOpen,
     sideSectionTitle: mockSideSectionStoreState.sideSectionTitle,
@@ -29,13 +29,13 @@ jest.mock("../../../sideSection", () => ({
   }),
 }));
 
-jest.mock("../../../../widgets/TestTypeDetail", () => ({
+jest.mock("../../TestTypeDetail", () => ({
   TestTypeDetail: () => (
     <div data-testid="testTypeDetail">Test Type Detail Component</div>
   ),
 }));
 
-jest.mock("../../testTypeActions", () => ({
+jest.mock("../../../features/testType/testTypeActions", () => ({
   TestTypeTableActionButtons: () => <button>Actions</button>,
 }));
 

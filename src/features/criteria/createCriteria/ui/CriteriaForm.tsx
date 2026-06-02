@@ -22,7 +22,7 @@ import {useReadOnlyMode} from "../../../readOnlyMode";
 import {useCreateCriteria} from "../model/useCreateCriteria";
 import {useEditCriteria} from "../../editCriteria";
 import {criteriaToForm} from "../../lib/criteriaMappers";
-import {CriteriaDetailButtons} from "../../../../widgets/CriteriaDetail/ui/CriteriaDetailButtons";
+import {CriteriaDetailButtons} from "./CriteriaDetailButtons";
 
 type CriteriaFormProps = {
   isLessThanMediumScreen: boolean;

@@ -1,9 +1,9 @@
 import {render, screen, waitFor} from "@testing-library/react";
 
 import {SampleTypesContent} from "./SampleTypesContent";
-import {SampleType, SampleTypeStore} from "../../../../entities/sampleType";
-import {SideSectionStore} from "../../../sideSection/model/types";
-import {buildSampleTypesData} from "../../../../shared/test/builders";
+import {SampleType, SampleTypeStore} from "../../../entities/sampleType";
+import {SideSectionStore} from "../../../features/sideSection/model/types";
+import {buildSampleTypesData} from "../../../shared/test/builders";
 
 const mockSampleTypes: SampleType[] = buildSampleTypesData(1, {
   id: "sample-type-id",
@@ -13,7 +13,7 @@ const mockSampleTypes: SampleType[] = buildSampleTypesData(1, {
 let mockSampleTypeStoreState: SampleTypeStore;
 let mockSideSectionStoreState: SideSectionStore;
 
-jest.mock("../../../../entities/sampleType", () => ({
+jest.mock("../../../entities/sampleType", () => ({
   selectGetSampleTypes: (store: SampleTypeStore) => store.getSampleTypes,
   selectIsLoadingSampleTypes: (store: SampleTypeStore) => store.isLoading,
   selectSelectedSampleType: (store: SampleTypeStore) =>
@@ -25,12 +25,12 @@ jest.mock("../../../../entities/sampleType", () => ({
   useSampleTypeStore: (selector: any) => selector(mockSampleTypeStoreState),
 }));
 
-jest.mock("../../../../features/sideSection/model/store", () => ({
+jest.mock("../../../features/sideSection/model/store", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useSideSectionStore: (selector: any) => selector(mockSideSectionStoreState),
 }));
 
-jest.mock("../../../sideSection", () => ({
+jest.mock("../../../features/sideSection", () => ({
   selectIsSideSectionOpen: (store: SideSectionStore) => store.isSideSectionOpen,
   selectSetIsSideSectionOpen: (store: SideSectionStore) =>
     store.setIsSideSectionOpen,
@@ -46,13 +46,13 @@ jest.mock("../../../sideSection", () => ({
   useSideSectionStore: (selector: any) => selector(mockSideSectionStoreState),
 }));
 
-jest.mock("../../../../widgets/SampleTypeDetail", () => ({
+jest.mock("../../SampleTypeDetail", () => ({
   SampleTypeDetail: () => (
     <div data-testid="sampleTypeDetail">Sample Type Detail Component</div>
   ),
 }));
 
-jest.mock("../../sampleTypeActions", () => ({
+jest.mock("../../../features/sampleType/sampleTypeActions", () => ({
   SampleTypeTableActionButtons: () => <button>Actions</button>,
 }));
 

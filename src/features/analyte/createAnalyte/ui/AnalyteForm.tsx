@@ -28,7 +28,7 @@ import {useReadOnlyMode} from "../../../readOnlyMode";
 import {useCreateAnalyte} from "../model/useCreateAnalyte";
 import {useEditAnalyte} from "../../editAnalyte";
 import {analyteToForm} from "../../lib/analyteMappers";
-import {AnalyteDetailButtons} from "../../../../widgets/AnalyteDetail/ui/AnalyteDetailButtons";
+import {AnalyteDetailButtons} from "./AnalyteDetailButtons";
 import {getAutoCompleteOptionsFromModel} from "../../../../utils/model";
 
 type AnalyteFormProps = {

@@ -1,38 +1,38 @@
 import {Box} from "@mui/material";
-import {Criteria} from "../../../entities/criteria";
-import {Button} from "../../../shared/ui";
+import {SampleType} from "../../../../entities/sampleType";
+import {Button} from "../../../../shared/ui";
 import {
   IconNames,
   SharedButtonColors,
   SharedButtonCommonLabels,
   SharedButtonSizes,
   SharedButtonVariants,
-} from "../../../utils/enums";
-import {EDIT_CRITERIA_BUTTON_LABEL} from "../../../utils/constants";
-import {useReadOnlyMode} from "../../../features/readOnlyMode";
+} from "../../../../utils/enums";
+import {EDIT_SAMPLE_TYPE_BUTTON_LABEL} from "../../../../utils/constants";
+import {useReadOnlyMode} from "../../../readOnlyMode";
 
-type CriteriaDetailButtonsProps = {
+type SampleTypeDetailButtonsProps = {
   isNotValidForm: boolean;
-  criteria: Criteria | null;
+  sampleType: SampleType | null;
   handleReadOnlyModeChange: () => void;
-  handleCreateCriteria: () => void;
-  handleEditCriteria: () => void;
+  handleCreateSampleType: () => void;
+  handleEditSampleType: () => void;
 };
 
-export const CriteriaDetailButtons = ({
+export const SampleTypeDetailButtons = ({
   isNotValidForm,
-  criteria,
+  sampleType,
   handleReadOnlyModeChange,
-  handleCreateCriteria,
-  handleEditCriteria,
-}: CriteriaDetailButtonsProps) => {
+  handleCreateSampleType,
+  handleEditSampleType,
+}: SampleTypeDetailButtonsProps) => {
   const {isReadOnlyMode} = useReadOnlyMode();
   return (
     <Box>
-      {isReadOnlyMode && criteria ? (
+      {isReadOnlyMode && sampleType ? (
         <Button
           icon={IconNames.EDIT}
-          label={EDIT_CRITERIA_BUTTON_LABEL}
+          label={EDIT_SAMPLE_TYPE_BUTTON_LABEL}
           disabled={isNotValidForm}
           variant={SharedButtonVariants.OUTLINED}
           size={SharedButtonSizes.SMALL}
@@ -40,7 +40,7 @@ export const CriteriaDetailButtons = ({
           onClick={handleReadOnlyModeChange}
         />
       ) : null}
-      {!isReadOnlyMode && criteria ? (
+      {!isReadOnlyMode && sampleType ? (
         <>
           <Button
             icon={IconNames.SAVE}
@@ -49,7 +49,7 @@ export const CriteriaDetailButtons = ({
             variant={SharedButtonVariants.OUTLINED}
             size={SharedButtonSizes.SMALL}
             color={SharedButtonColors.SUCCESS}
-            onClick={handleEditCriteria}
+            onClick={handleEditSampleType}
           />
           <Button
             label={SharedButtonCommonLabels.CANCEL}
@@ -61,7 +61,7 @@ export const CriteriaDetailButtons = ({
           />
         </>
       ) : null}
-      {!isReadOnlyMode && !criteria ? (
+      {!isReadOnlyMode && !sampleType ? (
         <Button
           icon={IconNames.SAVE}
           label={SharedButtonCommonLabels.SAVE}
@@ -69,7 +69,7 @@ export const CriteriaDetailButtons = ({
           variant={SharedButtonVariants.OUTLINED}
           size={SharedButtonSizes.SMALL}
           color={SharedButtonColors.SUCCESS}
-          onClick={handleCreateCriteria}
+          onClick={handleCreateSampleType}
         />
       ) : null}
     </Box>

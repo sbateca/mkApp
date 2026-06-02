@@ -1,4 +1,4 @@
-import {AnalysisMethodsContent} from "../../../features/analysisMethod/loadAnalysisMethods";
+import {AnalysisMethodsContent} from "../../../widgets/AnalysisMethodsContent";
 
 export const AnalysisMethodsPage = () => {
   return <AnalysisMethodsContent />;

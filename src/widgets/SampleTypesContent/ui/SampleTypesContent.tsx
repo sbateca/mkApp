@@ -1,30 +1,29 @@
 import {Box, Theme, useMediaQuery, useTheme} from "@mui/material";
-import {Button, Spinner, Table, Typography} from "../../../../shared/ui";
-import {SideSection} from "../../../../shared/ui/SideSection";
-import {CommonContentStyles} from "../../../../shared/commonStyles";
+import {Button, Spinner, Table, Typography} from "../../../shared/ui";
+import {useLoadSampleTypesData} from "../../../features/sampleType/loadSampleTypes/model/useLoadSampleTypesData";
+import {SideSection} from "../../../shared/ui/SideSection";
+import {CommonContentStyles} from "../../../shared/commonStyles";
 import {
-  ANALYSIS_METHOD_CREATE_BUTTON_LABEL,
-  ANALYSIS_METHODS_TABLE_HEADER_LABELS,
-  ANALYSIS_METHODS_TITLE_CONFIG,
-  CREATE_ANALYSIS_METHOD_TITLE_TEXT,
-} from "../../../../utils/constants";
+  CREATE_SAMPLE_TYPE_TITLE_TEXT,
+  SAMPLE_TYPE_CREATE_BUTTON_LABEL,
+  SAMPLE_TYPES_TABLE_HEADER_LABELS,
+  SAMPLE_TYPES_TITLE_CONFIG,
+} from "../../../utils/constants";
 import {
   SharedButtonColors,
   SharedButtonIcons,
   SharedButtonSizes,
   SharedButtonVariants,
-} from "../../../../utils/enums";
+} from "../../../utils/enums";
+import {SampleTypeTableActionButtons} from "../../../features/sampleType/sampleTypeActions";
+import {SampleTypeDetail} from "../../SampleTypeDetail";
 import {
-  selectSelectedAnalysisMethod,
-  selectSetSelectedAnalysisMethod,
-  useAnalysisMethodsStore,
-} from "../../../../entities/analysisMethod";
-import {useLoadAnalysisMethodsData} from "../model/useLoadAnalysisMethodsData";
-import {AnalysisMethodTableActionButtons} from "../../analysisMethodActions";
-import {AnalysisMethodDetail} from "../../../../widgets/AnalysisMethodDetail";
-import {useSideSection} from "../../../sideSection";
+  selectSelectedSampleType,
+  useSampleTypeStore,
+} from "../../../entities/sampleType";
+import {useSideSection} from "../../../features/sideSection";
 
-export const AnalysisMethodsContent = () => {
+export const SampleTypesContent = () => {
   const {
     rows,
     visibleRows,
@@ -39,23 +38,17 @@ export const AnalysisMethodsContent = () => {
     handleChangeRowsPerPage,
     handleRequestSort,
     handleSearch,
-  } = useLoadAnalysisMethodsData();
+  } = useLoadSampleTypesData();
 
   const theme = useTheme<Theme>();
   const isLessThanMediumScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const selectedAnalysisMethod = useAnalysisMethodsStore(
-    selectSelectedAnalysisMethod,
-  );
-  const setSelectedAnalysisMethod = useAnalysisMethodsStore(
-    selectSetSelectedAnalysisMethod,
-  );
+  const selectedSampleType = useSampleTypeStore(selectSelectedSampleType);
 
-  const {isSideSectionOpen, onCloseSideSection, onOpenSideSection} =
+  const {isSideSectionOpen, onOpenSideSection, onCloseSideSection} =
     useSideSection();
 
   const openSideSection = () => {
-    setSelectedAnalysisMethod(null);
-    onOpenSideSection(CREATE_ANALYSIS_METHOD_TITLE_TEXT, false);
+    onOpenSideSection(CREATE_SAMPLE_TYPE_TITLE_TEXT, false);
   };
 
   return isLoading ? (
@@ -63,10 +56,10 @@ export const AnalysisMethodsContent = () => {
   ) : (
     <Box>
       <Box sx={CommonContentStyles.titleContentContainer}>
-        <Typography {...ANALYSIS_METHODS_TITLE_CONFIG} />
+        <Typography {...SAMPLE_TYPES_TITLE_CONFIG} />
         <Box sx={CommonContentStyles.titleContentActions}>
           <Button
-            label={ANALYSIS_METHOD_CREATE_BUTTON_LABEL}
+            label={SAMPLE_TYPE_CREATE_BUTTON_LABEL}
             variant={SharedButtonVariants.OUTLINED}
             size={SharedButtonSizes.SMALL}
             color={SharedButtonColors.PRIMARY}
@@ -76,7 +69,7 @@ export const AnalysisMethodsContent = () => {
         </Box>
       </Box>
       <Table
-        headerLabels={ANALYSIS_METHODS_TABLE_HEADER_LABELS}
+        headerLabels={SAMPLE_TYPES_TABLE_HEADER_LABELS}
         rows={rows}
         visibleRows={visibleRows}
         rowsPerPage={rowsPerPage}
@@ -90,13 +83,13 @@ export const AnalysisMethodsContent = () => {
         handleRequestSort={handleRequestSort}
         handleSearch={handleSearch}
         renderActions={(row) => (
-          <AnalysisMethodTableActionButtons analysisMethodId={row.id ?? ""} />
+          <SampleTypeTableActionButtons sampleTypeId={row.id ?? ""} />
         )}
       />
       <SideSection isOpen={isSideSectionOpen}>
-        <AnalysisMethodDetail
+        <SampleTypeDetail
           handleCloseSideSection={onCloseSideSection}
-          selectedAnalysisMethod={selectedAnalysisMethod}
+          selectedSampleType={selectedSampleType}
           isLoading={isLoading}
           isLessThanMediumScreen={isLessThanMediumScreen}
         />

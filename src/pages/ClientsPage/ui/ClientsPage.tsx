@@ -1,4 +1,4 @@
-import {ClientsContent} from "../../../features/client/loadClients";
+import {ClientsContent} from "../../../widgets/ClientsContent";
 
 export const ClientsPage = () => {
   return <ClientsContent />;

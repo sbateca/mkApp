@@ -5,8 +5,13 @@ import {
   UNEXPECTED_APPLICATION_ERROR,
   UNEXPECTED_SERVER_ERROR,
 } from "../../utils/constants";
-import {useSessionStore} from "../../entities/auth";
 import {HttpStatus} from "../../utils/enums";
+
+let onUnauthorized: (() => void) | null = null;
+
+export const setUnauthorizedHandler = (handler: (() => void) | null) => {
+  onUnauthorized = handler;
+};
 
 export const apiClient = axios.create({
   baseURL: EnvManager.BACKEND_URL,
@@ -23,8 +28,7 @@ apiClient.interceptors.response.use(
     if (axios.isAxiosError<ApiErrorResponse>(error)) {
       const status = error.response?.status;
       if (status === HttpStatus.UNAUTHORIZED) {
-        const {clearSession} = useSessionStore.getState();
-        clearSession();
+        onUnauthorized?.();
       }
 
       const apiError = error.response?.data;

@@ -1,38 +1,38 @@
 import {Box} from "@mui/material";
-import {Analyte} from "../../../entities/analyte";
-import {Button} from "../../../shared/ui";
+import {Criteria} from "../../../../entities/criteria";
+import {Button} from "../../../../shared/ui";
 import {
   IconNames,
   SharedButtonColors,
   SharedButtonCommonLabels,
   SharedButtonSizes,
   SharedButtonVariants,
-} from "../../../utils/enums";
-import {EDIT_ANALYTE_BUTTON_LABEL} from "../../../utils/constants";
-import {useReadOnlyMode} from "../../../features/readOnlyMode";
+} from "../../../../utils/enums";
+import {EDIT_CRITERIA_BUTTON_LABEL} from "../../../../utils/constants";
+import {useReadOnlyMode} from "../../../readOnlyMode";
 
-type AnalyteDetailButtonsProps = {
+type CriteriaDetailButtonsProps = {
   isNotValidForm: boolean;
-  analyte: Analyte | null;
+  criteria: Criteria | null;
   handleReadOnlyModeChange: () => void;
-  handleCreateAnalyte: () => void;
-  handleEditAnalyte: () => void;
+  handleCreateCriteria: () => void;
+  handleEditCriteria: () => void;
 };
 
-export const AnalyteDetailButtons = ({
+export const CriteriaDetailButtons = ({
   isNotValidForm,
-  analyte,
+  criteria,
   handleReadOnlyModeChange,
-  handleCreateAnalyte,
-  handleEditAnalyte,
-}: AnalyteDetailButtonsProps) => {
+  handleCreateCriteria,
+  handleEditCriteria,
+}: CriteriaDetailButtonsProps) => {
   const {isReadOnlyMode} = useReadOnlyMode();
   return (
     <Box>
-      {isReadOnlyMode && analyte ? (
+      {isReadOnlyMode && criteria ? (
         <Button
           icon={IconNames.EDIT}
-          label={EDIT_ANALYTE_BUTTON_LABEL}
+          label={EDIT_CRITERIA_BUTTON_LABEL}
           disabled={isNotValidForm}
           variant={SharedButtonVariants.OUTLINED}
           size={SharedButtonSizes.SMALL}
@@ -40,7 +40,7 @@ export const AnalyteDetailButtons = ({
           onClick={handleReadOnlyModeChange}
         />
       ) : null}
-      {!isReadOnlyMode && analyte ? (
+      {!isReadOnlyMode && criteria ? (
         <>
           <Button
             icon={IconNames.SAVE}
@@ -49,7 +49,7 @@ export const AnalyteDetailButtons = ({
             variant={SharedButtonVariants.OUTLINED}
             size={SharedButtonSizes.SMALL}
             color={SharedButtonColors.SUCCESS}
-            onClick={handleEditAnalyte}
+            onClick={handleEditCriteria}
           />
           <Button
             label={SharedButtonCommonLabels.CANCEL}
@@ -61,7 +61,7 @@ export const AnalyteDetailButtons = ({
           />
         </>
       ) : null}
-      {!isReadOnlyMode && !analyte ? (
+      {!isReadOnlyMode && !criteria ? (
         <Button
           icon={IconNames.SAVE}
           label={SharedButtonCommonLabels.SAVE}
@@ -69,7 +69,7 @@ export const AnalyteDetailButtons = ({
           variant={SharedButtonVariants.OUTLINED}
           size={SharedButtonSizes.SMALL}
           color={SharedButtonColors.SUCCESS}
-          onClick={handleCreateAnalyte}
+          onClick={handleCreateCriteria}
         />
       ) : null}
     </Box>

@@ -1,1 +1,1 @@
-export * from "./ui/AnalytesContent";
+export * from "./model/useLoadAnalytesData";

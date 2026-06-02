@@ -22,7 +22,7 @@ import {useReadOnlyMode} from "../../../readOnlyMode";
 import {useCreateTestType} from "../model/useCreateTestType";
 import {useEditTestType} from "../../editTestType";
 import {testTypeToForm} from "../../lib/testTypeMappers";
-import {TestTypeDetailButtons} from "../../../../widgets/TestTypeDetail/ui/TestTypeDetailButtons";
+import {TestTypeDetailButtons} from "./TestTypeDetailButtons";
 
 type TestTypeFormProps = {
   isLessThanMediumScreen: boolean;

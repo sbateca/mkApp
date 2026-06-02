@@ -1,38 +1,38 @@
 import {Box} from "@mui/material";
-import {Client} from "../../../entities/client";
-import {Button} from "../../../shared/ui";
+import {AnalysisMethod} from "../../../../entities/analysisMethod";
+import {Button} from "../../../../shared/ui";
 import {
   IconNames,
   SharedButtonColors,
   SharedButtonCommonLabels,
   SharedButtonSizes,
   SharedButtonVariants,
-} from "../../../utils/enums";
-import {EDIT_CLIENT_BUTTON_LABEL} from "../../../utils/constants";
-import {useReadOnlyMode} from "../../../features/readOnlyMode";
+} from "../../../../utils/enums";
+import {EDIT_ANALYSIS_METHOD_BUTTON_LABEL} from "../../../../utils/constants";
+import {useReadOnlyMode} from "../../../readOnlyMode";
 
-type ClientDetailButtonsProps = {
+type AnalysisMethodDetailButtonsProps = {
   isNotValidForm: boolean;
-  client: Client | null;
+  analysisMethod: AnalysisMethod | null;
   handleReadOnlyModeChange: () => void;
-  handleCreateClient: () => void;
-  handleEditClient: () => void;
+  handleCreateAnalysisMethod: () => void;
+  handleEditAnalysisMethod: () => void;
 };
 
-export const ClientDetailButtons = ({
+export const AnalysisMethodDetailButtons = ({
   isNotValidForm,
-  client,
+  analysisMethod,
   handleReadOnlyModeChange,
-  handleCreateClient,
-  handleEditClient,
-}: ClientDetailButtonsProps) => {
+  handleCreateAnalysisMethod,
+  handleEditAnalysisMethod,
+}: AnalysisMethodDetailButtonsProps) => {
   const {isReadOnlyMode} = useReadOnlyMode();
   return (
     <Box>
-      {isReadOnlyMode && client ? (
+      {isReadOnlyMode && analysisMethod ? (
         <Button
           icon={IconNames.EDIT}
-          label={EDIT_CLIENT_BUTTON_LABEL}
+          label={EDIT_ANALYSIS_METHOD_BUTTON_LABEL}
           disabled={isNotValidForm}
           variant={SharedButtonVariants.OUTLINED}
           size={SharedButtonSizes.SMALL}
@@ -40,7 +40,7 @@ export const ClientDetailButtons = ({
           onClick={handleReadOnlyModeChange}
         />
       ) : null}
-      {!isReadOnlyMode && client ? (
+      {!isReadOnlyMode && analysisMethod ? (
         <>
           <Button
             icon={IconNames.SAVE}
@@ -49,7 +49,7 @@ export const ClientDetailButtons = ({
             variant={SharedButtonVariants.OUTLINED}
             size={SharedButtonSizes.SMALL}
             color={SharedButtonColors.SUCCESS}
-            onClick={handleEditClient}
+            onClick={handleEditAnalysisMethod}
           />
           <Button
             label={SharedButtonCommonLabels.CANCEL}
@@ -61,7 +61,7 @@ export const ClientDetailButtons = ({
           />
         </>
       ) : null}
-      {!isReadOnlyMode && !client ? (
+      {!isReadOnlyMode && !analysisMethod ? (
         <Button
           icon={IconNames.SAVE}
           label={SharedButtonCommonLabels.SAVE}
@@ -69,7 +69,7 @@ export const ClientDetailButtons = ({
           variant={SharedButtonVariants.OUTLINED}
           size={SharedButtonSizes.SMALL}
           color={SharedButtonColors.SUCCESS}
-          onClick={handleCreateClient}
+          onClick={handleCreateAnalysisMethod}
         />
       ) : null}
     </Box>

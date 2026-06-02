@@ -1,30 +1,30 @@
 import {Box, Theme, useMediaQuery, useTheme} from "@mui/material";
-import {Button, Spinner, Table, Typography} from "../../../../shared/ui";
-import {SideSection} from "../../../../shared/ui/SideSection";
-import {CommonContentStyles} from "../../../../shared/commonStyles";
+import {Button, Spinner, Table, Typography} from "../../../shared/ui";
+import {SideSection} from "../../../shared/ui/SideSection";
+import {CommonContentStyles} from "../../../shared/commonStyles";
 import {
-  CLIENT_CREATE_BUTTON_LABEL,
-  CLIENTS_TABLE_HEADER_LABELS,
-  CLIENTS_TITLE_CONFIG,
-  CREATE_CLIENT_TITLE_TEXT,
-} from "../../../../utils/constants";
+  CREATE_TEST_TYPE_TITLE_TEXT,
+  TEST_TYPES_TABLE_HEADER_LABELS,
+  TEST_TYPES_TITLE_CONFIG,
+  TEST_TYPE_CREATE_BUTTON_LABEL,
+} from "../../../utils/constants";
 import {
   SharedButtonColors,
   SharedButtonIcons,
   SharedButtonSizes,
   SharedButtonVariants,
-} from "../../../../utils/enums";
+} from "../../../utils/enums";
 import {
-  selectSelectedClient,
-  selectSetSelectedClient,
-  useClientStore,
-} from "../../../../entities/client";
-import {useLoadClientsData} from "../model/useLoadClientsData";
-import {ClientTableActionButtons} from "../../clientActions";
-import {ClientDetail} from "../../../../widgets/ClientDetail";
-import {useSideSection} from "../../../sideSection";
+  selectSelectedTestType,
+  selectSetSelectedTestType,
+  useTestTypeStore,
+} from "../../../entities/testType";
+import {useLoadTestTypesData} from "../../../features/testType/loadTestTypes/model/useLoadTestTypesData";
+import {TestTypeTableActionButtons} from "../../../features/testType/testTypeActions";
+import {TestTypeDetail} from "../../TestTypeDetail";
+import {useSideSection} from "../../../features/sideSection";
 
-export const ClientsContent = () => {
+export const TestTypesContent = () => {
   const {
     rows,
     visibleRows,
@@ -39,19 +39,19 @@ export const ClientsContent = () => {
     handleChangeRowsPerPage,
     handleRequestSort,
     handleSearch,
-  } = useLoadClientsData();
+  } = useLoadTestTypesData();
 
   const theme = useTheme<Theme>();
   const isLessThanMediumScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const selectedClient = useClientStore(selectSelectedClient);
-  const setSelectedClient = useClientStore(selectSetSelectedClient);
+  const selectedTestType = useTestTypeStore(selectSelectedTestType);
+  const setSelectedTestType = useTestTypeStore(selectSetSelectedTestType);
 
   const {isSideSectionOpen, onCloseSideSection, onOpenSideSection} =
     useSideSection();
 
   const openSideSection = () => {
-    setSelectedClient(null);
-    onOpenSideSection(CREATE_CLIENT_TITLE_TEXT, false);
+    setSelectedTestType(null);
+    onOpenSideSection(CREATE_TEST_TYPE_TITLE_TEXT, false);
   };
 
   return isLoading ? (
@@ -59,10 +59,10 @@ export const ClientsContent = () => {
   ) : (
     <Box>
       <Box sx={CommonContentStyles.titleContentContainer}>
-        <Typography {...CLIENTS_TITLE_CONFIG} />
+        <Typography {...TEST_TYPES_TITLE_CONFIG} />
         <Box sx={CommonContentStyles.titleContentActions}>
           <Button
-            label={CLIENT_CREATE_BUTTON_LABEL}
+            label={TEST_TYPE_CREATE_BUTTON_LABEL}
             variant={SharedButtonVariants.OUTLINED}
             size={SharedButtonSizes.SMALL}
             color={SharedButtonColors.PRIMARY}
@@ -72,7 +72,7 @@ export const ClientsContent = () => {
         </Box>
       </Box>
       <Table
-        headerLabels={CLIENTS_TABLE_HEADER_LABELS}
+        headerLabels={TEST_TYPES_TABLE_HEADER_LABELS}
         rows={rows}
         visibleRows={visibleRows}
         rowsPerPage={rowsPerPage}
@@ -86,13 +86,13 @@ export const ClientsContent = () => {
         handleRequestSort={handleRequestSort}
         handleSearch={handleSearch}
         renderActions={(row) => (
-          <ClientTableActionButtons clientId={row.id ?? ""} />
+          <TestTypeTableActionButtons testTypeId={row.id ?? ""} />
         )}
       />
       <SideSection isOpen={isSideSectionOpen}>
-        <ClientDetail
+        <TestTypeDetail
           handleCloseSideSection={onCloseSideSection}
-          selectedClient={selectedClient}
+          selectedTestType={selectedTestType}
           isLoading={isLoading}
           isLessThanMediumScreen={isLessThanMediumScreen}
         />

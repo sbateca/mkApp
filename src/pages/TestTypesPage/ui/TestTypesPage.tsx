@@ -1,4 +1,4 @@
-import {TestTypesContent} from "../../../features/testType/loadTestTypes";
+import {TestTypesContent} from "../../../widgets/TestTypesContent";
 
 export const TestTypesPage = () => {
   return <TestTypesContent />;

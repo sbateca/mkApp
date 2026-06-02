@@ -3,9 +3,9 @@ import {render, screen, waitFor} from "@testing-library/react";
 import {
   AnalysisMethod,
   AnalysisMethodStore,
-} from "../../../../entities/analysisMethod";
-import {SideSectionStore} from "../../../sideSection/model/types";
-import {buildAnalysisMethodsData} from "../../../../shared/test/builders/analisysMethodBuilder";
+} from "../../../entities/analysisMethod";
+import {SideSectionStore} from "../../../features/sideSection/model/types";
+import {buildAnalysisMethodsData} from "../../../shared/test/builders/analisysMethodBuilder";
 import {AnalysisMethodsContent} from "./AnalysisMethodsContent";
 
 const mockAnalysisMethods: AnalysisMethod[] = buildAnalysisMethodsData(1, {
@@ -16,7 +16,7 @@ const mockAnalysisMethods: AnalysisMethod[] = buildAnalysisMethodsData(1, {
 let mockAnalysisMethodStoreState: AnalysisMethodStore;
 let mockSideSectionStoreState: SideSectionStore;
 
-jest.mock("../../../../entities/analysisMethod", () => ({
+jest.mock("../../../entities/analysisMethod", () => ({
   selectAnalysisMethods: (store: AnalysisMethodStore) => store.analysisMethods,
   selectGetAnalysisMethods: (store: AnalysisMethodStore) =>
     store.getAnalysisMethods,
@@ -31,7 +31,7 @@ jest.mock("../../../../entities/analysisMethod", () => ({
     selector(mockAnalysisMethodStoreState),
 }));
 
-jest.mock("../../../sideSection", () => ({
+jest.mock("../../../features/sideSection", () => ({
   useSideSection: () => ({
     isSideSectionOpen: mockSideSectionStoreState.isSideSectionOpen,
     sideSectionTitle: mockSideSectionStoreState.sideSectionTitle,
@@ -40,7 +40,7 @@ jest.mock("../../../sideSection", () => ({
   }),
 }));
 
-jest.mock("../../../../widgets/AnalysisMethodDetail", () => ({
+jest.mock("../../AnalysisMethodDetail", () => ({
   AnalysisMethodDetail: () => (
     <div data-testid="analysisMethodDetail">
       Analysis Method Detail Component
@@ -48,7 +48,7 @@ jest.mock("../../../../widgets/AnalysisMethodDetail", () => ({
   ),
 }));
 
-jest.mock("../../analysisMethodActions", () => ({
+jest.mock("../../../features/analysisMethod/analysisMethodActions", () => ({
   AnalysisMethodTableActionButtons: () => <button>Actions</button>,
 }));
 

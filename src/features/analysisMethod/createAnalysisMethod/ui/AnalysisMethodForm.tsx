@@ -22,7 +22,7 @@ import {useReadOnlyMode} from "../../../readOnlyMode";
 import {useCreateAnalysisMethod} from "../model/useCreateAnalysisMethod";
 import {useEditAnalysisMethod} from "../../editAnalysisMethod";
 import {analysisMethodToForm} from "../../lib/analysisMethodMappers";
-import {AnalysisMethodDetailButtons} from "../../../../widgets/AnalysisMethodDetail/ui/AnalysisMethodDetailButtons";
+import {AnalysisMethodDetailButtons} from "./AnalysisMethodDetailButtons";
 
 type AnalysisMethodFormProps = {
   isLessThanMediumScreen: boolean;

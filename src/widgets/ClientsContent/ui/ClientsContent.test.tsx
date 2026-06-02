@@ -1,8 +1,8 @@
 import {render, screen, waitFor} from "@testing-library/react";
 
-import {Client, ClientsStore} from "../../../../entities/client";
-import {SideSectionStore} from "../../../sideSection/model/types";
-import {buildClientsData} from "../../../../shared/test/builders";
+import {Client, ClientsStore} from "../../../entities/client";
+import {SideSectionStore} from "../../../features/sideSection/model/types";
+import {buildClientsData} from "../../../shared/test/builders";
 import {ClientsContent} from "./ClientsContent";
 
 const mockClients: Client[] = buildClientsData(1, {
@@ -13,7 +13,7 @@ const mockClients: Client[] = buildClientsData(1, {
 let mockClientStoreState: ClientsStore;
 let mockSideSectionStoreState: SideSectionStore;
 
-jest.mock("../../../../entities/client", () => ({
+jest.mock("../../../entities/client", () => ({
   selectGetClients: (store: ClientsStore) => store.getClients,
   selectIsLoadingClient: (store: ClientsStore) => store.isLoading,
   selectSelectedClient: (store: ClientsStore) => store.selectedClient,
@@ -22,7 +22,7 @@ jest.mock("../../../../entities/client", () => ({
   useClientStore: (selector: any) => selector(mockClientStoreState),
 }));
 
-jest.mock("../../../sideSection", () => ({
+jest.mock("../../../features/sideSection", () => ({
   selectIsSideSectionOpen: (store: SideSectionStore) => store.isSideSectionOpen,
   selectSetIsSideSectionOpen: (store: SideSectionStore) =>
     store.setIsSideSectionOpen,
@@ -38,7 +38,7 @@ jest.mock("../../../sideSection", () => ({
   useSideSectionStore: (selector: any) => selector(mockSideSectionStoreState),
 }));
 
-jest.mock("../../../readOnlyMode", () => ({
+jest.mock("../../../features/readOnlyMode", () => ({
   useReadOnlyMode: () => ({
     isReadOnlyMode: true,
     setIsReadOnlyMode: jest.fn(),
@@ -46,13 +46,13 @@ jest.mock("../../../readOnlyMode", () => ({
   }),
 }));
 
-jest.mock("../../../../widgets/ClientDetail", () => ({
+jest.mock("../../ClientDetail", () => ({
   ClientDetail: () => (
     <div data-testid="clientDetail">Client Detail Component</div>
   ),
 }));
 
-jest.mock("../../clientActions", () => ({
+jest.mock("../../../features/client/clientActions", () => ({
   ClientTableActionButtons: () => <button>Actions</button>,
 }));
 

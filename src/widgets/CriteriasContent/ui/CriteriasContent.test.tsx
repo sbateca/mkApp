@@ -1,8 +1,8 @@
 import {render, screen, waitFor} from "@testing-library/react";
 
-import {Criteria, CriteriaStore} from "../../../../entities/criteria";
-import {SideSectionStore} from "../../../sideSection/model/types";
-import {buildCriteriasData} from "../../../../shared/test/builders/criteriaBuilder";
+import {Criteria, CriteriaStore} from "../../../entities/criteria";
+import {SideSectionStore} from "../../../features/sideSection/model/types";
+import {buildCriteriasData} from "../../../shared/test/builders/criteriaBuilder";
 import {CriteriasContent} from "./CriteriasContent";
 
 const mockCriterias: Criteria[] = buildCriteriasData(1, {
@@ -13,7 +13,7 @@ const mockCriterias: Criteria[] = buildCriteriasData(1, {
 let mockCriteriaStoreState: CriteriaStore;
 let mockSideSectionStoreState: SideSectionStore;
 
-jest.mock("../../../../entities/criteria", () => ({
+jest.mock("../../../entities/criteria", () => ({
   selectCriterias: (store: CriteriaStore) => store.criterias,
   selectGetCriterias: (store: CriteriaStore) => store.getCriterias,
   selectIsLoadingCriterias: (store: CriteriaStore) => store.isLoading,
@@ -24,7 +24,7 @@ jest.mock("../../../../entities/criteria", () => ({
   useCriteriaStore: (selector: any) => selector(mockCriteriaStoreState),
 }));
 
-jest.mock("../../../sideSection", () => ({
+jest.mock("../../../features/sideSection", () => ({
   useSideSection: () => ({
     isSideSectionOpen: mockSideSectionStoreState.isSideSectionOpen,
     sideSectionTitle: mockSideSectionStoreState.sideSectionTitle,
@@ -33,13 +33,13 @@ jest.mock("../../../sideSection", () => ({
   }),
 }));
 
-jest.mock("../../../../widgets/CriteriaDetail", () => ({
+jest.mock("../../CriteriaDetail", () => ({
   CriteriaDetail: () => (
     <div data-testid="criteriaDetail">Criteria Detail Component</div>
   ),
 }));
 
-jest.mock("../../criteriaActions", () => ({
+jest.mock("../../../features/criteria/criteriaActions", () => ({
   CriteriaTableActionButtons: () => <button>Actions</button>,
 }));
 
