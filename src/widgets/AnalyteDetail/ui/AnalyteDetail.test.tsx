@@ -91,6 +91,7 @@ describe("AnalyteDetail", () => {
       isLoading: false,
       error: null,
       setTestTypes: jest.fn(),
+      setSelectedTestType: jest.fn(),
       getTestTypes: jest.fn().mockResolvedValue(mockTestTypes),
       getTestTypeById: jest.fn().mockResolvedValue(mockTestTypes[0]),
       createTestType: jest.fn().mockResolvedValue(mockTestTypes[0]),

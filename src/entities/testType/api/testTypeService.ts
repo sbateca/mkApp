@@ -3,7 +3,6 @@ import {TestType} from "../model/TestType";
 import EnvManager from "../../../config/EnvManager";
 import {axiosResponseToTestypes} from "../lib/testTypeMappers";
 import {BaseRoutes} from "../../../utils/constants/baseRoutes";
-import {ELEMENT_NOT_FOUND_MESSAGE} from "../../../utils/constants";
 
 export const getTestTypesService = async (): Promise<TestType[]> => {
   const response = await apiClient.get<TestType[]>(
@@ -17,8 +16,7 @@ export const getTestTypeByIdService = async (testTypeId: string) => {
   const response = await apiClient.get<TestType>(
     `${EnvManager.BACKEND_URL}${BaseRoutes.TEST_TYPES}/${testTypeId}`,
   );
-  const testType = response.data as TestType;
-  return testType;
+  return axiosResponseToTestypes(response)[0];
 };
 
 export const createTestTypeService = async (testType: TestType) => {
@@ -26,38 +24,25 @@ export const createTestTypeService = async (testType: TestType) => {
     `${EnvManager.BACKEND_URL}${BaseRoutes.TEST_TYPES}`,
     testType,
   );
-  return response.data || null;
+  return axiosResponseToTestypes(response)[0];
 };
 
 export const editTestTypeService = async (
-  testTypeId: string,
   testType: TestType,
-): Promise<TestType | null> => {
-  const retrievedTestType = await requireTestTypeById(testTypeId);
-  const updatedTestType = {
-    ...retrievedTestType,
-    ...testType,
-  };
+  testTypeId: string,
+): Promise<TestType> => {
   const editResponse = await apiClient.put<TestType>(
     `${EnvManager.BACKEND_URL}${BaseRoutes.TEST_TYPES}/${testTypeId}`,
-    updatedTestType,
+    testType,
   );
-  return editResponse.data || null;
+  return axiosResponseToTestypes(editResponse)[0];
 };
 
 export const deleteTestTypeService = async (
   testTypeId: string,
-): Promise<void> => {
-  const retrievedTestType = await requireTestTypeById(testTypeId);
-  await apiClient.delete(
-    `${EnvManager.BACKEND_URL}${BaseRoutes.TEST_TYPES}/${retrievedTestType.id}`,
+): Promise<TestType> => {
+  const response = await apiClient.delete<TestType>(
+    `${EnvManager.BACKEND_URL}${BaseRoutes.TEST_TYPES}/${testTypeId}`,
   );
-};
-
-const requireTestTypeById = async (testTypeId: string) => {
-  const testType = await getTestTypeByIdService(testTypeId);
-  if (!testType) {
-    throw new Error(ELEMENT_NOT_FOUND_MESSAGE);
-  }
-  return testType;
+  return axiosResponseToTestypes(response)[0];
 };

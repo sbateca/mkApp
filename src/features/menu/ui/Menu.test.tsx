@@ -1,3 +1,4 @@
+import {fireEvent} from "@testing-library/react";
 import {renderMenu, updateUseMenu} from "./Menu.test.page";
 
 describe("Menu component", () => {
@@ -19,5 +20,21 @@ describe("Menu component", () => {
 
     expect(reportsItem).not.toBeVisible();
     expect(samplesItem).not.toBeVisible();
+  });
+
+  it("should keep selected state for the current route", () => {
+    updateUseMenu(true);
+    const {samplesButton} = renderMenu();
+
+    expect(samplesButton).toHaveClass("Mui-selected");
+  });
+
+  it("should update selected state when a menu item is clicked", () => {
+    updateUseMenu(true);
+    const {reportsButton} = renderMenu();
+
+    fireEvent.click(reportsButton);
+
+    expect(reportsButton).toHaveClass("Mui-selected");
   });
 });

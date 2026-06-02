@@ -1,8 +1,6 @@
 import {useLocation, useNavigate} from "react-router-dom";
 import {selectMenuOpen, selectToggleMenu} from "./selectors";
 import {useMenuStore} from "./store";
-import {BaseRoutes} from "../../../utils/constants/baseRoutes";
-import {SharedMenuItems} from "../../../utils/enums";
 
 export const useMenu = () => {
   const menuOpen = useMenuStore(selectMenuOpen);
@@ -11,21 +9,15 @@ export const useMenu = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const getSelectedMenuItem = () => {
+  const isSelectedMenuItem = (actionPath: string) => {
     const path = location.pathname;
-    if (path.startsWith(BaseRoutes.SAMPLES)) {
-      return SharedMenuItems.SAMPLES;
-    }
-    if (path.startsWith(BaseRoutes.REPORTS)) {
-      return SharedMenuItems.REPORTS;
-    }
-    return "";
+    return path === actionPath || path.startsWith(`${actionPath}/`);
   };
 
   return {
     menuOpen,
     toggleMenu,
-    getSelectedMenuItem,
+    isSelectedMenuItem,
     navigate,
   };
 };

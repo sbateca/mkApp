@@ -13,6 +13,14 @@ describe("ListItemButton", () => {
     expect(itemButton).toBeInTheDocument();
   });
 
+  it("renders an icon when it is provided", async () => {
+    const {menuIcon} = await renderListItemButton(
+      <span data-testid="menu-icon" />,
+    );
+
+    expect(menuIcon).toBeInTheDocument();
+  });
+
   it("itemButton has the selected class when is clicked", async () => {
     const {itemButton} = await renderListItemButton();
 

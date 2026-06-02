@@ -7,11 +7,12 @@ export type TestTypeStore = {
   isLoading: boolean;
   getTestTypes: () => Promise<TestType[] | null>;
   setTestTypes: (testTypes: TestType[] | null) => void;
+  setSelectedTestType: (testType: TestType | null) => void;
   getTestTypeById: (testTypeId: string) => Promise<TestType | null>;
   createTestType: (testType: TestType) => Promise<TestType | null>;
   editTestType: (
-    testTypeId: string,
     testType: TestType,
+    testTypeId: string,
   ) => Promise<TestType | null>;
-  deleteTestType: (testTypeId: string) => Promise<void>;
+  deleteTestType: (testTypeId: string) => Promise<TestType | null>;
 };

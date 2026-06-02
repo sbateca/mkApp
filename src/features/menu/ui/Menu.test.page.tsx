@@ -2,14 +2,22 @@ import {render, screen} from "@testing-library/react";
 import {MemoryRouter} from "react-router-dom";
 
 import {Menu} from "./Menu";
-import {SharedMenuItems} from "../../../utils/enums";
+import {SharedMenuItemIcons, SharedMenuItems} from "../../../utils/enums";
 import {MenuProps} from "./MenuProps";
 import {MenuStore} from "../model/types";
 
 export const mockMenuItems: MenuProps = {
   menuItems: [
-    {label: SharedMenuItems.REPORTS, actionPath: "/reports"},
-    {label: SharedMenuItems.SAMPLES, actionPath: "/samples"},
+    {
+      label: SharedMenuItems.REPORTS,
+      actionPath: "/reports",
+      icon: SharedMenuItemIcons.REPORTS,
+    },
+    {
+      label: SharedMenuItems.SAMPLES,
+      actionPath: "/samples",
+      icon: SharedMenuItemIcons.SAMPLES,
+    },
   ],
 };
 
@@ -44,8 +52,17 @@ export const renderMenu = () => {
     </MemoryRouter>,
   );
 
+  const reportsButton = screen
+    .getByText("Reports")
+    .closest(".MuiListItemButton-root") as HTMLElement;
+  const samplesButton = screen
+    .getByText("Samples")
+    .closest(".MuiListItemButton-root") as HTMLElement;
+
   return {
     reportsItem: screen.queryByText("Reports"),
     samplesItem: screen.queryByText("Samples"),
+    reportsButton,
+    samplesButton,
   };
 };

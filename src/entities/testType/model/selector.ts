@@ -9,6 +9,8 @@ export const selectSelectedTestType = (store: TestTypeStore) =>
 
 export const selectGetTestTypes = (store: TestTypeStore) => store.getTestTypes;
 export const selectSetTestTypes = (store: TestTypeStore) => store.setTestTypes;
+export const selectSetSelectedTestType = (store: TestTypeStore) =>
+  store.setSelectedTestType;
 export const selectGetTestTypeById = (store: TestTypeStore) =>
   store.getTestTypeById;
 export const selectCreateTestType = (store: TestTypeStore) =>

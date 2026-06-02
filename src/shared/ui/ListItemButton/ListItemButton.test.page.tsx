@@ -26,9 +26,10 @@ export const setupMocks = () => {
   }));
 };
 
-export const renderListItemButton = async () => {
-  render(<ListItemButton label={mockData.label} />);
+export const renderListItemButton = async (icon?: React.ReactNode) => {
+  render(<ListItemButton label={mockData.label} icon={icon} />);
   return {
     itemButton: screen.getByRole("button"),
+    menuIcon: screen.queryByTestId("menu-icon"),
   };
 };

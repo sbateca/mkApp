@@ -6,8 +6,16 @@ import {
   Save,
   Delete,
   Check,
+  People,
+  Category,
+  Science,
+  Build,
+  Rule,
+  FactCheck,
+  Inventory2,
+  Assessment,
 } from "@mui/icons-material";
-import {IconNames} from "./enums";
+import {IconNames, SharedMenuItemIcons} from "./enums";
 
 export const getIcon = (icon: string) => {
   switch (icon) {
@@ -27,5 +35,28 @@ export const getIcon = (icon: string) => {
       return <Check />;
     default:
       return "";
+  }
+};
+
+export const getMenuIcon = (icon?: SharedMenuItemIcons) => {
+  switch (icon) {
+    case SharedMenuItemIcons.CLIENTS:
+      return <People />;
+    case SharedMenuItemIcons.SAMPLE_TYPES:
+      return <Category />;
+    case SharedMenuItemIcons.ANALYTES:
+      return <Science />;
+    case SharedMenuItemIcons.ANALYSIS_METHODS:
+      return <Build />;
+    case SharedMenuItemIcons.CRITERIA:
+      return <Rule />;
+    case SharedMenuItemIcons.TEST_TYPES:
+      return <FactCheck />;
+    case SharedMenuItemIcons.SAMPLES:
+      return <Inventory2 />;
+    case SharedMenuItemIcons.REPORTS:
+      return <Assessment />;
+    default:
+      return null;
   }
 };
