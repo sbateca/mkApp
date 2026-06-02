@@ -1,8 +1,8 @@
 import {render, screen, waitFor} from "@testing-library/react";
 
-import {Analyte, AnalyteStore} from "../../../../entities/analyte";
-import {SideSectionStore} from "../../../sideSection/model/types";
-import {buildAnalytesData} from "../../../../shared/test/builders";
+import {Analyte, AnalyteStore} from "../../../entities/analyte";
+import {SideSectionStore} from "../../../features/sideSection/model/types";
+import {buildAnalytesData} from "../../../shared/test/builders";
 import {AnalytesContent} from "./AnalytesContent";
 
 const mockAnalytes: Analyte[] = buildAnalytesData(1, {
@@ -17,7 +17,7 @@ const mockAnalytes: Analyte[] = buildAnalytesData(1, {
 let mockAnalyteStoreState: AnalyteStore;
 let mockSideSectionStoreState: SideSectionStore;
 
-jest.mock("../../../../entities/analyte", () => ({
+jest.mock("../../../entities/analyte", () => ({
   selectAnalytes: (store: AnalyteStore) => store.analytes,
   selectGetAnalytes: (store: AnalyteStore) => store.getAnalytes,
   selectIsLoadingAnalytes: (store: AnalyteStore) => store.isLoading,
@@ -27,7 +27,7 @@ jest.mock("../../../../entities/analyte", () => ({
   useAnalyteStore: (selector: any) => selector(mockAnalyteStoreState),
 }));
 
-jest.mock("../../../sideSection", () => ({
+jest.mock("../../../features/sideSection", () => ({
   useSideSection: () => ({
     isSideSectionOpen: mockSideSectionStoreState.isSideSectionOpen,
     sideSectionTitle: mockSideSectionStoreState.sideSectionTitle,
@@ -36,13 +36,13 @@ jest.mock("../../../sideSection", () => ({
   }),
 }));
 
-jest.mock("../../../../widgets/AnalyteDetail", () => ({
+jest.mock("../../AnalyteDetail", () => ({
   AnalyteDetail: () => (
     <div data-testid="analyteDetail">Analyte Detail Component</div>
   ),
 }));
 
-jest.mock("../../analyteActions", () => ({
+jest.mock("../../../features/analyte/analyteActions", () => ({
   AnalyteTableActionButtons: () => <button>Actions</button>,
 }));
 

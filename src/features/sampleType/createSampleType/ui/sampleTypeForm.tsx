@@ -19,7 +19,7 @@ import {
   TextFieldSizes,
 } from "../../../../utils/enums";
 import {useCreateSampleType} from "../model/useCreateSampleType";
-import {SampleTypeDetailButtons} from "../../../../widgets/SampleTypeDetail/ui/SampleTypeDetailButtons";
+import {SampleTypeDetailButtons} from "./SampleTypeDetailButtons";
 import {useEditSampleType} from "../../editSampleType";
 import {sampleTypeToForm} from "../../lib/sampleTypeMappers";
 import {useReadOnlyMode} from "../../../readOnlyMode";

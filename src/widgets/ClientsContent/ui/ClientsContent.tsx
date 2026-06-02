@@ -1,30 +1,30 @@
 import {Box, Theme, useMediaQuery, useTheme} from "@mui/material";
-import {Button, Spinner, Table, Typography} from "../../../../shared/ui";
-import {SideSection} from "../../../../shared/ui/SideSection";
-import {CommonContentStyles} from "../../../../shared/commonStyles";
+import {Button, Spinner, Table, Typography} from "../../../shared/ui";
+import {SideSection} from "../../../shared/ui/SideSection";
+import {CommonContentStyles} from "../../../shared/commonStyles";
 import {
-  CREATE_CRITERIA_TITLE_TEXT,
-  CRITERIA_CREATE_BUTTON_LABEL,
-  CRITERIA_TABLE_HEADER_LABELS,
-  CRITERIA_TITLE_CONFIG,
-} from "../../../../utils/constants";
+  CLIENT_CREATE_BUTTON_LABEL,
+  CLIENTS_TABLE_HEADER_LABELS,
+  CLIENTS_TITLE_CONFIG,
+  CREATE_CLIENT_TITLE_TEXT,
+} from "../../../utils/constants";
 import {
   SharedButtonColors,
   SharedButtonIcons,
   SharedButtonSizes,
   SharedButtonVariants,
-} from "../../../../utils/enums";
+} from "../../../utils/enums";
 import {
-  selectSelectedCriteria,
-  selectSetSelectedCriteria,
-  useCriteriaStore,
-} from "../../../../entities/criteria";
-import {useLoadCriteriasData} from "../model/useLoadCriteriasData";
-import {CriteriaTableActionButtons} from "../../criteriaActions";
-import {CriteriaDetail} from "../../../../widgets/CriteriaDetail";
-import {useSideSection} from "../../../sideSection";
+  selectSelectedClient,
+  selectSetSelectedClient,
+  useClientStore,
+} from "../../../entities/client";
+import {useLoadClientsData} from "../../../features/client/loadClients/model/useLoadClientsData";
+import {ClientTableActionButtons} from "../../../features/client/clientActions";
+import {ClientDetail} from "../../ClientDetail";
+import {useSideSection} from "../../../features/sideSection";
 
-export const CriteriasContent = () => {
+export const ClientsContent = () => {
   const {
     rows,
     visibleRows,
@@ -39,19 +39,19 @@ export const CriteriasContent = () => {
     handleChangeRowsPerPage,
     handleRequestSort,
     handleSearch,
-  } = useLoadCriteriasData();
+  } = useLoadClientsData();
 
   const theme = useTheme<Theme>();
   const isLessThanMediumScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const selectedCriteria = useCriteriaStore(selectSelectedCriteria);
-  const setSelectedCriteria = useCriteriaStore(selectSetSelectedCriteria);
+  const selectedClient = useClientStore(selectSelectedClient);
+  const setSelectedClient = useClientStore(selectSetSelectedClient);
 
   const {isSideSectionOpen, onCloseSideSection, onOpenSideSection} =
     useSideSection();
 
   const openSideSection = () => {
-    setSelectedCriteria(null);
-    onOpenSideSection(CREATE_CRITERIA_TITLE_TEXT, false);
+    setSelectedClient(null);
+    onOpenSideSection(CREATE_CLIENT_TITLE_TEXT, false);
   };
 
   return isLoading ? (
@@ -59,10 +59,10 @@ export const CriteriasContent = () => {
   ) : (
     <Box>
       <Box sx={CommonContentStyles.titleContentContainer}>
-        <Typography {...CRITERIA_TITLE_CONFIG} />
+        <Typography {...CLIENTS_TITLE_CONFIG} />
         <Box sx={CommonContentStyles.titleContentActions}>
           <Button
-            label={CRITERIA_CREATE_BUTTON_LABEL}
+            label={CLIENT_CREATE_BUTTON_LABEL}
             variant={SharedButtonVariants.OUTLINED}
             size={SharedButtonSizes.SMALL}
             color={SharedButtonColors.PRIMARY}
@@ -72,7 +72,7 @@ export const CriteriasContent = () => {
         </Box>
       </Box>
       <Table
-        headerLabels={CRITERIA_TABLE_HEADER_LABELS}
+        headerLabels={CLIENTS_TABLE_HEADER_LABELS}
         rows={rows}
         visibleRows={visibleRows}
         rowsPerPage={rowsPerPage}
@@ -86,13 +86,13 @@ export const CriteriasContent = () => {
         handleRequestSort={handleRequestSort}
         handleSearch={handleSearch}
         renderActions={(row) => (
-          <CriteriaTableActionButtons criteriaId={row.id ?? ""} />
+          <ClientTableActionButtons clientId={row.id ?? ""} />
         )}
       />
       <SideSection isOpen={isSideSectionOpen}>
-        <CriteriaDetail
+        <ClientDetail
           handleCloseSideSection={onCloseSideSection}
-          selectedCriteria={selectedCriteria}
+          selectedClient={selectedClient}
           isLoading={isLoading}
           isLessThanMediumScreen={isLessThanMediumScreen}
         />

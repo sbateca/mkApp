@@ -1,30 +1,30 @@
 import {Box, Theme, useMediaQuery, useTheme} from "@mui/material";
-import {Button, Spinner, Table, Typography} from "../../../../shared/ui";
-import {SideSection} from "../../../../shared/ui/SideSection";
-import {CommonContentStyles} from "../../../../shared/commonStyles";
+import {Button, Spinner, Table, Typography} from "../../../shared/ui";
+import {SideSection} from "../../../shared/ui/SideSection";
+import {CommonContentStyles} from "../../../shared/commonStyles";
 import {
-  ANALYTE_CREATE_BUTTON_LABEL,
-  ANALYTES_TABLE_HEADER_LABELS,
-  ANALYTES_TITLE_CONFIG,
-  CREATE_ANALYTE_TITLE_TEXT,
-} from "../../../../utils/constants";
+  ANALYSIS_METHOD_CREATE_BUTTON_LABEL,
+  ANALYSIS_METHODS_TABLE_HEADER_LABELS,
+  ANALYSIS_METHODS_TITLE_CONFIG,
+  CREATE_ANALYSIS_METHOD_TITLE_TEXT,
+} from "../../../utils/constants";
 import {
   SharedButtonColors,
   SharedButtonIcons,
   SharedButtonSizes,
   SharedButtonVariants,
-} from "../../../../utils/enums";
+} from "../../../utils/enums";
 import {
-  selectSelectedAnaliye,
-  selectSetSelectedAnalyte,
-  useAnalyteStore,
-} from "../../../../entities/analyte";
-import {useLoadAnalytesData} from "../model/useLoadAnalytesData";
-import {AnalyteTableActionButtons} from "../../analyteActions";
-import {AnalyteDetail} from "../../../../widgets/AnalyteDetail";
-import {useSideSection} from "../../../sideSection";
+  selectSelectedAnalysisMethod,
+  selectSetSelectedAnalysisMethod,
+  useAnalysisMethodsStore,
+} from "../../../entities/analysisMethod";
+import {useLoadAnalysisMethodsData} from "../../../features/analysisMethod/loadAnalysisMethods/model/useLoadAnalysisMethodsData";
+import {AnalysisMethodTableActionButtons} from "../../../features/analysisMethod/analysisMethodActions";
+import {AnalysisMethodDetail} from "../../AnalysisMethodDetail";
+import {useSideSection} from "../../../features/sideSection";
 
-export const AnalytesContent = () => {
+export const AnalysisMethodsContent = () => {
   const {
     rows,
     visibleRows,
@@ -39,19 +39,23 @@ export const AnalytesContent = () => {
     handleChangeRowsPerPage,
     handleRequestSort,
     handleSearch,
-  } = useLoadAnalytesData();
+  } = useLoadAnalysisMethodsData();
 
   const theme = useTheme<Theme>();
   const isLessThanMediumScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const selectedAnalyte = useAnalyteStore(selectSelectedAnaliye);
-  const setSelectedAnalyte = useAnalyteStore(selectSetSelectedAnalyte);
+  const selectedAnalysisMethod = useAnalysisMethodsStore(
+    selectSelectedAnalysisMethod,
+  );
+  const setSelectedAnalysisMethod = useAnalysisMethodsStore(
+    selectSetSelectedAnalysisMethod,
+  );
 
   const {isSideSectionOpen, onCloseSideSection, onOpenSideSection} =
     useSideSection();
 
   const openSideSection = () => {
-    setSelectedAnalyte(null);
-    onOpenSideSection(CREATE_ANALYTE_TITLE_TEXT, false);
+    setSelectedAnalysisMethod(null);
+    onOpenSideSection(CREATE_ANALYSIS_METHOD_TITLE_TEXT, false);
   };
 
   return isLoading ? (
@@ -59,10 +63,10 @@ export const AnalytesContent = () => {
   ) : (
     <Box>
       <Box sx={CommonContentStyles.titleContentContainer}>
-        <Typography {...ANALYTES_TITLE_CONFIG} />
+        <Typography {...ANALYSIS_METHODS_TITLE_CONFIG} />
         <Box sx={CommonContentStyles.titleContentActions}>
           <Button
-            label={ANALYTE_CREATE_BUTTON_LABEL}
+            label={ANALYSIS_METHOD_CREATE_BUTTON_LABEL}
             variant={SharedButtonVariants.OUTLINED}
             size={SharedButtonSizes.SMALL}
             color={SharedButtonColors.PRIMARY}
@@ -72,7 +76,7 @@ export const AnalytesContent = () => {
         </Box>
       </Box>
       <Table
-        headerLabels={ANALYTES_TABLE_HEADER_LABELS}
+        headerLabels={ANALYSIS_METHODS_TABLE_HEADER_LABELS}
         rows={rows}
         visibleRows={visibleRows}
         rowsPerPage={rowsPerPage}
@@ -86,13 +90,13 @@ export const AnalytesContent = () => {
         handleRequestSort={handleRequestSort}
         handleSearch={handleSearch}
         renderActions={(row) => (
-          <AnalyteTableActionButtons analyteId={row.id ?? ""} />
+          <AnalysisMethodTableActionButtons analysisMethodId={row.id ?? ""} />
         )}
       />
       <SideSection isOpen={isSideSectionOpen}>
-        <AnalyteDetail
+        <AnalysisMethodDetail
           handleCloseSideSection={onCloseSideSection}
-          selectedAnalyte={selectedAnalyte}
+          selectedAnalysisMethod={selectedAnalysisMethod}
           isLoading={isLoading}
           isLessThanMediumScreen={isLessThanMediumScreen}
         />

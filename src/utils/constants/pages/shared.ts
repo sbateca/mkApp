@@ -1,6 +1,12 @@
 import {DateView} from "@mui/x-date-pickers";
 import ITypographyProps from "../../../shared/ui/Typography/Types";
-import {SideSectionButtonsProps} from "../../../widgets/ReportsDetail/ui/Types";
+
+type SideSectionButtonsProps = {
+  display: string;
+  alignSelf: string;
+  justifyContent: string;
+  marginTop: string;
+};
 
 export const getSharedPageTitleConfig = (
   pageName: string,

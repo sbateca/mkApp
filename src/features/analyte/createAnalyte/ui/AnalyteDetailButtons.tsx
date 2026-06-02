@@ -1,38 +1,38 @@
 import {Box} from "@mui/material";
-import {SampleType} from "../../../entities/sampleType";
-import {Button} from "../../../shared/ui";
+import {Analyte} from "../../../../entities/analyte";
+import {Button} from "../../../../shared/ui";
 import {
   IconNames,
   SharedButtonColors,
   SharedButtonCommonLabels,
   SharedButtonSizes,
   SharedButtonVariants,
-} from "../../../utils/enums";
-import {EDIT_SAMPLE_TYPE_BUTTON_LABEL} from "../../../utils/constants";
-import {useReadOnlyMode} from "../../../features/readOnlyMode";
+} from "../../../../utils/enums";
+import {EDIT_ANALYTE_BUTTON_LABEL} from "../../../../utils/constants";
+import {useReadOnlyMode} from "../../../readOnlyMode";
 
-type SampleTypeDetailButtonsProps = {
+type AnalyteDetailButtonsProps = {
   isNotValidForm: boolean;
-  sampleType: SampleType | null;
+  analyte: Analyte | null;
   handleReadOnlyModeChange: () => void;
-  handleCreateSampleType: () => void;
-  handleEditSampleType: () => void;
+  handleCreateAnalyte: () => void;
+  handleEditAnalyte: () => void;
 };
 
-export const SampleTypeDetailButtons = ({
+export const AnalyteDetailButtons = ({
   isNotValidForm,
-  sampleType,
+  analyte,
   handleReadOnlyModeChange,
-  handleCreateSampleType,
-  handleEditSampleType,
-}: SampleTypeDetailButtonsProps) => {
+  handleCreateAnalyte,
+  handleEditAnalyte,
+}: AnalyteDetailButtonsProps) => {
   const {isReadOnlyMode} = useReadOnlyMode();
   return (
     <Box>
-      {isReadOnlyMode && sampleType ? (
+      {isReadOnlyMode && analyte ? (
         <Button
           icon={IconNames.EDIT}
-          label={EDIT_SAMPLE_TYPE_BUTTON_LABEL}
+          label={EDIT_ANALYTE_BUTTON_LABEL}
           disabled={isNotValidForm}
           variant={SharedButtonVariants.OUTLINED}
           size={SharedButtonSizes.SMALL}
@@ -40,7 +40,7 @@ export const SampleTypeDetailButtons = ({
           onClick={handleReadOnlyModeChange}
         />
       ) : null}
-      {!isReadOnlyMode && sampleType ? (
+      {!isReadOnlyMode && analyte ? (
         <>
           <Button
             icon={IconNames.SAVE}
@@ -49,7 +49,7 @@ export const SampleTypeDetailButtons = ({
             variant={SharedButtonVariants.OUTLINED}
             size={SharedButtonSizes.SMALL}
             color={SharedButtonColors.SUCCESS}
-            onClick={handleEditSampleType}
+            onClick={handleEditAnalyte}
           />
           <Button
             label={SharedButtonCommonLabels.CANCEL}
@@ -61,7 +61,7 @@ export const SampleTypeDetailButtons = ({
           />
         </>
       ) : null}
-      {!isReadOnlyMode && !sampleType ? (
+      {!isReadOnlyMode && !analyte ? (
         <Button
           icon={IconNames.SAVE}
           label={SharedButtonCommonLabels.SAVE}
@@ -69,7 +69,7 @@ export const SampleTypeDetailButtons = ({
           variant={SharedButtonVariants.OUTLINED}
           size={SharedButtonSizes.SMALL}
           color={SharedButtonColors.SUCCESS}
-          onClick={handleCreateSampleType}
+          onClick={handleCreateAnalyte}
         />
       ) : null}
     </Box>

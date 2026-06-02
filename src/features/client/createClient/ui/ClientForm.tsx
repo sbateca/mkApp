@@ -22,7 +22,7 @@ import {useReadOnlyMode} from "../../../readOnlyMode";
 import {useCreateClient} from "../model/useCreateClient";
 import {useEditClient} from "../../editClient";
 import {clientToForm} from "../../lib/clientMappers";
-import {ClientDetailButtons} from "../../../../widgets/ClientDetail/ui/ClientDetailButtons";
+import {ClientDetailButtons} from "./ClientDetailButtons";
 
 type ClientFormProps = {
   isLessThanMediumScreen: boolean;

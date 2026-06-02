@@ -1,29 +1,30 @@
 import {Box, Theme, useMediaQuery, useTheme} from "@mui/material";
-import {Button, Spinner, Table, Typography} from "../../../../shared/ui";
-import {useLoadSampleTypesData} from "../model/useLoadSampleTypesData";
-import {SideSection} from "../../../../shared/ui/SideSection";
-import {CommonContentStyles} from "../../../../shared/commonStyles";
+import {Button, Spinner, Table, Typography} from "../../../shared/ui";
+import {SideSection} from "../../../shared/ui/SideSection";
+import {CommonContentStyles} from "../../../shared/commonStyles";
 import {
-  CREATE_SAMPLE_TYPE_TITLE_TEXT,
-  SAMPLE_TYPE_CREATE_BUTTON_LABEL,
-  SAMPLE_TYPES_TABLE_HEADER_LABELS,
-  SAMPLE_TYPES_TITLE_CONFIG,
-} from "../../../../utils/constants";
+  ANALYTE_CREATE_BUTTON_LABEL,
+  ANALYTES_TABLE_HEADER_LABELS,
+  ANALYTES_TITLE_CONFIG,
+  CREATE_ANALYTE_TITLE_TEXT,
+} from "../../../utils/constants";
 import {
   SharedButtonColors,
   SharedButtonIcons,
   SharedButtonSizes,
   SharedButtonVariants,
-} from "../../../../utils/enums";
-import {SampleTypeTableActionButtons} from "../../sampleTypeActions";
-import {SampleTypeDetail} from "../../../../widgets/SampleTypeDetail";
+} from "../../../utils/enums";
 import {
-  selectSelectedSampleType,
-  useSampleTypeStore,
-} from "../../../../entities/sampleType";
-import {useSideSection} from "../../../sideSection";
+  selectSelectedAnaliye,
+  selectSetSelectedAnalyte,
+  useAnalyteStore,
+} from "../../../entities/analyte";
+import {useLoadAnalytesData} from "../../../features/analyte/loadAnalytes/model/useLoadAnalytesData";
+import {AnalyteTableActionButtons} from "../../../features/analyte/analyteActions";
+import {AnalyteDetail} from "../../AnalyteDetail";
+import {useSideSection} from "../../../features/sideSection";
 
-export const SampleTypesContent = () => {
+export const AnalytesContent = () => {
   const {
     rows,
     visibleRows,
@@ -38,17 +39,19 @@ export const SampleTypesContent = () => {
     handleChangeRowsPerPage,
     handleRequestSort,
     handleSearch,
-  } = useLoadSampleTypesData();
+  } = useLoadAnalytesData();
 
   const theme = useTheme<Theme>();
   const isLessThanMediumScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const selectedSampleType = useSampleTypeStore(selectSelectedSampleType);
+  const selectedAnalyte = useAnalyteStore(selectSelectedAnaliye);
+  const setSelectedAnalyte = useAnalyteStore(selectSetSelectedAnalyte);
 
-  const {isSideSectionOpen, onOpenSideSection, onCloseSideSection} =
+  const {isSideSectionOpen, onCloseSideSection, onOpenSideSection} =
     useSideSection();
 
   const openSideSection = () => {
-    onOpenSideSection(CREATE_SAMPLE_TYPE_TITLE_TEXT, false);
+    setSelectedAnalyte(null);
+    onOpenSideSection(CREATE_ANALYTE_TITLE_TEXT, false);
   };
 
   return isLoading ? (
@@ -56,10 +59,10 @@ export const SampleTypesContent = () => {
   ) : (
     <Box>
       <Box sx={CommonContentStyles.titleContentContainer}>
-        <Typography {...SAMPLE_TYPES_TITLE_CONFIG} />
+        <Typography {...ANALYTES_TITLE_CONFIG} />
         <Box sx={CommonContentStyles.titleContentActions}>
           <Button
-            label={SAMPLE_TYPE_CREATE_BUTTON_LABEL}
+            label={ANALYTE_CREATE_BUTTON_LABEL}
             variant={SharedButtonVariants.OUTLINED}
             size={SharedButtonSizes.SMALL}
             color={SharedButtonColors.PRIMARY}
@@ -69,7 +72,7 @@ export const SampleTypesContent = () => {
         </Box>
       </Box>
       <Table
-        headerLabels={SAMPLE_TYPES_TABLE_HEADER_LABELS}
+        headerLabels={ANALYTES_TABLE_HEADER_LABELS}
         rows={rows}
         visibleRows={visibleRows}
         rowsPerPage={rowsPerPage}
@@ -83,13 +86,13 @@ export const SampleTypesContent = () => {
         handleRequestSort={handleRequestSort}
         handleSearch={handleSearch}
         renderActions={(row) => (
-          <SampleTypeTableActionButtons sampleTypeId={row.id ?? ""} />
+          <AnalyteTableActionButtons analyteId={row.id ?? ""} />
         )}
       />
       <SideSection isOpen={isSideSectionOpen}>
-        <SampleTypeDetail
+        <AnalyteDetail
           handleCloseSideSection={onCloseSideSection}
-          selectedSampleType={selectedSampleType}
+          selectedAnalyte={selectedAnalyte}
           isLoading={isLoading}
           isLessThanMediumScreen={isLessThanMediumScreen}
         />

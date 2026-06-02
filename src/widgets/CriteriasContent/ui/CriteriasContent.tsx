@@ -1,30 +1,30 @@
 import {Box, Theme, useMediaQuery, useTheme} from "@mui/material";
-import {Button, Spinner, Table, Typography} from "../../../../shared/ui";
-import {SideSection} from "../../../../shared/ui/SideSection";
-import {CommonContentStyles} from "../../../../shared/commonStyles";
+import {Button, Spinner, Table, Typography} from "../../../shared/ui";
+import {SideSection} from "../../../shared/ui/SideSection";
+import {CommonContentStyles} from "../../../shared/commonStyles";
 import {
-  CREATE_TEST_TYPE_TITLE_TEXT,
-  TEST_TYPES_TABLE_HEADER_LABELS,
-  TEST_TYPES_TITLE_CONFIG,
-  TEST_TYPE_CREATE_BUTTON_LABEL,
-} from "../../../../utils/constants";
+  CREATE_CRITERIA_TITLE_TEXT,
+  CRITERIA_CREATE_BUTTON_LABEL,
+  CRITERIA_TABLE_HEADER_LABELS,
+  CRITERIA_TITLE_CONFIG,
+} from "../../../utils/constants";
 import {
   SharedButtonColors,
   SharedButtonIcons,
   SharedButtonSizes,
   SharedButtonVariants,
-} from "../../../../utils/enums";
+} from "../../../utils/enums";
 import {
-  selectSelectedTestType,
-  selectSetSelectedTestType,
-  useTestTypeStore,
-} from "../../../../entities/testType";
-import {useLoadTestTypesData} from "../model/useLoadTestTypesData";
-import {TestTypeTableActionButtons} from "../../testTypeActions";
-import {TestTypeDetail} from "../../../../widgets/TestTypeDetail";
-import {useSideSection} from "../../../sideSection";
+  selectSelectedCriteria,
+  selectSetSelectedCriteria,
+  useCriteriaStore,
+} from "../../../entities/criteria";
+import {useLoadCriteriasData} from "../../../features/criteria/loadCriterias/model/useLoadCriteriasData";
+import {CriteriaTableActionButtons} from "../../../features/criteria/criteriaActions";
+import {CriteriaDetail} from "../../CriteriaDetail";
+import {useSideSection} from "../../../features/sideSection";
 
-export const TestTypesContent = () => {
+export const CriteriasContent = () => {
   const {
     rows,
     visibleRows,
@@ -39,19 +39,19 @@ export const TestTypesContent = () => {
     handleChangeRowsPerPage,
     handleRequestSort,
     handleSearch,
-  } = useLoadTestTypesData();
+  } = useLoadCriteriasData();
 
   const theme = useTheme<Theme>();
   const isLessThanMediumScreen = useMediaQuery(theme.breakpoints.down("sm"));
-  const selectedTestType = useTestTypeStore(selectSelectedTestType);
-  const setSelectedTestType = useTestTypeStore(selectSetSelectedTestType);
+  const selectedCriteria = useCriteriaStore(selectSelectedCriteria);
+  const setSelectedCriteria = useCriteriaStore(selectSetSelectedCriteria);
 
   const {isSideSectionOpen, onCloseSideSection, onOpenSideSection} =
     useSideSection();
 
   const openSideSection = () => {
-    setSelectedTestType(null);
-    onOpenSideSection(CREATE_TEST_TYPE_TITLE_TEXT, false);
+    setSelectedCriteria(null);
+    onOpenSideSection(CREATE_CRITERIA_TITLE_TEXT, false);
   };
 
   return isLoading ? (
@@ -59,10 +59,10 @@ export const TestTypesContent = () => {
   ) : (
     <Box>
       <Box sx={CommonContentStyles.titleContentContainer}>
-        <Typography {...TEST_TYPES_TITLE_CONFIG} />
+        <Typography {...CRITERIA_TITLE_CONFIG} />
         <Box sx={CommonContentStyles.titleContentActions}>
           <Button
-            label={TEST_TYPE_CREATE_BUTTON_LABEL}
+            label={CRITERIA_CREATE_BUTTON_LABEL}
             variant={SharedButtonVariants.OUTLINED}
             size={SharedButtonSizes.SMALL}
             color={SharedButtonColors.PRIMARY}
@@ -72,7 +72,7 @@ export const TestTypesContent = () => {
         </Box>
       </Box>
       <Table
-        headerLabels={TEST_TYPES_TABLE_HEADER_LABELS}
+        headerLabels={CRITERIA_TABLE_HEADER_LABELS}
         rows={rows}
         visibleRows={visibleRows}
         rowsPerPage={rowsPerPage}
@@ -86,13 +86,13 @@ export const TestTypesContent = () => {
         handleRequestSort={handleRequestSort}
         handleSearch={handleSearch}
         renderActions={(row) => (
-          <TestTypeTableActionButtons testTypeId={row.id ?? ""} />
+          <CriteriaTableActionButtons criteriaId={row.id ?? ""} />
         )}
       />
       <SideSection isOpen={isSideSectionOpen}>
-        <TestTypeDetail
+        <CriteriaDetail
           handleCloseSideSection={onCloseSideSection}
-          selectedTestType={selectedTestType}
+          selectedCriteria={selectedCriteria}
           isLoading={isLoading}
           isLessThanMediumScreen={isLessThanMediumScreen}
         />

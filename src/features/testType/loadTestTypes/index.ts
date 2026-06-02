@@ -1,1 +1,1 @@
-export * from "./ui/TestTypesContent";
+export * from "./model/useLoadTestTypesData";

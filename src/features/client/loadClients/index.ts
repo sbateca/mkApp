@@ -1,1 +1,1 @@
-export * from "./ui/ClientsContent";
+export * from "./model/useLoadClientsData";

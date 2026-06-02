@@ -1,38 +1,38 @@
 import {Box} from "@mui/material";
-import {TestType} from "../../../entities/testType";
-import {Button} from "../../../shared/ui";
+import {Client} from "../../../../entities/client";
+import {Button} from "../../../../shared/ui";
 import {
   IconNames,
   SharedButtonColors,
   SharedButtonCommonLabels,
   SharedButtonSizes,
   SharedButtonVariants,
-} from "../../../utils/enums";
-import {EDIT_TEST_TYPE_BUTTON_LABEL} from "../../../utils/constants";
-import {useReadOnlyMode} from "../../../features/readOnlyMode";
+} from "../../../../utils/enums";
+import {EDIT_CLIENT_BUTTON_LABEL} from "../../../../utils/constants";
+import {useReadOnlyMode} from "../../../readOnlyMode";
 
-type TestTypeDetailButtonsProps = {
+type ClientDetailButtonsProps = {
   isNotValidForm: boolean;
-  testType: TestType | null;
+  client: Client | null;
   handleReadOnlyModeChange: () => void;
-  handleCreateTestType: () => void;
-  handleEditTestType: () => void;
+  handleCreateClient: () => void;
+  handleEditClient: () => void;
 };
 
-export const TestTypeDetailButtons = ({
+export const ClientDetailButtons = ({
   isNotValidForm,
-  testType,
+  client,
   handleReadOnlyModeChange,
-  handleCreateTestType,
-  handleEditTestType,
-}: TestTypeDetailButtonsProps) => {
+  handleCreateClient,
+  handleEditClient,
+}: ClientDetailButtonsProps) => {
   const {isReadOnlyMode} = useReadOnlyMode();
   return (
     <Box>
-      {isReadOnlyMode && testType ? (
+      {isReadOnlyMode && client ? (
         <Button
           icon={IconNames.EDIT}
-          label={EDIT_TEST_TYPE_BUTTON_LABEL}
+          label={EDIT_CLIENT_BUTTON_LABEL}
           disabled={isNotValidForm}
           variant={SharedButtonVariants.OUTLINED}
           size={SharedButtonSizes.SMALL}
@@ -40,7 +40,7 @@ export const TestTypeDetailButtons = ({
           onClick={handleReadOnlyModeChange}
         />
       ) : null}
-      {!isReadOnlyMode && testType ? (
+      {!isReadOnlyMode && client ? (
         <>
           <Button
             icon={IconNames.SAVE}
@@ -49,7 +49,7 @@ export const TestTypeDetailButtons = ({
             variant={SharedButtonVariants.OUTLINED}
             size={SharedButtonSizes.SMALL}
             color={SharedButtonColors.SUCCESS}
-            onClick={handleEditTestType}
+            onClick={handleEditClient}
           />
           <Button
             label={SharedButtonCommonLabels.CANCEL}
@@ -61,7 +61,7 @@ export const TestTypeDetailButtons = ({
           />
         </>
       ) : null}
-      {!isReadOnlyMode && !testType ? (
+      {!isReadOnlyMode && !client ? (
         <Button
           icon={IconNames.SAVE}
           label={SharedButtonCommonLabels.SAVE}
@@ -69,7 +69,7 @@ export const TestTypeDetailButtons = ({
           variant={SharedButtonVariants.OUTLINED}
           size={SharedButtonSizes.SMALL}
           color={SharedButtonColors.SUCCESS}
-          onClick={handleCreateTestType}
+          onClick={handleCreateClient}
         />
       ) : null}
     </Box>

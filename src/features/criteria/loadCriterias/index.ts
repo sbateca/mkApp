@@ -1,1 +1,1 @@
-export * from "./ui/CriteriasContent";
+export * from "./model/useLoadCriteriasData";

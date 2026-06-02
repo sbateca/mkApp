@@ -1,4 +1,4 @@
-import {AnalytesContent} from "../../../features/analyte/loadAnalytes";
+import {AnalytesContent} from "../../../widgets/AnalytesContent";
 
 export const AnalytesPage = () => {
   return <AnalytesContent />;
