@@ -9,7 +9,7 @@ import {HeaderMenu} from "./StyleHeaderMenu";
 import {useMenu} from "../model/useMenu";
 
 export const Menu = ({menuItems}: MenuProps): React.ReactElement => {
-  const {menuOpen, toggleMenu, getSelectedMenuItem, navigate} = useMenu();
+  const {menuOpen, toggleMenu, isSelectedMenuItem, navigate} = useMenu();
 
   return (
     <Drawer
@@ -34,7 +34,8 @@ export const Menu = ({menuItems}: MenuProps): React.ReactElement => {
           <MenuItemButton
             key={item.label}
             item={item.label}
-            selected={getSelectedMenuItem() === item.label}
+            icon={item.icon}
+            selected={isSelectedMenuItem(item.actionPath)}
             onClick={() => {
               navigate(item.actionPath);
             }}

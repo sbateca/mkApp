@@ -12,6 +12,7 @@ import {ClientsPage} from "../../pages/ClientsPage";
 import {AnalytesPage} from "../../pages/AnalytesPage";
 import {AnalysisMethodsPage} from "../../pages/AnalysisMethodsPage";
 import {CriteriasPage} from "../../pages/CriteriasPage";
+import {TestTypesPage} from "../../pages/TestTypesPage";
 
 export const AppRoutes = () => {
   return (
@@ -28,6 +29,7 @@ export const AppRoutes = () => {
           />
           <Route path={BaseRoutes.CLIENTS} element={<ClientsPage />} />
           <Route path={BaseRoutes.SAMPLE_TYPES} element={<SampleTypePage />} />
+          <Route path={BaseRoutes.TEST_TYPES} element={<TestTypesPage />} />
           <Route path={BaseRoutes.ANALYTES} element={<AnalytesPage />} />
           <Route
             path={BaseRoutes.ANALYSIS_METHODS}

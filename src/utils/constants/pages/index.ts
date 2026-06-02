@@ -9,3 +9,4 @@ export * from "./client";
 export * from "./analyte";
 export * from "./analysisMethod";
 export * from "./criteria";
+export * from "./testType";

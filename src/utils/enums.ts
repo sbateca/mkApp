@@ -5,8 +5,20 @@ export enum SharedMenuItems {
   ANALYTES = "Analytes",
   ANALYSIS_METHODS = "Analysis methods",
   CRITERIA = "Criteria",
+  TEST_TYPES = "Test types",
   SAMPLES = "Samples",
   REPORTS = "Reports",
+}
+
+export enum SharedMenuItemIcons {
+  CLIENTS = "clients",
+  SAMPLE_TYPES = "sampleTypes",
+  ANALYTES = "analytes",
+  ANALYSIS_METHODS = "analysisMethods",
+  CRITERIA = "criteria",
+  TEST_TYPES = "testTypes",
+  SAMPLES = "samples",
+  REPORTS = "reports",
 }
 // Button
 export enum SharedButtonColors {
@@ -231,6 +243,15 @@ export enum CriteriaFormFields {
 }
 
 export enum CriteriaFormFieldLabels {
+  NAME = "Name",
+}
+
+// Test type form
+export enum TestTypeFormFields {
+  NAME = "name",
+}
+
+export enum TestTypeFormFieldLabels {
   NAME = "Name",
 }
 

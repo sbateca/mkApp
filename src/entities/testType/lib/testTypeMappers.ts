@@ -10,8 +10,12 @@ import {
 export const axiosResponseToTestypes = (
   response: AxiosResponse<unknown>,
 ): TestType[] => {
-  if (Array.isArray(response.data)) {
-    return response.data
+  return getTestTypesFromData(response.data);
+};
+
+const getTestTypesFromData = (data: unknown): TestType[] => {
+  if (Array.isArray(data)) {
+    return data
       .map((testType: unknown) => {
         if (isValidTestType(testType)) {
           return testType as TestType;
@@ -20,6 +24,8 @@ export const axiosResponseToTestypes = (
         }
       })
       .filter((testType): testType is TestType => testType !== null);
+  } else if (isValidTestType(data)) {
+    return [data];
   } else {
     throw new Error(RESPONSE_DATA_NOT_VALID_ERROR);
   }
@@ -37,7 +43,7 @@ const isValidTestType = (testType: unknown): testType is TestType => {
 
 export const testTypeFormToTestType = (
   form: Record<string, unknown>,
-  testTypeId: string,
+  testTypeId?: string,
 ): TestType => {
   return {
     id: testTypeId || uuidv4(),
