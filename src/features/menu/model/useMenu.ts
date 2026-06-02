@@ -1,10 +1,11 @@
 import {useLocation, useNavigate} from "react-router-dom";
-import {selectMenuOpen, selectToggleMenu} from "./selectors";
+import {selectCloseMenu, selectMenuOpen, selectToggleMenu} from "./selectors";
 import {useMenuStore} from "./store";
 
 export const useMenu = () => {
   const menuOpen = useMenuStore(selectMenuOpen);
   const toggleMenu = useMenuStore(selectToggleMenu);
+  const closeMenu = useMenuStore(selectCloseMenu);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ export const useMenu = () => {
   return {
     menuOpen,
     toggleMenu,
+    closeMenu,
     isSelectedMenuItem,
     navigate,
   };

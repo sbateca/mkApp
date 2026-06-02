@@ -62,6 +62,8 @@ export const renderMenu = () => {
   return {
     reportsItem: screen.queryByText("Reports"),
     samplesItem: screen.queryByText("Samples"),
+    reportsIcon: screen.queryByTestId("AssessmentIcon"),
+    samplesIcon: screen.queryByTestId("Inventory2Icon"),
     reportsButton,
     samplesButton,
   };

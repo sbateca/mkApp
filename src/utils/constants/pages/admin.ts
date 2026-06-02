@@ -45,4 +45,4 @@ export const MENU_ITEMS = [
   },
 ];
 export const USER_MENU_LOGOUT = "Logout";
-export const MENU_WIDTH = 250;
+export const MENU_WIDTH = 240;

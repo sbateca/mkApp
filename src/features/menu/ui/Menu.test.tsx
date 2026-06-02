@@ -22,6 +22,14 @@ describe("Menu component", () => {
     expect(samplesItem).not.toBeVisible();
   });
 
+  it("should keep the menu icons visible when it is closed", () => {
+    updateUseMenu(false);
+    const {reportsIcon, samplesIcon} = renderMenu();
+
+    expect(reportsIcon).toBeVisible();
+    expect(samplesIcon).toBeVisible();
+  });
+
   it("should keep selected state for the current route", () => {
     updateUseMenu(true);
     const {samplesButton} = renderMenu();

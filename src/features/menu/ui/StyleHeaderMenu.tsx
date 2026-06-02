@@ -5,6 +5,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 
 type StyledHeaderMenuProps = {
   onClick: () => void;
+  open: boolean;
 };
 
 const StyledHeaderMenu = styled("div")(({theme}) => ({
@@ -17,12 +18,13 @@ const StyledHeaderMenu = styled("div")(({theme}) => ({
 
 export const HeaderMenu = ({
   onClick,
+  open,
 }: StyledHeaderMenuProps): React.ReactElement => {
   const theme = useTheme();
 
   return (
     <StyledHeaderMenu>
-      <IconButton onClick={onClick}>
+      <IconButton onClick={onClick} sx={!open ? {visibility: "hidden"} : {}}>
         {theme.direction === "ltr" ? <ChevronLeftIcon /> : <ChevronRightIcon />}
       </IconButton>
     </StyledHeaderMenu>
