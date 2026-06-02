@@ -10,6 +10,7 @@ export const MENU_ITEMS = [
     label: SharedMenuItems.ANALYSIS_METHODS,
     actionPath: BaseRoutes.ANALYSIS_METHODS,
   },
+  {label: SharedMenuItems.CRITERIA, actionPath: BaseRoutes.CRITERIAS},
   {label: SharedMenuItems.SAMPLES, actionPath: BaseRoutes.SAMPLES},
   {label: SharedMenuItems.REPORTS, actionPath: BaseRoutes.REPORTS},
 ];

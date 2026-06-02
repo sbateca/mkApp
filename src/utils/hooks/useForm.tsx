@@ -146,6 +146,7 @@ export const useForm = () => {
 
   useEffect(() => {
     setIsNotValidForm(checkNotValidForm(formFieldsErrors));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formFieldsErrors, formFieldsValidationFunctions]);
 
   return {

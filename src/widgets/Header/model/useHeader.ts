@@ -13,7 +13,7 @@ export const useHeaderUser = () => {
       setUsername(user.name);
       setShowUserMenu(true);
     }
-  }, []);
+  }, [user]);
 
   return {username, showUserMenu};
 };

@@ -7,6 +7,7 @@ export const N_A = "N/A";
 export const CLIENT_NOT_PROVIDED = "Client not provided";
 export const ANALYTE_NOT_PROVIDED = "Analyte not provided";
 export const ANALYSIS_METHOD_NOT_PROVIDED = "Analysis method not provided";
+export const CRITERIA_NOT_PROVIDED = "Criteria not provided";
 
 export const REPORT_FORM_FIELDS = {
   SAMPLE_CODE: "sampleCode",

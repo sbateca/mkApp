@@ -9,4 +9,10 @@ export type CriteriaStore = {
   setCriterias: (criteria: Criteria[] | null) => void;
   getCriterias: () => Promise<Criteria[] | null>;
   getCriteriaById: (id: string) => Promise<Criteria | null>;
+  createCriteria: (criteria: Criteria) => Promise<Criteria | null>;
+  editCriteria: (
+    criteria: Criteria,
+    criteriaId: string,
+  ) => Promise<Criteria | null>;
+  deleteCriteria: (criteriaId: string) => Promise<Criteria | null>;
 };
