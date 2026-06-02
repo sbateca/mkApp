@@ -1,4 +1,10 @@
-import {getCriteriaByIdService, getCriteriasService} from "./criteriaService";
+import {
+  createCriteriaService,
+  deleteCriteriaService,
+  editCriteriaService,
+  getCriteriaByIdService,
+  getCriteriasService,
+} from "./criteriaService";
 import {buildCriteriasData} from "../../../shared/test/builders/criteriaBuilder";
 import {Criteria} from "../model/Criteria";
 import {apiClient} from "../../../shared/api/apliClient";
@@ -46,6 +52,45 @@ describe("criteriaService", () => {
 
     expect(criteria).toEqual(mockCriterias[0]);
     expect(apiClient.get).toHaveBeenCalledWith(expectedURL);
+  });
+
+  it("should create a criteria", async () => {
+    const mockApiClientPost = apiClient.post as jest.Mock;
+    mockApiClientPost.mockResolvedValueOnce({data: mockCriterias[0]});
+    const expectedURL = "http://mockurl.com/api/criterias";
+
+    const criteria = await createCriteriaService(mockCriterias[0]);
+
+    expect(criteria).toEqual(mockCriterias[0]);
+    expect(mockApiClientPost).toHaveBeenCalledWith(
+      expectedURL,
+      mockCriterias[0],
+    );
+  });
+
+  it("should edit a criteria", async () => {
+    const mockApiClientPut = apiClient.put as jest.Mock;
+    mockApiClientPut.mockResolvedValueOnce({data: mockCriterias[0]});
+    const expectedURL = "http://mockurl.com/api/criterias/1";
+
+    const criteria = await editCriteriaService(mockCriterias[0], "1");
+
+    expect(criteria).toEqual(mockCriterias[0]);
+    expect(mockApiClientPut).toHaveBeenCalledWith(
+      expectedURL,
+      mockCriterias[0],
+    );
+  });
+
+  it("should delete a criteria", async () => {
+    const mockApiClientDelete = apiClient.delete as jest.Mock;
+    mockApiClientDelete.mockResolvedValueOnce({data: mockCriterias[0]});
+    const expectedURL = "http://mockurl.com/api/criterias/1";
+
+    const criteria = await deleteCriteriaService("1");
+
+    expect(criteria).toEqual(mockCriterias[0]);
+    expect(mockApiClientDelete).toHaveBeenCalledWith(expectedURL);
   });
 
   it("should throw an error when an error occurs", async () => {

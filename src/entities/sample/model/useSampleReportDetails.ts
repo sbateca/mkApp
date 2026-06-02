@@ -79,6 +79,7 @@ export const useSampleReportDetails = (
 
   const sampleCardDetails = useMemo(
     () => getSampleCardDetails(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [sample, sampleTypes, clients],
   );
   return {sampleCardDetails};

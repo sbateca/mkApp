@@ -36,6 +36,10 @@ jest.mock("../../pages/AnalysisMethodsPage", () => ({
   AnalysisMethodsPage: () => <div>Analysis Methods Page</div>,
 }));
 
+jest.mock("../../pages/CriteriasPage", () => ({
+  CriteriasPage: () => <div>Criterias Page</div>,
+}));
+
 jest.mock("../../pages/NotFound", () => ({
   NotFoundPage: () => <div>Not Found Page</div>,
 }));
@@ -152,6 +156,15 @@ describe("AppRoutes", () => {
 
     expect(screen.getByText("Admin Layout")).toBeInTheDocument();
     expect(screen.getByText("Analysis Methods Page")).toBeInTheDocument();
+  });
+
+  it("should render criterias page when user is authenticated", () => {
+    setAuthenticatedSession();
+
+    renderAppRoutes("/criterias");
+
+    expect(screen.getByText("Admin Layout")).toBeInTheDocument();
+    expect(screen.getByText("Criterias Page")).toBeInTheDocument();
   });
 
   it("should render not found page for unsupported routes", () => {

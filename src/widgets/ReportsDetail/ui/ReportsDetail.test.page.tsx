@@ -259,6 +259,9 @@ export const renderReportDetail = async () => {
     setCriterias: jest.fn(),
     getCriterias: jest.fn().mockResolvedValue(mockCriterias),
     getCriteriaById: jest.fn().mockResolvedValue(mockCriterias[0]),
+    createCriteria: jest.fn().mockResolvedValue(mockCriterias[0]),
+    editCriteria: jest.fn().mockResolvedValue(mockCriterias[0]),
+    deleteCriteria: jest.fn().mockResolvedValue(mockCriterias[0]),
   };
 
   mockAnalysisMethodsStoreState = {
