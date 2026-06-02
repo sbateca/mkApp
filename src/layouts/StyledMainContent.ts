@@ -8,17 +8,23 @@ interface MainProps {
 export const getMainContentContainerStyle = (theme: Theme, open: boolean) => ({
   flexGrow: 1,
   padding: theme.spacing(1),
-  transition: theme.transitions.create("margin", {
+  transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
-  marginLeft: `-${MENU_WIDTH}px`,
+  width: `calc(100% - calc(${theme.spacing(7)} + 1px))`,
+  [theme.breakpoints.up("sm")]: {
+    width: `calc(100% - calc(${theme.spacing(8)} + 1px))`,
+  },
   ...(open && {
-    transition: theme.transitions.create("margin", {
+    transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.easeOut,
       duration: theme.transitions.duration.enteringScreen,
     }),
-    marginLeft: 0,
+    width: `calc(100% - ${MENU_WIDTH}px)`,
+    [theme.breakpoints.up("sm")]: {
+      width: `calc(100% - ${MENU_WIDTH}px)`,
+    },
   }),
 });
 

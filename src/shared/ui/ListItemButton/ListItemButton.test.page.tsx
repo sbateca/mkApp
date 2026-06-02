@@ -31,5 +31,6 @@ export const renderListItemButton = async (icon?: React.ReactNode) => {
   return {
     itemButton: screen.getByRole("button"),
     menuIcon: screen.queryByTestId("menu-icon"),
+    tooltipTarget: screen.getByLabelText(mockData.label),
   };
 };

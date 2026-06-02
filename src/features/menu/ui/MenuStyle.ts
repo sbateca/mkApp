@@ -1,8 +1,7 @@
 import {SxProps, Theme} from "@mui/material/styles";
-import {MENU_WIDTH} from "../../../utils/constants";
 
 export const MenuStyle: SxProps<Theme> = {
-  width: MENU_WIDTH,
+  width: "100%",
   backgroundColor: (theme: Theme) => theme.palette.background.default,
   color: (theme: Theme) => theme.palette.text.primary,
   "& .MuiListItemButton-root": {
@@ -10,6 +9,12 @@ export const MenuStyle: SxProps<Theme> = {
     "&:hover": {
       backgroundColor: (theme: Theme) => theme.palette.primary.main,
       color: (theme: Theme) => theme.palette.primary.contrastText,
+      "& .MuiListItemIcon-root": {
+        color: (theme: Theme) => theme.palette.primary.contrastText,
+      },
     },
+  },
+  "& .MuiListItemIcon-root": {
+    color: (theme: Theme) => theme.palette.grey[600],
   },
 };
