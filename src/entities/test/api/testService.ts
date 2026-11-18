@@ -39,7 +39,7 @@ export const editTestService = async (
     ...test,
   };
   const editResponse = await apiClient.put<Test>(
-    `${EnvManager.BACKEND_URL}${BaseRoutes.TEST_TYPES}/${testId}`,
+    `${EnvManager.BACKEND_URL}${BaseRoutes.TESTS}/${testId}`,
     updatedTestType,
   );
   return editResponse.data || null;
@@ -48,7 +48,7 @@ export const editTestService = async (
 export const deleteTestService = async (testId: string): Promise<void> => {
   const retrievedTestType = await requireTestById(testId);
   await apiClient.delete(
-    `${EnvManager.BACKEND_URL}${BaseRoutes.TEST_TYPES}/${retrievedTestType.id}`,
+    `${EnvManager.BACKEND_URL}${BaseRoutes.TESTS}/${retrievedTestType.id}`,
   );
 };
 
