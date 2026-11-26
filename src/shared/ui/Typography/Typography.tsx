@@ -1,3 +1,4 @@
+import {useInterfaceTranslation} from "../../i18n/useInterfaceTranslation";
 import {Typography as MuiTypography} from "@mui/material";
 
 import ITypographyProps from "./Types";
@@ -14,6 +15,7 @@ export const Typography = ({
   color = "black",
   sx = {},
 }: ITypographyProps): React.ReactElement => {
+  const {t} = useInterfaceTranslation();
   const textColor = typographyStyle[color];
   return (
     <MuiTypography
@@ -26,7 +28,7 @@ export const Typography = ({
       color={textColor}
       sx={{...sx}}
     >
-      {text}
+      {t(text)}
     </MuiTypography>
   );
 };

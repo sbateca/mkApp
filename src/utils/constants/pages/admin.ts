@@ -1,7 +1,7 @@
 import {SharedMenuItemIcons, SharedMenuItems} from "../../enums";
 import {BaseRoutes} from "../baseRoutes";
 
-export const COMPANY_NAME = "Microlab App";
+export const COMPANY_NAME = "Microlab Workspace";
 export const MENU_ITEMS = [
   {
     label: SharedMenuItems.CLIENTS,
@@ -45,4 +45,4 @@ export const MENU_ITEMS = [
   },
 ];
 export const USER_MENU_LOGOUT = "Logout";
-export const MENU_WIDTH = 240;
+export const MENU_WIDTH = 252;

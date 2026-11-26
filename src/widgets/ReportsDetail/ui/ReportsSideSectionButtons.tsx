@@ -43,9 +43,9 @@ export const ReportSideSectionButtons = ({
             icon={IconNames.SAVE}
             label={SharedButtonCommonLabels.SAVE}
             disabled={isNotValidForm || !canUpdate}
-            variant={SharedButtonVariants.OUTLINED}
+            variant={SharedButtonVariants.CONTAINED}
             size={SharedButtonSizes.SMALL}
-            color={SharedButtonColors.SUCCESS}
+            color={SharedButtonColors.PRIMARY}
             onClick={handleEdit}
           />
           <Button
@@ -63,9 +63,9 @@ export const ReportSideSectionButtons = ({
           icon={IconNames.SAVE}
           label={SharedButtonCommonLabels.SAVE}
           disabled={isNotValidForm}
-          variant={SharedButtonVariants.OUTLINED}
+          variant={SharedButtonVariants.CONTAINED}
           size={SharedButtonSizes.SMALL}
-          color={SharedButtonColors.SUCCESS}
+          color={SharedButtonColors.PRIMARY}
           onClick={handleCreateReport}
         />
       ) : null}

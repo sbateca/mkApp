@@ -9,11 +9,15 @@ import {
   SharedButtonVariants,
 } from "../../../utils/enums";
 import {
-  CREATE_SAMPLE_TYPE_TITLE_TEXT,
+  CREATE_SAMPLE_TITLE_TEXT,
   SAMPLES_CREATE_BUTTON_LABEL,
   SAMPLES_TABLE_HEADER_LABELS,
   SAMPLES_TITLE_CONFIG,
 } from "../../../utils/constants";
+import {
+  selectSetSelectedSample,
+  useSampleStore,
+} from "../../../entities/sample";
 import {SampleDetail} from "../../SampleDetail";
 import {SampleContentStyles} from "./SamplesContentStyles";
 import {useLoadSamplesContentData} from "../model/useLoadSamplesContentData";
@@ -38,10 +42,12 @@ export const SamplesContent = (): React.ReactElement => {
     searchValue,
   } = useLoadSamplesContentData();
   const {isSideSectionOpen, onOpenSideSection} = useSideSection();
+  const setSelectedSample = useSampleStore(selectSetSelectedSample);
   useSamplesContentErrorNotifier();
 
   const openSideSection = () => {
-    onOpenSideSection(CREATE_SAMPLE_TYPE_TITLE_TEXT, true);
+    setSelectedSample(null);
+    onOpenSideSection(CREATE_SAMPLE_TITLE_TEXT, false);
   };
 
   return isLoading ? (

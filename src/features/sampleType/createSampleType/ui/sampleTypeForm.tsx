@@ -1,9 +1,12 @@
+import {useInterfaceTranslation} from "../../../../shared/i18n/useInterfaceTranslation";
 import {Box, Stack, TextField} from "@mui/material";
 import {
   selectSelectedSampleType,
   useSampleTypeStore,
 } from "../../../../entities/sampleType";
 import {
+  formActionsSx,
+  formSectionSx,
   getStackContainerProps,
   getStackFieldProps,
   getStackRowProps,
@@ -31,6 +34,7 @@ type SampleTypeFormProps = {
 export const SampleTypeForm = ({
   isLessThanMediumScreen,
 }: SampleTypeFormProps) => {
+  const {t} = useInterfaceTranslation();
   const {
     isNotValidForm,
     form,
@@ -75,24 +79,21 @@ export const SampleTypeForm = ({
   }, [setFormFieldsValidationFunctions, formValidations]);
 
   return (
-    <Stack
-      {...getStackContainerProps(isLessThanMediumScreen)}
-      sx={{position: "relative", height: "100%", minHeight: "100%", pb: "72px"}}
-    >
-      <Stack {...getStackRowProps(isLessThanMediumScreen)}>
+    <Stack {...getStackContainerProps(isLessThanMediumScreen)}>
+      <Stack {...getStackRowProps(isLessThanMediumScreen)} sx={formSectionSx}>
         <Stack {...getStackFieldProps()}>
           <TextField
             required
             error={!!formFieldsErrors[SampleTypeFormFields.NAME]}
-            label={SampleTypeFormFieldLabels.NAME}
+            label={t(SampleTypeFormFieldLabels.NAME)}
             type="string"
             color={SharedTypographyColors.PRIMARY}
             size={TextFieldSizes.SMALL}
             onChange={handleChange}
             name={SampleTypeFormFields.NAME}
-            helperText={getTextFieldHelperText(SampleTypeFormFields.NAME)}
+            helperText={t(getTextFieldHelperText(SampleTypeFormFields.NAME))}
             value={form[SampleTypeFormFields.NAME] ?? ""}
-            variant={SharedTextFieldVariants.STANDARD}
+            variant={SharedTextFieldVariants.OUTLINED}
             fullWidth
             InputProps={{
               readOnly: isReadOnlyMode,
@@ -100,7 +101,7 @@ export const SampleTypeForm = ({
           />
         </Stack>
       </Stack>
-      <Box sx={{display: "flex", mt: "auto", mb: "0px"}}>
+      <Box sx={formActionsSx}>
         <SampleTypeDetailButtons
           isNotValidForm={isNotValidForm}
           sampleType={selectedSampleType}

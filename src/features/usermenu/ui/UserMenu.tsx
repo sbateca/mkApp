@@ -1,3 +1,4 @@
+import {useInterfaceTranslation} from "../../../shared/i18n/useInterfaceTranslation";
 import {IconButton, Menu, MenuItem, Typography} from "@mui/material";
 import {AccountCircle} from "@mui/icons-material";
 
@@ -16,6 +17,7 @@ type Props = {
 };
 
 export const UserMenu = ({username}: Props): React.ReactElement => {
+  const {t} = useInterfaceTranslation();
   const handleUserMenu = useUserMenuStore(selectHandleMenu);
   const handleClose = useUserMenuStore(selectHandleClose);
   const anchorElement = useUserMenuStore(selectAnchorEl);
@@ -24,13 +26,16 @@ export const UserMenu = ({username}: Props): React.ReactElement => {
 
   return (
     <div style={UserMenuStyle}>
-      <Typography>{username}</Typography>
+      <Typography noWrap>{username}</Typography>
       <IconButton
         size="large"
-        aria-label="account of current user"
-        aria-controls="menu-appbar"
+        aria-label={t("account of current user")}
+        aria-controls={anchorElement ? "menu-appbar" : undefined}
+        aria-haspopup="menu"
+        aria-expanded={Boolean(anchorElement)}
         onClick={handleUserMenu}
         color="inherit"
+        sx={{flexShrink: 0}}
       >
         <AccountCircle />
       </IconButton>
@@ -41,7 +46,7 @@ export const UserMenu = ({username}: Props): React.ReactElement => {
         onClose={handleClose}
         keepMounted
       >
-        <MenuItem onClick={handleLogout}>{USER_MENU_LOGOUT}</MenuItem>
+        <MenuItem onClick={handleLogout}>{t(USER_MENU_LOGOUT)}</MenuItem>
       </Menu>
     </div>
   );

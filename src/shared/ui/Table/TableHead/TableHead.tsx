@@ -1,3 +1,4 @@
+import {useInterfaceTranslation} from "../../../i18n/useInterfaceTranslation";
 import {
   TableHead as MuiTableHead,
   TableRow,
@@ -14,6 +15,7 @@ function TableHead({
   sortableColumnCount = headerLabels.length,
   onRequestSort,
 }: TableHeadProps): React.ReactElement {
+  const {t} = useInterfaceTranslation();
   return (
     <MuiTableHead>
       <TableRow>
@@ -29,10 +31,10 @@ function TableHead({
                   direction={orderBy === index ? order : "asc"}
                   onClick={() => onRequestSort?.(index)}
                 >
-                  {label}
+                  {t(label)}
                 </TableSortLabel>
               ) : (
-                label
+                t(label)
               )}
             </TableCell>
           );

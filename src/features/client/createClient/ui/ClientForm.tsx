@@ -1,9 +1,12 @@
+import {useInterfaceTranslation} from "../../../../shared/i18n/useInterfaceTranslation";
 import {Box, Stack, TextField} from "@mui/material";
 import {
   selectSelectedClient,
   useClientStore,
 } from "../../../../entities/client";
 import {
+  formActionsSx,
+  formSectionSx,
   getStackContainerProps,
   getStackFieldProps,
   getStackRowProps,
@@ -29,6 +32,7 @@ type ClientFormProps = {
 };
 
 export const ClientForm = ({isLessThanMediumScreen}: ClientFormProps) => {
+  const {t} = useInterfaceTranslation();
   const {
     isNotValidForm,
     form,
@@ -69,24 +73,21 @@ export const ClientForm = ({isLessThanMediumScreen}: ClientFormProps) => {
   }, [setFormFieldsValidationFunctions, formValidations]);
 
   return (
-    <Stack
-      {...getStackContainerProps(isLessThanMediumScreen)}
-      sx={{position: "relative", height: "100%", minHeight: "100%", pb: "72px"}}
-    >
-      <Stack {...getStackRowProps(isLessThanMediumScreen)}>
+    <Stack {...getStackContainerProps(isLessThanMediumScreen)}>
+      <Stack {...getStackRowProps(isLessThanMediumScreen)} sx={formSectionSx}>
         <Stack {...getStackFieldProps()}>
           <TextField
             required
             error={!!formFieldsErrors[ClientFormFields.NAME]}
-            label={ClientFormFieldLabels.NAME}
+            label={t(ClientFormFieldLabels.NAME)}
             type="string"
             color={SharedTypographyColors.PRIMARY}
             size={TextFieldSizes.SMALL}
             onChange={handleChange}
             name={ClientFormFields.NAME}
-            helperText={getTextFieldHelperText(ClientFormFields.NAME)}
+            helperText={t(getTextFieldHelperText(ClientFormFields.NAME))}
             value={form[ClientFormFields.NAME] ?? ""}
-            variant={SharedTextFieldVariants.STANDARD}
+            variant={SharedTextFieldVariants.OUTLINED}
             fullWidth
             InputProps={{
               readOnly: isReadOnlyMode,
@@ -94,7 +95,7 @@ export const ClientForm = ({isLessThanMediumScreen}: ClientFormProps) => {
           />
         </Stack>
       </Stack>
-      <Box sx={{display: "flex", mt: "auto", mb: "0px"}}>
+      <Box sx={formActionsSx}>
         <ClientDetailButtons
           isNotValidForm={isNotValidForm}
           client={selectedClient}

@@ -1,9 +1,13 @@
 export const ReportsContentStyles = {
   titleContentContainer: {
     display: "flex",
-    flexDirection: "row",
+    alignItems: {xs: "flex-start", sm: "center"},
+    justifyContent: "space-between",
+    flexDirection: {xs: "column", sm: "row"},
+    gap: 2,
+    mb: 3,
   },
   titleContentActions: {
-    marginLeft: "auto",
+    flexShrink: 0,
   },
 };

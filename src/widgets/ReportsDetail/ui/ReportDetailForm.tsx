@@ -1,13 +1,10 @@
+import {useInterfaceTranslation} from "../../../shared/i18n/useInterfaceTranslation";
+import {LocalizedDateProvider} from "../../../shared/i18n/LocalizedDateProvider";
 import React from "react";
-import {Box, Stack, TextField} from "@mui/material";
-import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
-import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
+import {Box, Stack, TextField, Typography} from "@mui/material";
+import {DatePicker} from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 
-import {
-  getSideSectionButtonsProps,
-  SampleFormStyles,
-} from "./ReportsDetailStyles";
 import {
   ANALYSIS_TITLE,
   DATEPICKER_VIEWS,
@@ -30,6 +27,8 @@ import {ReportTestForm} from "./ReportTestForm";
 import {ReportSideSectionButtons} from "./ReportsSideSectionButtons";
 import {DetailFormProps} from "../model/types";
 import {
+  formActionsSx,
+  formSectionSx,
   getStackContainerProps,
   getStackFieldProps,
   getStackRowProps,
@@ -43,6 +42,7 @@ export const ReportDetailForm = ({
   state,
   actions,
 }: DetailFormProps): React.ReactElement => {
+  const {t} = useInterfaceTranslation();
   const {
     analysisMethods,
     clients,
@@ -75,71 +75,77 @@ export const ReportDetailForm = ({
   return (
     <>
       <Stack {...getStackContainerProps(isLessThanMediumScreen)}>
-        <Stack {...getStackRowProps(isLessThanMediumScreen)}>
-          <Stack {...getStackFieldProps()}>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                sx={SampleFormStyles.datePicker}
-                disableFuture
-                views={DATEPICKER_VIEWS}
-                label={REPORT_DATE_LABEL_TEXT}
-                name={ReportFormFields.REPORT_DATE}
-                onChange={(value) =>
-                  handleDateChange(value, ReportFormFields.REPORT_DATE)
-                }
-                slotProps={{
-                  textField: {
-                    error: !!formFieldsErrors[ReportFormFields.REPORT_DATE],
-                    helperText: getTextFieldHelperText(
-                      ReportFormFields.REPORT_DATE,
-                    ),
-                    variant: SharedTextFieldVariants.STANDARD,
-                  },
+        <Stack component="section" gap={2} sx={formSectionSx}>
+          <Typography component="h2" fontWeight={750}>
+            {t("Report information")}
+          </Typography>
+          <Stack {...getStackRowProps(isLessThanMediumScreen)}>
+            <Stack {...getStackFieldProps()}>
+              <LocalizedDateProvider>
+                <DatePicker
+                  disableFuture
+                  views={DATEPICKER_VIEWS}
+                  label={t(REPORT_DATE_LABEL_TEXT)}
+                  name={ReportFormFields.REPORT_DATE}
+                  onChange={(value) =>
+                    handleDateChange(value, ReportFormFields.REPORT_DATE)
+                  }
+                  slotProps={{
+                    textField: {
+                      error: !!formFieldsErrors[ReportFormFields.REPORT_DATE],
+                      helperText: t(
+                        getTextFieldHelperText(ReportFormFields.REPORT_DATE),
+                      ),
+                      variant: SharedTextFieldVariants.OUTLINED,
+                      size: "small",
+                    },
+                  }}
+                  value={reportDate ? dayjs(reportDate) : null}
+                  readOnly={isReadOnlyMode}
+                />
+              </LocalizedDateProvider>
+            </Stack>
+
+            <Stack {...getStackFieldProps()}>
+              <TextField
+                required
+                error={!!formFieldsErrors[ReportFormFields.REPORT_NUMBER]}
+                label={t(REPORT_NUMBER_LABEL_TEXT)}
+                type="string"
+                color={SharedButtonColors.PRIMARY}
+                size={SharedButtonSizes.SMALL}
+                onChange={handleChange}
+                name={ReportFormFields.REPORT_NUMBER}
+                helperText={t(
+                  getTextFieldHelperText(ReportFormFields.REPORT_NUMBER),
+                )}
+                value={form[ReportFormFields.REPORT_NUMBER] ?? ""}
+                variant={SharedTextFieldVariants.OUTLINED}
+                fullWidth
+                InputProps={{
+                  readOnly: isReadOnlyMode,
                 }}
-                value={reportDate ? dayjs(reportDate) : null}
-                readOnly={isReadOnlyMode}
               />
-            </LocalizationProvider>
-          </Stack>
+            </Stack>
 
-          <Stack {...getStackFieldProps()}>
-            <TextField
-              required
-              error={!!formFieldsErrors[ReportFormFields.REPORT_NUMBER]}
-              label={REPORT_NUMBER_LABEL_TEXT}
-              type="string"
-              color={SharedButtonColors.PRIMARY}
-              size={SharedButtonSizes.SMALL}
-              onChange={handleChange}
-              name={ReportFormFields.REPORT_NUMBER}
-              helperText={getTextFieldHelperText(
-                ReportFormFields.REPORT_NUMBER,
-              )}
-              value={form[ReportFormFields.REPORT_NUMBER] ?? ""}
-              variant={SharedTextFieldVariants.STANDARD}
-              fullWidth
-              InputProps={{
-                readOnly: isReadOnlyMode,
-              }}
-            />
-          </Stack>
-
-          <Stack {...getStackFieldProps()}>
-            <AutoComplete
-              options={sampleTypeOptionsFromSamples}
-              label={REPORT_SAMPLE_LABEL_TEXT}
-              value={`${form[ReportFormFields.SAMPLE_ID] ?? ""}`}
-              variant={SelectVariants.STANDARD}
-              onChange={handleAutoCompleteChange}
-              name={ReportFormFields.SAMPLE_ID}
-              readOnly={isReadOnlyMode}
-              required
-              error={!!formFieldsErrors[ReportFormFields.SAMPLE_ID]}
-              helperText={getTextFieldHelperText(ReportFormFields.SAMPLE_ID)}
-            />
+            <Stack {...getStackFieldProps()}>
+              <AutoComplete
+                options={sampleTypeOptionsFromSamples}
+                label={t(REPORT_SAMPLE_LABEL_TEXT)}
+                value={`${form[ReportFormFields.SAMPLE_ID] ?? ""}`}
+                variant={SelectVariants.OUTLINED}
+                onChange={handleAutoCompleteChange}
+                name={ReportFormFields.SAMPLE_ID}
+                readOnly={isReadOnlyMode}
+                required
+                error={!!formFieldsErrors[ReportFormFields.SAMPLE_ID]}
+                helperText={t(
+                  getTextFieldHelperText(ReportFormFields.SAMPLE_ID),
+                )}
+              />
+            </Stack>
           </Stack>
         </Stack>
-
         <Stack {...getStackRowProps(isLessThanMediumScreen)}>
           <Box {...getStackFieldProps()}>
             <SampleReportDetails
@@ -152,28 +158,26 @@ export const ReportDetailForm = ({
         </Stack>
 
         {Object.entries(analytesByTestType).map(
-          ([testTypeId, analytes], index) => {
-            return (
-              <Stack
-                key={testTypeId}
-                {...getStackRowProps(isLessThanMediumScreen)}
-              >
-                <ReportTestForm
-                  analytes={analytes}
-                  criterias={criterias}
-                  analysisMethods={analysisMethods}
-                  hasCompleteReportTestRow={hasCompleteReportTestRow}
-                  title={FORM_TITLES[index] ?? `${ANALYSIS_TITLE} ${index + 1}`}
-                  rows={getReportTestRows(testTypeId)}
-                  onRowsChange={(nextRows) =>
-                    handleTestRowsChange(testTypeId, nextRows)
-                  }
-                />
-              </Stack>
-            );
-          },
+          ([testTypeId, analytes], index) => (
+            <ReportTestForm
+              key={testTypeId}
+              analytes={analytes}
+              criterias={criterias}
+              analysisMethods={analysisMethods}
+              hasCompleteReportTestRow={hasCompleteReportTestRow}
+              title={
+                FORM_TITLES[index]
+                  ? t(FORM_TITLES[index])
+                  : `${t(ANALYSIS_TITLE)} ${index + 1}`
+              }
+              rows={getReportTestRows(testTypeId)}
+              onRowsChange={(nextRows) =>
+                handleTestRowsChange(testTypeId, nextRows)
+              }
+            />
+          ),
         )}
-        <Box {...getSideSectionButtonsProps()}>
+        <Box sx={formActionsSx}>
           <ReportSideSectionButtons
             isNotValidForm={detailForm.isNotValidForm || !areReportTestsValid}
             report={selectedReport}

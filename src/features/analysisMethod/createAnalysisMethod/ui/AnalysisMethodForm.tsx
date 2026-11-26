@@ -1,9 +1,12 @@
+import {useInterfaceTranslation} from "../../../../shared/i18n/useInterfaceTranslation";
 import {Box, Stack, TextField} from "@mui/material";
 import {
   selectSelectedAnalysisMethod,
   useAnalysisMethodsStore,
 } from "../../../../entities/analysisMethod";
 import {
+  formActionsSx,
+  formSectionSx,
   getStackContainerProps,
   getStackFieldProps,
   getStackRowProps,
@@ -31,6 +34,7 @@ type AnalysisMethodFormProps = {
 export const AnalysisMethodForm = ({
   isLessThanMediumScreen,
 }: AnalysisMethodFormProps) => {
+  const {t} = useInterfaceTranslation();
   const {
     isNotValidForm,
     form,
@@ -77,24 +81,23 @@ export const AnalysisMethodForm = ({
   }, [setFormFieldsValidationFunctions, formValidations]);
 
   return (
-    <Stack
-      {...getStackContainerProps(isLessThanMediumScreen)}
-      sx={{position: "relative", height: "100%", minHeight: "100%", pb: "72px"}}
-    >
-      <Stack {...getStackRowProps(isLessThanMediumScreen)}>
+    <Stack {...getStackContainerProps(isLessThanMediumScreen)}>
+      <Stack {...getStackRowProps(isLessThanMediumScreen)} sx={formSectionSx}>
         <Stack {...getStackFieldProps()}>
           <TextField
             required
             error={!!formFieldsErrors[AnalysisMethodFormFields.NAME]}
-            label={AnalysisMethodFormFieldLabels.NAME}
+            label={t(AnalysisMethodFormFieldLabels.NAME)}
             type="string"
             color={SharedTypographyColors.PRIMARY}
             size={TextFieldSizes.SMALL}
             onChange={handleChange}
             name={AnalysisMethodFormFields.NAME}
-            helperText={getTextFieldHelperText(AnalysisMethodFormFields.NAME)}
+            helperText={t(
+              getTextFieldHelperText(AnalysisMethodFormFields.NAME),
+            )}
             value={form[AnalysisMethodFormFields.NAME] ?? ""}
-            variant={SharedTextFieldVariants.STANDARD}
+            variant={SharedTextFieldVariants.OUTLINED}
             fullWidth
             InputProps={{
               readOnly: isReadOnlyMode,
@@ -102,7 +105,7 @@ export const AnalysisMethodForm = ({
           />
         </Stack>
       </Stack>
-      <Box sx={{display: "flex", mt: "auto", mb: "0px"}}>
+      <Box sx={formActionsSx}>
         <AnalysisMethodDetailButtons
           isNotValidForm={isNotValidForm}
           analysisMethod={selectedAnalysisMethod}

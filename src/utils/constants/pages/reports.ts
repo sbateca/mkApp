@@ -1,18 +1,14 @@
-import ITypographyProps from "../../../shared/ui/Typography/Types";
-import {getSharedPageTitleConfig} from "./shared";
-
 export const REPORTS_PAGE_NAME = "Reports";
-export const REPORTS_TITLE_CONFIG: ITypographyProps =
-  getSharedPageTitleConfig(REPORTS_PAGE_NAME);
 export const REPORTS_TABLE_HEADER_LABELS = [
   "Report Number",
   "Report Date",
   "Client",
-  "Get Sample Date",
+  "Collection Date",
   "Reception Date",
-  "Responsable",
+  "Collected By",
   "Analysis Date",
-  "Sample - Location",
+  "Sample and Location",
+  "Status",
   "Actions",
 ];
 

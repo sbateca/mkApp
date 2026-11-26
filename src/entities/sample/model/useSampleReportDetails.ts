@@ -7,6 +7,7 @@ import {REPORT_FORM_FIELDS, REPORT_FORM_LABELS} from "../../../utils/constants";
 interface SampleCardDetailItem {
   label: string;
   value: string;
+  isDate?: boolean;
 }
 interface SampleCardDetails {
   [REPORT_FORM_FIELDS.SAMPLE_CODE]: SampleCardDetailItem;
@@ -57,14 +58,17 @@ export const useSampleReportDetails = (
       [REPORT_FORM_FIELDS.GET_SAMPLE_DATE]: {
         label: REPORT_FORM_LABELS[REPORT_FORM_FIELDS.GET_SAMPLE_DATE],
         value: sample ? sample.getSampleDate : "",
+        isDate: true,
       },
       [REPORT_FORM_FIELDS.RECEPTION_DATE]: {
         label: REPORT_FORM_LABELS[REPORT_FORM_FIELDS.RECEPTION_DATE],
         value: sample ? sample.receptionDate : "",
+        isDate: true,
       },
       [REPORT_FORM_FIELDS.ANALYSIS_DATE]: {
         label: REPORT_FORM_LABELS[REPORT_FORM_FIELDS.ANALYSIS_DATE],
         value: sample ? sample.analysisDate : "",
+        isDate: true,
       },
       [REPORT_FORM_FIELDS.SAMPLE_LOCATION]: {
         label: REPORT_FORM_LABELS[REPORT_FORM_FIELDS.SAMPLE_LOCATION],

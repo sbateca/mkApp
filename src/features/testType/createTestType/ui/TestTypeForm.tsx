@@ -1,9 +1,12 @@
+import {useInterfaceTranslation} from "../../../../shared/i18n/useInterfaceTranslation";
 import {Box, Stack, TextField} from "@mui/material";
 import {
   selectSelectedTestType,
   useTestTypeStore,
 } from "../../../../entities/testType";
 import {
+  formActionsSx,
+  formSectionSx,
   getStackContainerProps,
   getStackFieldProps,
   getStackRowProps,
@@ -29,6 +32,7 @@ type TestTypeFormProps = {
 };
 
 export const TestTypeForm = ({isLessThanMediumScreen}: TestTypeFormProps) => {
+  const {t} = useInterfaceTranslation();
   const {
     isNotValidForm,
     form,
@@ -72,24 +76,21 @@ export const TestTypeForm = ({isLessThanMediumScreen}: TestTypeFormProps) => {
   }, [setFormFieldsValidationFunctions, formValidations]);
 
   return (
-    <Stack
-      {...getStackContainerProps(isLessThanMediumScreen)}
-      sx={{position: "relative", height: "100%", minHeight: "100%", pb: "72px"}}
-    >
-      <Stack {...getStackRowProps(isLessThanMediumScreen)}>
+    <Stack {...getStackContainerProps(isLessThanMediumScreen)}>
+      <Stack {...getStackRowProps(isLessThanMediumScreen)} sx={formSectionSx}>
         <Stack {...getStackFieldProps()}>
           <TextField
             required
             error={!!formFieldsErrors[TestTypeFormFields.NAME]}
-            label={TestTypeFormFieldLabels.NAME}
+            label={t(TestTypeFormFieldLabels.NAME)}
             type="string"
             color={SharedTypographyColors.PRIMARY}
             size={TextFieldSizes.SMALL}
             onChange={handleChange}
             name={TestTypeFormFields.NAME}
-            helperText={getTextFieldHelperText(TestTypeFormFields.NAME)}
+            helperText={t(getTextFieldHelperText(TestTypeFormFields.NAME))}
             value={form[TestTypeFormFields.NAME] ?? ""}
-            variant={SharedTextFieldVariants.STANDARD}
+            variant={SharedTextFieldVariants.OUTLINED}
             fullWidth
             InputProps={{
               readOnly: isReadOnlyMode,
@@ -97,7 +98,7 @@ export const TestTypeForm = ({isLessThanMediumScreen}: TestTypeFormProps) => {
           />
         </Stack>
       </Stack>
-      <Box sx={{display: "flex", mt: "auto", mb: "0px"}}>
+      <Box sx={formActionsSx}>
         <TestTypeDetailButtons
           isNotValidForm={isNotValidForm}
           testType={selectedTestType}

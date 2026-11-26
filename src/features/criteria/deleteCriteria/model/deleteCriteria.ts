@@ -1,3 +1,4 @@
+import {useInterfaceTranslation} from "../../../../shared/i18n/useInterfaceTranslation";
 import Swal from "sweetalert2";
 import {
   selectDeleteCriteria,
@@ -15,19 +16,21 @@ import {
 import {SnackBarSeverity, SweetAlertIcon} from "../../../../utils/enums";
 
 export const useDeleteCriteria = () => {
+  const {t} = useInterfaceTranslation();
   const getCriterias = useCriteriaStore(selectGetCriterias);
   const deleteCriteria = useCriteriaStore(selectDeleteCriteria);
   const showSnackBarMessage = useSnackBarStore(selectShowSnackBarMessage);
 
   const handleDelete = async (criteriaId: string) => {
     Swal.fire({
-      title: CRITERIA_DELETE_CONFIRMATION_TITLE,
-      text: CRITERIA_DELETE_CONFIRMATION_SUBTITLE,
+      title: t(CRITERIA_DELETE_CONFIRMATION_TITLE),
+      text: t(CRITERIA_DELETE_CONFIRMATION_SUBTITLE),
       icon: SweetAlertIcon.WARNING,
       showCancelButton: true,
+      cancelButtonText: t("Cancel"),
       confirmButtonColor: SWEET_ALERT_PARAMS.CONFIRM_BUTTON_COLOR,
       cancelButtonColor: SWEET_ALERT_PARAMS.CANCEL_BUTTON_COLOR,
-      confirmButtonText: CRITERIA_DELETE_CONFIRMATION_TEXT,
+      confirmButtonText: t(CRITERIA_DELETE_CONFIRMATION_TEXT),
     }).then((result) => {
       if (result.isConfirmed) {
         const result = deleteCriteria(criteriaId);

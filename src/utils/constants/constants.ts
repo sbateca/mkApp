@@ -29,7 +29,7 @@ export const REPORT_FORM_LABELS = {
   [REPORT_FORM_FIELDS.RECEPTION_DATE]: "Reception Date",
   [REPORT_FORM_FIELDS.ANALYSIS_DATE]: "Analysis Date",
   [REPORT_FORM_FIELDS.SAMPLE_LOCATION]: "Sample Location",
-  [REPORT_FORM_FIELDS.RESPONSABLE]: "Responsable",
+  [REPORT_FORM_FIELDS.RESPONSABLE]: "Responsible person",
 } as const;
 
 export const ADD_MORE_TESTS_HINT_TEXT =

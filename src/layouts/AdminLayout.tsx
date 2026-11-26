@@ -1,26 +1,38 @@
-import React from "react";
-import {Box} from "@mui/material";
+import React, {useEffect} from "react";
+import {Box, useMediaQuery} from "@mui/material";
 import {Outlet} from "react-router-dom";
 
 import {Header} from "../widgets/Header";
 import {COMPANY_NAME, MENU_ITEMS} from "../utils/constants";
-import {Menu, selectMenuOpen, useMenuStore} from "../features/menu";
+import {
+  Menu,
+  selectCloseMenu,
+  selectOpenMenu,
+  useMenuStore,
+} from "../features/menu";
 import {SnackBarContainer} from "../features/snackbar";
 import {StyledMainContent} from "./StyledMainContent";
-import {ContentStyle, mainTemplayeStyle} from "./MainTemplateStyle";
+import {ContentStyle, mainTemplateStyle} from "./MainTemplateStyle";
 
 export const AdminLayout = (): React.ReactElement => {
-  const menuOpen = useMenuStore(selectMenuOpen);
+  const isDesktop = useMediaQuery("(min-width:900px)");
+  const openMenu = useMenuStore(selectOpenMenu);
+  const closeMenu = useMenuStore(selectCloseMenu);
+
+  useEffect(() => {
+    if (isDesktop) openMenu();
+    else closeMenu();
+  }, [isDesktop, openMenu, closeMenu]);
 
   return (
-    <Box sx={{...mainTemplayeStyle}}>
+    <Box sx={mainTemplateStyle}>
       <Box component="header">
         <Header companyName={COMPANY_NAME} />
       </Box>
 
       <Menu menuItems={MENU_ITEMS} />
 
-      <StyledMainContent open={menuOpen}>
+      <StyledMainContent>
         <Box sx={ContentStyle} data-testid="contentContainer">
           <Outlet />
         </Box>

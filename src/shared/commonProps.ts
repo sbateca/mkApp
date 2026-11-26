@@ -13,15 +13,14 @@ export interface StackRowDirectionSpacingPropsProps {
 }
 
 export interface StackContainerProps {
-  spacing: number;
+  gap: string;
   marginTop: string;
-  padding: string;
-  height: string;
-  minWidth: string;
+  flexGrow: number;
 }
 
 export interface StackFieldProps {
   width: string;
+  minWidth: number;
 }
 
 export interface BoxContainerProps {
@@ -29,5 +28,7 @@ export interface BoxContainerProps {
   flexDirection: string;
   padding: string;
   width: string;
-  height: string;
+  minHeight: string;
+  boxSizing: "border-box";
+  backgroundColor: string;
 }

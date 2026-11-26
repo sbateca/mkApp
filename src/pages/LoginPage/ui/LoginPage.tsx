@@ -4,7 +4,7 @@ import {LoginPanel} from "../../../widgets/LoginPanel/ui/LoginPanel";
 export const LoginPage = () => {
   return (
     <>
-      <LoginPanel />;
+      <LoginPanel />
       <SnackBarContainer />
     </>
   );

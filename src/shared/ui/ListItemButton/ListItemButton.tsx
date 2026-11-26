@@ -1,3 +1,4 @@
+import {useInterfaceTranslation} from "../../i18n/useInterfaceTranslation";
 import React from "react";
 
 import {
@@ -24,10 +25,12 @@ export const ListItemButton = ({
   selected = false,
   onClick,
 }: Props): React.ReactElement => {
+  const {t} = useInterfaceTranslation();
   return (
     <ListItem disablePadding sx={{display: "block"}}>
-      <Tooltip title={label} placement="right">
+      <Tooltip title={t(label)} placement="right">
         <MuiListItemButton
+          aria-label={t(label)}
           selected={selected}
           onClick={onClick}
           sx={[
@@ -53,10 +56,10 @@ export const ListItemButton = ({
                 },
                 open
                   ? {
-                      mr: 3,
+                      mr: 1.5,
                     }
                   : {
-                      mr: "auto",
+                      mr: 0,
                     },
               ]}
             >
@@ -64,14 +67,16 @@ export const ListItemButton = ({
             </ListItemIcon>
           ) : null}
           <ListItemText
-            primary={label}
+            primary={t(label)}
             sx={[
               open
                 ? {
                     opacity: 1,
                   }
                 : {
-                    opacity: 0,
+                    visibility: "hidden",
+                    width: 0,
+                    flex: "none",
                   },
             ]}
           />

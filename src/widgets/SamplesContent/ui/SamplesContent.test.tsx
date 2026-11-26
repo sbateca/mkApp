@@ -1,4 +1,4 @@
-import {render, screen, waitFor} from "@testing-library/react";
+import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 
 import {SamplesContent} from "../../SamplesContent";
 import {Sample} from "../../../entities/sample/model/Sample";
@@ -12,6 +12,7 @@ import {buildFormData} from "../../../shared/test/builders/formDataBuilder";
 import dayjs from "dayjs";
 import {SideSectionStore} from "../../../features/sideSection/model/types";
 import {SnackBarSeverity} from "../../../utils/enums";
+import {useReadOnlyModeStore} from "../../../features/readOnlyMode";
 import {SampleType} from "../../../entities/sampleType";
 
 const today = dayjs();
@@ -102,7 +103,7 @@ const mockSampleTypeStoreState = {
 };
 
 const mockSideSectionStoreState: SideSectionStore = {
-  isSideSectionOpen: true,
+  isSideSectionOpen: false,
   sideSectionTitle: "Mock title",
   setIsSideSectionOpen: jest.fn(),
   setSideSectionTitle: jest.fn(),
@@ -158,6 +159,19 @@ jest.mock("../../../widgets/SampleDetail/ui/SampleDetail", () => ({
 describe("SamplesContent test", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it("opens a new sample in edit mode", () => {
+    useReadOnlyModeStore.setState({isReadOnlyMode: true});
+    render(<SamplesContent />);
+
+    fireEvent.click(screen.getByRole("button", {name: "Create sample"}));
+
+    expect(mockSamplesStoreState.setSelectedSample).toHaveBeenCalledWith(null);
+    expect(mockSideSectionStoreState.setSideSectionTitle).toHaveBeenCalledWith(
+      "Create sample",
+    );
+    expect(useReadOnlyModeStore.getState().isReadOnlyMode).toBe(false);
   });
 
   // TODO: fix this flaky test
