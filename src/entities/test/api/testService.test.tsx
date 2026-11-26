@@ -60,7 +60,14 @@ describe("testService", () => {
     expect(test).toEqual(mockTests[0]);
     expect(apiClient.post).toHaveBeenCalledWith(
       "http://mockurl.com/api/tests",
-      mockTests[0],
+      {
+        testTypeId: mockTests[0].testType.id,
+        sampleId: mockTests[0].sampleId,
+        analyteId: mockTests[0].analyte.id,
+        analysisMethodId: mockTests[0].analysisMethod.id,
+        criteriaId: mockTests[0].criteria.id,
+        result: mockTests[0].result,
+      },
     );
   });
 
@@ -73,7 +80,14 @@ describe("testService", () => {
     expect(test).toEqual(mockTests[0]);
     expect(apiClient.put).toHaveBeenCalledWith(
       "http://mockurl.com/api/tests/1",
-      mockTests[0],
+      {
+        testTypeId: mockTests[0].testType.id,
+        sampleId: mockTests[0].sampleId,
+        analyteId: mockTests[0].analyte.id,
+        analysisMethodId: mockTests[0].analysisMethod.id,
+        criteriaId: mockTests[0].criteria.id,
+        result: mockTests[0].result,
+      },
     );
   });
 

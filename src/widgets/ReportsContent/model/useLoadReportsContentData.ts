@@ -6,10 +6,12 @@ import {
   selectReports,
   useReportStore,
 } from "../../../entities/report";
+import {getReportCollectionActionsService} from "../../../entities/report/api/reportsService";
 import {TableRowProps} from "../../../shared/ui/Table/TableRow";
 import {useTableControls} from "../../../shared/ui/Table/Table/useTableControls";
 
 export const useLoadRepostsContentData = () => {
+  const [canCreate, setCanCreate] = useState(false);
   const [rows, setRows] = useState<TableRowProps[]>([]);
   const {
     page,
@@ -37,6 +39,23 @@ export const useLoadRepostsContentData = () => {
   }, [getReports]);
 
   useEffect(() => {
+    let active = true;
+    const loadCollectionActions = async () => {
+      try {
+        const actions = await getReportCollectionActionsService();
+        if (active) setCanCreate(actions?.create?.allowed === true);
+      } catch {
+        if (active) setCanCreate(false);
+      }
+    };
+
+    void loadCollectionActions();
+    return () => {
+      active = false;
+    };
+  }, []);
+
+  useEffect(() => {
     if (!reports) {
       setRows([]);
       return;
@@ -47,6 +66,7 @@ export const useLoadRepostsContentData = () => {
 
   return {
     rows,
+    canCreate,
     isLoading,
     page,
     rowsPerPage,

@@ -2,6 +2,8 @@ import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 
 import {Report} from "../../../entities/report/model/Report";
 import {ReportsContent} from "./ReportsContent";
+import {getReportCollectionActionsService} from "../../../entities/report/api/reportsService";
+import {REPORT_CREATE_BUTTON_LABEL} from "../../../utils/constants";
 import {
   buildAnalytesData,
   buildClientData,
@@ -95,6 +97,11 @@ jest.mock("../../../config/EnvManager", () => ({
   },
 }));
 
+jest.mock("../../../entities/report/api/reportsService", () => ({
+  ...jest.requireActual("../../../entities/report/api/reportsService"),
+  getReportCollectionActionsService: jest.fn(),
+}));
+
 jest.mock("../../../widgets/ReportsDetail", () => ({
   ReportDetail: () => (
     <div data-testid="reportsDetail">Reports Detail Component</div>
@@ -129,8 +136,17 @@ jest.mock("../../../features/sideSection/model/store", () => ({
 describe("ReportsContent test", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockedReportsState = {
+      ...mockedReportsState,
+      reports: mockReports,
+      isLoading: false,
+      error: null,
+    };
+    jest.mocked(getReportCollectionActionsService).mockResolvedValue({
+      create: {allowed: false},
+    });
     mockSideSectionStoreState = {
-      isSideSectionOpen: true,
+      isSideSectionOpen: false,
       sideSectionTitle: "",
       setIsSideSectionOpen: jest.fn(),
       setSideSectionTitle: jest.fn(),
@@ -172,6 +188,38 @@ describe("ReportsContent test", () => {
     await waitFor(() => {
       expect(screen.getByText("No records to display")).toBeInTheDocument();
     });
+  });
+
+  it("enables creation when allowed even if there are no reports", async () => {
+    mockedReportsState.reports = [];
+    jest.mocked(getReportCollectionActionsService).mockResolvedValue({
+      create: {allowed: true},
+    });
+
+    render(<ReportsContent />);
+    const createButton = screen.getByRole("button", {
+      name: REPORT_CREATE_BUTTON_LABEL,
+    });
+    await waitFor(() => expect(createButton).toBeEnabled());
+    fireEvent.click(createButton);
+    expect(mockSideSectionStoreState.setIsSideSectionOpen).toHaveBeenCalledWith(
+      true,
+    );
+  });
+
+  it("disables creation when access is denied", async () => {
+    render(<ReportsContent />);
+    await waitFor(() =>
+      expect(getReportCollectionActionsService).toHaveBeenCalled(),
+    );
+    const createButton = screen.getByRole("button", {
+      name: REPORT_CREATE_BUTTON_LABEL,
+    });
+    expect(createButton).toBeDisabled();
+    fireEvent.click(createButton);
+    expect(
+      mockSideSectionStoreState.setIsSideSectionOpen,
+    ).not.toHaveBeenCalled();
   });
 
   it("should render loading spinner when is loading", async () => {

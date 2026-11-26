@@ -22,6 +22,7 @@ import {ReportTableActionButtons} from "../../../features/reports/reportActions"
 import {useReadOnlyMode} from "../../../features/readOnlyMode";
 import {useSideSection} from "../../../features/sideSection";
 import {
+  selectReports,
   selectSetSelectedReport,
   useReportStore,
 } from "../../../entities/report";
@@ -31,6 +32,7 @@ export const ReportsContent = (): React.ReactElement => {
 
   const {
     rows,
+    canCreate,
     isLoading,
     rowsPerPage,
     page,
@@ -47,9 +49,11 @@ export const ReportsContent = (): React.ReactElement => {
   const {error} = useSamplesContentErrorNotifier();
 
   const {isSideSectionOpen, onOpenSideSection} = useSideSection();
+  const reports = useReportStore(selectReports);
   const setSelectedReport = useReportStore(selectSetSelectedReport);
 
   const openSideSection = () => {
+    if (!canCreate) return;
     setSelectedReport(null);
     setIsReadOnlyMode(false);
     onOpenSideSection(CREATE_REPORT_TITLE_TEXT, false);
@@ -66,6 +70,7 @@ export const ReportsContent = (): React.ReactElement => {
         <Box sx={ReportsContentStyles.titleContentActions}>
           <Button
             label={REPORT_CREATE_BUTTON_LABEL}
+            disabled={!canCreate}
             variant={SharedButtonVariants.OUTLINED}
             size={SharedButtonSizes.SMALL}
             color={SharedButtonColors.PRIMARY}
@@ -89,7 +94,10 @@ export const ReportsContent = (): React.ReactElement => {
         handleRequestSort={handleRequestSort}
         handleSearch={handleSearch}
         renderActions={(row) => (
-          <ReportTableActionButtons reportId={row.id ?? ""} />
+          <ReportTableActionButtons
+            reportId={row.id ?? ""}
+            actions={reports?.find((report) => report.id === row.id)?.actions}
+          />
         )}
       />
       <SideSection isOpen={isSideSectionOpen}>

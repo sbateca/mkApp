@@ -15,6 +15,13 @@ export enum BaseRoutes {
   TEST_TYPES = "/testTypes",
 }
 
+export enum ApiRoutes {
+  ANALYSIS_METHODS = "/analysis-methods",
+  CRITERIAS = "/criteria",
+  SAMPLE_TYPES = "/sample-types",
+  TEST_TYPES = "/test-types",
+}
+
 export enum Routes {
   LOGIN = `${BaseRoutes.AUTH}/login`,
   LOGOUT = `${BaseRoutes.AUTH}/logout`,

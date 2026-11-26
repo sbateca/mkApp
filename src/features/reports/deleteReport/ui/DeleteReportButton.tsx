@@ -9,9 +9,13 @@ import {
 
 type DeleteReportButtonProps = {
   onClick: () => void;
+  disabled?: boolean;
 };
 
-export const DeleteReportButton = ({onClick}: DeleteReportButtonProps) => {
+export const DeleteReportButton = ({
+  onClick,
+  disabled,
+}: DeleteReportButtonProps) => {
   return (
     <Button
       icon={IconNames.DELETE}
@@ -20,6 +24,7 @@ export const DeleteReportButton = ({onClick}: DeleteReportButtonProps) => {
       size={SharedButtonSizes.SMALL}
       color={SharedButtonColors.ERROR}
       onClick={onClick}
+      disabled={disabled}
     />
   );
 };

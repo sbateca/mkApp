@@ -35,7 +35,7 @@ describe("criteriaService", () => {
   it("should return a list of criterias", async () => {
     const mockApiClientGet = apiClient.get as jest.Mock;
     mockApiClientGet.mockResolvedValueOnce({data: mockCriterias});
-    const expectedURL = "http://mockurl.com/api/criterias";
+    const expectedURL = "http://mockurl.com/api/criteria";
 
     const criterias = await getCriteriasService();
 
@@ -46,7 +46,7 @@ describe("criteriaService", () => {
   it("should return a criteria by id", async () => {
     const mockApiClientGet = apiClient.get as jest.Mock;
     mockApiClientGet.mockResolvedValueOnce({data: mockCriterias[0]});
-    const expectedURL = "http://mockurl.com/api/criterias/1";
+    const expectedURL = "http://mockurl.com/api/criteria/1";
 
     const criteria = await getCriteriaByIdService("1");
 
@@ -57,7 +57,7 @@ describe("criteriaService", () => {
   it("should create a criteria", async () => {
     const mockApiClientPost = apiClient.post as jest.Mock;
     mockApiClientPost.mockResolvedValueOnce({data: mockCriterias[0]});
-    const expectedURL = "http://mockurl.com/api/criterias";
+    const expectedURL = "http://mockurl.com/api/criteria";
 
     const criteria = await createCriteriaService(mockCriterias[0]);
 
@@ -71,7 +71,7 @@ describe("criteriaService", () => {
   it("should edit a criteria", async () => {
     const mockApiClientPut = apiClient.put as jest.Mock;
     mockApiClientPut.mockResolvedValueOnce({data: mockCriterias[0]});
-    const expectedURL = "http://mockurl.com/api/criterias/1";
+    const expectedURL = "http://mockurl.com/api/criteria/1";
 
     const criteria = await editCriteriaService(mockCriterias[0], "1");
 
@@ -85,7 +85,7 @@ describe("criteriaService", () => {
   it("should delete a criteria", async () => {
     const mockApiClientDelete = apiClient.delete as jest.Mock;
     mockApiClientDelete.mockResolvedValueOnce({data: mockCriterias[0]});
-    const expectedURL = "http://mockurl.com/api/criterias/1";
+    const expectedURL = "http://mockurl.com/api/criteria/1";
 
     const criteria = await deleteCriteriaService("1");
 

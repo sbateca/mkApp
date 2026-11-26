@@ -1,5 +1,7 @@
 import {
   selectApproveReport,
+  selectGetReportById,
+  selectGetReports,
   selectSelectedReport,
   selectSetSelectedReport,
   useReportStore,
@@ -10,6 +12,8 @@ import {selectShowSnackBarMessage, useSnackBarStore} from "../../../snackbar";
 
 export const useApproveReport = () => {
   const approveReport = useReportStore(selectApproveReport);
+  const getReportById = useReportStore(selectGetReportById);
+  const getReports = useReportStore(selectGetReports);
   const showSnackBarMessage = useSnackBarStore(selectShowSnackBarMessage);
   const setSelectedReport = useReportStore(selectSetSelectedReport);
   const selectedReport = useReportStore(selectSelectedReport);
@@ -20,11 +24,13 @@ export const useApproveReport = () => {
     if (status !== ReportStatus.APPROVED) return;
 
     if (selectedReport?.id === reportId) {
-      setSelectedReport({
-        ...selectedReport,
-        status,
-      });
+      // Clear stale permissions while fetching the approved report.
+      setSelectedReport({...selectedReport, status, actions: undefined});
+      const refreshedReport = await getReportById(reportId);
+      if (refreshedReport) setSelectedReport(refreshedReport);
     }
+
+    await getReports();
 
     showSnackBarMessage(
       REPORT_SUCCESSFULLY_APPROVED_TEXT,

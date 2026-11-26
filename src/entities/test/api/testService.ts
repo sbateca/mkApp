@@ -5,6 +5,15 @@ import {BaseRoutes} from "../../../utils/constants/baseRoutes";
 import {axiosResponseToTests} from "../lib/testMappers";
 import {Test} from "../model/Test";
 
+const testRequest = (test: Test) => ({
+  testTypeId: test.testType.id,
+  sampleId: test.sampleId,
+  analyteId: test.analyte.id,
+  analysisMethodId: test.analysisMethod.id,
+  criteriaId: test.criteria.id,
+  result: test.result,
+});
+
 export const getTestsService = async (): Promise<Test[]> => {
   const response = await apiClient.get<Test[]>(
     `${EnvManager.BACKEND_URL}${BaseRoutes.TESTS}`,
@@ -24,7 +33,7 @@ export const getTestByIdService = async (testId: string) => {
 export const createTestService = async (test: Test) => {
   const response = await apiClient.post<Test>(
     `${EnvManager.BACKEND_URL}${BaseRoutes.TESTS}`,
-    test,
+    testRequest(test),
   );
   return response.data || null;
 };
@@ -40,7 +49,7 @@ export const editTestService = async (
   };
   const editResponse = await apiClient.put<Test>(
     `${EnvManager.BACKEND_URL}${BaseRoutes.TESTS}/${testId}`,
-    updatedTestType,
+    testRequest(updatedTestType),
   );
   return editResponse.data || null;
 };

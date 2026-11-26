@@ -12,7 +12,7 @@ import {useReportStore} from "../../../../entities/report/model/store";
 import {useSideSection} from "../../../sideSection/model/useSideSection";
 import {
   ReportDetailDataProps,
-  reportFormToReport,
+  reportFormToReportRequest,
 } from "../../../../entities/report";
 
 export const useCreateReport = () => {
@@ -26,7 +26,7 @@ export const useCreateReport = () => {
     reportDetailData: ReportDetailDataProps,
   ) => {
     const newReport = await createReport(
-      reportFormToReport(form, "", reportDetailData, ReportStatus.DRATF),
+      reportFormToReportRequest(form, "", reportDetailData, ReportStatus.DRATF),
     );
     if (newReport !== null) {
       showSnackBarMessage(

@@ -1,7 +1,7 @@
 import {AxiosResponse} from "axios";
 import {v4 as uuidv4} from "uuid";
 
-import {Report} from "../model/Report";
+import {Report, ReportRequest} from "../model/Report";
 import {
   FormProps,
   getFormStringValue,
@@ -18,7 +18,7 @@ import {Client} from "../../client";
 import {TestType} from "../../testType";
 import {AnalysisMethod} from "../../analysisMethod/model/AnalysisMethod";
 import {Criteria} from "../../criteria";
-import {Test} from "../../test";
+import {Test, TestRequest} from "../../test";
 import {
   ReportFormFields,
   ReportStatus,
@@ -68,12 +68,12 @@ const isValidReport = (report: unknown): report is Report => {
   return false;
 };
 
-export const reportFormToReport = (
+export const reportFormToReportRequest = (
   form: FormProps,
   reportId: string,
   reportDetailData: ReportDetailDataProps,
   status: ReportStatus,
-): Report => {
+): ReportRequest => {
   const sampleId = getFormStringValue(form, ReportFormFields.SAMPLE_ID);
   const sample = filterModelsById(reportDetailData.samples || [], sampleId);
 
@@ -82,8 +82,8 @@ export const reportFormToReport = (
     reportNumber: getFormStringValue(form, ReportFormFields.REPORT_NUMBER),
     reportDate: getFormStringValue(form, ReportFormFields.REPORT_DATE),
     status: status,
-    sample: sample,
-    tests: buildTestsFromData(form, reportDetailData),
+    sampleId: sample?.id || "",
+    testIds: buildTestsFromData(form, reportDetailData),
   };
 };
 
@@ -94,11 +94,7 @@ const buildTestsFromData = (
   const reportTestGroups = getReportTestGroups(form);
 
   if (reportTestGroups) {
-    return buildTestsFromReportTestGroups(
-      form,
-      reportDetailData,
-      reportTestGroups,
-    );
+    return buildTestsRequestFromReportTestGroups(form, reportTestGroups);
   }
 
   const testType = filterModelsById(
@@ -120,14 +116,14 @@ const buildTestsFromData = (
 
   const testIds = form.testIds as string[];
 
-  const tests: Test[] = testIds.map((testId) => {
+  const tests: TestRequest[] = testIds.map((testId) => {
     return {
       id: testId || uuidv4(),
-      testType: testType,
+      testTypeId: testType.id,
       sampleId: form.sampleId as string,
-      analyte: analyte,
-      analysisMethod: analysisMethod,
-      criteria: criteria,
+      analyteId: analyte.id,
+      analysisMethodId: analysisMethod.id,
+      criteriaId: criteria.id,
       result: form.result as string,
     };
   });
@@ -144,35 +140,20 @@ type ReportTestFormRow = {
 
 type ReportTestGroupsFormValue = Record<string, ReportTestFormRow[]>;
 
-const buildTestsFromReportTestGroups = (
+const buildTestsRequestFromReportTestGroups = (
   form: FormProps,
-  reportDetailData: ReportDetailDataProps,
   reportTestGroups: ReportTestGroupsFormValue,
-): Test[] => {
+): TestRequest[] => {
   const sampleId = getFormStringValue(form, ReportFormFields.SAMPLE_ID);
 
   return Object.entries(reportTestGroups).flatMap(([testTypeId, rows]) => {
-    const testType = filterModelsById(
-      reportDetailData.testTypes || [],
-      testTypeId,
-    );
-
     return rows.filter(isCompleteReportTestRow).map((row) => ({
       id: getRowStringValue(row.id) || uuidv4(),
-      testType,
+      testTypeId: testTypeId || "",
       sampleId,
-      analyte: filterModelsById(
-        reportDetailData.analytes || [],
-        getRowStringValue(row.analyteId),
-      ),
-      analysisMethod: filterModelsById(
-        reportDetailData.analysisMethods || [],
-        getRowStringValue(row.analysisMethodId),
-      ),
-      criteria: filterModelsById(
-        reportDetailData.criterias || [],
-        getRowStringValue(row.criteriaId),
-      ),
+      analyteId: getRowStringValue(row.analyteId),
+      analysisMethodId: getRowStringValue(row.analysisMethodId),
+      criteriaId: getRowStringValue(row.criteriaId),
       result: getRowStringValue(row.result),
     }));
   });

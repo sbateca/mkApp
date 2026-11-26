@@ -23,10 +23,8 @@ export const getAnalyteByIdService = async (
 export const getAnalytesByTestTypeIdService = async (
   testTypeId: string,
 ): Promise<Analyte[]> => {
-  const response = await apiClient.get<Analyte[]>(
-    `${EnvManager.BACKEND_URL}${BaseRoutes.ANALYTES}?testType.id=${testTypeId}`,
-  );
-  return axiosResponseToAnalyte(response);
+  const analytes = await getAnalytesService();
+  return analytes.filter((analyte) => analyte.testType.id === testTypeId);
 };
 
 export const createAnalyteService = async (
@@ -34,7 +32,7 @@ export const createAnalyteService = async (
 ): Promise<Analyte> => {
   const response = await apiClient.post<Analyte>(
     `${EnvManager.BACKEND_URL}${BaseRoutes.ANALYTES}`,
-    analyte,
+    {name: analyte.name, testTypeId: analyte.testType.id},
   );
   return axiosResponseToAnalyte(response)[0];
 };
@@ -45,7 +43,7 @@ export const editAnalyteService = async (
 ): Promise<Analyte> => {
   const response = await apiClient.put<Analyte>(
     `${EnvManager.BACKEND_URL}${BaseRoutes.ANALYTES}/${analyteId}`,
-    analyte,
+    {name: analyte.name, testTypeId: analyte.testType.id},
   );
   return axiosResponseToAnalyte(response)[0];
 };

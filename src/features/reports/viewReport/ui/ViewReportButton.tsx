@@ -9,9 +9,13 @@ import {
 
 type ViewReportButtonProps = {
   onClick: () => void;
+  disabled?: boolean;
 };
 
-export const ViewReportButton = ({onClick}: ViewReportButtonProps) => {
+export const ViewReportButton = ({
+  onClick,
+  disabled,
+}: ViewReportButtonProps) => {
   return (
     <Button
       icon={IconNames.SEARCH}
@@ -20,6 +24,7 @@ export const ViewReportButton = ({onClick}: ViewReportButtonProps) => {
       size={SharedButtonSizes.SMALL}
       color={SharedButtonColors.PRIMARY}
       onClick={onClick}
+      disabled={disabled}
     />
   );
 };

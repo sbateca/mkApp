@@ -37,7 +37,7 @@ describe("testTypeService", () => {
   it("should return a list of test types", async () => {
     const mockApiClientGet = apiClient.get as jest.Mock;
     mockApiClientGet.mockResolvedValueOnce({data: mockTestTypes});
-    const expectedURL = "http://mockurl.com/api/testTypes";
+    const expectedURL = "http://mockurl.com/api/test-types";
 
     const testTypes = await getTestTypesService();
 
@@ -48,7 +48,7 @@ describe("testTypeService", () => {
   it("should return a test type by id", async () => {
     const mockApiClientGet = apiClient.get as jest.Mock;
     mockApiClientGet.mockResolvedValueOnce({data: mockTestTypes[0]});
-    const expectedURL = "http://mockurl.com/api/testTypes/1";
+    const expectedURL = "http://mockurl.com/api/test-types/1";
 
     const testType = await getTestTypeByIdService("1");
 
@@ -59,7 +59,7 @@ describe("testTypeService", () => {
   it("should create a test type", async () => {
     const mockApiClientPost = apiClient.post as jest.Mock;
     mockApiClientPost.mockResolvedValueOnce({data: mockTestTypes[0]});
-    const expectedURL = "http://mockurl.com/api/testTypes";
+    const expectedURL = "http://mockurl.com/api/test-types";
 
     const testType = await createTestTypeService(mockTestTypes[0]);
 
@@ -73,7 +73,7 @@ describe("testTypeService", () => {
   it("should edit a test type", async () => {
     const mockApiClientPut = apiClient.put as jest.Mock;
     mockApiClientPut.mockResolvedValueOnce({data: mockTestTypes[0]});
-    const expectedURL = "http://mockurl.com/api/testTypes/1";
+    const expectedURL = "http://mockurl.com/api/test-types/1";
 
     const testType = await editTestTypeService(mockTestTypes[0], "1");
 
@@ -87,7 +87,7 @@ describe("testTypeService", () => {
   it("should delete a test type", async () => {
     const mockApiClientDelete = apiClient.delete as jest.Mock;
     mockApiClientDelete.mockResolvedValueOnce({data: mockTestTypes[0]});
-    const expectedURL = "http://mockurl.com/api/testTypes/1";
+    const expectedURL = "http://mockurl.com/api/test-types/1";
 
     const testType = await deleteTestTypeService("1");
 

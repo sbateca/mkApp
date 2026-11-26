@@ -1,6 +1,6 @@
 import EnvManager from "../../../config/EnvManager";
 import {axiosResponseToReports} from "../lib/reportMappers";
-import {Report} from "../model/Report";
+import {Report, ReportCollectionActions, ReportRequest} from "../model/Report";
 import {apiClient} from "../../../shared/api/apliClient";
 import {BaseRoutes} from "../../../utils/constants/baseRoutes";
 import {ReportStatus} from "../../../utils/enums";
@@ -13,6 +13,14 @@ export const getReportsService = async (): Promise<Report[]> => {
   return axiosResponseToReports(response);
 };
 
+export const getReportCollectionActionsService =
+  async (): Promise<ReportCollectionActions> => {
+    const response = await apiClient.get<ReportCollectionActions>(
+      `${EnvManager.BACKEND_URL}${BaseRoutes.REPORTS}/actions`,
+    );
+    return response.data;
+  };
+
 export const getReportByIdService = async (
   reportId: string,
 ): Promise<Report | null> => {
@@ -23,7 +31,7 @@ export const getReportByIdService = async (
 };
 
 export const createReportService = async (
-  report: Report,
+  report: ReportRequest,
 ): Promise<Report | null> => {
   const response = await apiClient.post<Report>(
     `${EnvManager.BACKEND_URL}${BaseRoutes.REPORTS}`,
@@ -34,7 +42,7 @@ export const createReportService = async (
 
 export const editReportService = async (
   reportId: string,
-  report: Report,
+  report: ReportRequest,
 ): Promise<Report | null> => {
   const response = await apiClient.put<Report>(
     `${EnvManager.BACKEND_URL}${BaseRoutes.REPORTS}/${reportId}`,
@@ -55,10 +63,10 @@ export const deleteReportService = async (
 export const approveReportService = async (
   reportId: string,
 ): Promise<ReportStatus> => {
-  const response = await apiClient.post<ReportStatus>(
+  const response = await apiClient.patch<Report>(
     `${EnvManager.BACKEND_URL}${BaseRoutes.REPORTS}/${reportId}/approve`,
   );
-  return response.data;
+  return response.data.status as ReportStatus;
 };
 
 export const downloadReportService = async (
