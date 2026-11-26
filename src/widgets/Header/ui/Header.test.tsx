@@ -1,9 +1,11 @@
 import {fireEvent} from "@testing-library/react";
+import {useMenuStore} from "../../../features/menu";
 import {renderHeader, setupMocks} from "./Header.test.page";
 
 describe("Header", () => {
   beforeEach(() => {
     setupMocks();
+    useMenuStore.getState().closeMenu();
   });
   it("should render the header", async () => {
     const {header, mainMenuButton} = await renderHeader();
@@ -12,12 +14,20 @@ describe("Header", () => {
     expect(mainMenuButton).toBeInTheDocument();
   });
 
-  it("should appear the main menu when click in menu button", async () => {
+  it("keeps the main menu toggle accessible in both states", async () => {
     const {mainMenuButton, screen} = await renderHeader();
 
-    fireEvent.click(mainMenuButton);
-    const mainMenuComponent = screen.getByTestId("mainMenu");
+    expect(mainMenuButton).toHaveAttribute("aria-expanded", "false");
+    expect(screen.getByRole("combobox", {name: "Language"})).toBeVisible();
 
-    expect(mainMenuComponent).toBeInTheDocument();
+    fireEvent.click(mainMenuButton);
+    expect(mainMenuButton).toBeVisible();
+    expect(mainMenuButton).toHaveAccessibleName("Collapse menu");
+    expect(mainMenuButton).toHaveAttribute("aria-expanded", "true");
+
+    fireEvent.click(mainMenuButton);
+    expect(mainMenuButton).toBeVisible();
+    expect(mainMenuButton).toHaveAccessibleName("Expand menu");
+    expect(mainMenuButton).toHaveAttribute("aria-expanded", "false");
   });
 });

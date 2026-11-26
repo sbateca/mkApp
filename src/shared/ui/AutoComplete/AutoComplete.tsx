@@ -36,6 +36,7 @@ export const AutoComplete = ({
 
   return (
     <MuiAutoComplete
+      size={variant === "outlined" ? "small" : undefined}
       clearOnEscape
       options={options}
       getOptionLabel={(option: AutoCompleteOption) => option.optionLabel}

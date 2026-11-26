@@ -1,3 +1,4 @@
+import {useInterfaceTranslation} from "../../../../shared/i18n/useInterfaceTranslation";
 import {Box, Stack, TextField} from "@mui/material";
 import {
   selectSelectedAnaliye,
@@ -9,6 +10,8 @@ import {
   useTestTypeStore,
 } from "../../../../entities/testType";
 import {
+  formActionsSx,
+  formSectionSx,
   getStackContainerProps,
   getStackFieldProps,
   getStackRowProps,
@@ -36,6 +39,7 @@ type AnalyteFormProps = {
 };
 
 export const AnalyteForm = ({isLessThanMediumScreen}: AnalyteFormProps) => {
+  const {t} = useInterfaceTranslation();
   const {
     isNotValidForm,
     form,
@@ -89,24 +93,21 @@ export const AnalyteForm = ({isLessThanMediumScreen}: AnalyteFormProps) => {
   }, [setFormFieldsValidationFunctions, formValidations]);
 
   return (
-    <Stack
-      {...getStackContainerProps(isLessThanMediumScreen)}
-      sx={{position: "relative", height: "100%", minHeight: "100%", pb: "72px"}}
-    >
-      <Stack {...getStackRowProps(isLessThanMediumScreen)}>
+    <Stack {...getStackContainerProps(isLessThanMediumScreen)}>
+      <Stack {...getStackRowProps(isLessThanMediumScreen)} sx={formSectionSx}>
         <Stack {...getStackFieldProps()}>
           <TextField
             required
             error={!!formFieldsErrors[AnalyteFormFields.NAME]}
-            label={AnalyteFormFieldLabels.NAME}
+            label={t(AnalyteFormFieldLabels.NAME)}
             type="string"
             color={SharedTypographyColors.PRIMARY}
             size={TextFieldSizes.SMALL}
             onChange={handleChange}
             name={AnalyteFormFields.NAME}
-            helperText={getTextFieldHelperText(AnalyteFormFields.NAME)}
+            helperText={t(getTextFieldHelperText(AnalyteFormFields.NAME))}
             value={form[AnalyteFormFields.NAME] ?? ""}
-            variant={SharedTextFieldVariants.STANDARD}
+            variant={SharedTextFieldVariants.OUTLINED}
             fullWidth
             InputProps={{
               readOnly: isReadOnlyMode,
@@ -117,18 +118,18 @@ export const AnalyteForm = ({isLessThanMediumScreen}: AnalyteFormProps) => {
           <AutoComplete
             required
             error={!!formFieldsErrors[AnalyteFormFields.TEST_TYPE]}
-            helperText={getTextFieldHelperText(AnalyteFormFields.TEST_TYPE)}
-            label={AnalyteFormFieldLabels.TEST_TYPE}
+            helperText={t(getTextFieldHelperText(AnalyteFormFields.TEST_TYPE))}
+            label={t(AnalyteFormFieldLabels.TEST_TYPE)}
             name={AnalyteFormFields.TEST_TYPE}
             options={getAutoCompleteOptionsFromModel(testTypes)}
             onChange={handleAutoCompleteChange}
             readOnly={isReadOnlyMode}
             value={(form[AnalyteFormFields.TEST_TYPE] as string) ?? ""}
-            variant={SharedTextFieldVariants.STANDARD}
+            variant={SharedTextFieldVariants.OUTLINED}
           />
         </Stack>
       </Stack>
-      <Box sx={{display: "flex", mt: "auto", mb: "0px"}}>
+      <Box sx={formActionsSx}>
         <AnalyteDetailButtons
           isNotValidForm={isNotValidForm}
           analyte={selectedAnalyte}

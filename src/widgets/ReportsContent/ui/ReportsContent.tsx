@@ -1,19 +1,15 @@
-import {Box} from "@mui/material";
+import {useInterfaceTranslation} from "../../../shared/i18n/useInterfaceTranslation";
+import AddOutlined from "@mui/icons-material/AddOutlined";
+import {Box, Button, Typography as MuiTypography} from "@mui/material";
 
-import {Button, Spinner, Table, Typography} from "../../../shared/ui";
+import {Spinner, Table, Typography} from "../../../shared/ui";
 import {SideSection} from "../../../shared/ui/SideSection";
 import {
-  REPORTS_TITLE_CONFIG,
+  REPORTS_PAGE_NAME,
   REPORTS_TABLE_HEADER_LABELS,
   REPORT_CREATE_BUTTON_LABEL,
   CREATE_REPORT_TITLE_TEXT,
 } from "../../../utils/constants";
-import {
-  SharedButtonColors,
-  SharedButtonIcons,
-  SharedButtonSizes,
-  SharedButtonVariants,
-} from "../../../utils/enums";
 import {ReportDetail} from "../../ReportsDetail";
 import {ReportsContentStyles} from "./ReportsContentStyles";
 import {useSamplesContentErrorNotifier} from "../model/useReportsContentErrorNotifier";
@@ -28,6 +24,7 @@ import {
 } from "../../../entities/report";
 
 export const ReportsContent = (): React.ReactElement => {
+  const {t} = useInterfaceTranslation();
   const {setIsReadOnlyMode} = useReadOnlyMode();
 
   const {
@@ -66,17 +63,22 @@ export const ReportsContent = (): React.ReactElement => {
   ) : (
     <Box>
       <Box sx={ReportsContentStyles.titleContentContainer}>
-        <Typography {...REPORTS_TITLE_CONFIG} />
+        <Box>
+          <MuiTypography component="h1">{t(REPORTS_PAGE_NAME)}</MuiTypography>
+          <MuiTypography color="text.secondary" variant="body2" sx={{mt: 0.5}}>
+            {t("View and manage laboratory reports.")}
+          </MuiTypography>
+        </Box>
         <Box sx={ReportsContentStyles.titleContentActions}>
           <Button
-            label={REPORT_CREATE_BUTTON_LABEL}
             disabled={!canCreate}
-            variant={SharedButtonVariants.OUTLINED}
-            size={SharedButtonSizes.SMALL}
-            color={SharedButtonColors.PRIMARY}
-            icon={SharedButtonIcons.CREATE}
+            variant="contained"
+            startIcon={<AddOutlined />}
             onClick={openSideSection}
-          />
+            sx={{minHeight: 42, px: 2}}
+          >
+            {t(REPORT_CREATE_BUTTON_LABEL)}
+          </Button>
         </Box>
       </Box>
       <Table

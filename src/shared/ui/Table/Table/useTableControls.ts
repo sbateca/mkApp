@@ -1,10 +1,13 @@
+import {formatInterfaceDate} from "../../../i18n/formatInterfaceDate";
+import {useInterfaceTranslation} from "../../../i18n/useInterfaceTranslation";
 import React, {useState} from "react";
 
 import {Order} from "./Types";
 import {TableRowProps} from "../TableRow";
 
 export const useTableControls = (rows: TableRowProps[]) => {
-  const [page, setPage] = React.useState(0);
+  const {language, t} = useInterfaceTranslation();
+  const [requestedPage, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<number>();
@@ -30,17 +33,32 @@ export const useTableControls = (rows: TableRowProps[]) => {
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.target.value);
+    setPage(0);
   };
 
-  const visibleRows = React.useMemo(() => {
-    const filteredRows = rows.filter((row) =>
-      row.cells.some((cell) =>
-        String(cell.children ?? "")
-          .toLowerCase()
-          .includes(searchValue.toLowerCase()),
-      ),
+  const filteredRows = React.useMemo(() => {
+    const query = searchValue.toLocaleLowerCase(language);
+    return rows.filter((row) =>
+      row.cells.some((cell) => {
+        const raw = String(cell.children ?? "");
+        const visible = cell.badgeColor
+          ? t(raw)
+          : cell.isDate
+            ? formatInterfaceDate(raw, language)
+            : raw;
+        return [raw, visible].some((text) =>
+          text.toLocaleLowerCase(language).includes(query),
+        );
+      }),
     );
+  }, [language, rows, searchValue, t]);
 
+  const page = Math.min(
+    requestedPage,
+    Math.max(0, Math.ceil(filteredRows.length / rowsPerPage) - 1),
+  );
+
+  const visibleRows = React.useMemo(() => {
     const sortedRows =
       orderBy === undefined
         ? filteredRows
@@ -61,17 +79,7 @@ export const useTableControls = (rows: TableRowProps[]) => {
       page * rowsPerPage,
       page * rowsPerPage + rowsPerPage,
     );
-  }, [order, orderBy, page, rows, rowsPerPage, searchValue]);
-
-  const filteredRowsCount = React.useMemo(() => {
-    return rows.filter((row) =>
-      row.cells.some((cell) =>
-        String(cell.children ?? "")
-          .toLowerCase()
-          .includes(searchValue.toLowerCase()),
-      ),
-    ).length;
-  }, [rows, searchValue]);
+  }, [filteredRows, order, orderBy, page, rowsPerPage]);
 
   return {
     page,
@@ -83,7 +91,7 @@ export const useTableControls = (rows: TableRowProps[]) => {
     handleRequestSort,
     handleSearch,
     visibleRows,
-    filteredRowsCount,
+    filteredRowsCount: filteredRows.length,
     searchValue,
   };
 };

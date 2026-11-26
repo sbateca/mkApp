@@ -219,8 +219,15 @@ export const reportToReportForm = (report: Report): FormProps => {
   };
 };
 
+const reportStatusBadges = {
+  [ReportStatus.DRATF]: {label: "Draft", color: "warning"},
+  [ReportStatus.APPROVED]: {label: "Approved", color: "success"},
+  [ReportStatus.ISSUED]: {label: "Issued", color: "info"},
+} as const;
+
 export const reportsToTableRows = (reports: Report[]): TableRowProps[] => {
   return reports.map((report) => {
+    const status = report.status && reportStatusBadges[report.status];
     return {
       id: report.id,
       cells: [
@@ -228,17 +235,23 @@ export const reportsToTableRows = (reports: Report[]): TableRowProps[] => {
           children: report.reportNumber || N_A,
           align: SharedTypographyAlign.LEFT,
         },
-        {children: report.reportDate || N_A, align: SharedTypographyAlign.LEFT},
+        {
+          children: report.reportDate || N_A,
+          isDate: true,
+          align: SharedTypographyAlign.LEFT,
+        },
         {
           children: report.sample.client.name || N_A,
           align: SharedTypographyAlign.LEFT,
         },
         {
           children: report.sample.getSampleDate || N_A,
+          isDate: true,
           align: SharedTypographyAlign.LEFT,
         },
         {
           children: report.sample.receptionDate || N_A,
+          isDate: true,
           align: SharedTypographyAlign.LEFT,
         },
         {
@@ -247,12 +260,18 @@ export const reportsToTableRows = (reports: Report[]): TableRowProps[] => {
         },
         {
           children: report.sample.analysisDate || N_A,
+          isDate: true,
           align: SharedTypographyAlign.LEFT,
         },
         {
           children:
             `${report.sample.sampleType.name} - ${report.sample.sampleLocation}` ||
             N_A,
+          align: SharedTypographyAlign.LEFT,
+        },
+        {
+          children: status?.label ?? N_A,
+          badgeColor: status?.color,
           align: SharedTypographyAlign.LEFT,
         },
       ],

@@ -1,3 +1,4 @@
+import {useInterfaceTranslation} from "../../../shared/i18n/useInterfaceTranslation";
 import {Chip, Stack} from "@mui/material";
 import {Button, Typography} from "../../../shared/ui";
 import {
@@ -28,6 +29,7 @@ export const ReportDetailHeader = ({
   selectedReport,
   sideSectionTitle,
 }: HeaderProps): React.ReactElement => {
+  const {t} = useInterfaceTranslation();
   const {isReadOnlyMode} = useReadOnlyMode();
 
   const getEditModeChip = (): React.ReactNode => {
@@ -44,13 +46,13 @@ export const ReportDetailHeader = ({
           />
           {isReadOnlyMode ? (
             <Chip
-              label="OFF"
+              label={t("OFF")}
               size={SharedChipSizes.SMALL}
               color={SharedChipColors.DEFAULT}
             />
           ) : (
             <Chip
-              label="ON"
+              label={t("ON")}
               size={SharedChipSizes.SMALL}
               color={SharedChipColors.SUCCESS}
             />

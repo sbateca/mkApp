@@ -1,6 +1,6 @@
-# Microlab App Frontend
+# Microlab Workspace Frontend
 
-This is the FrontEnd part of the Microlab App. It's built with React and TypeScript. It allows users to manage information about sample collections, sample reports with clients, and other options.
+This is the FrontEnd part of the Microlab Workspace. It's built with React and TypeScript. It allows users to manage information about sample collections, sample reports with clients, and other options.
 
 ## Getting Started 🚀
 

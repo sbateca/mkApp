@@ -46,9 +46,9 @@ export const AnalyteDetailButtons = ({
             icon={IconNames.SAVE}
             label={SharedButtonCommonLabels.SAVE}
             disabled={isNotValidForm}
-            variant={SharedButtonVariants.OUTLINED}
+            variant={SharedButtonVariants.CONTAINED}
             size={SharedButtonSizes.SMALL}
-            color={SharedButtonColors.SUCCESS}
+            color={SharedButtonColors.PRIMARY}
             onClick={handleEditAnalyte}
           />
           <Button
@@ -66,9 +66,9 @@ export const AnalyteDetailButtons = ({
           icon={IconNames.SAVE}
           label={SharedButtonCommonLabels.SAVE}
           disabled={isNotValidForm}
-          variant={SharedButtonVariants.OUTLINED}
+          variant={SharedButtonVariants.CONTAINED}
           size={SharedButtonSizes.SMALL}
-          color={SharedButtonColors.SUCCESS}
+          color={SharedButtonColors.PRIMARY}
           onClick={handleCreateAnalyte}
         />
       ) : null}

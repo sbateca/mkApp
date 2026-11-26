@@ -5,7 +5,7 @@ export const SAMPLE_GET_SAMPLE_DATE_LABEL_TEXT = "Get sample date";
 export const SAMPLE_RECEPTION_DATE_LABEL_TEXT = "Reception date";
 export const SAMPLE_ANALYSIS_DATE_LABEL_TEXT = "Analysis date";
 export const SAMPLE_LOCATION_LABEL_TEXT = "Sample location";
-export const SAMPLE_RESPONSABLE_LABEL_TEXT = "Responsable";
+export const SAMPLE_RESPONSABLE_LABEL_TEXT = "Responsible person";
 
 export const REPORT_DATE_LABEL_TEXT = "Report date";
 export const REPORT_SAMPLE_LABEL_TEXT = "Sample";

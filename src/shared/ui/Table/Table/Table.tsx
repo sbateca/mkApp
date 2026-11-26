@@ -1,4 +1,6 @@
+import {useInterfaceTranslation} from "../../../i18n/useInterfaceTranslation";
 import {
+  Box,
   Paper,
   Typography,
   Table as MuiTable,
@@ -31,16 +33,19 @@ export const Table = ({
   filteredRowsCount,
   searchValue,
 }: TableProps): React.ReactElement => {
+  const {t} = useInterfaceTranslation();
   return (
-    <>
-      <TableSearch searchValue={searchValue} handleSearch={handleSearch} />
-      <TableContainer component={Paper}>
-        {rows.length === 0 ? (
+    <Paper variant="outlined" sx={TableStyles.card}>
+      <Box sx={TableStyles.toolbar}>
+        <TableSearch searchValue={searchValue} handleSearch={handleSearch} />
+      </Box>
+      <TableContainer>
+        {filteredRowsCount === 0 ? (
           <Typography sx={TableStyles.noContentStyle}>
-            {NO_RECORDS_MESSAGE}
+            {t(NO_RECORDS_MESSAGE)}
           </Typography>
         ) : (
-          <MuiTable sx={{minWidth: 650}} aria-label="sample table">
+          <MuiTable sx={TableStyles.table}>
             <TableHead
               headerLabels={headerLabels}
               order={order}
@@ -72,6 +77,6 @@ export const Table = ({
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-    </>
+    </Paper>
   );
 };

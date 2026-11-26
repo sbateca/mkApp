@@ -1,3 +1,4 @@
+import {useInterfaceTranslation} from "../../../../shared/i18n/useInterfaceTranslation";
 import Swal from "sweetalert2";
 import {
   selectDeleteReport,
@@ -15,6 +16,7 @@ import {SnackBarSeverity, SweetAlertIcon} from "../../../../utils/enums";
 import {selectShowSnackBarMessage, useSnackBarStore} from "../../../snackbar";
 
 export const useDeleteReport = () => {
+  const {t} = useInterfaceTranslation();
   const deleteReport = useReportStore(selectDeleteReport);
   const getReports = useReportStore(selectGetReports);
 
@@ -22,13 +24,14 @@ export const useDeleteReport = () => {
 
   const handleDelete = async (reportId: string) => {
     Swal.fire({
-      title: REPORT_DELETE_CONFIRMATION_TITLE,
-      text: REPORT_DELETE_CONFIRMATION_SUBTITLE,
+      title: t(REPORT_DELETE_CONFIRMATION_TITLE),
+      text: t(REPORT_DELETE_CONFIRMATION_SUBTITLE),
       icon: SweetAlertIcon.WARNING,
       showCancelButton: true,
+      cancelButtonText: t("Cancel"),
       confirmButtonColor: SWEET_ALERT_PARAMS.CONFIRM_BUTTON_COLOR,
       cancelButtonColor: SWEET_ALERT_PARAMS.CANCEL_BUTTON_COLOR,
-      confirmButtonText: REPORT_DELETE_CONFIRMATION_TEXT,
+      confirmButtonText: t(REPORT_DELETE_CONFIRMATION_TEXT),
     }).then((result) => {
       if (result.isConfirmed) {
         const result = deleteReport(reportId);

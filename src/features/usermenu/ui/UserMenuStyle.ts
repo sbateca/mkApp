@@ -1,5 +1,5 @@
 export const UserMenuStyle: React.CSSProperties = {
-  marginLeft: "auto",
+  minWidth: 0,
   display: "flex",
   flexDirection: "row",
   alignItems: "center",

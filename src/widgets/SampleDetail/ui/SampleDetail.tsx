@@ -11,7 +11,10 @@ import {SampleDetailHeader} from "./SampleDetailHeader";
 import {SampleDetailForm} from "./SampleDetailForm";
 import {useSampleErrorNotifier} from "../model/useSampleErrorNotifier";
 import {useSampleDetailController} from "../model/useSampleDetailController";
-import {getBoxContainerProps} from "../../../shared/commonStyles";
+import {
+  formActionsSx,
+  getBoxContainerProps,
+} from "../../../shared/commonStyles";
 
 export const SampleDetail = (): React.ReactElement => {
   const theme = useTheme<Theme>();
@@ -75,13 +78,7 @@ export const SampleDetail = (): React.ReactElement => {
           sampleTypes={sampleTypes}
         />
       )}
-      <Box
-        sx={{
-          display: "flex",
-          alignSelf: "flex-end",
-          justifyContent: "flex-end",
-        }}
-      >
+      <Box sx={formActionsSx}>
         <SampleSideSectionButtons
           isNotValidForm={isNotValidForm}
           sample={selectedSample}

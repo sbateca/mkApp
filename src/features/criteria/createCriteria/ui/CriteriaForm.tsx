@@ -1,9 +1,12 @@
+import {useInterfaceTranslation} from "../../../../shared/i18n/useInterfaceTranslation";
 import {Box, Stack, TextField} from "@mui/material";
 import {
   selectSelectedCriteria,
   useCriteriaStore,
 } from "../../../../entities/criteria";
 import {
+  formActionsSx,
+  formSectionSx,
   getStackContainerProps,
   getStackFieldProps,
   getStackRowProps,
@@ -29,6 +32,7 @@ type CriteriaFormProps = {
 };
 
 export const CriteriaForm = ({isLessThanMediumScreen}: CriteriaFormProps) => {
+  const {t} = useInterfaceTranslation();
   const {
     isNotValidForm,
     form,
@@ -72,24 +76,21 @@ export const CriteriaForm = ({isLessThanMediumScreen}: CriteriaFormProps) => {
   }, [setFormFieldsValidationFunctions, formValidations]);
 
   return (
-    <Stack
-      {...getStackContainerProps(isLessThanMediumScreen)}
-      sx={{position: "relative", height: "100%", minHeight: "100%", pb: "72px"}}
-    >
-      <Stack {...getStackRowProps(isLessThanMediumScreen)}>
+    <Stack {...getStackContainerProps(isLessThanMediumScreen)}>
+      <Stack {...getStackRowProps(isLessThanMediumScreen)} sx={formSectionSx}>
         <Stack {...getStackFieldProps()}>
           <TextField
             required
             error={!!formFieldsErrors[CriteriaFormFields.NAME]}
-            label={CriteriaFormFieldLabels.NAME}
+            label={t(CriteriaFormFieldLabels.NAME)}
             type="string"
             color={SharedTypographyColors.PRIMARY}
             size={TextFieldSizes.SMALL}
             onChange={handleChange}
             name={CriteriaFormFields.NAME}
-            helperText={getTextFieldHelperText(CriteriaFormFields.NAME)}
+            helperText={t(getTextFieldHelperText(CriteriaFormFields.NAME))}
             value={form[CriteriaFormFields.NAME] ?? ""}
-            variant={SharedTextFieldVariants.STANDARD}
+            variant={SharedTextFieldVariants.OUTLINED}
             fullWidth
             InputProps={{
               readOnly: isReadOnlyMode,
@@ -97,7 +98,7 @@ export const CriteriaForm = ({isLessThanMediumScreen}: CriteriaFormProps) => {
           />
         </Stack>
       </Stack>
-      <Box sx={{display: "flex", mt: "auto", mb: "0px"}}>
+      <Box sx={formActionsSx}>
         <CriteriaDetailButtons
           isNotValidForm={isNotValidForm}
           criteria={selectedCriteria}

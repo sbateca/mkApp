@@ -1,4 +1,5 @@
-import {Divider, List} from "@mui/material";
+import {useInterfaceTranslation} from "../../../shared/i18n/useInterfaceTranslation";
+import {List, useMediaQuery} from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import {CSSObject, styled, Theme} from "@mui/material/styles";
 
@@ -38,8 +39,14 @@ const Drawer = styled(MuiDrawer, {
   flexShrink: 0,
   whiteSpace: "nowrap",
   boxSizing: "border-box",
+  "& > .MuiDrawer-paper": {
+    top: 48,
+    height: "calc(100% - 48px)",
+    borderColor: theme.palette.divider,
+  },
   ...(open && {
     ...openedMixin(theme),
+    [theme.breakpoints.down("md")]: closedMixin(theme),
     "& .MuiDrawer-paper": openedMixin(theme),
   }),
   ...(!open && {
@@ -49,7 +56,9 @@ const Drawer = styled(MuiDrawer, {
 }));
 
 export const Menu = ({menuItems}: MenuProps): React.ReactElement => {
+  const {t} = useInterfaceTranslation();
   const {menuOpen, closeMenu, isSelectedMenuItem, navigate} = useMenu();
+  const isDesktop = useMediaQuery("(min-width:900px)");
 
   return (
     <Drawer
@@ -59,8 +68,13 @@ export const Menu = ({menuItems}: MenuProps): React.ReactElement => {
       data-testid="mainMenu"
     >
       <HeaderMenu onClick={closeMenu} open={menuOpen} />
-      <Divider />
-      <List sx={MenuStyle} data-testid="menuList">
+      <List
+        component="nav"
+        id="main-navigation"
+        aria-label={t("Main navigation")}
+        sx={MenuStyle}
+        data-testid="menuList"
+      >
         {menuItems.map((item) => (
           <MenuItemButton
             key={item.label}
@@ -70,6 +84,7 @@ export const Menu = ({menuItems}: MenuProps): React.ReactElement => {
             selected={isSelectedMenuItem(item.actionPath)}
             onClick={() => {
               navigate(item.actionPath);
+              if (!isDesktop) closeMenu();
             }}
           />
         ))}

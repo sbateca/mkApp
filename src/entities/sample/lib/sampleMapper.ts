@@ -121,8 +121,8 @@ export const samplesToTableRows = (samples: Sample[]): TableRowProps[] => {
       cells: [
         {children: sample.sampleType.name, align: "left"},
         {children: sample.client.name, align: "left"},
-        {children: sample.getSampleDate, align: "left"},
-        {children: sample.receptionDate, align: "left"},
+        {children: sample.getSampleDate, isDate: true, align: "left"},
+        {children: sample.receptionDate, isDate: true, align: "left"},
       ],
     };
   });

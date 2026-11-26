@@ -1,3 +1,4 @@
+import {useInterfaceTranslation} from "../../../../shared/i18n/useInterfaceTranslation";
 import Swal from "sweetalert2";
 import {
   selectDeleteAnalysisMethod,
@@ -15,6 +16,7 @@ import {
 import {SnackBarSeverity, SweetAlertIcon} from "../../../../utils/enums";
 
 export const useDeleteAnalysisMethod = () => {
+  const {t} = useInterfaceTranslation();
   const getAnalysisMethods = useAnalysisMethodsStore(selectGetAnalysisMethods);
   const deleteAnalysisMethod = useAnalysisMethodsStore(
     selectDeleteAnalysisMethod,
@@ -23,13 +25,14 @@ export const useDeleteAnalysisMethod = () => {
 
   const handleDelete = async (analysisMethodId: string) => {
     Swal.fire({
-      title: ANALYSIS_METHOD_DELETE_CONFIRMATION_TITLE,
-      text: ANALYSIS_METHOD_DELETE_CONFIRMATION_SUBTITLE,
+      title: t(ANALYSIS_METHOD_DELETE_CONFIRMATION_TITLE),
+      text: t(ANALYSIS_METHOD_DELETE_CONFIRMATION_SUBTITLE),
       icon: SweetAlertIcon.WARNING,
       showCancelButton: true,
+      cancelButtonText: t("Cancel"),
       confirmButtonColor: SWEET_ALERT_PARAMS.CONFIRM_BUTTON_COLOR,
       cancelButtonColor: SWEET_ALERT_PARAMS.CANCEL_BUTTON_COLOR,
-      confirmButtonText: ANALYSIS_METHOD_DELETE_CONFIRMATION_TEXT,
+      confirmButtonText: t(ANALYSIS_METHOD_DELETE_CONFIRMATION_TEXT),
     }).then((result) => {
       if (result.isConfirmed) {
         const result = deleteAnalysisMethod(analysisMethodId);

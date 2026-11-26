@@ -1,3 +1,4 @@
+import {useInterfaceTranslation} from "../../../../shared/i18n/useInterfaceTranslation";
 import Swal from "sweetalert2";
 import {
   selectDeleteTestType,
@@ -15,19 +16,21 @@ import {
 import {SnackBarSeverity, SweetAlertIcon} from "../../../../utils/enums";
 
 export const useDeleteTestType = () => {
+  const {t} = useInterfaceTranslation();
   const getTestTypes = useTestTypeStore(selectGetTestTypes);
   const deleteTestType = useTestTypeStore(selectDeleteTestType);
   const showSnackBarMessage = useSnackBarStore(selectShowSnackBarMessage);
 
   const handleDelete = async (testTypeId: string) => {
     Swal.fire({
-      title: TEST_TYPE_DELETE_CONFIRMATION_TITLE,
-      text: TEST_TYPE_DELETE_CONFIRMATION_SUBTITLE,
+      title: t(TEST_TYPE_DELETE_CONFIRMATION_TITLE),
+      text: t(TEST_TYPE_DELETE_CONFIRMATION_SUBTITLE),
       icon: SweetAlertIcon.WARNING,
       showCancelButton: true,
+      cancelButtonText: t("Cancel"),
       confirmButtonColor: SWEET_ALERT_PARAMS.CONFIRM_BUTTON_COLOR,
       cancelButtonColor: SWEET_ALERT_PARAMS.CANCEL_BUTTON_COLOR,
-      confirmButtonText: TEST_TYPE_DELETE_CONFIRMATION_TEXT,
+      confirmButtonText: t(TEST_TYPE_DELETE_CONFIRMATION_TEXT),
     }).then((result) => {
       if (result.isConfirmed) {
         const result = deleteTestType(testTypeId);

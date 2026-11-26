@@ -46,9 +46,9 @@ export const ClientDetailButtons = ({
             icon={IconNames.SAVE}
             label={SharedButtonCommonLabels.SAVE}
             disabled={isNotValidForm}
-            variant={SharedButtonVariants.OUTLINED}
+            variant={SharedButtonVariants.CONTAINED}
             size={SharedButtonSizes.SMALL}
-            color={SharedButtonColors.SUCCESS}
+            color={SharedButtonColors.PRIMARY}
             onClick={handleEditClient}
           />
           <Button
@@ -66,9 +66,9 @@ export const ClientDetailButtons = ({
           icon={IconNames.SAVE}
           label={SharedButtonCommonLabels.SAVE}
           disabled={isNotValidForm}
-          variant={SharedButtonVariants.OUTLINED}
+          variant={SharedButtonVariants.CONTAINED}
           size={SharedButtonSizes.SMALL}
-          color={SharedButtonColors.SUCCESS}
+          color={SharedButtonColors.PRIMARY}
           onClick={handleCreateClient}
         />
       ) : null}

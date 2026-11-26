@@ -1,3 +1,4 @@
+import {useInterfaceTranslation} from "../../../shared/i18n/useInterfaceTranslation";
 import {
   selectCloseSnackBar,
   selectIsSnackBarOpen,
@@ -8,6 +9,7 @@ import {useSnackBarStore} from "../model/store";
 import {Snackbar} from "./SnackBar";
 
 export const SnackBarContainer = () => {
+  const {t} = useInterfaceTranslation();
   const isSnackBarOpen = useSnackBarStore(selectIsSnackBarOpen);
   const snackBarText = useSnackBarStore(selectSnackBarText);
   const snackBarSeverity = useSnackBarStore(selectSnackBarSeverity);
@@ -15,7 +17,7 @@ export const SnackBarContainer = () => {
   return (
     <Snackbar
       isOpen={isSnackBarOpen}
-      snackBarText={snackBarText}
+      snackBarText={t(snackBarText)}
       severity={snackBarSeverity}
       onClose={closeSnackBar}
     />

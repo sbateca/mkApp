@@ -1,3 +1,4 @@
+import {useInterfaceTranslation} from "../../../shared/i18n/useInterfaceTranslation";
 import {Box, Typography, Button} from "@mui/material";
 import {useNavigate} from "react-router-dom";
 
@@ -13,6 +14,7 @@ import {
 } from "../../../utils/constants";
 
 export const NotFoundPage = (): React.ReactElement => {
+  const {t} = useInterfaceTranslation();
   const userSession = useSessionStore(selectUser);
   const navigate = useNavigate();
 
@@ -36,15 +38,15 @@ export const NotFoundPage = (): React.ReactElement => {
       </Typography>
 
       <Typography variant="h5" mb={2}>
-        {NOT_FOUND_TEXT}
+        {t(NOT_FOUND_TEXT)}
       </Typography>
 
       <Typography variant="body1" mb={4}>
-        {NOT_FOUND_DESCRIPTION}
+        {t(NOT_FOUND_DESCRIPTION)}
       </Typography>
 
       <Button variant="contained" onClick={handleRedirect}>
-        {userSession ? RETURN_HOME_BUTTON_LABEL : GO_LOGIN_BUTTON_LABEL}
+        {t(userSession ? RETURN_HOME_BUTTON_LABEL : GO_LOGIN_BUTTON_LABEL)}
       </Button>
     </Box>
   );

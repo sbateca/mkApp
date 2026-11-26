@@ -14,7 +14,12 @@ export const TableRow = ({
     <MuiTableRow>
       {cells.map((cell, index) => {
         return (
-          <TableCell key={`table-cell-${index.toString()}`} align={cell.align}>
+          <TableCell
+            key={`table-cell-${index.toString()}`}
+            align={cell.align}
+            badgeColor={cell.badgeColor}
+            isDate={cell.isDate}
+          >
             {cell.children}
           </TableCell>
         );

@@ -1,5 +1,3 @@
-import {SideSectionButtonsProps, TestFormButtonProps} from "./Types";
-
 export const ReportDetailStyles = {
   container: {
     width: "50vw",
@@ -22,35 +20,4 @@ export const ReportDetailStyles = {
     height: "100%",
     marginTop: "20px",
   },
-};
-
-export const SampleFormStyles = {
-  mainBox: {
-    "& .MuiFormControl-root": {m: 0.4, width: "100%"},
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-  },
-  texfield: {
-    width: "100%",
-  },
-  datePicker: {
-    "& .MuiInputBase-root.MuiOutlinedInput-root": {
-      height: "2.5em",
-      width: "100%",
-    },
-  },
-};
-
-export const getSideSectionButtonsProps = (): SideSectionButtonsProps => {
-  return {
-    display: "flex",
-    alignSelf: "flex-end",
-    justifyContent: "flex-end",
-    marginTop: "10px",
-  };
-};
-
-export const testFormButtonProps = (): TestFormButtonProps => {
-  return {display: "flex", justifyContent: "flex-end", marginTop: 2};
 };

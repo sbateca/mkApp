@@ -1,3 +1,4 @@
+import {useInterfaceTranslation} from "../../../../shared/i18n/useInterfaceTranslation";
 import Swal from "sweetalert2";
 import {
   selectDeleteClient,
@@ -15,19 +16,21 @@ import {
 import {SnackBarSeverity, SweetAlertIcon} from "../../../../utils/enums";
 
 export const useDeleteClient = () => {
+  const {t} = useInterfaceTranslation();
   const getClients = useClientStore(selectGetClients);
   const deleteClient = useClientStore(selectDeleteClient);
   const showSnackBarMessage = useSnackBarStore(selectShowSnackBarMessage);
 
   const handleDelete = async (clientId: string) => {
     Swal.fire({
-      title: CLIENT_DELETE_CONFIRMATION_TITLE,
-      text: CLIENT_DELETE_CONFIRMATION_SUBTITLE,
+      title: t(CLIENT_DELETE_CONFIRMATION_TITLE),
+      text: t(CLIENT_DELETE_CONFIRMATION_SUBTITLE),
       icon: SweetAlertIcon.WARNING,
       showCancelButton: true,
+      cancelButtonText: t("Cancel"),
       confirmButtonColor: SWEET_ALERT_PARAMS.CONFIRM_BUTTON_COLOR,
       cancelButtonColor: SWEET_ALERT_PARAMS.CANCEL_BUTTON_COLOR,
-      confirmButtonText: CLIENT_DELETE_CONFIRMATION_TEXT,
+      confirmButtonText: t(CLIENT_DELETE_CONFIRMATION_TEXT),
     }).then((result) => {
       if (result.isConfirmed) {
         const result = deleteClient(clientId);
