@@ -4,6 +4,17 @@ import {axiosResponseToSamples} from "../../../entities/sample/lib/sampleMapper"
 import {apiClient} from "../../../shared/api/apliClient";
 import {BaseRoutes} from "../../../utils/constants/baseRoutes";
 
+const sampleRequest = (sample: Sample) => ({
+  sampleCode: sample.sampleCode,
+  sampleTypeId: sample.sampleType.id,
+  clientId: sample.client.id,
+  getSampleDate: sample.getSampleDate,
+  receptionDate: sample.receptionDate,
+  analysisDate: sample.analysisDate,
+  sampleLocation: sample.sampleLocation,
+  responsable: sample.responsable,
+});
+
 export const getSamplesService = async (): Promise<Sample[]> => {
   const response = await apiClient.get<Sample[]>(
     `${EnvManager.BACKEND_URL}${BaseRoutes.SAMPLES}`,
@@ -23,7 +34,7 @@ export const getSampleByIdService = async (
 export const createSampleService = async (sample: Sample): Promise<Sample> => {
   const response = await apiClient.post(
     `${EnvManager.BACKEND_URL}${BaseRoutes.SAMPLES}`,
-    sample,
+    sampleRequest(sample),
   );
   return axiosResponseToSamples(response)[0];
 };
@@ -34,7 +45,7 @@ export const editSampleService = async (
 ): Promise<Sample> => {
   const response = await apiClient.put(
     `${EnvManager.BACKEND_URL}${BaseRoutes.SAMPLES}/${sampleId}`,
-    sample,
+    sampleRequest(sample),
   );
   return axiosResponseToSamples(response)[0];
 };

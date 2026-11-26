@@ -1,5 +1,5 @@
 import {create} from "zustand";
-import {Report} from "./Report";
+import {Report, ReportRequest} from "./Report";
 import {
   REPORT_ID_MISSING_TEXT,
   REPORT_ID_OR_REPORTS_MISSING_TEXT,
@@ -54,7 +54,7 @@ export const useReportStore = create<ReportStore>((set) => ({
     }
   },
 
-  createReport: async (report: Report) => {
+  createReport: async (report: ReportRequest) => {
     set({isLoading: true, error: null});
     try {
       return await createReportService(report);
@@ -67,7 +67,7 @@ export const useReportStore = create<ReportStore>((set) => ({
     }
   },
 
-  editReport: async (reportId?: string, report?: Report) => {
+  editReport: async (reportId?: string, report?: ReportRequest) => {
     try {
       set({isLoading: true, error: null});
       if (reportId && report) {

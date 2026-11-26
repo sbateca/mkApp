@@ -49,12 +49,17 @@ describe("ReportTableActionButtons", () => {
   });
 
   it("should render the actions buttons successfully", async () => {
-    render(<ReportTableActionButtons reportId="1" />);
+    render(
+      <ReportTableActionButtons
+        reportId="1"
+        actions={{read: {allowed: true}, delete: {allowed: false}}}
+      />,
+    );
     const viewButton = screen.getByText("View");
     const deleteButton = screen.getByText("Delete");
 
-    expect(viewButton).toBeInTheDocument();
-    expect(deleteButton).toBeInTheDocument();
+    expect(viewButton).toBeEnabled();
+    expect(deleteButton).toBeDisabled();
   });
 
   it("should not render the actions buttons and show the progressbar when isLoading is true", async () => {

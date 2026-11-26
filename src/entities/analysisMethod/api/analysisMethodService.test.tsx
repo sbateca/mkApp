@@ -31,7 +31,7 @@ describe("analysisMethodService", () => {
   it("should return a list of analysis methods", async () => {
     const mockApiClientGet = apiClient.get as jest.Mock;
     mockApiClientGet.mockResolvedValueOnce({data: mockAnalysisMethods});
-    const expectedURL = "http://mockurl.com/api/analysisMethods";
+    const expectedURL = "http://mockurl.com/api/analysis-methods";
 
     const analysisMethods = await getAnalysisMethodService();
 
@@ -42,7 +42,7 @@ describe("analysisMethodService", () => {
   it("should return an analysis method by id", async () => {
     const mockApiClientGet = apiClient.get as jest.Mock;
     mockApiClientGet.mockResolvedValueOnce({data: mockAnalysisMethods[0]});
-    const expectedURL = "http://mockurl.com/api/analysisMethods/1";
+    const expectedURL = "http://mockurl.com/api/analysis-methods/1";
 
     const analysisMethod = await getAnalysisMethodByIdService("1");
 
@@ -53,7 +53,7 @@ describe("analysisMethodService", () => {
   it("should create an analysis method", async () => {
     const mockApiClientPost = apiClient.post as jest.Mock;
     mockApiClientPost.mockResolvedValueOnce({data: mockAnalysisMethods[0]});
-    const expectedURL = "http://mockurl.com/api/analysisMethods";
+    const expectedURL = "http://mockurl.com/api/analysis-methods";
 
     const analysisMethod = await createAnalysisMethodService(
       mockAnalysisMethods[0],
@@ -69,7 +69,7 @@ describe("analysisMethodService", () => {
   it("should edit an analysis method", async () => {
     const mockApiClientPut = apiClient.put as jest.Mock;
     mockApiClientPut.mockResolvedValueOnce({data: mockAnalysisMethods[0]});
-    const expectedURL = "http://mockurl.com/api/analysisMethods/1";
+    const expectedURL = "http://mockurl.com/api/analysis-methods/1";
 
     const analysisMethod = await editAnalysisMethodService(
       mockAnalysisMethods[0],
@@ -86,7 +86,7 @@ describe("analysisMethodService", () => {
   it("should delete an analysis method", async () => {
     const mockApiClientDelete = apiClient.delete as jest.Mock;
     mockApiClientDelete.mockResolvedValueOnce({data: mockAnalysisMethods[0]});
-    const expectedURL = "http://mockurl.com/api/analysisMethods/1";
+    const expectedURL = "http://mockurl.com/api/analysis-methods/1";
 
     const analysisMethod = await deleteAnalysisMethodService("1");
 

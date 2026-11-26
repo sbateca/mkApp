@@ -13,6 +13,8 @@ let mockSnackBarStoreState: SnackBarStore;
 jest.mock("../../../../entities/report", () => ({
   selectApproveReport: (store: ReportStore) => store.approveReport,
   selectSelectedReport: (store: ReportStore) => store.selectedReport,
+  selectGetReportById: (store: ReportStore) => store.getReportById,
+  selectGetReports: (store: ReportStore) => store.getReports,
   selectSetSelectedReport: (store: ReportStore) => store.setSelectedReport,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   useReportStore: (selector: any) => selector(mockReportStoreState),
@@ -70,9 +72,14 @@ describe("useApproveReport", () => {
     expect(mockReportStoreState.approveReport).toHaveBeenCalledWith(
       selectedReport.id,
     );
+    expect(mockReportStoreState.getReportById).toHaveBeenCalledWith(
+      selectedReport.id,
+    );
+    expect(mockReportStoreState.getReports).toHaveBeenCalled();
     expect(mockReportStoreState.setSelectedReport).toHaveBeenCalledWith({
       ...selectedReport,
       status: ReportStatus.APPROVED,
+      actions: undefined,
     });
     expect(mockSnackBarStoreState.showSnackBarMessage).toHaveBeenCalledWith(
       REPORT_SUCCESSFULLY_APPROVED_TEXT,

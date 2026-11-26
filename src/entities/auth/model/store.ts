@@ -2,6 +2,7 @@ import {create} from "zustand";
 import {SessionStore} from "./types";
 import {LoginRequest, sessionApi} from "../api/sessionApi";
 import {UNEXPECTED_ERROR} from "../../../utils/constants";
+import {clearAuthTokens} from "../../../shared/api/authTokens";
 
 export const useSessionStore = create<SessionStore>((set) => ({
   user: null,
@@ -19,14 +20,16 @@ export const useSessionStore = create<SessionStore>((set) => ({
       error: null,
     }),
 
-  clearSession: () =>
+  clearSession: () => {
+    clearAuthTokens();
     set({
       user: null,
       isAuthenticated: false,
       isSessionResolved: true,
       isLoading: false,
       error: null,
-    }),
+    });
+  },
 
   markSessionResolved: () =>
     set({

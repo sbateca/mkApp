@@ -3,7 +3,6 @@ import {Box} from "@mui/material";
 import {Button} from "../../../shared/ui";
 import {
   IconNames,
-  ReportStatus,
   SharedButtonColors,
   SharedButtonCommonLabels,
   SharedButtonSizes,
@@ -23,13 +22,15 @@ export const ReportSideSectionButtons = ({
 }: ReportSideSectionActionsProps): React.ReactElement => {
   const {isReadOnlyMode, handleSwitchReadOnlyMode} = useReadOnlyMode();
 
+  const canUpdate = report?.actions?.update?.allowed === true;
+
   return (
     <Box>
       {isReadOnlyMode && report ? (
         <Button
           icon={IconNames.EDIT}
           label={EDIT_REPORTS_BUTTON_LABEL}
-          disabled={isNotValidForm || report.status !== ReportStatus.DRATF}
+          disabled={!canUpdate}
           variant={SharedButtonVariants.OUTLINED}
           size={SharedButtonSizes.SMALL}
           color={SharedButtonColors.PRIMARY}
@@ -41,7 +42,7 @@ export const ReportSideSectionButtons = ({
           <Button
             icon={IconNames.SAVE}
             label={SharedButtonCommonLabels.SAVE}
-            disabled={isNotValidForm}
+            disabled={isNotValidForm || !canUpdate}
             variant={SharedButtonVariants.OUTLINED}
             size={SharedButtonSizes.SMALL}
             color={SharedButtonColors.SUCCESS}
@@ -68,30 +69,26 @@ export const ReportSideSectionButtons = ({
           onClick={handleCreateReport}
         />
       ) : null}
-      {report?.status && isReadOnlyMode ? (
+      {report && isReadOnlyMode ? (
         <Button
           icon={IconNames.APPROVED}
           label={SharedButtonCommonLabels.APPROVE}
-          disabled={isNotValidForm || report?.status !== ReportStatus.DRATF}
+          disabled={report.actions?.approve?.allowed !== true}
           variant={SharedButtonVariants.OUTLINED}
           size={SharedButtonSizes.SMALL}
           color={SharedButtonColors.SUCCESS}
-          onClick={() => handleApprove(report?.id || "")}
+          onClick={() => handleApprove(report.id)}
         />
       ) : null}
-      {report?.status && isReadOnlyMode ? (
+      {report && isReadOnlyMode ? (
         <Button
           icon={IconNames.DOWNLOAD}
           label={SharedButtonCommonLabels.DOWNLOAD}
-          disabled={
-            isNotValidForm ||
-            (report?.status !== ReportStatus.APPROVED &&
-              report?.status !== ReportStatus.ISSUED)
-          }
+          disabled={report.actions?.download?.allowed !== true}
           variant={SharedButtonVariants.OUTLINED}
           size={SharedButtonSizes.SMALL}
           color={SharedButtonColors.SUCCESS}
-          onClick={() => handleDownload(report?.id || "")}
+          onClick={() => handleDownload(report.id)}
         />
       ) : null}
     </Box>

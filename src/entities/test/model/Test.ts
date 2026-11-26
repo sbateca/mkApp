@@ -12,3 +12,13 @@ export interface Test {
   criteria: Criteria;
   result: string;
 }
+
+export interface TestRequest {
+  id: string;
+  testTypeId: string;
+  sampleId: string;
+  analyteId: string;
+  analysisMethodId: string;
+  criteriaId: string;
+  result: string;
+}

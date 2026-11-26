@@ -4,6 +4,7 @@ import {
   downloadReportService,
   editReportService,
   getReportByIdService,
+  getReportCollectionActionsService,
   getReportsService,
 } from "./reportsService";
 import {
@@ -41,6 +42,23 @@ const mockReports = buildReportsData(2, {
   criteria: mockCriterias[0].id,
 });
 
+const mockReportRequest = {
+  id: mockReports[0].id,
+  reportNumber: mockReports[0].reportNumber,
+  reportDate: mockReports[0].reportDate,
+  status: mockReports[0].status,
+  sampleId: mockReports[0].sample.id,
+  testIds: mockReports[0].tests.map((test) => ({
+    id: test.id,
+    testTypeId: test.testType.id,
+    sampleId: test.sampleId,
+    analyteId: test.analyte.id,
+    analysisMethodId: test.analysisMethod.id,
+    criteriaId: test.criteria.id,
+    result: test.result,
+  })),
+};
+
 jest.mock("../../../config/EnvManager", () => ({
   __esModule: true,
   default: {
@@ -53,6 +71,7 @@ jest.mock("../../../shared/api/apliClient", () => ({
     get: jest.fn(),
     post: jest.fn(),
     put: jest.fn(),
+    patch: jest.fn(),
     delete: jest.fn(),
   },
 }));
@@ -84,15 +103,25 @@ describe("reportsService", () => {
     expect(apiClient.get).toHaveBeenCalledWith(expectedURL);
   });
 
+  it("gets collection-level actions separately from the report list", async () => {
+    const actions = {create: {allowed: true}};
+    jest.mocked(apiClient.get).mockResolvedValueOnce({data: actions});
+
+    await expect(getReportCollectionActionsService()).resolves.toEqual(actions);
+    expect(apiClient.get).toHaveBeenCalledWith(
+      "http://mockurl.com/api/reports/actions",
+    );
+  });
+
   it("should create a report", async () => {
     const mockApiClientGet = apiClient.post as jest.Mock;
     mockApiClientGet.mockResolvedValueOnce({data: mockReports[0]});
     const expectedURL = "http://mockurl.com/api/reports";
 
-    const report = await createReportService(mockReports[0]);
+    const report = await createReportService(mockReportRequest);
 
     expect(report).toEqual(mockReports[0]);
-    expect(apiClient.post).toHaveBeenCalledWith(expectedURL, mockReports[0]);
+    expect(apiClient.post).toHaveBeenCalledWith(expectedURL, mockReportRequest);
   });
 
   it("should edit a report", async () => {
@@ -100,21 +129,23 @@ describe("reportsService", () => {
     mockApiClientGet.mockResolvedValueOnce({data: mockReports[0]});
     const expectedURL = "http://mockurl.com/api/reports/1";
 
-    const report = await editReportService("1", mockReports[0]);
+    const report = await editReportService("1", mockReportRequest);
 
     expect(report).toEqual(mockReports[0]);
-    expect(apiClient.put).toHaveBeenCalledWith(expectedURL, mockReports[0]);
+    expect(apiClient.put).toHaveBeenCalledWith(expectedURL, mockReportRequest);
   });
 
   it("should approve a report", async () => {
-    const mockApiClientPost = apiClient.post as jest.Mock;
-    mockApiClientPost.mockResolvedValueOnce({data: ReportStatus.APPROVED});
+    const mockApiClientPost = apiClient.patch as jest.Mock;
+    mockApiClientPost.mockResolvedValueOnce({
+      data: {status: ReportStatus.APPROVED},
+    });
     const expectedURL = "http://mockurl.com/api/reports/1/approve";
 
     const status = await approveReportService("1");
 
     expect(status).toBe(ReportStatus.APPROVED);
-    expect(apiClient.post).toHaveBeenCalledWith(expectedURL);
+    expect(apiClient.patch).toHaveBeenCalledWith(expectedURL);
   });
 
   it("should download an attached report", async () => {
@@ -152,7 +183,7 @@ describe("reportsService", () => {
     mockApiClientGet.mockRejectedValueOnce(new Error(mockErrorMessage));
 
     try {
-      await createReportService(mockReports[0]);
+      await createReportService(mockReportRequest);
     } catch (error) {
       expect((error as Error).message).toBe(mockErrorMessage);
     }
@@ -164,7 +195,7 @@ describe("reportsService", () => {
     mockApiClientGet.mockRejectedValueOnce(new Error(mockErrorMessage));
 
     try {
-      await editReportService("1", mockReports[0]);
+      await editReportService("1", mockReportRequest);
     } catch (error) {
       expect((error as Error).message).toBe(mockErrorMessage);
     }

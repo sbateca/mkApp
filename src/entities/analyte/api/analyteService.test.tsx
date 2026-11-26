@@ -58,12 +58,13 @@ describe("analyteService", () => {
   it("should return analytes by test type id", async () => {
     const mockApiClientGet = apiClient.get as jest.Mock;
     mockApiClientGet.mockResolvedValueOnce({data: mockAnalytes});
-    const expectedURL =
-      "http://mockurl.com/api/analytes?testType.id=test-type-id";
+    const expectedURL = "http://mockurl.com/api/analytes";
 
-    const analytes = await getAnalytesByTestTypeIdService("test-type-id");
+    const analytes = await getAnalytesByTestTypeIdService(
+      mockAnalytes[0].testType.id,
+    );
 
-    expect(analytes).toEqual(mockAnalytes);
+    expect(analytes).toEqual([mockAnalytes[0]]);
     expect(mockApiClientGet).toHaveBeenCalledWith(expectedURL);
   });
 
@@ -75,10 +76,10 @@ describe("analyteService", () => {
     const analyte = await createAnalyteService(mockAnalytes[0]);
 
     expect(analyte).toEqual(mockAnalytes[0]);
-    expect(mockApiClientPost).toHaveBeenCalledWith(
-      expectedURL,
-      mockAnalytes[0],
-    );
+    expect(mockApiClientPost).toHaveBeenCalledWith(expectedURL, {
+      name: mockAnalytes[0].name,
+      testTypeId: mockAnalytes[0].testType.id,
+    });
   });
 
   it("should edit an analyte", async () => {
@@ -89,7 +90,10 @@ describe("analyteService", () => {
     const analyte = await editAnalyteService(mockAnalytes[0], "1");
 
     expect(analyte).toEqual(mockAnalytes[0]);
-    expect(mockApiClientPut).toHaveBeenCalledWith(expectedURL, mockAnalytes[0]);
+    expect(mockApiClientPut).toHaveBeenCalledWith(expectedURL, {
+      name: mockAnalytes[0].name,
+      testTypeId: mockAnalytes[0].testType.id,
+    });
   });
 
   it("should delete an analyte", async () => {

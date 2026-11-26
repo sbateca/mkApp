@@ -1,5 +1,5 @@
 export interface SessionUser {
-  id: number;
+  id: string | number;
   username: string;
   name: string;
   role: string;

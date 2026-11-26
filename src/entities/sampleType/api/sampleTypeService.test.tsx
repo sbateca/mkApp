@@ -35,7 +35,7 @@ describe("sampleTypeService", () => {
   it("should return a list of sample types", async () => {
     const mockApiClientGet = apiClient.get as jest.Mock;
     mockApiClientGet.mockResolvedValueOnce({data: mockSampleTypes});
-    const expectedURL = "http://mockurl.com/api/sampleTypes";
+    const expectedURL = "http://mockurl.com/api/sample-types";
 
     const sampleTypes = await getSampleTypesService();
 
@@ -46,7 +46,7 @@ describe("sampleTypeService", () => {
   it("should return a sample type by id", async () => {
     const mockApiClientGet = apiClient.get as jest.Mock;
     mockApiClientGet.mockResolvedValueOnce({data: mockSampleTypes});
-    const expectedURL = "http://mockurl.com/api/sampleTypes/1";
+    const expectedURL = "http://mockurl.com/api/sample-types/1";
 
     const sampleType = await getSampleTypeByIdService("1");
 
@@ -57,7 +57,7 @@ describe("sampleTypeService", () => {
   it("should create a sample type", async () => {
     const mockApiClientPost = apiClient.post as jest.Mock;
     mockApiClientPost.mockResolvedValueOnce({data: mockSampleTypes[0]});
-    const expectedURL = "http://mockurl.com/api/sampleTypes";
+    const expectedURL = "http://mockurl.com/api/sample-types";
 
     const sampleType = await createSampleTypeService(mockSampleTypes[0]);
 
@@ -71,7 +71,7 @@ describe("sampleTypeService", () => {
   it("should edit a sample type", async () => {
     const mockApiClientPut = apiClient.put as jest.Mock;
     mockApiClientPut.mockResolvedValueOnce({data: mockSampleTypes[0]});
-    const expectedURL = "http://mockurl.com/api/sampleTypes/1";
+    const expectedURL = "http://mockurl.com/api/sample-types/1";
 
     const sampleType = await editSampleTypeService(mockSampleTypes[0], "1");
 
@@ -85,7 +85,7 @@ describe("sampleTypeService", () => {
   it("should delete a sample type", async () => {
     const mockApiClientDelete = apiClient.delete as jest.Mock;
     mockApiClientDelete.mockResolvedValueOnce({data: mockSampleTypes[0]});
-    const expectedURL = "http://mockurl.com/api/sampleTypes/1";
+    const expectedURL = "http://mockurl.com/api/sample-types/1";
 
     const sampleType = await deleteSampleTypeService("1");
 

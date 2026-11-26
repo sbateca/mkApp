@@ -73,7 +73,16 @@ describe("sampleService", () => {
     const sample = await createSampleService(mockSamples[0]);
 
     expect(sample).toEqual(mockSamples[0]);
-    expect(apiClient.post).toHaveBeenCalledWith(expectedURL, mockSamples[0]);
+    expect(apiClient.post).toHaveBeenCalledWith(expectedURL, {
+      sampleCode: mockSamples[0].sampleCode,
+      sampleTypeId: mockSamples[0].sampleType.id,
+      clientId: mockSamples[0].client.id,
+      getSampleDate: mockSamples[0].getSampleDate,
+      receptionDate: mockSamples[0].receptionDate,
+      analysisDate: mockSamples[0].analysisDate,
+      sampleLocation: mockSamples[0].sampleLocation,
+      responsable: mockSamples[0].responsable,
+    });
   });
 
   it("should edit a sample", async () => {
@@ -84,7 +93,16 @@ describe("sampleService", () => {
     const sample = await editSampleService("1", mockSamples[0]);
 
     expect(sample).toEqual(mockSamples[0]);
-    expect(apiClient.put).toHaveBeenCalledWith(expectedURL, mockSamples[0]);
+    expect(apiClient.put).toHaveBeenCalledWith(expectedURL, {
+      sampleCode: mockSamples[0].sampleCode,
+      sampleTypeId: mockSamples[0].sampleType.id,
+      clientId: mockSamples[0].client.id,
+      getSampleDate: mockSamples[0].getSampleDate,
+      receptionDate: mockSamples[0].receptionDate,
+      analysisDate: mockSamples[0].analysisDate,
+      sampleLocation: mockSamples[0].sampleLocation,
+      responsable: mockSamples[0].responsable,
+    });
   });
 
   it("should throw an error when an error occurs in get method", async () => {

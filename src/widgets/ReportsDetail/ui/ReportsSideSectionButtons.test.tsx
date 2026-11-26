@@ -31,6 +31,7 @@ describe("ReportSideSectionButtons", () => {
     const report = buildReportData({
       id: "draft-report-id",
       status: ReportStatus.DRATF,
+      actions: {approve: {allowed: true}, download: {allowed: false}},
     });
 
     render(
@@ -56,6 +57,7 @@ describe("ReportSideSectionButtons", () => {
     const report = buildReportData({
       id: "approved-report-id",
       status: ReportStatus.APPROVED,
+      actions: {approve: {allowed: false}, download: {allowed: true}},
     });
 
     render(
@@ -75,6 +77,20 @@ describe("ReportSideSectionButtons", () => {
     fireEvent.click(downloadButton);
 
     expect(defaultActions.handleDownload).toHaveBeenCalledWith(report.id);
+  });
+
+  it("disables edit, approve and download when decisions are absent", () => {
+    render(
+      <ReportSideSectionButtons
+        isNotValidForm={false}
+        report={buildReportData({status: ReportStatus.DRATF})}
+        {...defaultActions}
+      />,
+    );
+
+    for (const name of [/edit/i, /approve/i, /download/i]) {
+      expect(screen.getByRole("button", {name})).toBeDisabled();
+    }
   });
 
   it("should not render approval and download actions while editing", () => {

@@ -1,6 +1,6 @@
 import {
   ReportDetailDataProps,
-  reportFormToReport,
+  reportFormToReportRequest,
   selectEditReport,
   selectGetReports,
   selectSelectedReport,
@@ -25,7 +25,7 @@ export const useEditReport = () => {
     form: FormProps,
     reportDetailData: ReportDetailDataProps,
   ) => {
-    const parsedReport = reportFormToReport(
+    const parsedReport = reportFormToReportRequest(
       form,
       selectedReport?.id ?? "",
       reportDetailData,
