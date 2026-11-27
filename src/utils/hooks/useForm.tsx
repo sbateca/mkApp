@@ -28,26 +28,26 @@ export const useForm = () => {
   const [formFieldsValidationFunctions, setFormFieldsValidationFunctions] =
     useState<FieldValidations>({});
 
-  const updateField = (name: string, value: string) => {
+  const setFieldValue = (name: string, value: string) => {
     setForm((prevForm) => ({...prevForm, [name]: value}));
     updateErrorsObject(name, value);
   };
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {name, value} = event.target;
-    updateField(name, value);
+    setFieldValue(name, value);
   };
 
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     const {name, value} = event.target;
-    updateField(name, value);
+    setFieldValue(name, value);
   };
 
   const handleDateChange = (value: Dayjs | null, fieldName: string) => {
     const date = value?.isValid()
       ? value.format(DATEPICKER_FORMAT)
       : (value?.toString() ?? "");
-    updateField(fieldName, date);
+    setFieldValue(fieldName, date);
   };
 
   const handleAutoCompleteChange = (
@@ -55,7 +55,7 @@ export const useForm = () => {
     newValue: AutoCompleteOption | null,
     name: string,
   ) => {
-    updateField(name, newValue?.id ?? "");
+    setFieldValue(name, newValue?.id ?? "");
   };
 
   const updateErrorsObject = (fieldName: string, fieldValue: string) => {
@@ -111,6 +111,7 @@ export const useForm = () => {
   return {
     form,
     setForm,
+    setFieldValue,
     cleanForm,
     formFieldsErrors,
     handleChange,

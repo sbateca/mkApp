@@ -1,3 +1,4 @@
+import {getSamplesService} from "../../../entities/sample/api/sampleService";
 import {render, screen} from "@testing-library/react";
 
 import {ReportDetail} from "./ReportsDetail";
@@ -44,7 +45,7 @@ const mockSamples = buildSamplesData(2, {
   sampleTypeId: mockSampleTypes[0].id,
 });
 const mockReports = buildReportsData(2, {
-  sampleId: mockSamples[0].id,
+  sample: mockSamples[0],
   analyte: mockAnalytes[0].id,
   analysisMethod: mockAnalysisMethods[0].id,
   criteria: mockCriterias[0].id,
@@ -195,6 +196,7 @@ export const renderReportDetail = ({
   canUpdate = false,
   canCreate = false,
   hasReport = true,
+  useRealForm = false,
 } = {}) => {
   const report = {
     ...mockReports[0],
@@ -374,8 +376,17 @@ export const renderReportDetail = ({
     getTextFieldHelperText: jest.fn(),
     setFormFieldsValidationFunctions: jest.fn(),
     setDefaultFormFieldsValues: jest.fn(),
+    setFieldValue: jest.fn(),
     isNotValidForm: false,
   });
+
+  if (useRealForm) {
+    jest
+      .mocked(hooks.useForm)
+      .mockImplementation(
+        jest.requireActual<typeof hooks>("../../../utils/hooks").useForm,
+      );
+  }
 
   const container = render(<ReportDetail canCreate={canCreate} />);
 
@@ -385,7 +396,7 @@ export const renderReportDetail = ({
     testTypes: mockTestTypes,
     analytes: mockAnalytes,
     catalogRequests: [
-      mockedSamplesState.getSamples,
+      jest.mocked(getSamplesService),
       mockedSamplesState.getSampleById,
       mockClientStoreState.getClients,
       mockSampleTypeStoreState.getSampleTypes,

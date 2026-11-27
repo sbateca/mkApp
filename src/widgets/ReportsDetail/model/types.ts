@@ -33,6 +33,7 @@ export type ReportDetailFormStateProps = {
   isNotValidForm: boolean;
   form: FormProps;
   setForm: React.Dispatch<React.SetStateAction<FormProps>>;
+  setFieldValue: (name: string, value: string) => void;
   formFieldsErrors: FormError;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleDateChange: (value: dayjs.Dayjs | null, fieldName: string) => void;

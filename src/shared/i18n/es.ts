@@ -71,6 +71,8 @@ export const es: Record<string, string> = {
   Responsable: "Responsable",
   Sample: "Muestra",
   Analyte: "Analito",
+  "Add sample": "Agregar muestra",
+  "Save sample": "Guardar muestra",
   "Add analyte": "Agregar analito",
   "Remove analyte": "Quitar analito",
   "Remove result": "Quitar resultado",

@@ -15,9 +15,12 @@ const sampleRequest = (sample: Sample) => ({
   responsable: sample.responsable,
 });
 
-export const getSamplesService = async (): Promise<Sample[]> => {
+export const getSamplesService = async (
+  hasReport?: boolean,
+): Promise<Sample[]> => {
+  const query = hasReport === undefined ? "" : "?hasReport=" + hasReport;
   const response = await apiClient.get<Sample[]>(
-    `${EnvManager.BACKEND_URL}${BaseRoutes.SAMPLES}`,
+    `${EnvManager.BACKEND_URL}${BaseRoutes.SAMPLES}${query}`,
   );
   return axiosResponseToSamples(response);
 };

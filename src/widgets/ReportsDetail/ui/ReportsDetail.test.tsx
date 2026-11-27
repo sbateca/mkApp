@@ -1,3 +1,8 @@
+import {getClientsService} from "../../../entities/client/api/clientService";
+import {
+  createSampleService,
+  getSamplesService,
+} from "../../../entities/sample/api/sampleService";
 import {fireEvent, screen, waitFor, within} from "@testing-library/react";
 import {
   mockReportDetailData,
@@ -11,9 +16,23 @@ jest.mock("../../../config/EnvManager", () => ({
   },
 }));
 
+jest.mock("../../../entities/sample/api/sampleService", () => ({
+  ...jest.requireActual("../../../entities/sample/api/sampleService"),
+  getSamplesService: jest.fn(),
+  createSampleService: jest.fn(),
+}));
+
+jest.mock("../../../entities/client/api/clientService", () => ({
+  ...jest.requireActual("../../../entities/client/api/clientService"),
+  getClientsService: jest.fn(),
+}));
+
 describe("ReportDetail", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest
+      .mocked(getSamplesService)
+      .mockResolvedValue(mockReportDetailData.samples.slice(1));
   });
 
   it("renders the report and its relations without requesting samples or catalogs", () => {
@@ -58,7 +77,7 @@ describe("ReportDetail", () => {
     const {sampleId, result} = mockReportDetailData.expectedData;
     expect(await screen.findByDisplayValue(sampleId)).toBeInTheDocument();
     expect(await screen.findByDisplayValue(result)).toBeInTheDocument();
-    expect(catalogRequests[0]).toHaveBeenCalled();
+    expect(catalogRequests[0]).toHaveBeenCalledWith(false);
 
     fireEvent.click(screen.getByRole("button", {name: "Cancel"}));
     rerender();
@@ -116,6 +135,76 @@ describe("ReportDetail", () => {
     ).not.toBeInTheDocument();
   });
 
+  it("creates a sample inline and selects the saved sample without clearing the report", async () => {
+    const {clients, sampleTypes, samples} = mockReportDetailData;
+    const sample = {
+      ...samples[0],
+      id: "new-sample",
+      sampleCode: "INLINE-01",
+      sampleType: sampleTypes[0],
+      client: clients[0],
+    };
+    jest.mocked(getClientsService).mockResolvedValue(clients);
+    jest
+      .mocked(createSampleService)
+      .mockRejectedValueOnce(new Error("Sample already exists"))
+      .mockResolvedValueOnce(sample);
+    renderReportDetail({
+      hasReport: false,
+      readOnly: false,
+      canCreate: true,
+      useRealForm: true,
+    });
+
+    const reportNumber = await screen.findByRole("textbox", {
+      name: "Report number",
+    });
+    fireEvent.change(reportNumber, {target: {value: "REPORT-01"}});
+    fireEvent.click(screen.getByRole("button", {name: "Add sample"}));
+    const inline = within(screen.getByRole("form", {name: "Add sample"}));
+    for (const [label, value] of [
+      ["Sample code", sample.sampleCode],
+      ["Sample location", sample.sampleLocation],
+      ["Responsible person", sample.responsable],
+    ]) {
+      fireEvent.change(await inline.findByRole("textbox", {name: label}), {
+        target: {value},
+      });
+    }
+    for (const [label, name] of [
+      ["Client", sample.client.name],
+      ["Sample type", sample.sampleType.name],
+    ]) {
+      fireEvent.keyDown(inline.getByRole("combobox", {name: label}), {
+        key: "ArrowDown",
+      });
+      fireEvent.click(await screen.findByRole("option", {name}));
+    }
+
+    const saveSample = inline.getByRole("button", {name: "Save sample"});
+    expect(saveSample).toBeEnabled();
+    fireEvent.click(saveSample);
+    expect(await inline.findByRole("alert")).toHaveTextContent(
+      "Sample already exists",
+    );
+    expect(inline.getByRole("textbox", {name: "Sample code"})).toHaveValue(
+      "INLINE-01",
+    );
+    fireEvent.click(saveSample);
+
+    await waitFor(() =>
+      expect(screen.getByRole("combobox", {name: "Sample"})).toHaveValue(
+        `${sample.sampleCode} - ${sample.sampleType.name}`,
+      ),
+    );
+    expect(
+      screen.queryByRole("form", {name: "Add sample"}),
+    ).not.toBeInTheDocument();
+    expect(reportNumber).toHaveValue("REPORT-01");
+    expect(screen.getByText(sample.sampleLocation)).toBeVisible();
+    expect(getSamplesService).toHaveBeenCalledTimes(1);
+  });
+
   it("loads catalogs for a new report only with create permission", async () => {
     const {catalogRequests} = renderReportDetail({
       hasReport: false,
@@ -126,7 +215,7 @@ describe("ReportDetail", () => {
     expect(
       await screen.findByRole("button", {name: "Save"}),
     ).toBeInTheDocument();
-    await waitFor(() => expect(catalogRequests[0]).toHaveBeenCalled());
+    await waitFor(() => expect(catalogRequests[0]).toHaveBeenCalledWith(false));
 
     fireEvent.click(screen.getByRole("button", {name: "Add analyte"}));
     for (const name of ["Analyte 1", "Analyte 2"]) {

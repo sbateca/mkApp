@@ -157,6 +157,7 @@ export const renderSampleDetail = () => {
     getTextFieldHelperText: jest.fn(),
     setFormFieldsValidationFunctions: jest.fn(),
     setDefaultFormFieldsValues: jest.fn(),
+    setFieldValue: jest.fn(),
     isNotValidForm: false,
     isReadOnlyMode: false,
     setIsReadOnlyMode: jest.fn(),

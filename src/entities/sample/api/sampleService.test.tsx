@@ -54,6 +54,14 @@ describe("sampleService", () => {
     expect(apiClient.get).toHaveBeenCalledWith(expectedURL);
   });
 
+  it("requests samples without a report for report forms", async () => {
+    jest.mocked(apiClient.get).mockResolvedValueOnce({data: mockSamples});
+    await expect(getSamplesService(false)).resolves.toEqual(mockSamples);
+    expect(apiClient.get).toHaveBeenCalledWith(
+      "http://mockurl.com/api/samples?hasReport=false",
+    );
+  });
+
   it("should return a sample by id", async () => {
     const mockApiClientGet = apiClient.get as jest.Mock;
     mockApiClientGet.mockResolvedValueOnce({data: mockSamples[0]});
