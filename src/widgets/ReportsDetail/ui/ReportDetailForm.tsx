@@ -1,8 +1,16 @@
 import {useInterfaceTranslation} from "../../../shared/i18n/useInterfaceTranslation";
 import {LocalizedDateProvider} from "../../../shared/i18n/LocalizedDateProvider";
-import React from "react";
+import React, {useId, useState} from "react";
 import AddOutlined from "@mui/icons-material/AddOutlined";
-import {Box, Button, Stack, TextField, Typography} from "@mui/material";
+import {
+  Box,
+  Button,
+  IconButton,
+  Stack,
+  Tooltip,
+  TextField,
+  Typography,
+} from "@mui/material";
 import {DatePicker} from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 
@@ -22,6 +30,7 @@ import {
 } from "../../../utils/enums";
 import {AutoComplete} from "../../../shared/ui";
 import {SampleReportDetails} from "../../../entities/sample";
+import {InlineSampleForm} from "./InlineSampleForm";
 import {ReportTestForm} from "./ReportTestForm";
 import {ReportSideSectionButtons} from "./ReportsSideSectionButtons";
 import {DetailFormProps} from "../model/types";
@@ -47,12 +56,15 @@ export const ReportDetailForm = ({
   actions,
 }: DetailFormProps): React.ReactElement => {
   const {t} = useInterfaceTranslation();
+  const inlineSampleFormId = useId();
+  const [showSampleForm, setShowSampleForm] = useState(false);
   const {
     analysisMethods,
     analytes,
     criterias,
     testTypes,
     sampleTypeOptionsFromSamples,
+    sampleTypes,
   } = catalogs;
 
   const {
@@ -69,8 +81,8 @@ export const ReportDetailForm = ({
 
   const {isReadOnlyMode} = useReadOnlyMode();
 
-  const {isLoadingSample, selectedReport, selectedSample} = state;
-  const {onCreateReport, onEditReport} = actions;
+  const {selectedReport, selectedSample} = state;
+  const {onCreateReport, onEditReport, onSampleCreated} = actions;
   const testTypeOptions = getAutoCompleteOptionsFromModel(testTypes);
   const methodOptions = getAutoCompleteOptionsFromModel(analysisMethods);
   const criteriaOptions = getAutoCompleteOptionsFromModel(criterias);
@@ -132,8 +144,14 @@ export const ReportDetailForm = ({
               />
             </Stack>
 
-            <Stack {...getStackFieldProps()}>
+            <Stack
+              {...getStackFieldProps()}
+              direction="row"
+              alignItems="flex-start"
+              gap={0.5}
+            >
               <AutoComplete
+                sx={{flex: 1, minWidth: 0}}
                 options={sampleTypeOptionsFromSamples}
                 label={t(REPORT_SAMPLE_LABEL_TEXT)}
                 value={`${form[ReportFormFields.SAMPLE_ID] ?? ""}`}
@@ -147,17 +165,38 @@ export const ReportDetailForm = ({
                   getTextFieldHelperText(ReportFormFields.SAMPLE_ID),
                 )}
               />
+              {!selectedReport && (
+                <Tooltip title={t("Add sample")}>
+                  <IconButton
+                    color="primary"
+                    aria-label={t("Add sample")}
+                    aria-expanded={showSampleForm}
+                    aria-controls={
+                      showSampleForm ? inlineSampleFormId : undefined
+                    }
+                    onClick={() => setShowSampleForm(true)}
+                  >
+                    <AddOutlined fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              )}
             </Stack>
           </Stack>
         </Stack>
-        <Stack {...getStackRowProps(isLessThanMediumScreen)}>
-          <Box {...getStackFieldProps()}>
-            <SampleReportDetails
-              sample={selectedSample}
-              isLoadingSample={isLoadingSample}
-            />
-          </Box>
-        </Stack>
+        {showSampleForm ? (
+          <InlineSampleForm
+            id={inlineSampleFormId}
+            sampleTypes={sampleTypes}
+            isLessThanMediumScreen={isLessThanMediumScreen}
+            onCancel={() => setShowSampleForm(false)}
+            onCreated={(sample) => {
+              onSampleCreated(sample);
+              setShowSampleForm(false);
+            }}
+          />
+        ) : (
+          <SampleReportDetails sample={selectedSample} />
+        )}
 
         <Stack component="section" gap={2}>
           <Stack
@@ -243,7 +282,11 @@ export const ReportDetailForm = ({
         <Box sx={formActionsSx}>
           <ReportSideSectionButtons
             mode="edit"
-            isNotValidForm={detailForm.isNotValidForm || !areReportTestsValid}
+            isNotValidForm={
+              showSampleForm ||
+              detailForm.isNotValidForm ||
+              !areReportTestsValid
+            }
             report={selectedReport}
             handleCreateReport={() =>
               onCreateReport(toReportTestGroups(groups))

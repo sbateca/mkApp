@@ -1,4 +1,4 @@
-import {useEffect, useMemo} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {
   selectAnalysisMethods,
   selectGetAnalysisMethods,
@@ -25,12 +25,9 @@ import {
   selectSetCriterias,
 } from "../../../../entities/criteria/model/selector";
 import {useCriteriaStore} from "../../../../entities/criteria/model/store";
-import {
-  selectGetSamples,
-  selectSamples,
-  selectSetSamples,
-  useSampleStore,
-} from "../../../../entities/sample";
+import {Sample} from "../../../../entities/sample";
+import {getSamplesService} from "../../../../entities/sample/api/sampleService";
+import {UNEXPECTED_ERROR} from "../../../../utils/constants";
 import {
   selectGetSampleTypes,
   selectIsLoadingSampleTypes,
@@ -54,13 +51,50 @@ import {
   selectSetTests,
 } from "../../../../entities/test";
 
-export const useLoadReportDetailData = () => {
+export const useLoadReportDetailData = (currentSample?: Sample) => {
   const clients = useClientStore(selectClients);
   const isLoadingClients = useClientStore(selectIsLoadingClient);
 
-  const samples = useSampleStore(selectSamples);
-  const getSamples = useSampleStore(selectGetSamples);
-  const setSamples = useSampleStore(selectSetSamples);
+  const [availableSamples, setAvailableSamples] = useState<Sample[]>([]);
+  const addAvailableSample = (sample: Sample) => {
+    setAvailableSamples((current) => [
+      sample,
+      ...current.filter(({id}) => id !== sample.id),
+    ]);
+  };
+  const [isLoadingSamples, setIsLoadingSamples] = useState(true);
+  const [samplesError, setSamplesError] = useState<string | null>(null);
+  const samples = useMemo(
+    () =>
+      currentSample &&
+      !availableSamples.some((sample) => sample.id === currentSample.id)
+        ? [currentSample, ...availableSamples]
+        : availableSamples,
+    [availableSamples, currentSample],
+  );
+
+  useEffect(() => {
+    let active = true;
+    const loadAvailableSamples = async () => {
+      try {
+        const available = await getSamplesService(false);
+        if (active) setAvailableSamples(available);
+      } catch (error) {
+        if (active) {
+          setSamplesError(
+            error instanceof Error ? error.message : UNEXPECTED_ERROR,
+          );
+        }
+      } finally {
+        if (active) setIsLoadingSamples(false);
+      }
+    };
+
+    void loadAvailableSamples();
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const sampleTypes = useSampleTypeStore(selectSamplesTypes);
   const getSampleTypes = useSampleTypeStore(selectGetSampleTypes);
@@ -95,6 +129,7 @@ export const useLoadReportDetailData = () => {
   const isLoadingTests = useTestStore(selectIsLoadingTests);
 
   const isLoadingAll =
+    isLoadingSamples ||
     isLoadingClients ||
     isLoadingSampleTypes ||
     isLoadingAnalysisMethods ||
@@ -112,7 +147,6 @@ export const useLoadReportDetailData = () => {
         analytes,
         tests,
         testTypes,
-        samples,
       ] = await Promise.all([
         getSampleTypes(),
         getCriterias(),
@@ -120,7 +154,6 @@ export const useLoadReportDetailData = () => {
         getAnalytes(),
         getTests(),
         getTestTypes(),
-        getSamples(),
       ]);
       setSampleTypes(sampleTypes);
       setCriterias(criterias);
@@ -128,7 +161,6 @@ export const useLoadReportDetailData = () => {
       setAnalytes(analytes);
       setTests(tests);
       setTestTypes(testTypes);
-      setSamples(samples);
     };
     retrieveAllReportDetailData();
   }, [
@@ -143,8 +175,6 @@ export const useLoadReportDetailData = () => {
     setCriterias,
     setAnalysisMethods,
     setAnalytes,
-    setSamples,
-    getSamples,
     setTestTypes,
   ]);
 
@@ -157,7 +187,7 @@ export const useLoadReportDetailData = () => {
 
         return {
           id: `${sample.id}`,
-          optionLabel: `${sample.sampleCode} - ${sampleTypeFound?.name ?? ""}`,
+          optionLabel: `${sample.sampleCode} - ${sampleTypeFound?.name ?? sample.sampleType.name}`,
         };
       }) ?? []
     );
@@ -217,6 +247,8 @@ export const useLoadReportDetailData = () => {
     tests,
     testTypes,
     isLoadingAll,
+    samplesError,
+    addAvailableSample,
     sampleTypeOptionsFromSamples,
     getTestTypeOptions,
     getTestOptions,

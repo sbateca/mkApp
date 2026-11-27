@@ -4,25 +4,35 @@ import {
   selectSelectedReport,
   useReportStore,
 } from "../../../entities/report";
+import {getFormStringValue} from "../../../utils/constants";
 import {ReportFormFields} from "../../../utils/enums";
 import {
   useCreateReport,
   useEditReport,
   useLoadReportDetailData,
 } from "../../../features/reports";
-import {useSelectSampleForReport} from "../../../features/reports/selectSample/model/useSelectSampleForReport";
+import {Sample} from "../../../entities/sample";
 import {ReportTestGroups} from "./types";
 import {useReportDetailForm} from "./useReportDetailForm";
+import {useReportErrorNotifier} from "./useReportErrorNotifier";
 
 export const useReportDetailController = () => {
   const selectedReport = useReportStore(selectSelectedReport);
 
-  const reportDetailData = useLoadReportDetailData();
+  const reportDetailData = useLoadReportDetailData(selectedReport?.sample);
+  useReportErrorNotifier(reportDetailData.samplesError);
 
   const reportFormState = useReportDetailForm(selectedReport);
-  const {form} = reportFormState;
+  const {form, setFieldValue} = reportFormState;
 
-  const {selectedSample, isLoadingSample} = useSelectSampleForReport(form);
+  const sampleId = getFormStringValue(form, ReportFormFields.SAMPLE_ID);
+  const selectedSample =
+    reportDetailData.samples.find(({id}) => id === sampleId) ?? null;
+
+  const onSampleCreated = (sample: Sample) => {
+    reportDetailData.addAvailableSample(sample);
+    setFieldValue(ReportFormFields.SAMPLE_ID, sample.id);
+  };
 
   const {handleCreateReport} = useCreateReport();
   const {handleEditReport} = useEditReport();
@@ -74,12 +84,12 @@ export const useReportDetailController = () => {
     catalogs: reportDetailData,
     detailForm: reportFormState,
     state: {
-      isLoadingSample,
       selectedReport,
       selectedSample,
     },
     actions: {
       onCreateReport,
+      onSampleCreated,
       onEditReport,
     },
   };
