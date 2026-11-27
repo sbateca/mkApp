@@ -60,10 +60,9 @@ describe("analysisMethodService", () => {
     );
 
     expect(analysisMethod).toEqual(mockAnalysisMethods[0]);
-    expect(mockApiClientPost).toHaveBeenCalledWith(
-      expectedURL,
-      mockAnalysisMethods[0],
-    );
+    expect(mockApiClientPost).toHaveBeenCalledWith(expectedURL, {
+      name: mockAnalysisMethods[0].name,
+    });
   });
 
   it("should edit an analysis method", async () => {
@@ -77,10 +76,9 @@ describe("analysisMethodService", () => {
     );
 
     expect(analysisMethod).toEqual(mockAnalysisMethods[0]);
-    expect(mockApiClientPut).toHaveBeenCalledWith(
-      expectedURL,
-      mockAnalysisMethods[0],
-    );
+    expect(mockApiClientPut).toHaveBeenCalledWith(expectedURL, {
+      name: mockAnalysisMethods[0].name,
+    });
   });
 
   it("should delete an analysis method", async () => {

@@ -1,5 +1,5 @@
 import EnvManager from "../../../config/EnvManager";
-import {Client} from "../model/Client";
+import {Client, ClientRequest} from "../model/Client";
 import {axiosResponseToClient} from "../lib/clientMappers";
 import {apiClient} from "../../../shared/api/apliClient";
 import {BaseRoutes} from "../../../utils/constants/baseRoutes";
@@ -20,7 +20,9 @@ export const getClientByIdService = async (
   return axiosResponseToClient(response)[0];
 };
 
-export const createClientService = async (client: Client): Promise<Client> => {
+export const createClientService = async (
+  client: ClientRequest,
+): Promise<Client> => {
   const response = await apiClient.post<Client>(
     `${EnvManager.BACKEND_URL}${BaseRoutes.CLIENTS}`,
     client,
@@ -29,7 +31,7 @@ export const createClientService = async (client: Client): Promise<Client> => {
 };
 
 export const editClientService = async (
-  client: Client,
+  client: ClientRequest,
   clientId: string,
 ): Promise<Client> => {
   const response = await apiClient.put<Client>(

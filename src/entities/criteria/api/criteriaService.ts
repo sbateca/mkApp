@@ -23,7 +23,7 @@ export const createCriteriaService = async (
 ): Promise<Criteria> => {
   const response = await apiClient.post<Criteria>(
     `${EnvManager.BACKEND_URL}${ApiRoutes.CRITERIAS}`,
-    criteria,
+    {name: criteria.name},
   );
   return axiosResponseToCriteria(response)[0];
 };
@@ -34,7 +34,7 @@ export const editCriteriaService = async (
 ): Promise<Criteria> => {
   const response = await apiClient.put<Criteria>(
     `${EnvManager.BACKEND_URL}${ApiRoutes.CRITERIAS}/${criteriaId}`,
-    criteria,
+    {name: criteria.name},
   );
   return axiosResponseToCriteria(response)[0];
 };

@@ -13,7 +13,11 @@ import {
 } from "../../../../shared/commonStyles";
 import {useForm} from "../../../../utils/hooks";
 import {useEffect, useMemo} from "react";
-import {isEmpty} from "../../../../utils/constants";
+import {
+  API_FIELD_LIMITS,
+  exceedsLength,
+  isEmpty,
+} from "../../../../utils/constants";
 import {
   CriteriaFormFieldLabels,
   CriteriaFormFields,
@@ -54,7 +58,10 @@ export const CriteriaForm = ({isLessThanMediumScreen}: CriteriaFormProps) => {
 
   const formValidations = useMemo(
     () => ({
-      [CriteriaFormFields.NAME]: [isEmpty],
+      [CriteriaFormFields.NAME]: [
+        isEmpty,
+        exceedsLength(API_FIELD_LIMITS.catalogName),
+      ],
     }),
     [],
   );

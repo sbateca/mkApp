@@ -1,4 +1,4 @@
-import React, {ChangeEvent, SyntheticEvent, useEffect, useState} from "react";
+import React, {ChangeEvent, SyntheticEvent, useState} from "react";
 
 import {SelectChangeEvent} from "@mui/material";
 import {Dayjs} from "dayjs";
@@ -25,54 +25,29 @@ export interface FieldValidations {
 export const useForm = () => {
   const [formFieldsErrors, setFormFieldsErrors] = useState<FormError>({});
   const [form, setForm] = useState<FormProps>({});
-  const [isNotValidForm, setIsNotValidForm] = useState<boolean>(true);
   const [formFieldsValidationFunctions, setFormFieldsValidationFunctions] =
     useState<FieldValidations>({});
 
+  const updateField = (name: string, value: string) => {
+    setForm((prevForm) => ({...prevForm, [name]: value}));
+    updateErrorsObject(name, value);
+  };
+
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {name, value} = event.target;
-    setForm((prevForm: FormProps) => {
-      const updatedForm = {
-        ...prevForm,
-        [name]: value,
-      };
-      updateErrorsObject(name, value);
-      checkNotValidForm(formFieldsErrors);
-      return updatedForm;
-    });
+    updateField(name, value);
   };
 
   const handleSelectChange = (event: SelectChangeEvent<string>) => {
     const {name, value} = event.target;
-    setForm((prevForm: FormProps) => {
-      const updatedForm = {
-        ...prevForm,
-        [name]: value,
-      };
-      updateErrorsObject(name, value);
-      checkNotValidForm(formFieldsErrors);
-      return updatedForm;
-    });
+    updateField(name, value);
   };
 
   const handleDateChange = (value: Dayjs | null, fieldName: string) => {
-    setForm((prevForm: FormProps) => {
-      const updatedForm = {
-        ...prevForm,
-        [fieldName]: getDateValue(value),
-      };
-      updateErrorsObject(fieldName, getDateValue(value));
-      checkNotValidForm(formFieldsErrors);
-      return updatedForm;
-    });
-  };
-
-  const getDateValue = (value: Dayjs | null): string => {
-    if (value) {
-      if (value?.isValid()) {
-        return value.format(DATEPICKER_FORMAT);
-      } else return value.toString();
-    } else return "";
+    const date = value?.isValid()
+      ? value.format(DATEPICKER_FORMAT)
+      : (value?.toString() ?? "");
+    updateField(fieldName, date);
   };
 
   const handleAutoCompleteChange = (
@@ -80,15 +55,7 @@ export const useForm = () => {
     newValue: AutoCompleteOption | null,
     name: string,
   ) => {
-    setForm((prevForm: FormProps) => {
-      const updatedForm = {
-        ...prevForm,
-        [name]: newValue?.id || "",
-      };
-      updateErrorsObject(name, newValue?.optionLabel || "");
-      checkNotValidForm(formFieldsErrors);
-      return updatedForm;
-    });
+    updateField(name, newValue?.id ?? "");
   };
 
   const updateErrorsObject = (fieldName: string, fieldValue: string) => {
@@ -111,12 +78,13 @@ export const useForm = () => {
     });
   };
 
-  const checkNotValidForm = (fieldErrors: FormError): boolean => {
-    const emptyFields = Object.keys(formFieldsValidationFunctions).filter(
-      (fieldName) => !form[fieldName],
-    );
-    return Object.keys(fieldErrors).length > 0 || emptyFields.length > 0;
-  };
+  const isNotValidForm = Object.entries(formFieldsValidationFunctions).some(
+    ([name, validators]) =>
+      validators.some((validate) => {
+        const value = form[name];
+        return validate(typeof value === "string" ? value : undefined);
+      }),
+  );
 
   const getTextFieldHelperText = (fieldName: string): string => {
     if (formFieldsErrors[fieldName]) {
@@ -133,21 +101,12 @@ export const useForm = () => {
 
   const setDefaultFormFieldsValues = (defaultValues: FormProps) => {
     Object.keys(defaultValues).forEach((value) => {
-      setForm((prevForm: FormProps) => {
-        const updatedForm = {
-          ...prevForm,
-          [value]: defaultValues[value],
-        };
-        checkNotValidForm(formFieldsErrors);
-        return updatedForm;
-      });
+      setForm((prevForm: FormProps) => ({
+        ...prevForm,
+        [value]: defaultValues[value],
+      }));
     });
   };
-
-  useEffect(() => {
-    setIsNotValidForm(checkNotValidForm(formFieldsErrors));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formFieldsErrors, formFieldsValidationFunctions]);
 
   return {
     form,

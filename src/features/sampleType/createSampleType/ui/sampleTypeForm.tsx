@@ -13,7 +13,11 @@ import {
 } from "../../../../shared/commonStyles";
 import {useForm} from "../../../../utils/hooks";
 import {useEffect, useMemo} from "react";
-import {isEmpty} from "../../../../utils/constants";
+import {
+  API_FIELD_LIMITS,
+  exceedsLength,
+  isEmpty,
+} from "../../../../utils/constants";
 import {
   SampleTypeFormFieldLabels,
   SampleTypeFormFields,
@@ -57,7 +61,7 @@ export const SampleTypeForm = ({
 
   const formValidations = useMemo(
     () => ({
-      name: [isEmpty],
+      name: [isEmpty, exceedsLength(API_FIELD_LIMITS.catalogName)],
     }),
     [],
   );

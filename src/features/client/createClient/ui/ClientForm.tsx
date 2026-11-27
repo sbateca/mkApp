@@ -8,15 +8,17 @@ import {
   formActionsSx,
   formSectionSx,
   getStackContainerProps,
-  getStackFieldProps,
-  getStackRowProps,
 } from "../../../../shared/commonStyles";
-import {useForm} from "../../../../utils/hooks";
-import {useEffect, useMemo} from "react";
-import {isEmpty} from "../../../../utils/constants";
+import {type FieldValidations, useForm} from "../../../../utils/hooks";
+import {useEffect} from "react";
 import {
-  ClientFormFieldLabels,
-  ClientFormFields,
+  API_FIELD_LIMITS,
+  exceedsLength,
+  isEmpty,
+  isNotValidEmailFormat,
+  lengthBetween,
+} from "../../../../utils/constants";
+import {
   SharedTextFieldVariants,
   SharedTypographyColors,
   TextFieldSizes,
@@ -27,6 +29,44 @@ import {useEditClient} from "../../editClient";
 import {clientToForm} from "../../lib/clientMappers";
 import {ClientDetailButtons} from "./ClientDetailButtons";
 
+const clientFields = [
+  {
+    name: "name",
+    label: "Name",
+    type: "text",
+    validators: [isEmpty, exceedsLength(API_FIELD_LIMITS.catalogName)],
+  },
+  {
+    name: "email",
+    label: "Email",
+    type: "email",
+    validators: [isEmpty, isNotValidEmailFormat],
+  },
+  {
+    name: "phone",
+    label: "Phone",
+    type: "tel",
+    validators: [isEmpty, lengthBetween(7, 20)],
+  },
+  {
+    name: "nit",
+    label: "NIT",
+    type: "text",
+    validators: [isEmpty, lengthBetween(5, 50)],
+  },
+  {
+    name: "address",
+    label: "Address",
+    type: "text",
+    validators: [isEmpty, lengthBetween(5, 250)],
+  },
+] as const;
+
+const formValidations: FieldValidations = {};
+for (const {name, validators} of clientFields) {
+  formValidations[name] = [...validators];
+}
+
 type ClientFormProps = {
   isLessThanMediumScreen: boolean;
 };
@@ -36,7 +76,6 @@ export const ClientForm = ({isLessThanMediumScreen}: ClientFormProps) => {
   const {
     isNotValidForm,
     form,
-    setForm,
     formFieldsErrors,
     handleChange,
     getTextFieldHelperText,
@@ -49,52 +88,47 @@ export const ClientForm = ({isLessThanMediumScreen}: ClientFormProps) => {
   const {handleCreateClient} = useCreateClient(form);
   const {handleEditClient} = useEditClient(form, selectedClient?.id || "");
 
-  const formValidations = useMemo(
-    () => ({
-      name: [isEmpty],
-    }),
-    [],
-  );
-
-  const emptyForm = useMemo(
-    () => ({
-      name: "",
-    }),
-    [],
-  );
-
   useEffect(() => {
-    if (selectedClient) setForm(clientToForm(selectedClient));
-    else cleanForm(emptyForm);
-  }, [selectedClient, cleanForm, emptyForm, setForm]);
+    cleanForm(clientToForm(selectedClient));
+  }, [selectedClient, cleanForm]);
 
   useEffect(() => {
     setFormFieldsValidationFunctions(formValidations);
-  }, [setFormFieldsValidationFunctions, formValidations]);
+  }, [setFormFieldsValidationFunctions]);
 
   return (
     <Stack {...getStackContainerProps(isLessThanMediumScreen)}>
-      <Stack {...getStackRowProps(isLessThanMediumScreen)} sx={formSectionSx}>
-        <Stack {...getStackFieldProps()}>
-          <TextField
-            required
-            error={!!formFieldsErrors[ClientFormFields.NAME]}
-            label={t(ClientFormFieldLabels.NAME)}
-            type="string"
-            color={SharedTypographyColors.PRIMARY}
-            size={TextFieldSizes.SMALL}
-            onChange={handleChange}
-            name={ClientFormFields.NAME}
-            helperText={t(getTextFieldHelperText(ClientFormFields.NAME))}
-            value={form[ClientFormFields.NAME] ?? ""}
-            variant={SharedTextFieldVariants.OUTLINED}
-            fullWidth
-            InputProps={{
-              readOnly: isReadOnlyMode,
-            }}
-          />
-        </Stack>
-      </Stack>
+      <Box sx={formSectionSx}>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: {
+              xs: "minmax(0, 1fr)",
+              sm: "repeat(2, minmax(0, 1fr))",
+            },
+            gap: 2,
+          }}
+        >
+          {clientFields.map(({name, label, type}) => (
+            <TextField
+              key={name}
+              required
+              error={!!formFieldsErrors[name]}
+              label={t(label)}
+              type={type}
+              color={SharedTypographyColors.PRIMARY}
+              size={TextFieldSizes.SMALL}
+              onChange={handleChange}
+              name={name}
+              helperText={t(getTextFieldHelperText(name))}
+              value={form[name] ?? ""}
+              variant={SharedTextFieldVariants.OUTLINED}
+              InputProps={{readOnly: isReadOnlyMode}}
+              sx={name === "address" ? {gridColumn: "1 / -1"} : undefined}
+            />
+          ))}
+        </Box>
+      </Box>
       <Box sx={formActionsSx}>
         <ClientDetailButtons
           isNotValidForm={isNotValidForm}

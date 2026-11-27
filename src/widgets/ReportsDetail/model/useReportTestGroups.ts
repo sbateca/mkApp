@@ -1,7 +1,12 @@
 import {v4 as uuidv4} from "uuid";
 
 import {AutoCompleteOption} from "../../../shared/ui/AutoComplete/types";
-import {FormProps, REQUIRED_FIELD_ERROR_TEXT} from "../../../utils/constants";
+import {
+  API_FIELD_LIMITS,
+  exceedsLength,
+  FormProps,
+  REQUIRED_FIELD_ERROR_TEXT,
+} from "../../../utils/constants";
 import {ReportFormFields} from "../../../utils/enums";
 import {ReportTestGroups, ReportTestRow, ReportTestRowField} from "./types";
 
@@ -17,11 +22,14 @@ export const getDefaultReportTestRows = (): ReportTestRow[] => [
   createEmptyReportTestRow(),
 ];
 
+const validateResultLength = exceedsLength(API_FIELD_LIMITS.reportResult);
+
 export const isCompleteReportTestRow = (row: ReportTestRow): boolean => {
   return (
     !!row.analyteId.trim() &&
     !!row.analysisMethodId.trim() &&
     !!row.result.trim() &&
+    !validateResultLength(row.result) &&
     !!row.criteriaId.trim()
   );
 };
@@ -94,7 +102,7 @@ export const getAutoCompleteValue = (
   return optionExists ? value : "";
 };
 
-export const getRequiredReportTestFieldError = (
+export const getReportTestFieldError = (
   row: ReportTestRow,
   fieldName: ReportTestRowField,
   hasCompleteReportTestRow: boolean,
@@ -103,7 +111,9 @@ export const getRequiredReportTestFieldError = (
   const shouldValidateRow =
     !isEmptyReportTestRow(row) || !hasCompleteReportTestRow;
 
-  return !isReadonly && shouldValidateRow && !row[fieldName].trim()
-    ? REQUIRED_FIELD_ERROR_TEXT
+  if (isReadonly || !shouldValidateRow) return "";
+  if (!row[fieldName].trim()) return REQUIRED_FIELD_ERROR_TEXT;
+  return fieldName === ReportFormFields.RESULT
+    ? validateResultLength(row.result)
     : "";
 };

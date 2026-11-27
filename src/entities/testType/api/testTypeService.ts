@@ -22,7 +22,7 @@ export const getTestTypeByIdService = async (testTypeId: string) => {
 export const createTestTypeService = async (testType: TestType) => {
   const response = await apiClient.post<TestType>(
     `${EnvManager.BACKEND_URL}${ApiRoutes.TEST_TYPES}`,
-    testType,
+    {name: testType.name},
   );
   return axiosResponseToTestypes(response)[0];
 };
@@ -33,7 +33,7 @@ export const editTestTypeService = async (
 ): Promise<TestType> => {
   const editResponse = await apiClient.put<TestType>(
     `${EnvManager.BACKEND_URL}${ApiRoutes.TEST_TYPES}/${testTypeId}`,
-    testType,
+    {name: testType.name},
   );
   return axiosResponseToTestypes(editResponse)[0];
 };

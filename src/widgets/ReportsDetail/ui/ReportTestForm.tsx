@@ -37,7 +37,7 @@ import {ReportTestRow, ReportTestRowField} from "../model/types";
 import {
   addReportTestRow,
   getAutoCompleteValue,
-  getRequiredReportTestFieldError,
+  getReportTestFieldError,
   removeReportTestRow,
   updateReportTestRow,
 } from "../model/useReportTestGroups";
@@ -118,25 +118,25 @@ export const ReportTestForm = ({
         )}
       </Stack>
       {rows.map((row) => {
-        const analyteError = getRequiredReportTestFieldError(
+        const analyteError = getReportTestFieldError(
           row,
           ReportFormFields.ANALYTE_ID,
           hasCompleteReportTestRow,
           isReadOnlyMode,
         );
-        const analysisMethodError = getRequiredReportTestFieldError(
+        const analysisMethodError = getReportTestFieldError(
           row,
           ReportFormFields.ANALYSIS_METHOD_ID,
           hasCompleteReportTestRow,
           isReadOnlyMode,
         );
-        const resultError = getRequiredReportTestFieldError(
+        const resultError = getReportTestFieldError(
           row,
           ReportFormFields.RESULT,
           hasCompleteReportTestRow,
           isReadOnlyMode,
         );
-        const criteriaError = getRequiredReportTestFieldError(
+        const criteriaError = getReportTestFieldError(
           row,
           ReportFormFields.CRITERIA_ID,
           hasCompleteReportTestRow,

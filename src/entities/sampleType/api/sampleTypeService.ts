@@ -26,7 +26,7 @@ export const createSampleTypeService = async (
 ): Promise<SampleType> => {
   const response = await apiClient.post<SampleType>(
     `${EnvManager.BACKEND_URL}${ApiRoutes.SAMPLE_TYPES}`,
-    sampleType,
+    {name: sampleType.name},
   );
   return axiosResponseToSampleType(response)[0];
 };
@@ -37,7 +37,7 @@ export const editSampleTypeService = async (
 ): Promise<SampleType> => {
   const response = await apiClient.put<SampleType>(
     `${EnvManager.BACKEND_URL}${ApiRoutes.SAMPLE_TYPES}/${sampleTypeId}`,
-    sampleType,
+    {name: sampleType.name},
   );
   return axiosResponseToSampleType(response)[0];
 };

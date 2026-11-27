@@ -42,8 +42,7 @@ const mockReports = buildReportsData(2, {
   criteria: mockCriterias[0].id,
 });
 
-const mockReportRequest = {
-  id: mockReports[0].id,
+const mockReportRequestBody = {
   reportNumber: mockReports[0].reportNumber,
   reportDate: mockReports[0].reportDate,
   status: mockReports[0].status,
@@ -58,6 +57,8 @@ const mockReportRequest = {
     result: test.result,
   })),
 };
+
+const mockReportRequest = {id: mockReports[0].id, ...mockReportRequestBody};
 
 jest.mock("../../../config/EnvManager", () => ({
   __esModule: true,
@@ -121,7 +122,10 @@ describe("reportsService", () => {
     const report = await createReportService(mockReportRequest);
 
     expect(report).toEqual(mockReports[0]);
-    expect(apiClient.post).toHaveBeenCalledWith(expectedURL, mockReportRequest);
+    expect(apiClient.post).toHaveBeenCalledWith(
+      expectedURL,
+      mockReportRequestBody,
+    );
   });
 
   it("should edit a report", async () => {
@@ -132,7 +136,10 @@ describe("reportsService", () => {
     const report = await editReportService("1", mockReportRequest);
 
     expect(report).toEqual(mockReports[0]);
-    expect(apiClient.put).toHaveBeenCalledWith(expectedURL, mockReportRequest);
+    expect(apiClient.put).toHaveBeenCalledWith(
+      expectedURL,
+      mockReportRequestBody,
+    );
   });
 
   it("should approve a report", async () => {

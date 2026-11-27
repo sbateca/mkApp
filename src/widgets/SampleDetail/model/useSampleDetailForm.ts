@@ -5,6 +5,8 @@ import dayjs from "dayjs";
 import {
   DATEPICKER_FORMAT,
   FormProps,
+  API_FIELD_LIMITS,
+  exceedsLength,
   isEmpty,
   isNotValidDate,
 } from "../../../utils/constants";
@@ -28,14 +30,14 @@ export const useSampleDetailForm = (selectedSample: Sample | null) => {
 
   const formValidations = useMemo(
     () => ({
-      sampleCode: [isEmpty],
+      sampleCode: [isEmpty, exceedsLength(API_FIELD_LIMITS.sampleCode)],
       sampleType: [isEmpty],
       client: [isEmpty],
       getSampleDate: [isEmpty, isNotValidDate],
       receptionDate: [isEmpty, isNotValidDate],
       analysisDate: [isEmpty, isNotValidDate],
-      sampleLocation: [isEmpty],
-      responsable: [isEmpty],
+      sampleLocation: [isEmpty, exceedsLength(API_FIELD_LIMITS.sampleLocation)],
+      responsable: [isEmpty, exceedsLength(API_FIELD_LIMITS.sampleResponsible)],
     }),
     [],
   );

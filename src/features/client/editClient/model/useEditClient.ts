@@ -10,7 +10,7 @@ import {
 import {SnackBarSeverity} from "../../../../utils/enums";
 import {useSideSection} from "../../../sideSection";
 import {useSnackBarStore} from "../../../snackbar";
-import {formToClient} from "../../lib/clientMappers";
+import {formToClientRequest} from "../../lib/clientMappers";
 
 export const useEditClient = (form: FormProps, clientId: string) => {
   const editClient = useClientStore(selectEditClient);
@@ -20,7 +20,7 @@ export const useEditClient = (form: FormProps, clientId: string) => {
   const {showSnackBarMessage} = useSnackBarStore();
 
   const handleEditClient = async () => {
-    const client = formToClient(form, clientId);
+    const client = formToClientRequest(form);
     const updatedClient = await editClient(client, clientId);
     if (updatedClient !== null) {
       onCloseSideSection();
