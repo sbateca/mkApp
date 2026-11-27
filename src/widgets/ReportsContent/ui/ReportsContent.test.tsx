@@ -1,3 +1,4 @@
+import {setWorkspaceTestRole} from "../../../shared/test/setWorkspaceTestRole";
 import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 
 import {Report} from "../../../entities/report/model/Report";
@@ -135,6 +136,7 @@ jest.mock("../../../features/sideSection/model/store", () => ({
 
 describe("ReportsContent test", () => {
   beforeEach(() => {
+    setWorkspaceTestRole("Admin");
     jest.clearAllMocks();
     mockedReportsState = {
       ...mockedReportsState,

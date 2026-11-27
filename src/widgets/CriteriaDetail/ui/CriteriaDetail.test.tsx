@@ -1,3 +1,4 @@
+import {setWorkspaceTestRole} from "../../../shared/test/setWorkspaceTestRole";
 import {render, screen} from "@testing-library/react";
 
 import {Criteria, CriteriaStore} from "../../../entities/criteria";
@@ -53,6 +54,7 @@ jest.mock("../../../features/readOnlyMode", () => ({
 
 describe("CriteriaDetail", () => {
   beforeEach(() => {
+    setWorkspaceTestRole("Admin");
     jest.clearAllMocks();
     mockIsReadOnlyMode = true;
     mockCriteriaStoreState = {

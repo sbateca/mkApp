@@ -38,7 +38,8 @@ export const SampleDetail = (): React.ReactElement => {
     isNotValidForm,
   } = sampleDetailForm;
 
-  const {clients, isLoading, isLoadingAll, sampleTypes} = catalog;
+  const {clients, canChangeClient, isLoading, isLoadingAll, sampleTypes} =
+    catalog;
   const {sideSectionTitle} = uiElements;
 
   const {onCloseSideSection, handleCreateSample, handleEditSample} = actions;
@@ -67,6 +68,7 @@ export const SampleDetail = (): React.ReactElement => {
       ) : (
         <SampleDetailForm
           clients={clients}
+          canChangeClient={canChangeClient}
           form={form}
           formFieldsErrors={formFieldsErrors}
           getAutoCompleteOptionsFromModel={getAutoCompleteOptionsFromModel}

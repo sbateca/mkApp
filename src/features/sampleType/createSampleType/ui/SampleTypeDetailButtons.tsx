@@ -1,3 +1,5 @@
+import {useWorkspacePermissions} from "../../../../entities/auth/model/workspacePermissions";
+import {BaseRoutes} from "../../../../utils/constants/baseRoutes";
 import {Box} from "@mui/material";
 import {SampleType} from "../../../../entities/sampleType";
 import {Button} from "../../../../shared/ui";
@@ -26,10 +28,13 @@ export const SampleTypeDetailButtons = ({
   handleCreateSampleType,
   handleEditSampleType,
 }: SampleTypeDetailButtonsProps) => {
+  const {can} = useWorkspacePermissions();
+  const canCreate = can(BaseRoutes.SAMPLE_TYPES, "create");
+  const canUpdate = can(BaseRoutes.SAMPLE_TYPES, "update");
   const {isReadOnlyMode} = useReadOnlyMode();
   return (
     <Box>
-      {isReadOnlyMode && sampleType ? (
+      {isReadOnlyMode && sampleType && canUpdate ? (
         <Button
           icon={IconNames.EDIT}
           label={EDIT_SAMPLE_TYPE_BUTTON_LABEL}
@@ -40,7 +45,7 @@ export const SampleTypeDetailButtons = ({
           onClick={handleReadOnlyModeChange}
         />
       ) : null}
-      {!isReadOnlyMode && sampleType ? (
+      {!isReadOnlyMode && sampleType && canUpdate ? (
         <>
           <Button
             icon={IconNames.SAVE}
@@ -61,7 +66,7 @@ export const SampleTypeDetailButtons = ({
           />
         </>
       ) : null}
-      {!isReadOnlyMode && !sampleType ? (
+      {!isReadOnlyMode && !sampleType && canCreate ? (
         <Button
           icon={IconNames.SAVE}
           label={SharedButtonCommonLabels.SAVE}

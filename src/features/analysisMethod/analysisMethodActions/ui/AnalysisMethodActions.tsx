@@ -1,3 +1,5 @@
+import {useWorkspacePermissions} from "../../../../entities/auth/model/workspacePermissions";
+import {BaseRoutes} from "../../../../utils/constants/baseRoutes";
 import {Box} from "@mui/material";
 import {Spinner} from "../../../../shared/ui";
 import {
@@ -21,6 +23,8 @@ type AnalysisMethodTableActionButtonsProps = {
 export const AnalysisMethodTableActionButtons = ({
   analysisMethodId,
 }: AnalysisMethodTableActionButtonsProps): React.ReactElement => {
+  const {can} = useWorkspacePermissions();
+  const canDelete = can(BaseRoutes.ANALYSIS_METHODS, "delete");
   const isLoading = useAnalysisMethodsStore(selectIsLoadingAnalysisMethods);
 
   const {viewAnalysisMethod} = useViewAnalysisMethod();
@@ -36,9 +40,11 @@ export const AnalysisMethodTableActionButtons = ({
           <ViewAnalysisMethodButton
             onClick={() => viewAnalysisMethod(analysisMethodId)}
           />
-          <DeleteAnalysisMethodButton
-            onClick={() => handleDelete(analysisMethodId)}
-          />
+          {canDelete && (
+            <DeleteAnalysisMethodButton
+              onClick={() => handleDelete(analysisMethodId)}
+            />
+          )}
         </>
       )}
     </Box>

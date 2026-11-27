@@ -1,3 +1,5 @@
+import {useWorkspacePermissions} from "../../../entities/auth/model/workspacePermissions";
+import {BaseRoutes} from "../../../utils/constants/baseRoutes";
 import {Sample} from "../../../entities/sample";
 import {useCreateSample, useEditSample} from "../../../features/sample";
 import {useLoadSampleDetailData} from "../../../features/sample/loadSampleDetailData/model/useLoadSampleDetailData";
@@ -11,6 +13,8 @@ export type SampleDetailControllerProps = {
 export const useSampleDetailController = ({
   selectedSample,
 }: SampleDetailControllerProps) => {
+  const {can} = useWorkspacePermissions();
+  const canReadClients = can(BaseRoutes.CLIENTS);
   const sampleFormState = useSampleDetailForm(selectedSample);
 
   const sampleDetailData = useLoadSampleDetailData();
@@ -22,7 +26,15 @@ export const useSampleDetailController = ({
 
   return {
     sampleDetailForm: sampleFormState,
-    catalog: sampleDetailData,
+    catalog: {
+      ...sampleDetailData,
+      clients: canReadClients
+        ? sampleDetailData.clients
+        : selectedSample
+          ? [selectedSample.client]
+          : [],
+      canChangeClient: canReadClients,
+    },
     uiElements: {sideSectionTitle},
     actions: {
       onCloseSideSection,

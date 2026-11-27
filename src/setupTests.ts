@@ -1,3 +1,8 @@
+jest.mock("./config/EnvManager", () => ({
+  __esModule: true,
+  default: {BACKEND_URL: "http://mockurl.com/api"},
+}));
+
 jest.mock("sweetalert2", () => ({
   __esModule: true,
   default: {

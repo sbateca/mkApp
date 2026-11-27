@@ -1,3 +1,5 @@
+import {useWorkspacePermissions} from "../../../../entities/auth/model/workspacePermissions";
+import {BaseRoutes} from "../../../../utils/constants/baseRoutes";
 import {Box} from "@mui/material";
 import {Spinner} from "../../../../shared/ui";
 import {useViewClient, ViewClientButton} from "../../viewClient";
@@ -15,6 +17,8 @@ type ClientTableActionButtonsProps = {
 export const ClientTableActionButtons = ({
   clientId,
 }: ClientTableActionButtonsProps): React.ReactElement => {
+  const {can} = useWorkspacePermissions();
+  const canDelete = can(BaseRoutes.CLIENTS, "delete");
   const isLoading = useClientStore(selectIsLoadingClient);
 
   const {viewClient} = useViewClient();
@@ -28,7 +32,9 @@ export const ClientTableActionButtons = ({
       ) : (
         <>
           <ViewClientButton onClick={() => viewClient(clientId)} />
-          <DeleteClientButton onClick={() => handleDelete(clientId)} />
+          {canDelete && (
+            <DeleteClientButton onClick={() => handleDelete(clientId)} />
+          )}
         </>
       )}
     </Box>

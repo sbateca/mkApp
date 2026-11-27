@@ -1,3 +1,4 @@
+import {useWorkspacePermissions} from "../entities/auth/model/workspacePermissions";
 import React, {useEffect} from "react";
 import {Box, useMediaQuery} from "@mui/material";
 import {Outlet} from "react-router-dom";
@@ -15,6 +16,7 @@ import {StyledMainContent} from "./StyledMainContent";
 import {ContentStyle, mainTemplateStyle} from "./MainTemplateStyle";
 
 export const AdminLayout = (): React.ReactElement => {
+  const {can} = useWorkspacePermissions();
   const isDesktop = useMediaQuery("(min-width:900px)");
   const openMenu = useMenuStore(selectOpenMenu);
   const closeMenu = useMenuStore(selectCloseMenu);
@@ -30,7 +32,7 @@ export const AdminLayout = (): React.ReactElement => {
         <Header companyName={COMPANY_NAME} />
       </Box>
 
-      <Menu menuItems={MENU_ITEMS} />
+      <Menu menuItems={MENU_ITEMS.filter(({actionPath}) => can(actionPath))} />
 
       <StyledMainContent>
         <Box sx={ContentStyle} data-testid="contentContainer">

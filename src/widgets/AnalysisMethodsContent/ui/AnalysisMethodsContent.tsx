@@ -1,3 +1,5 @@
+import {useWorkspacePermissions} from "../../../entities/auth/model/workspacePermissions";
+import {BaseRoutes} from "../../../utils/constants/baseRoutes";
 import {Box, Theme, useMediaQuery, useTheme} from "@mui/material";
 import {Button, Spinner, Table, Typography} from "../../../shared/ui";
 import {SideSection} from "../../../shared/ui/SideSection";
@@ -25,6 +27,8 @@ import {AnalysisMethodDetail} from "../../AnalysisMethodDetail";
 import {useSideSection} from "../../../features/sideSection";
 
 export const AnalysisMethodsContent = () => {
+  const {can} = useWorkspacePermissions();
+  const canCreate = can(BaseRoutes.ANALYSIS_METHODS, "create");
   const {
     rows,
     visibleRows,
@@ -54,6 +58,7 @@ export const AnalysisMethodsContent = () => {
     useSideSection();
 
   const openSideSection = () => {
+    if (!canCreate) return;
     setSelectedAnalysisMethod(null);
     onOpenSideSection(CREATE_ANALYSIS_METHOD_TITLE_TEXT, false);
   };
@@ -65,14 +70,16 @@ export const AnalysisMethodsContent = () => {
       <Box sx={CommonContentStyles.titleContentContainer}>
         <Typography {...ANALYSIS_METHODS_TITLE_CONFIG} />
         <Box sx={CommonContentStyles.titleContentActions}>
-          <Button
-            label={ANALYSIS_METHOD_CREATE_BUTTON_LABEL}
-            variant={SharedButtonVariants.OUTLINED}
-            size={SharedButtonSizes.SMALL}
-            color={SharedButtonColors.PRIMARY}
-            icon={SharedButtonIcons.CREATE}
-            onClick={openSideSection}
-          />
+          {canCreate && (
+            <Button
+              label={ANALYSIS_METHOD_CREATE_BUTTON_LABEL}
+              variant={SharedButtonVariants.OUTLINED}
+              size={SharedButtonSizes.SMALL}
+              color={SharedButtonColors.PRIMARY}
+              icon={SharedButtonIcons.CREATE}
+              onClick={openSideSection}
+            />
+          )}
         </Box>
       </Box>
       <Table

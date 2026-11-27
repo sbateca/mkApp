@@ -41,6 +41,7 @@ import {useReadOnlyMode} from "../../../features/readOnlyMode";
 
 export type DetailFormProps = {
   clients: Client[] | null;
+  canChangeClient?: boolean;
   form: FormProps;
   formFieldsErrors: FormError;
 
@@ -65,6 +66,7 @@ export type DetailFormProps = {
 
 export const SampleDetailForm = ({
   clients,
+  canChangeClient = true,
   form,
   formFieldsErrors,
   getAutoCompleteOptionsFromModel,
@@ -136,7 +138,7 @@ export const SampleDetailForm = ({
               variant={SelectVariants.OUTLINED}
               onChange={handleAutoCompleteChange}
               name={SamplesFormFields.CLIENT}
-              readOnly={isReadOnlyMode}
+              readOnly={isReadOnlyMode || !canChangeClient}
               error={!!formFieldsErrors[SamplesFormFields.CLIENT]}
               helperText={t(getTextFieldHelperText(SamplesFormFields.CLIENT))}
               required

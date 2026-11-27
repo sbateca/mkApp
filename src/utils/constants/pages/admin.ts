@@ -43,6 +43,6 @@ export const MENU_ITEMS = [
     actionPath: BaseRoutes.REPORTS,
     icon: SharedMenuItemIcons.REPORTS,
   },
-];
+] as const;
 export const USER_MENU_LOGOUT = "Logout";
 export const MENU_WIDTH = 252;

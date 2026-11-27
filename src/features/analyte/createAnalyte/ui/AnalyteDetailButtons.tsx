@@ -1,3 +1,5 @@
+import {useWorkspacePermissions} from "../../../../entities/auth/model/workspacePermissions";
+import {BaseRoutes} from "../../../../utils/constants/baseRoutes";
 import {Box} from "@mui/material";
 import {Analyte} from "../../../../entities/analyte";
 import {Button} from "../../../../shared/ui";
@@ -26,10 +28,13 @@ export const AnalyteDetailButtons = ({
   handleCreateAnalyte,
   handleEditAnalyte,
 }: AnalyteDetailButtonsProps) => {
+  const {can} = useWorkspacePermissions();
+  const canCreate = can(BaseRoutes.ANALYTES, "create");
+  const canUpdate = can(BaseRoutes.ANALYTES, "update");
   const {isReadOnlyMode} = useReadOnlyMode();
   return (
     <Box>
-      {isReadOnlyMode && analyte ? (
+      {isReadOnlyMode && analyte && canUpdate ? (
         <Button
           icon={IconNames.EDIT}
           label={EDIT_ANALYTE_BUTTON_LABEL}
@@ -40,7 +45,7 @@ export const AnalyteDetailButtons = ({
           onClick={handleReadOnlyModeChange}
         />
       ) : null}
-      {!isReadOnlyMode && analyte ? (
+      {!isReadOnlyMode && analyte && canUpdate ? (
         <>
           <Button
             icon={IconNames.SAVE}
@@ -61,7 +66,7 @@ export const AnalyteDetailButtons = ({
           />
         </>
       ) : null}
-      {!isReadOnlyMode && !analyte ? (
+      {!isReadOnlyMode && !analyte && canCreate ? (
         <Button
           icon={IconNames.SAVE}
           label={SharedButtonCommonLabels.SAVE}

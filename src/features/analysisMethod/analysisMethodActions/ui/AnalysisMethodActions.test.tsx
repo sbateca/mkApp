@@ -1,3 +1,4 @@
+import {setWorkspaceTestRole} from "../../../../shared/test/setWorkspaceTestRole";
 import {render, screen} from "@testing-library/react";
 import {
   AnalysisMethod,
@@ -44,6 +45,7 @@ jest.mock("../../../snackbar", () => ({
 
 describe("AnalysisMethodTableActionButtons", () => {
   beforeEach(() => {
+    setWorkspaceTestRole("Admin");
     jest.clearAllMocks();
     mockAnalysisMethodStoreState = {
       analysisMethods: mockAnalysisMethods,

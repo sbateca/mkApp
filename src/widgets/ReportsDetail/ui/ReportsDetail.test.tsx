@@ -1,3 +1,4 @@
+import {setWorkspaceTestRole} from "../../../shared/test/setWorkspaceTestRole";
 import {getClientsService} from "../../../entities/client/api/clientService";
 import {
   createSampleService,
@@ -29,6 +30,7 @@ jest.mock("../../../entities/client/api/clientService", () => ({
 
 describe("ReportDetail", () => {
   beforeEach(() => {
+    setWorkspaceTestRole("Admin");
     jest.clearAllMocks();
     jest
       .mocked(getSamplesService)
@@ -133,6 +135,17 @@ describe("ReportDetail", () => {
     expect(
       screen.queryByRole("option", {name: analytes[0].name}),
     ).not.toBeInTheDocument();
+  });
+
+  it("omits the add-sample button for an analyst creating a report", async () => {
+    setWorkspaceTestRole("Analyst");
+    renderReportDetail({hasReport: false, readOnly: false, canCreate: true});
+
+    expect(await screen.findByRole("combobox", {name: "Sample"})).toBeVisible();
+    expect(
+      screen.queryByRole("button", {name: "Add sample"}),
+    ).not.toBeInTheDocument();
+    expect(getClientsService).not.toHaveBeenCalled();
   });
 
   it("creates a sample inline and selects the saved sample without clearing the report", async () => {

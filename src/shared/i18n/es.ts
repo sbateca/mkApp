@@ -1,5 +1,7 @@
 export const es: Record<string, string> = {
   Language: "Idioma",
+  "Your account has no workspace access.":
+    "Tu cuenta no tiene acceso a los módulos.",
   "Manage your laboratory work in one place.":
     "Gestiona el trabajo del laboratorio en un solo lugar.",
   "Access samples, clients, and lab reports from one application.":

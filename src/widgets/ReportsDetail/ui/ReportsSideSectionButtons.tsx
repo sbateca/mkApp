@@ -1,3 +1,5 @@
+import {useWorkspacePermissions} from "../../../entities/auth/model/workspacePermissions";
+import {BaseRoutes} from "../../../utils/constants/baseRoutes";
 import {Box} from "@mui/material";
 
 import {Button} from "../../../shared/ui";
@@ -15,14 +17,17 @@ import {useReadOnlyMode} from "../../../features/readOnlyMode";
 export const ReportSideSectionButtons = (
   props: ReportSideSectionActionsProps,
 ): React.ReactElement => {
+  const {can} = useWorkspacePermissions();
   const {setIsReadOnlyMode} = useReadOnlyMode();
   const {mode, report} = props;
 
-  const canUpdate = report?.actions?.update?.allowed === true;
+  const canRequestUpdate = can(BaseRoutes.REPORTS, "update");
+  const canUpdate =
+    canRequestUpdate && report?.actions?.update?.allowed === true;
 
   return (
     <Box>
-      {mode === "read" ? (
+      {mode === "read" && canRequestUpdate ? (
         <Button
           icon={IconNames.EDIT}
           label={EDIT_REPORTS_BUTTON_LABEL}
@@ -65,7 +70,7 @@ export const ReportSideSectionButtons = (
           onClick={props.handleCreateReport}
         />
       ) : null}
-      {mode === "read" ? (
+      {mode === "read" && can(BaseRoutes.REPORTS, "approve") ? (
         <Button
           icon={IconNames.APPROVED}
           label={SharedButtonCommonLabels.APPROVE}
@@ -76,7 +81,7 @@ export const ReportSideSectionButtons = (
           onClick={() => props.handleApprove(report.id)}
         />
       ) : null}
-      {mode === "read" ? (
+      {mode === "read" && can(BaseRoutes.REPORTS, "download") ? (
         <Button
           icon={IconNames.DOWNLOAD}
           label={SharedButtonCommonLabels.DOWNLOAD}

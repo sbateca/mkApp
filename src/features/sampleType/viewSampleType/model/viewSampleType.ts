@@ -1,3 +1,4 @@
+import {useReadOnlyMode} from "../../../readOnlyMode";
 import {
   selectGetSampleTypeById,
   selectSetSelectedSampleType,
@@ -11,6 +12,7 @@ import {
 } from "../../../sideSection";
 
 export const useViewSampleType = () => {
+  const {setIsReadOnlyMode} = useReadOnlyMode();
   const setSelectedSampleType = useSampleTypeStore(selectSetSelectedSampleType);
   const getSampleTypeById = useSampleTypeStore(selectGetSampleTypeById);
 
@@ -20,6 +22,7 @@ export const useViewSampleType = () => {
   const viewSampleType = async (sampleTypeId: string) => {
     const sampleType = await getSampleTypeById(sampleTypeId);
     if (sampleType) {
+      setIsReadOnlyMode(true);
       setSelectedSampleType(sampleType);
       setSideSectionTitle(SAMPLE_TYPE_DETAILS_TITLE_TEXT);
       setIsSideSectionOpen(true);

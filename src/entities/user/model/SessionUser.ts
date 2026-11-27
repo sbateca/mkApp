@@ -3,4 +3,5 @@ export interface SessionUser {
   username: string;
   name: string;
   role: string;
+  roles?: string[];
 }

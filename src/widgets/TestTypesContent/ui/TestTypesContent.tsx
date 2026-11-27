@@ -1,3 +1,5 @@
+import {useWorkspacePermissions} from "../../../entities/auth/model/workspacePermissions";
+import {BaseRoutes} from "../../../utils/constants/baseRoutes";
 import {Box, Theme, useMediaQuery, useTheme} from "@mui/material";
 import {Button, Spinner, Table, Typography} from "../../../shared/ui";
 import {SideSection} from "../../../shared/ui/SideSection";
@@ -25,6 +27,8 @@ import {TestTypeDetail} from "../../TestTypeDetail";
 import {useSideSection} from "../../../features/sideSection";
 
 export const TestTypesContent = () => {
+  const {can} = useWorkspacePermissions();
+  const canCreate = can(BaseRoutes.TEST_TYPES, "create");
   const {
     rows,
     visibleRows,
@@ -50,6 +54,7 @@ export const TestTypesContent = () => {
     useSideSection();
 
   const openSideSection = () => {
+    if (!canCreate) return;
     setSelectedTestType(null);
     onOpenSideSection(CREATE_TEST_TYPE_TITLE_TEXT, false);
   };
@@ -61,14 +66,16 @@ export const TestTypesContent = () => {
       <Box sx={CommonContentStyles.titleContentContainer}>
         <Typography {...TEST_TYPES_TITLE_CONFIG} />
         <Box sx={CommonContentStyles.titleContentActions}>
-          <Button
-            label={TEST_TYPE_CREATE_BUTTON_LABEL}
-            variant={SharedButtonVariants.OUTLINED}
-            size={SharedButtonSizes.SMALL}
-            color={SharedButtonColors.PRIMARY}
-            icon={SharedButtonIcons.CREATE}
-            onClick={openSideSection}
-          />
+          {canCreate && (
+            <Button
+              label={TEST_TYPE_CREATE_BUTTON_LABEL}
+              variant={SharedButtonVariants.OUTLINED}
+              size={SharedButtonSizes.SMALL}
+              color={SharedButtonColors.PRIMARY}
+              icon={SharedButtonIcons.CREATE}
+              onClick={openSideSection}
+            />
+          )}
         </Box>
       </Box>
       <Table

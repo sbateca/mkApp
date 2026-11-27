@@ -1,3 +1,5 @@
+import {useWorkspacePermissions} from "../../../../entities/auth/model/workspacePermissions";
+import {BaseRoutes} from "../../../../utils/constants/baseRoutes";
 import {Box} from "@mui/material";
 
 import {Spinner} from "../../../../shared/ui";
@@ -13,6 +15,8 @@ import {useSampleActionsErrorNotifier} from "../model/useSampleActionsErrorNotif
 export const SampleTableActionButtons = ({
   sampleId,
 }: SampleTableActionButtonsProps): React.ReactElement => {
+  const {can} = useWorkspacePermissions();
+  const canDelete = can(BaseRoutes.SAMPLES, "delete");
   const isLoading = useSampleStore(selectIsLoading);
 
   const {handleViewSample} = useViewSample();
@@ -26,7 +30,9 @@ export const SampleTableActionButtons = ({
       ) : (
         <>
           <ViewSampleButton onClick={() => handleViewSample(sampleId)} />
-          <DeleteSampleButton onClick={() => handleDelete(sampleId)} />
+          {canDelete && (
+            <DeleteSampleButton onClick={() => handleDelete(sampleId)} />
+          )}
         </>
       )}
     </Box>

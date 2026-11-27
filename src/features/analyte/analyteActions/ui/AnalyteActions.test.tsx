@@ -1,3 +1,4 @@
+import {setWorkspaceTestRole} from "../../../../shared/test/setWorkspaceTestRole";
 import {render, screen} from "@testing-library/react";
 import {Analyte, AnalyteStore} from "../../../../entities/analyte";
 import {SnackBarSeverity} from "../../../../utils/enums";
@@ -35,6 +36,7 @@ jest.mock("../../../snackbar", () => ({
 
 describe("AnalyteTableActionButtons", () => {
   beforeEach(() => {
+    setWorkspaceTestRole("Admin");
     jest.clearAllMocks();
     mockAnalyteStoreState = {
       analytes: mockAnalytes,
