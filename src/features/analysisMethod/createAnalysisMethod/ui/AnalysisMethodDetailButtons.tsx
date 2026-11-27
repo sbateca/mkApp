@@ -1,3 +1,5 @@
+import {useWorkspacePermissions} from "../../../../entities/auth/model/workspacePermissions";
+import {BaseRoutes} from "../../../../utils/constants/baseRoutes";
 import {Box} from "@mui/material";
 import {AnalysisMethod} from "../../../../entities/analysisMethod";
 import {Button} from "../../../../shared/ui";
@@ -26,10 +28,13 @@ export const AnalysisMethodDetailButtons = ({
   handleCreateAnalysisMethod,
   handleEditAnalysisMethod,
 }: AnalysisMethodDetailButtonsProps) => {
+  const {can} = useWorkspacePermissions();
+  const canCreate = can(BaseRoutes.ANALYSIS_METHODS, "create");
+  const canUpdate = can(BaseRoutes.ANALYSIS_METHODS, "update");
   const {isReadOnlyMode} = useReadOnlyMode();
   return (
     <Box>
-      {isReadOnlyMode && analysisMethod ? (
+      {isReadOnlyMode && analysisMethod && canUpdate ? (
         <Button
           icon={IconNames.EDIT}
           label={EDIT_ANALYSIS_METHOD_BUTTON_LABEL}
@@ -40,7 +45,7 @@ export const AnalysisMethodDetailButtons = ({
           onClick={handleReadOnlyModeChange}
         />
       ) : null}
-      {!isReadOnlyMode && analysisMethod ? (
+      {!isReadOnlyMode && analysisMethod && canUpdate ? (
         <>
           <Button
             icon={IconNames.SAVE}
@@ -61,7 +66,7 @@ export const AnalysisMethodDetailButtons = ({
           />
         </>
       ) : null}
-      {!isReadOnlyMode && !analysisMethod ? (
+      {!isReadOnlyMode && !analysisMethod && canCreate ? (
         <Button
           icon={IconNames.SAVE}
           label={SharedButtonCommonLabels.SAVE}

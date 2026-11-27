@@ -1,3 +1,4 @@
+import {setWorkspaceTestRole} from "../../../shared/test/setWorkspaceTestRole";
 import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 
 import {Client, ClientsStore} from "../../../entities/client";
@@ -45,6 +46,7 @@ jest.mock("../../../features/readOnlyMode", () => ({
 
 describe("ClientDetail", () => {
   beforeEach(() => {
+    setWorkspaceTestRole("Admin");
     jest.clearAllMocks();
     mockIsReadOnlyMode = true;
     mockClientStoreState = {

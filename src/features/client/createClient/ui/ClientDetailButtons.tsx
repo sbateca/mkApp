@@ -1,3 +1,5 @@
+import {useWorkspacePermissions} from "../../../../entities/auth/model/workspacePermissions";
+import {BaseRoutes} from "../../../../utils/constants/baseRoutes";
 import {Box} from "@mui/material";
 import {Client} from "../../../../entities/client";
 import {Button} from "../../../../shared/ui";
@@ -26,10 +28,13 @@ export const ClientDetailButtons = ({
   handleCreateClient,
   handleEditClient,
 }: ClientDetailButtonsProps) => {
+  const {can} = useWorkspacePermissions();
+  const canCreate = can(BaseRoutes.CLIENTS, "create");
+  const canUpdate = can(BaseRoutes.CLIENTS, "update");
   const {isReadOnlyMode} = useReadOnlyMode();
   return (
     <Box>
-      {isReadOnlyMode && client ? (
+      {isReadOnlyMode && client && canUpdate ? (
         <Button
           icon={IconNames.EDIT}
           label={EDIT_CLIENT_BUTTON_LABEL}
@@ -39,7 +44,7 @@ export const ClientDetailButtons = ({
           onClick={handleReadOnlyModeChange}
         />
       ) : null}
-      {!isReadOnlyMode && client ? (
+      {!isReadOnlyMode && client && canUpdate ? (
         <>
           <Button
             icon={IconNames.SAVE}
@@ -60,7 +65,7 @@ export const ClientDetailButtons = ({
           />
         </>
       ) : null}
-      {!isReadOnlyMode && !client ? (
+      {!isReadOnlyMode && !client && canCreate ? (
         <Button
           icon={IconNames.SAVE}
           label={SharedButtonCommonLabels.SAVE}

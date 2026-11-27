@@ -1,3 +1,5 @@
+import {useWorkspacePermissions} from "../../../entities/auth/model/workspacePermissions";
+import {BaseRoutes} from "../../../utils/constants/baseRoutes";
 import {Box} from "@mui/material";
 
 import {Button} from "../../../shared/ui";
@@ -18,11 +20,14 @@ function SampleSideSectionButtons({
   handleCreateSample,
   handleEdit,
 }: SampleSideSectionActionsProps): React.ReactElement {
+  const {can, canCreateSample} = useWorkspacePermissions();
+  const canCreate = canCreateSample;
+  const canUpdate = can(BaseRoutes.SAMPLES, "update");
   const {isReadOnlyMode, handleSwitchReadOnlyMode} = useReadOnlyMode();
 
   return (
     <Box>
-      {isReadOnlyMode && sample ? (
+      {isReadOnlyMode && sample && canUpdate ? (
         <Button
           icon={IconNames.EDIT}
           label={EDIT_SAMPLE_BUTTON_LABEL}
@@ -33,7 +38,7 @@ function SampleSideSectionButtons({
           onClick={handleSwitchReadOnlyMode}
         />
       ) : null}
-      {!isReadOnlyMode && sample ? (
+      {!isReadOnlyMode && sample && canUpdate ? (
         <>
           <Button
             icon={IconNames.SAVE}
@@ -54,7 +59,7 @@ function SampleSideSectionButtons({
           />
         </>
       ) : null}
-      {!isReadOnlyMode && !sample ? (
+      {!isReadOnlyMode && !sample && canCreate ? (
         <Button
           icon={IconNames.SAVE}
           label={SharedButtonCommonLabels.SAVE}

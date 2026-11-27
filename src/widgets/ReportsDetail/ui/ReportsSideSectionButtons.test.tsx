@@ -1,3 +1,4 @@
+import {setWorkspaceTestRole} from "../../../shared/test/setWorkspaceTestRole";
 import {fireEvent, render, screen} from "@testing-library/react";
 
 import {ReportSideSectionButtons} from "./ReportsSideSectionButtons";
@@ -21,6 +22,7 @@ describe("ReportSideSectionButtons", () => {
   };
 
   beforeEach(() => {
+    setWorkspaceTestRole("Admin");
     jest.clearAllMocks();
   });
 

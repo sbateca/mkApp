@@ -1,3 +1,4 @@
+import {setWorkspaceTestRole} from "../../../../shared/test/setWorkspaceTestRole";
 import {render, screen} from "@testing-library/react";
 import {Client, ClientsStore} from "../../../../entities/client";
 import {SnackBarSeverity} from "../../../../utils/enums";
@@ -51,6 +52,7 @@ jest.mock("../../../snackbar", () => ({
 
 describe("ClientTableActionButtons", () => {
   beforeEach(() => {
+    setWorkspaceTestRole("Admin");
     jest.clearAllMocks();
     mockClientStoreState = {
       clients: mockClients,

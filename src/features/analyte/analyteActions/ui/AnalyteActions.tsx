@@ -1,3 +1,5 @@
+import {useWorkspacePermissions} from "../../../../entities/auth/model/workspacePermissions";
+import {BaseRoutes} from "../../../../utils/constants/baseRoutes";
 import {Box} from "@mui/material";
 import {Spinner} from "../../../../shared/ui";
 import {
@@ -15,6 +17,8 @@ type AnalyteTableActionButtonsProps = {
 export const AnalyteTableActionButtons = ({
   analyteId,
 }: AnalyteTableActionButtonsProps): React.ReactElement => {
+  const {can} = useWorkspacePermissions();
+  const canDelete = can(BaseRoutes.ANALYTES, "delete");
   const isLoading = useAnalyteStore(selectIsLoadingAnalytes);
 
   const {viewAnalyte} = useViewAnalyte();
@@ -28,7 +32,9 @@ export const AnalyteTableActionButtons = ({
       ) : (
         <>
           <ViewAnalyteButton onClick={() => viewAnalyte(analyteId)} />
-          <DeleteAnalyteButton onClick={() => handleDelete(analyteId)} />
+          {canDelete && (
+            <DeleteAnalyteButton onClick={() => handleDelete(analyteId)} />
+          )}
         </>
       )}
     </Box>

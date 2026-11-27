@@ -1,3 +1,4 @@
+import {setWorkspaceTestRole} from "../../../shared/test/setWorkspaceTestRole";
 import {render, screen} from "@testing-library/react";
 
 import {SnackBarSeverity} from "../../../utils/enums";
@@ -50,6 +51,7 @@ jest.mock("../../../features/readOnlyMode", () => ({
 
 describe("TestTypeDetail", () => {
   beforeEach(() => {
+    setWorkspaceTestRole("Admin");
     jest.clearAllMocks();
     mockIsReadOnlyMode = true;
     mockTestTypeStoreState = {

@@ -1,3 +1,5 @@
+import {useWorkspacePermissions} from "../../../entities/auth/model/workspacePermissions";
+import {BaseRoutes} from "../../../utils/constants/baseRoutes";
 import {useEffect, useState} from "react";
 import {
   samplesToTableRows,
@@ -21,6 +23,8 @@ import {TableRowProps} from "../../../shared/ui/Table/TableRow";
 import {useTableControls} from "../../../shared/ui/Table/Table/useTableControls";
 
 export const useLoadSamplesContentData = () => {
+  const {can} = useWorkspacePermissions();
+  const canReadClients = can(BaseRoutes.CLIENTS);
   const [rows, setRows] = useState<TableRowProps[]>([]);
   const {
     page,
@@ -49,8 +53,8 @@ export const useLoadSamplesContentData = () => {
   const setSampleTypes = useSampleTypeStore(selectSetSampleTypes);
 
   useEffect(() => {
-    getClients();
-  }, [getClients]);
+    if (canReadClients) void getClients();
+  }, [canReadClients, getClients]);
 
   useEffect(() => {
     getSamples();

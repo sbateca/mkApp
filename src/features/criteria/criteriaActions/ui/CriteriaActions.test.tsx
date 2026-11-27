@@ -1,3 +1,4 @@
+import {setWorkspaceTestRole} from "../../../../shared/test/setWorkspaceTestRole";
 import {render, screen} from "@testing-library/react";
 import {Criteria, CriteriaStore} from "../../../../entities/criteria";
 import {SnackBarSeverity} from "../../../../utils/enums";
@@ -36,6 +37,7 @@ jest.mock("../../../snackbar", () => ({
 
 describe("CriteriaTableActionButtons", () => {
   beforeEach(() => {
+    setWorkspaceTestRole("Admin");
     jest.clearAllMocks();
     mockCriteriaStoreState = {
       criterias: mockCriterias,

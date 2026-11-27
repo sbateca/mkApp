@@ -1,3 +1,4 @@
+import {useWorkspacePermissions} from "../../../entities/auth/model/workspacePermissions";
 import {useInterfaceTranslation} from "../../../shared/i18n/useInterfaceTranslation";
 import {LocalizedDateProvider} from "../../../shared/i18n/LocalizedDateProvider";
 import React, {useId, useState} from "react";
@@ -56,6 +57,7 @@ export const ReportDetailForm = ({
   actions,
 }: DetailFormProps): React.ReactElement => {
   const {t} = useInterfaceTranslation();
+  const {canCreateSample} = useWorkspacePermissions();
   const inlineSampleFormId = useId();
   const [showSampleForm, setShowSampleForm] = useState(false);
   const {
@@ -165,7 +167,7 @@ export const ReportDetailForm = ({
                   getTextFieldHelperText(ReportFormFields.SAMPLE_ID),
                 )}
               />
-              {!selectedReport && (
+              {!selectedReport && canCreateSample && (
                 <Tooltip title={t("Add sample")}>
                   <IconButton
                     color="primary"
@@ -183,7 +185,7 @@ export const ReportDetailForm = ({
             </Stack>
           </Stack>
         </Stack>
-        {showSampleForm ? (
+        {showSampleForm && canCreateSample ? (
           <InlineSampleForm
             id={inlineSampleFormId}
             sampleTypes={sampleTypes}
@@ -283,7 +285,7 @@ export const ReportDetailForm = ({
           <ReportSideSectionButtons
             mode="edit"
             isNotValidForm={
-              showSampleForm ||
+              (showSampleForm && canCreateSample) ||
               detailForm.isNotValidForm ||
               !areReportTestsValid
             }

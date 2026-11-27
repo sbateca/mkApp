@@ -1,3 +1,5 @@
+import {useWorkspacePermissions} from "../../../../entities/auth/model/workspacePermissions";
+import {BaseRoutes} from "../../../../utils/constants/baseRoutes";
 import {Box} from "@mui/material";
 import {Spinner} from "../../../../shared/ui";
 import {
@@ -15,6 +17,8 @@ type CriteriaTableActionButtonsProps = {
 export const CriteriaTableActionButtons = ({
   criteriaId,
 }: CriteriaTableActionButtonsProps): React.ReactElement => {
+  const {can} = useWorkspacePermissions();
+  const canDelete = can(BaseRoutes.CRITERIAS, "delete");
   const isLoading = useCriteriaStore(selectIsLoadingCriterias);
 
   const {viewCriteria} = useViewCriteria();
@@ -28,7 +32,9 @@ export const CriteriaTableActionButtons = ({
       ) : (
         <>
           <ViewCriteriaButton onClick={() => viewCriteria(criteriaId)} />
-          <DeleteCriteriaButton onClick={() => handleDelete(criteriaId)} />
+          {canDelete && (
+            <DeleteCriteriaButton onClick={() => handleDelete(criteriaId)} />
+          )}
         </>
       )}
     </Box>

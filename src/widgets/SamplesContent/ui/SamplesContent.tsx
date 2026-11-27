@@ -1,3 +1,4 @@
+import {useWorkspacePermissions} from "../../../entities/auth/model/workspacePermissions";
 import {Box} from "@mui/material";
 
 import {Button, Spinner, Table, Typography} from "../../../shared/ui";
@@ -26,6 +27,7 @@ import {SampleTableActionButtons} from "../../../features/sample/TableActionButt
 import {useSideSection} from "../../../features/sideSection";
 
 export const SamplesContent = (): React.ReactElement => {
+  const {canCreateSample: canCreate} = useWorkspacePermissions();
   const {
     rows,
     isLoading,
@@ -46,6 +48,7 @@ export const SamplesContent = (): React.ReactElement => {
   useSamplesContentErrorNotifier();
 
   const openSideSection = () => {
+    if (!canCreate) return;
     setSelectedSample(null);
     onOpenSideSection(CREATE_SAMPLE_TITLE_TEXT, false);
   };
@@ -57,14 +60,16 @@ export const SamplesContent = (): React.ReactElement => {
       <Box sx={SampleContentStyles.titleContentContainer}>
         <Typography {...SAMPLES_TITLE_CONFIG} />
         <Box sx={SampleContentStyles.titleContentActions}>
-          <Button
-            label={SAMPLES_CREATE_BUTTON_LABEL}
-            variant={SharedButtonVariants.OUTLINED}
-            size={SharedButtonSizes.SMALL}
-            color={SharedButtonColors.PRIMARY}
-            icon={SharedButtonIcons.CREATE}
-            onClick={openSideSection}
-          />
+          {canCreate && (
+            <Button
+              label={SAMPLES_CREATE_BUTTON_LABEL}
+              variant={SharedButtonVariants.OUTLINED}
+              size={SharedButtonSizes.SMALL}
+              color={SharedButtonColors.PRIMARY}
+              icon={SharedButtonIcons.CREATE}
+              onClick={openSideSection}
+            />
+          )}
         </Box>
       </Box>
       <Table

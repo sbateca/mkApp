@@ -1,3 +1,4 @@
+import {setWorkspaceTestRole} from "../../../../shared/test/setWorkspaceTestRole";
 import {render, screen} from "@testing-library/react";
 import {SampleTypeTableActionButtons} from "./SampleTypeActions";
 import {SampleType, SampleTypeStore} from "../../../../entities/sampleType";
@@ -40,6 +41,7 @@ jest.mock("../../../snackbar", () => ({
 
 describe("SampleTypeTableActionButtons", () => {
   beforeEach(() => {
+    setWorkspaceTestRole("Admin");
     jest.clearAllMocks();
     mockSampleTypeStoreState = {
       sampleTypes: mockSampleTypes,
@@ -69,6 +71,16 @@ describe("SampleTypeTableActionButtons", () => {
 
     expect(screen.getByText("View")).toBeInTheDocument();
     expect(screen.getByText("Delete")).toBeInTheDocument();
+  });
+
+  it("lets a receptionist view a sample type without deleting it", () => {
+    setWorkspaceTestRole("Receptionist");
+    render(<SampleTypeTableActionButtons sampleTypeId="1" />);
+
+    expect(screen.getByRole("button", {name: "View"})).toBeEnabled();
+    expect(
+      screen.queryByRole("button", {name: "Delete"}),
+    ).not.toBeInTheDocument();
   });
 
   it("should render loading spinner when sample types are loading", () => {

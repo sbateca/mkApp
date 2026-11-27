@@ -1,3 +1,4 @@
+import {setWorkspaceTestRole} from "../../../shared/test/setWorkspaceTestRole";
 import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 
 import {SamplesContent} from "../../SamplesContent";
@@ -158,6 +159,7 @@ jest.mock("../../../widgets/SampleDetail/ui/SampleDetail", () => ({
 
 describe("SamplesContent test", () => {
   beforeEach(() => {
+    setWorkspaceTestRole("Admin");
     jest.clearAllMocks();
   });
 

@@ -1,3 +1,5 @@
+import {useWorkspacePermissions} from "../../../entities/auth/model/workspacePermissions";
+import {BaseRoutes} from "../../../utils/constants/baseRoutes";
 import {useInterfaceTranslation} from "../../../shared/i18n/useInterfaceTranslation";
 import AddOutlined from "@mui/icons-material/AddOutlined";
 import {Box, Button, Typography as MuiTypography} from "@mui/material";
@@ -25,11 +27,13 @@ import {
 
 export const ReportsContent = (): React.ReactElement => {
   const {t} = useInterfaceTranslation();
+  const {can} = useWorkspacePermissions();
+  const canRequestCreate = can(BaseRoutes.REPORTS, "create");
   const {setIsReadOnlyMode} = useReadOnlyMode();
 
   const {
     rows,
-    canCreate,
+    canCreate: apiCanCreate,
     isLoading,
     rowsPerPage,
     page,
@@ -48,6 +52,8 @@ export const ReportsContent = (): React.ReactElement => {
   const {isSideSectionOpen, onOpenSideSection} = useSideSection();
   const reports = useReportStore(selectReports);
   const setSelectedReport = useReportStore(selectSetSelectedReport);
+
+  const canCreate = canRequestCreate && apiCanCreate;
 
   const openSideSection = () => {
     if (!canCreate) return;
@@ -70,15 +76,17 @@ export const ReportsContent = (): React.ReactElement => {
           </MuiTypography>
         </Box>
         <Box sx={ReportsContentStyles.titleContentActions}>
-          <Button
-            disabled={!canCreate}
-            variant="contained"
-            startIcon={<AddOutlined />}
-            onClick={openSideSection}
-            sx={{minHeight: 42, px: 2}}
-          >
-            {t(REPORT_CREATE_BUTTON_LABEL)}
-          </Button>
+          {canRequestCreate && (
+            <Button
+              disabled={!canCreate}
+              variant="contained"
+              startIcon={<AddOutlined />}
+              onClick={openSideSection}
+              sx={{minHeight: 42, px: 2}}
+            >
+              {t(REPORT_CREATE_BUTTON_LABEL)}
+            </Button>
+          )}
         </Box>
       </Box>
       <Table

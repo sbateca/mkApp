@@ -1,3 +1,5 @@
+import {useWorkspacePermissions} from "../../../entities/auth/model/workspacePermissions";
+import {BaseRoutes} from "../../../utils/constants/baseRoutes";
 import {Box, Theme, useMediaQuery, useTheme} from "@mui/material";
 import {Button, Spinner, Table, Typography} from "../../../shared/ui";
 import {useLoadSampleTypesData} from "../../../features/sampleType/loadSampleTypes/model/useLoadSampleTypesData";
@@ -24,6 +26,8 @@ import {
 import {useSideSection} from "../../../features/sideSection";
 
 export const SampleTypesContent = () => {
+  const {can} = useWorkspacePermissions();
+  const canCreate = can(BaseRoutes.SAMPLE_TYPES, "create");
   const {
     rows,
     visibleRows,
@@ -48,6 +52,7 @@ export const SampleTypesContent = () => {
     useSideSection();
 
   const openSideSection = () => {
+    if (!canCreate) return;
     onOpenSideSection(CREATE_SAMPLE_TYPE_TITLE_TEXT, false);
   };
 
@@ -58,14 +63,16 @@ export const SampleTypesContent = () => {
       <Box sx={CommonContentStyles.titleContentContainer}>
         <Typography {...SAMPLE_TYPES_TITLE_CONFIG} />
         <Box sx={CommonContentStyles.titleContentActions}>
-          <Button
-            label={SAMPLE_TYPE_CREATE_BUTTON_LABEL}
-            variant={SharedButtonVariants.OUTLINED}
-            size={SharedButtonSizes.SMALL}
-            color={SharedButtonColors.PRIMARY}
-            icon={SharedButtonIcons.CREATE}
-            onClick={openSideSection}
-          />
+          {canCreate && (
+            <Button
+              label={SAMPLE_TYPE_CREATE_BUTTON_LABEL}
+              variant={SharedButtonVariants.OUTLINED}
+              size={SharedButtonSizes.SMALL}
+              color={SharedButtonColors.PRIMARY}
+              icon={SharedButtonIcons.CREATE}
+              onClick={openSideSection}
+            />
+          )}
         </Box>
       </Box>
       <Table

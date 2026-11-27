@@ -1,3 +1,5 @@
+import {useWorkspacePermissions} from "../../../entities/auth/model/workspacePermissions";
+import {BaseRoutes} from "../../../utils/constants/baseRoutes";
 import React from "react";
 import {
   Box,
@@ -47,6 +49,7 @@ export const ReportDetail = ({
 }: {
   canCreate: boolean;
 }): React.ReactElement => {
+  const {can} = useWorkspacePermissions();
   const theme = useTheme<Theme>();
   const isLessThanMediumScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const selectedReport = useReportStore(selectSelectedReport);
@@ -57,7 +60,8 @@ export const ReportDetail = ({
   useReportErrorNotifier(error);
 
   const canEdit = selectedReport
-    ? selectedReport.actions?.update?.allowed === true
+    ? can(BaseRoutes.REPORTS, "update") &&
+      selectedReport.actions?.update?.allowed === true
     : canCreate;
   const showEditor = canEdit && !isReadOnlyMode;
 

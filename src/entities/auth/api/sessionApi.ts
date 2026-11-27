@@ -33,6 +33,7 @@ const getCurrentSession = async (): Promise<SessionResponse> => {
       username: data.username,
       name: data.name,
       role: data.roles[0]?.name ?? "",
+      roles: data.roles.map(({name}) => name),
     },
   };
 };

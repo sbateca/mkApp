@@ -1,3 +1,6 @@
+import {Alert} from "@mui/material";
+import {useWorkspacePermissions} from "../../entities/auth/model/workspacePermissions";
+import {useInterfaceTranslation} from "../../shared/i18n/useInterfaceTranslation";
 import {Navigate, Route, Routes} from "react-router-dom";
 import {PublicOnlyRoute} from "./PublicOnlyRoute";
 import {LoginPage} from "../../pages/LoginPage";
@@ -14,7 +17,21 @@ import {AnalysisMethodsPage} from "../../pages/AnalysisMethodsPage";
 import {CriteriasPage} from "../../pages/CriteriasPage";
 import {TestTypesPage} from "../../pages/TestTypesPage";
 
+const modules = [
+  [BaseRoutes.CLIENTS, ClientsPage],
+  [BaseRoutes.SAMPLE_TYPES, SampleTypePage],
+  [BaseRoutes.TEST_TYPES, TestTypesPage],
+  [BaseRoutes.ANALYTES, AnalytesPage],
+  [BaseRoutes.ANALYSIS_METHODS, AnalysisMethodsPage],
+  [BaseRoutes.CRITERIAS, CriteriasPage],
+  [BaseRoutes.SAMPLES, SamplesPage],
+  [BaseRoutes.REPORTS, ReportsPage],
+] as const;
+
 export const AppRoutes = () => {
+  const {can, home} = useWorkspacePermissions();
+  const {t} = useInterfaceTranslation();
+
   return (
     <Routes>
       <Route element={<PublicOnlyRoute />}>
@@ -25,19 +42,23 @@ export const AppRoutes = () => {
         <Route element={<AdminLayout />}>
           <Route
             path={BaseRoutes.HOME}
-            element={<Navigate to={BaseRoutes.SAMPLES} replace />}
+            element={
+              home === BaseRoutes.HOME ? (
+                <Alert severity="info">
+                  {t("Your account has no workspace access.")}
+                </Alert>
+              ) : (
+                <Navigate to={home} replace />
+              )
+            }
           />
-          <Route path={BaseRoutes.CLIENTS} element={<ClientsPage />} />
-          <Route path={BaseRoutes.SAMPLE_TYPES} element={<SampleTypePage />} />
-          <Route path={BaseRoutes.TEST_TYPES} element={<TestTypesPage />} />
-          <Route path={BaseRoutes.ANALYTES} element={<AnalytesPage />} />
-          <Route
-            path={BaseRoutes.ANALYSIS_METHODS}
-            element={<AnalysisMethodsPage />}
-          />
-          <Route path={BaseRoutes.CRITERIAS} element={<CriteriasPage />} />
-          <Route path={BaseRoutes.SAMPLES} element={<SamplesPage />} />
-          <Route path={BaseRoutes.REPORTS} element={<ReportsPage />} />
+          {modules.map(([path, Page]) => (
+            <Route
+              key={path}
+              path={path}
+              element={can(path) ? <Page /> : <Navigate to={home} replace />}
+            />
+          ))}
         </Route>
       </Route>
 

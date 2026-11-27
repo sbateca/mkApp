@@ -1,4 +1,4 @@
-import {render, screen} from "@testing-library/react";
+import {render, screen, within} from "@testing-library/react";
 import {MemoryRouter} from "react-router-dom";
 
 import {AppRoutes} from "./AppRoutes";
@@ -48,19 +48,6 @@ jest.mock("../../pages/NotFound", () => ({
   NotFoundPage: () => <div>Not Found Page</div>,
 }));
 
-jest.mock("../../layouts/AdminLayout", () => {
-  const {Outlet} = jest.requireActual("react-router-dom");
-
-  return {
-    AdminLayout: () => (
-      <div>
-        <div>Admin Layout</div>
-        <Outlet />
-      </div>
-    ),
-  };
-});
-
 const renderAppRoutes = (initialRoute: string) => {
   render(
     <MemoryRouter initialEntries={[initialRoute]}>
@@ -77,13 +64,13 @@ const setUnauthenticatedSession = () => {
   });
 };
 
-const setAuthenticatedSession = () => {
+const setAuthenticatedSession = (role = "Admin") => {
   useSessionStore.setState({
     user: {
       id: 1,
       username: "admin",
       name: "Admin",
-      role: "admin",
+      role,
     },
     isAuthenticated: true,
     isSessionResolved: true,
@@ -113,7 +100,7 @@ describe("AppRoutes", () => {
 
     renderAppRoutes("/login");
 
-    expect(screen.getByText("Admin Layout")).toBeInTheDocument();
+    expect(screen.getByTestId("contentContainer")).toBeInTheDocument();
     expect(screen.getByText("Samples Page")).toBeInTheDocument();
   });
 
@@ -122,7 +109,7 @@ describe("AppRoutes", () => {
 
     renderAppRoutes("/");
 
-    expect(screen.getByText("Admin Layout")).toBeInTheDocument();
+    expect(screen.getByTestId("contentContainer")).toBeInTheDocument();
     expect(screen.getByText("Samples Page")).toBeInTheDocument();
   });
 
@@ -131,7 +118,7 @@ describe("AppRoutes", () => {
 
     renderAppRoutes("/reports");
 
-    expect(screen.getByText("Admin Layout")).toBeInTheDocument();
+    expect(screen.getByTestId("contentContainer")).toBeInTheDocument();
     expect(screen.getByText("Reports Page")).toBeInTheDocument();
   });
 
@@ -140,7 +127,7 @@ describe("AppRoutes", () => {
 
     renderAppRoutes("/clients");
 
-    expect(screen.getByText("Admin Layout")).toBeInTheDocument();
+    expect(screen.getByTestId("contentContainer")).toBeInTheDocument();
     expect(screen.getByText("Clients Page")).toBeInTheDocument();
   });
 
@@ -149,7 +136,7 @@ describe("AppRoutes", () => {
 
     renderAppRoutes("/analytes");
 
-    expect(screen.getByText("Admin Layout")).toBeInTheDocument();
+    expect(screen.getByTestId("contentContainer")).toBeInTheDocument();
     expect(screen.getByText("Analytes Page")).toBeInTheDocument();
   });
 
@@ -158,7 +145,7 @@ describe("AppRoutes", () => {
 
     renderAppRoutes("/analysisMethods");
 
-    expect(screen.getByText("Admin Layout")).toBeInTheDocument();
+    expect(screen.getByTestId("contentContainer")).toBeInTheDocument();
     expect(screen.getByText("Analysis Methods Page")).toBeInTheDocument();
   });
 
@@ -167,7 +154,7 @@ describe("AppRoutes", () => {
 
     renderAppRoutes("/criterias");
 
-    expect(screen.getByText("Admin Layout")).toBeInTheDocument();
+    expect(screen.getByTestId("contentContainer")).toBeInTheDocument();
     expect(screen.getByText("Criterias Page")).toBeInTheDocument();
   });
 
@@ -176,8 +163,38 @@ describe("AppRoutes", () => {
 
     renderAppRoutes("/testTypes");
 
-    expect(screen.getByText("Admin Layout")).toBeInTheDocument();
+    expect(screen.getByTestId("contentContainer")).toBeInTheDocument();
     expect(screen.getByText("Test Types Page")).toBeInTheDocument();
+  });
+
+  it.each(["/", "/login", "/samples", "/clients", "/analytes"])(
+    "shows only Reports to a client who enters at %s",
+    (path) => {
+      setAuthenticatedSession("Client");
+      renderAppRoutes(path);
+
+      expect(screen.getByText("Reports Page")).toBeInTheDocument();
+      expect(screen.queryByText("Samples Page")).not.toBeInTheDocument();
+      const nav = within(
+        screen.getByRole("navigation", {name: "Main navigation"}),
+      );
+      expect(nav.getAllByRole("button")).toHaveLength(1);
+      expect(nav.getByRole("button", {name: "Reports"})).toBeInTheDocument();
+    },
+  );
+
+  it("limits Receptionist to clients, samples, and sample types", () => {
+    setAuthenticatedSession("Receptionist");
+    renderAppRoutes("/reports");
+
+    expect(screen.getByText("Samples Page")).toBeInTheDocument();
+    const nav = within(
+      screen.getByRole("navigation", {name: "Main navigation"}),
+    );
+    expect(nav.getAllByRole("button")).toHaveLength(3);
+    for (const name of ["Clients", "Samples", "Sample types"]) {
+      expect(nav.getByRole("button", {name})).toBeInTheDocument();
+    }
   });
 
   it("should render not found page for unsupported routes", () => {

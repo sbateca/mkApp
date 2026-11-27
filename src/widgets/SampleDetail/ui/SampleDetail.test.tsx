@@ -1,3 +1,4 @@
+import {setWorkspaceTestRole} from "../../../shared/test/setWorkspaceTestRole";
 import {mockData, renderSampleDetail} from "./SampleDetail.test.page";
 
 jest.mock("../../../Config/envManager", () => ({
@@ -9,6 +10,7 @@ jest.mock("../../../Config/envManager", () => ({
 
 describe("SampleDetail", () => {
   beforeEach(() => {
+    setWorkspaceTestRole("Admin");
     jest.clearAllMocks();
   });
 

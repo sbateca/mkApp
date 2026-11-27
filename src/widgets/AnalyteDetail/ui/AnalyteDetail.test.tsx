@@ -1,3 +1,4 @@
+import {setWorkspaceTestRole} from "../../../shared/test/setWorkspaceTestRole";
 import {render, screen} from "@testing-library/react";
 
 import {Analyte, AnalyteStore} from "../../../entities/analyte";
@@ -69,6 +70,7 @@ jest.mock("../../../features/readOnlyMode", () => ({
 
 describe("AnalyteDetail", () => {
   beforeEach(() => {
+    setWorkspaceTestRole("Admin");
     jest.clearAllMocks();
     mockIsReadOnlyMode = true;
     mockAnalyteStoreState = {

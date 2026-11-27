@@ -1,3 +1,5 @@
+import {useWorkspacePermissions} from "../../../../entities/auth/model/workspacePermissions";
+import {BaseRoutes} from "../../../../utils/constants/baseRoutes";
 import {Box} from "@mui/material";
 
 import {Spinner} from "../../../../shared/ui";
@@ -20,6 +22,7 @@ export const ReportTableActionButtons = ({
   reportId,
   actions,
 }: ReportTableActionButtonsProps): React.ReactElement => {
+  const {can} = useWorkspacePermissions();
   const isLoading = useReportStore(selectIsLoadingReport);
 
   const {handleDelete} = useDeleteReport();
@@ -36,10 +39,12 @@ export const ReportTableActionButtons = ({
             disabled={actions?.read?.allowed !== true}
             onClick={() => handleViewReport(reportId)}
           />
-          <DeleteReportButton
-            disabled={actions?.delete?.allowed !== true}
-            onClick={() => handleDelete(reportId)}
-          />
+          {can(BaseRoutes.REPORTS, "delete") && (
+            <DeleteReportButton
+              disabled={actions?.delete?.allowed !== true}
+              onClick={() => handleDelete(reportId)}
+            />
+          )}
         </>
       )}
     </Box>

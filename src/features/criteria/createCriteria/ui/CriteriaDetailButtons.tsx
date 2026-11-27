@@ -1,3 +1,5 @@
+import {useWorkspacePermissions} from "../../../../entities/auth/model/workspacePermissions";
+import {BaseRoutes} from "../../../../utils/constants/baseRoutes";
 import {Box} from "@mui/material";
 import {Criteria} from "../../../../entities/criteria";
 import {Button} from "../../../../shared/ui";
@@ -26,10 +28,13 @@ export const CriteriaDetailButtons = ({
   handleCreateCriteria,
   handleEditCriteria,
 }: CriteriaDetailButtonsProps) => {
+  const {can} = useWorkspacePermissions();
+  const canCreate = can(BaseRoutes.CRITERIAS, "create");
+  const canUpdate = can(BaseRoutes.CRITERIAS, "update");
   const {isReadOnlyMode} = useReadOnlyMode();
   return (
     <Box>
-      {isReadOnlyMode && criteria ? (
+      {isReadOnlyMode && criteria && canUpdate ? (
         <Button
           icon={IconNames.EDIT}
           label={EDIT_CRITERIA_BUTTON_LABEL}
@@ -40,7 +45,7 @@ export const CriteriaDetailButtons = ({
           onClick={handleReadOnlyModeChange}
         />
       ) : null}
-      {!isReadOnlyMode && criteria ? (
+      {!isReadOnlyMode && criteria && canUpdate ? (
         <>
           <Button
             icon={IconNames.SAVE}
@@ -61,7 +66,7 @@ export const CriteriaDetailButtons = ({
           />
         </>
       ) : null}
-      {!isReadOnlyMode && !criteria ? (
+      {!isReadOnlyMode && !criteria && canCreate ? (
         <Button
           icon={IconNames.SAVE}
           label={SharedButtonCommonLabels.SAVE}

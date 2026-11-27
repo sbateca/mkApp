@@ -1,3 +1,5 @@
+import {useWorkspacePermissions} from "../../../../entities/auth/model/workspacePermissions";
+import {BaseRoutes} from "../../../../utils/constants/baseRoutes";
 import {Box} from "@mui/material";
 import {Spinner} from "../../../../shared/ui";
 import {
@@ -15,6 +17,8 @@ type TestTypeTableActionButtonsProps = {
 export const TestTypeTableActionButtons = ({
   testTypeId,
 }: TestTypeTableActionButtonsProps): React.ReactElement => {
+  const {can} = useWorkspacePermissions();
+  const canDelete = can(BaseRoutes.TEST_TYPES, "delete");
   const isLoading = useTestTypeStore(selectIsLoadingTestTypes);
 
   const {viewTestType} = useViewTestType();
@@ -28,7 +32,9 @@ export const TestTypeTableActionButtons = ({
       ) : (
         <>
           <ViewTestTypeButton onClick={() => viewTestType(testTypeId)} />
-          <DeleteTestTypeButton onClick={() => handleDelete(testTypeId)} />
+          {canDelete && (
+            <DeleteTestTypeButton onClick={() => handleDelete(testTypeId)} />
+          )}
         </>
       )}
     </Box>

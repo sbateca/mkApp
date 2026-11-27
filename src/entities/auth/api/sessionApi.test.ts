@@ -15,7 +15,7 @@ const user = {
   id: "user-id",
   name: "Name",
   username: "admin",
-  roles: [{name: "ADMIN"}],
+  roles: [{name: "ADMIN"}, {name: "Analyst"}],
 };
 
 describe("sessionApi", () => {
@@ -41,6 +41,7 @@ describe("sessionApi", () => {
       name: "Name",
       username: "admin",
       role: "ADMIN",
+      roles: ["ADMIN", "Analyst"],
     });
     expect(getAuthTokens()).toEqual(tokens);
   });

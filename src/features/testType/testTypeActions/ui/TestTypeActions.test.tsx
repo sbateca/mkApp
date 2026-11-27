@@ -1,3 +1,4 @@
+import {setWorkspaceTestRole} from "../../../../shared/test/setWorkspaceTestRole";
 import {render, screen} from "@testing-library/react";
 import {SnackBarSeverity} from "../../../../utils/enums";
 import {SnackBarStore} from "../../../snackbar/model/types";
@@ -38,6 +39,7 @@ jest.mock("../../../snackbar", () => ({
 
 describe("TestTypeTableActionButtons", () => {
   beforeEach(() => {
+    setWorkspaceTestRole("Admin");
     jest.clearAllMocks();
     mockTestTypeStoreState = {
       testTypes: mockTestTypes,
