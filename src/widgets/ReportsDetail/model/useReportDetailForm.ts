@@ -4,6 +4,8 @@ import {reportToReportForm} from "../../../entities/report";
 import dayjs from "dayjs";
 import {
   DATEPICKER_FORMAT,
+  API_FIELD_LIMITS,
+  exceedsLength,
   isEmpty,
   isNotValidDate,
 } from "../../../utils/constants";
@@ -35,7 +37,7 @@ export const useReportDetailForm = (
   const formValidations = useMemo(
     () => ({
       reportDate: [isEmpty, isNotValidDate],
-      reportNumber: [isEmpty],
+      reportNumber: [isEmpty, exceedsLength(API_FIELD_LIMITS.reportNumber)],
       sampleId: [isEmpty],
     }),
     [],

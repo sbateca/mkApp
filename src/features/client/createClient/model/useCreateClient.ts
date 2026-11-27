@@ -10,7 +10,7 @@ import {
 import {SnackBarSeverity} from "../../../../utils/enums";
 import {useSideSection} from "../../../sideSection";
 import {useSnackBarStore} from "../../../snackbar";
-import {formToClient} from "../../lib/clientMappers";
+import {formToClientRequest} from "../../lib/clientMappers";
 
 export const useCreateClient = (form: FormProps) => {
   const createClient = useClientStore(selectCreateClient);
@@ -20,7 +20,7 @@ export const useCreateClient = (form: FormProps) => {
   const {showSnackBarMessage} = useSnackBarStore();
 
   const handleCreateClient = async () => {
-    const newClient = await createClient(formToClient(form));
+    const newClient = await createClient(formToClientRequest(form));
     if (newClient !== null) {
       onCloseSideSection();
       showSnackBarMessage(

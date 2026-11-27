@@ -1,6 +1,6 @@
 import {create} from "zustand";
 import {ClientsStore} from "./types";
-import {Client} from "./Client";
+import {Client, ClientRequest} from "./Client";
 import {
   createClientService,
   deleteClientService,
@@ -44,11 +44,11 @@ export const useClientStore = create<ClientsStore>((set) => ({
       set({isLoading: false});
     }
   },
-  createClient: async (client: Client) => {
+  createClient: async (client: ClientRequest) => {
     set({isLoading: true, error: null});
     try {
       if (!client) throw Error(CLIENT_NOT_PROVIDED);
-      return createClientService(client);
+      return await createClientService(client);
     } catch (error) {
       const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
       set({error: message});
@@ -57,11 +57,11 @@ export const useClientStore = create<ClientsStore>((set) => ({
       set({isLoading: false});
     }
   },
-  editClient: async (client: Client, clientId: string) => {
+  editClient: async (client: ClientRequest, clientId: string) => {
     set({isLoading: true, error: null});
     try {
       if (!clientId || !client) throw Error(CLIENT_NOT_PROVIDED);
-      return editClientService(client, clientId);
+      return await editClientService(client, clientId);
     } catch (error) {
       const message = error instanceof Error ? error.message : UNEXPECTED_ERROR;
       set({error: message});

@@ -2,7 +2,10 @@ import {useInterfaceTranslation} from "../../../../shared/i18n/useInterfaceTrans
 import LoginOutlined from "@mui/icons-material/LoginOutlined";
 import {Box, Button, FormControl, TextField} from "@mui/material";
 import {
+  API_FIELD_LIMITS,
+  exceedsLength,
   isEmpty,
+  isMissingPassword,
   LOGIN_FORM_PASSWORD_LABEL_TEXT,
   LOGIN_FORM_SIGN_IN,
   LOGIN_FORM_USERNAME_LABEL_TEXT,
@@ -24,8 +27,8 @@ export const SignInForm = () => {
   const {t} = useInterfaceTranslation();
   const formValidations = useMemo(
     () => ({
-      username: [isEmpty],
-      password: [isEmpty],
+      username: [isEmpty, exceedsLength(API_FIELD_LIMITS.credential)],
+      password: [isMissingPassword, exceedsLength(API_FIELD_LIMITS.credential)],
     }),
     [],
   );
@@ -55,6 +58,7 @@ export const SignInForm = () => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (isNotValidForm || isLoading) return;
     const signInRequest = formToSignInRequest(form);
     await handleSignIn(signInRequest);
   };

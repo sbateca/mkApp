@@ -62,10 +62,9 @@ describe("criteriaService", () => {
     const criteria = await createCriteriaService(mockCriterias[0]);
 
     expect(criteria).toEqual(mockCriterias[0]);
-    expect(mockApiClientPost).toHaveBeenCalledWith(
-      expectedURL,
-      mockCriterias[0],
-    );
+    expect(mockApiClientPost).toHaveBeenCalledWith(expectedURL, {
+      name: mockCriterias[0].name,
+    });
   });
 
   it("should edit a criteria", async () => {
@@ -76,10 +75,9 @@ describe("criteriaService", () => {
     const criteria = await editCriteriaService(mockCriterias[0], "1");
 
     expect(criteria).toEqual(mockCriterias[0]);
-    expect(mockApiClientPut).toHaveBeenCalledWith(
-      expectedURL,
-      mockCriterias[0],
-    );
+    expect(mockApiClientPut).toHaveBeenCalledWith(expectedURL, {
+      name: mockCriterias[0].name,
+    });
   });
 
   it("should delete a criteria", async () => {

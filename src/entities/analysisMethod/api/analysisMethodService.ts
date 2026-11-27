@@ -25,7 +25,7 @@ export const createAnalysisMethodService = async (
 ): Promise<AnalysisMethod> => {
   const response = await apiClient.post<AnalysisMethod>(
     `${EnvManager.BACKEND_URL}${ApiRoutes.ANALYSIS_METHODS}`,
-    analysisMethod,
+    {name: analysisMethod.name},
   );
   return axiosResponseToAnalysisMethods(response)[0];
 };
@@ -36,7 +36,7 @@ export const editAnalysisMethodService = async (
 ): Promise<AnalysisMethod> => {
   const response = await apiClient.put<AnalysisMethod>(
     `${EnvManager.BACKEND_URL}${ApiRoutes.ANALYSIS_METHODS}/${analysisMethodId}`,
-    analysisMethod,
+    {name: analysisMethod.name},
   );
   return axiosResponseToAnalysisMethods(response)[0];
 };

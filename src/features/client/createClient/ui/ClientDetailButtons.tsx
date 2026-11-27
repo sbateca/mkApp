@@ -33,7 +33,6 @@ export const ClientDetailButtons = ({
         <Button
           icon={IconNames.EDIT}
           label={EDIT_CLIENT_BUTTON_LABEL}
-          disabled={isNotValidForm}
           variant={SharedButtonVariants.OUTLINED}
           size={SharedButtonSizes.SMALL}
           color={SharedButtonColors.PRIMARY}

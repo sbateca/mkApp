@@ -1,4 +1,4 @@
-import {render, screen} from "@testing-library/react";
+import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 
 import {Client, ClientsStore} from "../../../entities/client";
 import {SnackBarSeverity} from "../../../utils/enums";
@@ -13,14 +13,6 @@ const mockClients: Client[] = buildClientsData(1, {
 let mockClientStoreState: ClientsStore;
 let mockSnackBarStoreState: SnackBarStore;
 let mockIsReadOnlyMode = true;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let mockUseForm: any;
-
-jest.mock("../../../utils/hooks", () => ({
-  __esModule: true,
-  useForm: jest.fn(() => mockUseForm),
-}));
-
 jest.mock("../../../entities/client", () => ({
   selectSelectedClient: (store: ClientsStore) => store.selectedClient,
   selectCreateClient: (store: ClientsStore) => store.createClient,
@@ -76,16 +68,6 @@ describe("ClientDetail", () => {
       showSnackBarMessage: jest.fn(),
       closeSnackBar: jest.fn(),
     };
-    mockUseForm = {
-      form: {name: mockClients[0].name},
-      setForm: jest.fn(),
-      handleChange: jest.fn(),
-      cleanForm: jest.fn(),
-      formFieldsErrors: {},
-      getTextFieldHelperText: jest.fn(),
-      setFormFieldsValidationFunctions: jest.fn(),
-      isNotValidForm: false,
-    };
   });
 
   it("should render selected client details successfully", () => {
@@ -101,7 +83,60 @@ describe("ClientDetail", () => {
     expect(screen.getByText("Mock title")).toBeInTheDocument();
     expect(screen.getByText("Close")).toBeInTheDocument();
     expect(screen.getByDisplayValue("ACME Labs")).toBeInTheDocument();
+    expect(screen.getByRole("textbox", {name: /email/i})).toHaveValue(
+      mockClients[0].email,
+    );
+    expect(screen.getByRole("textbox", {name: /phone/i})).toHaveValue(
+      mockClients[0].phone,
+    );
+    expect(screen.getByRole("textbox", {name: /nit/i})).toHaveValue(
+      mockClients[0].nit,
+    );
+    expect(screen.getByRole("textbox", {name: /address/i})).toHaveValue(
+      mockClients[0].address,
+    );
     expect(screen.getByText("Edit client")).toBeInTheDocument();
+  });
+
+  it("requires the API client fields and submits them without an ID", async () => {
+    mockIsReadOnlyMode = false;
+    mockClientStoreState.selectedClient = null;
+
+    render(
+      <ClientDetail
+        handleCloseSideSection={jest.fn()}
+        selectedClient={null}
+        isLoading={false}
+        isLessThanMediumScreen={false}
+      />,
+    );
+
+    const save = screen.getByRole("button", {name: "Save"});
+    const fields = [
+      [/name/i, " ACME Labs "],
+      [/email/i, "contact@example.com"],
+      [/phone/i, "3001234567"],
+      [/nit/i, "900123456-7"],
+    ] as const;
+    for (const [name, value] of fields) {
+      fireEvent.change(screen.getByRole("textbox", {name}), {target: {value}});
+    }
+    expect(save).toBeDisabled();
+    fireEvent.change(screen.getByRole("textbox", {name: /address/i}), {
+      target: {value: "Calle 10 # 12-34"},
+    });
+
+    expect(save).toBeEnabled();
+    fireEvent.click(save);
+    await waitFor(() => {
+      expect(mockClientStoreState.createClient).toHaveBeenCalledWith({
+        name: "ACME Labs",
+        email: "contact@example.com",
+        phone: "3001234567",
+        nit: "900123456-7",
+        address: "Calle 10 # 12-34",
+      });
+    });
   });
 
   it("should render loading spinner when client detail is loading", () => {

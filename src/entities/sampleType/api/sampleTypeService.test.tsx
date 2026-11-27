@@ -62,10 +62,9 @@ describe("sampleTypeService", () => {
     const sampleType = await createSampleTypeService(mockSampleTypes[0]);
 
     expect(sampleType).toEqual(mockSampleTypes[0]);
-    expect(mockApiClientPost).toHaveBeenCalledWith(
-      expectedURL,
-      mockSampleTypes[0],
-    );
+    expect(mockApiClientPost).toHaveBeenCalledWith(expectedURL, {
+      name: mockSampleTypes[0].name,
+    });
   });
 
   it("should edit a sample type", async () => {
@@ -76,10 +75,9 @@ describe("sampleTypeService", () => {
     const sampleType = await editSampleTypeService(mockSampleTypes[0], "1");
 
     expect(sampleType).toEqual(mockSampleTypes[0]);
-    expect(mockApiClientPut).toHaveBeenCalledWith(
-      expectedURL,
-      mockSampleTypes[0],
-    );
+    expect(mockApiClientPut).toHaveBeenCalledWith(expectedURL, {
+      name: mockSampleTypes[0].name,
+    });
   });
 
   it("should delete a sample type", async () => {

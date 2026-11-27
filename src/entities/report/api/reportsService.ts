@@ -30,12 +30,20 @@ export const getReportByIdService = async (
   return response.data;
 };
 
+const reportRequestBody = ({
+  reportNumber,
+  reportDate,
+  status,
+  sampleId,
+  testIds,
+}: ReportRequest) => ({reportNumber, reportDate, status, sampleId, testIds});
+
 export const createReportService = async (
   report: ReportRequest,
 ): Promise<Report | null> => {
   const response = await apiClient.post<Report>(
     `${EnvManager.BACKEND_URL}${BaseRoutes.REPORTS}`,
-    report,
+    reportRequestBody(report),
   );
   return response.data;
 };
@@ -46,7 +54,7 @@ export const editReportService = async (
 ): Promise<Report | null> => {
   const response = await apiClient.put<Report>(
     `${EnvManager.BACKEND_URL}${BaseRoutes.REPORTS}/${reportId}`,
-    report,
+    reportRequestBody(report),
   );
   return response.data;
 };

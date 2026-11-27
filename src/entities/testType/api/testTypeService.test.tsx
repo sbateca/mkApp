@@ -64,10 +64,9 @@ describe("testTypeService", () => {
     const testType = await createTestTypeService(mockTestTypes[0]);
 
     expect(testType).toEqual(mockTestTypes[0]);
-    expect(mockApiClientPost).toHaveBeenCalledWith(
-      expectedURL,
-      mockTestTypes[0],
-    );
+    expect(mockApiClientPost).toHaveBeenCalledWith(expectedURL, {
+      name: mockTestTypes[0].name,
+    });
   });
 
   it("should edit a test type", async () => {
@@ -78,10 +77,9 @@ describe("testTypeService", () => {
     const testType = await editTestTypeService(mockTestTypes[0], "1");
 
     expect(testType).toEqual(mockTestTypes[0]);
-    expect(mockApiClientPut).toHaveBeenCalledWith(
-      expectedURL,
-      mockTestTypes[0],
-    );
+    expect(mockApiClientPut).toHaveBeenCalledWith(expectedURL, {
+      name: mockTestTypes[0].name,
+    });
   });
 
   it("should delete a test type", async () => {

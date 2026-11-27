@@ -19,7 +19,11 @@ import {
 import {AutoComplete} from "../../../../shared/ui";
 import {useForm} from "../../../../utils/hooks";
 import {useEffect, useMemo} from "react";
-import {isEmpty} from "../../../../utils/constants";
+import {
+  API_FIELD_LIMITS,
+  exceedsLength,
+  isEmpty,
+} from "../../../../utils/constants";
 import {
   AnalyteFormFieldLabels,
   AnalyteFormFields,
@@ -65,7 +69,10 @@ export const AnalyteForm = ({isLessThanMediumScreen}: AnalyteFormProps) => {
 
   const formValidations = useMemo(
     () => ({
-      [AnalyteFormFields.NAME]: [isEmpty],
+      [AnalyteFormFields.NAME]: [
+        isEmpty,
+        exceedsLength(API_FIELD_LIMITS.catalogName),
+      ],
       [AnalyteFormFields.TEST_TYPE]: [isEmpty],
     }),
     [],

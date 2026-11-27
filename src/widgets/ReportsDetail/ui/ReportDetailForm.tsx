@@ -8,7 +8,6 @@ import dayjs from "dayjs";
 import {
   ANALYSIS_TITLE,
   DATEPICKER_VIEWS,
-  FORM_TITLES,
   getFormStringValue,
   REPORT_DATE_LABEL_TEXT,
   REPORT_NUMBER_LABEL_TEXT,
@@ -48,6 +47,7 @@ export const ReportDetailForm = ({
     clients,
     criterias,
     sampleTypes,
+    testTypes,
     sampleTypeOptionsFromSamples,
   } = catalogs;
 
@@ -83,7 +83,6 @@ export const ReportDetailForm = ({
             <Stack {...getStackFieldProps()}>
               <LocalizedDateProvider>
                 <DatePicker
-                  disableFuture
                   views={DATEPICKER_VIEWS}
                   label={t(REPORT_DATE_LABEL_TEXT)}
                   name={ReportFormFields.REPORT_DATE}
@@ -92,6 +91,7 @@ export const ReportDetailForm = ({
                   }
                   slotProps={{
                     textField: {
+                      required: true,
                       error: !!formFieldsErrors[ReportFormFields.REPORT_DATE],
                       helperText: t(
                         getTextFieldHelperText(ReportFormFields.REPORT_DATE),
@@ -166,9 +166,8 @@ export const ReportDetailForm = ({
               analysisMethods={analysisMethods}
               hasCompleteReportTestRow={hasCompleteReportTestRow}
               title={
-                FORM_TITLES[index]
-                  ? t(FORM_TITLES[index])
-                  : `${t(ANALYSIS_TITLE)} ${index + 1}`
+                testTypes?.find(({id}) => id === testTypeId)?.name ??
+                `${t(ANALYSIS_TITLE)} ${index + 1}`
               }
               rows={getReportTestRows(testTypeId)}
               onRowsChange={(nextRows) =>

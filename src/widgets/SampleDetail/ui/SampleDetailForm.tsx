@@ -145,7 +145,6 @@ export const SampleDetailForm = ({
           <Stack {...getStackFieldProps()}>
             <LocalizedDateProvider>
               <DatePicker
-                disableFuture
                 views={DATEPICKER_VIEWS}
                 label={t(SAMPLE_GET_SAMPLE_DATE_LABEL_TEXT)}
                 name={SamplesFormFields.GET_SAMPLE_DATE}
@@ -154,6 +153,7 @@ export const SampleDetailForm = ({
                 }
                 slotProps={{
                   textField: {
+                    required: true,
                     error:
                       !!formFieldsErrors[SamplesFormFields.GET_SAMPLE_DATE],
                     helperText: t(
@@ -183,7 +183,6 @@ export const SampleDetailForm = ({
           <Stack {...getStackFieldProps()}>
             <LocalizedDateProvider>
               <DatePicker
-                disableFuture
                 defaultValue={today}
                 views={DATEPICKER_VIEWS}
                 label={t(SAMPLE_RECEPTION_DATE_LABEL_TEXT)}
@@ -193,6 +192,7 @@ export const SampleDetailForm = ({
                 }
                 slotProps={{
                   textField: {
+                    required: true,
                     error: !!formFieldsErrors[SamplesFormFields.RECEPTION_DATE],
                     helperText: t(
                       getTextFieldHelperText(SamplesFormFields.RECEPTION_DATE),
@@ -213,7 +213,6 @@ export const SampleDetailForm = ({
           <Stack {...getStackFieldProps()}>
             <LocalizedDateProvider>
               <DatePicker
-                disableFuture
                 defaultValue={today}
                 views={DATEPICKER_VIEWS}
                 label={t(SAMPLE_ANALYSIS_DATE_LABEL_TEXT)}
@@ -223,6 +222,7 @@ export const SampleDetailForm = ({
                 }
                 slotProps={{
                   textField: {
+                    required: true,
                     error: !!formFieldsErrors[SamplesFormFields.ANALYSIS_DATE],
                     helperText: t(
                       getTextFieldHelperText(SamplesFormFields.ANALYSIS_DATE),
