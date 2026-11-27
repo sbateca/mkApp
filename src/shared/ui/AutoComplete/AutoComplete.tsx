@@ -12,6 +12,7 @@ export const AutoComplete = ({
   onChange,
   name,
   readOnly,
+  disabled,
   required,
   error,
   helperText,
@@ -56,6 +57,7 @@ export const AutoComplete = ({
       )}
       isOptionEqualToValue={(option, value) => option.id === value.id}
       readOnly={readOnly}
+      disabled={disabled}
       sx={sx}
     />
   );

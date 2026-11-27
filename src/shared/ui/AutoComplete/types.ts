@@ -17,6 +17,7 @@ export interface AutoCompleteProps {
   ) => void;
   name: string;
   readOnly: boolean;
+  disabled?: boolean;
   required: boolean;
   error?: boolean;
   helperText?: string;

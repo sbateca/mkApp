@@ -4,13 +4,11 @@ import {ReportSideSectionButtons} from "./ReportsSideSectionButtons";
 import {buildReportData} from "../../../shared/test/builders";
 import {ReportStatus} from "../../../utils/enums";
 
-let mockIsReadOnlyMode = true;
-const mockHandleSwitchReadOnlyMode = jest.fn();
+const mockSetIsReadOnlyMode = jest.fn();
 
 jest.mock("../../../features/readOnlyMode", () => ({
   useReadOnlyMode: () => ({
-    isReadOnlyMode: mockIsReadOnlyMode,
-    handleSwitchReadOnlyMode: mockHandleSwitchReadOnlyMode,
+    setIsReadOnlyMode: mockSetIsReadOnlyMode,
   }),
 }));
 
@@ -24,7 +22,6 @@ describe("ReportSideSectionButtons", () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockIsReadOnlyMode = true;
   });
 
   it("should render approval action enabled and download action disabled for draft reports", () => {
@@ -36,7 +33,7 @@ describe("ReportSideSectionButtons", () => {
 
     render(
       <ReportSideSectionButtons
-        isNotValidForm={false}
+        mode="read"
         report={report}
         {...defaultActions}
       />,
@@ -62,7 +59,7 @@ describe("ReportSideSectionButtons", () => {
 
     render(
       <ReportSideSectionButtons
-        isNotValidForm={false}
+        mode="read"
         report={report}
         {...defaultActions}
       />,
@@ -82,7 +79,7 @@ describe("ReportSideSectionButtons", () => {
   it("disables edit, approve and download when decisions are absent", () => {
     render(
       <ReportSideSectionButtons
-        isNotValidForm={false}
+        mode="read"
         report={buildReportData({status: ReportStatus.DRATF})}
         {...defaultActions}
       />,
@@ -94,13 +91,13 @@ describe("ReportSideSectionButtons", () => {
   });
 
   it("should not render approval and download actions while editing", () => {
-    mockIsReadOnlyMode = false;
     const report = buildReportData({
       status: ReportStatus.DRATF,
     });
 
     render(
       <ReportSideSectionButtons
+        mode="edit"
         isNotValidForm={false}
         report={report}
         {...defaultActions}

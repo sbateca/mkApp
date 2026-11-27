@@ -56,11 +56,17 @@ export interface TestFormButtonProps {
   marginTop: number;
 }
 
-export interface ReportSideSectionActionsProps {
-  isNotValidForm: boolean;
-  report: Report | null;
-  handleCreateReport: () => void;
-  handleEdit: () => void;
-  handleApprove: (reportId: string) => void;
-  handleDownload: (reportId: string) => void;
-}
+export type ReportSideSectionActionsProps =
+  | {
+      mode: "read";
+      report: Report;
+      handleApprove: (reportId: string) => void;
+      handleDownload: (reportId: string) => void;
+    }
+  | {
+      mode: "edit";
+      report: Report | null;
+      isNotValidForm: boolean;
+      handleCreateReport: () => void;
+      handleEdit: () => void;
+    };

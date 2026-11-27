@@ -103,7 +103,7 @@ export const ReportsContent = (): React.ReactElement => {
         )}
       />
       <SideSection isOpen={isSideSectionOpen}>
-        <ReportDetail />
+        <ReportDetail canCreate={canCreate} />
       </SideSection>
     </Box>
   );

@@ -1,8 +1,6 @@
 import {useCallback} from "react";
 import {
   ReportDetailDataProps,
-  selectError,
-  selectIsLoadingReport,
   selectSelectedReport,
   useReportStore,
 } from "../../../entities/report";
@@ -13,40 +11,21 @@ import {
   useLoadReportDetailData,
 } from "../../../features/reports";
 import {useSelectSampleForReport} from "../../../features/reports/selectSample/model/useSelectSampleForReport";
-import {selectSideSectionTitle} from "../../../features/sideSection/model/selectors";
-import {useSideSectionStore} from "../../../features/sideSection/model/store";
-import {useSideSection} from "../../../features/sideSection/model/useSideSection";
 import {ReportTestGroups} from "./types";
 import {useReportDetailForm} from "./useReportDetailForm";
-import {useReportErrorNotifier} from "./useReportErrorNotifier";
-import {useApproveReport} from "../../../features/reports/approveReport/model/useApproveReport";
-import {useDownloadReport} from "../../../features/reports/downloadReport/model/useDownloadReport";
 
 export const useReportDetailController = () => {
   const selectedReport = useReportStore(selectSelectedReport);
-  const isLoading = useReportStore(selectIsLoadingReport);
-  const error = useReportStore(selectError);
 
   const reportDetailData = useLoadReportDetailData();
 
-  const reportFormState = useReportDetailForm(
-    selectedReport,
-    reportDetailData.testTypes,
-    reportDetailData.getAnalytesByTestTypeId,
-  );
+  const reportFormState = useReportDetailForm(selectedReport);
   const {form} = reportFormState;
-
-  const sideSectionTitle = useSideSectionStore(selectSideSectionTitle);
-  const {onCloseSideSection} = useSideSection();
 
   const {selectedSample, isLoadingSample} = useSelectSampleForReport(form);
 
   const {handleCreateReport} = useCreateReport();
   const {handleEditReport} = useEditReport();
-  const {handleApproveReport} = useApproveReport();
-  const {handleDownloadReport} = useDownloadReport();
-
-  useReportErrorNotifier(error);
 
   const getReportDetail = useCallback((): ReportDetailDataProps => {
     return {
@@ -91,36 +70,17 @@ export const useReportDetailController = () => {
     [form, getReportDetail, handleEditReport],
   );
 
-  const onApproveReport = useCallback(
-    (reportId: string) => {
-      handleApproveReport(reportId);
-    },
-    [handleApproveReport],
-  );
-
-  const onDownloadReport = useCallback(
-    (reportId: string) => {
-      handleDownloadReport(reportId);
-    },
-    [handleDownloadReport],
-  );
-
   return {
     catalogs: reportDetailData,
     detailForm: reportFormState,
     state: {
-      isLoading,
       isLoadingSample,
       selectedReport,
       selectedSample,
-      sideSectionTitle,
     },
     actions: {
-      onCloseSideSection,
       onCreateReport,
       onEditReport,
-      onApproveReport,
-      onDownloadReport,
     },
   };
 };

@@ -6,29 +6,19 @@ import {formSectionSx} from "../../../shared/commonStyles";
 import {Spinner} from "../../../shared/ui";
 import {useSampleReportDetails} from "../model/useSampleReportDetails";
 import {Sample} from "../model/Sample";
-import {SampleType} from "../../sampleType";
-import {Client} from "../../client";
 import React from "react";
 
 interface SampleReportDetailsProps {
   sample: Sample | null;
-  sampleTypes: SampleType[];
-  clients: Client[];
-  isLoadingSample: boolean;
+  isLoadingSample?: boolean;
 }
 
 export const SampleReportDetails = ({
   sample,
-  sampleTypes,
-  clients,
   isLoadingSample,
 }: SampleReportDetailsProps) => {
   const {t, language} = useInterfaceTranslation();
-  const {sampleCardDetails} = useSampleReportDetails(
-    sample,
-    sampleTypes,
-    clients,
-  );
+  const {sampleCardDetails} = useSampleReportDetails(sample);
 
   return isLoadingSample ? (
     <Spinner />

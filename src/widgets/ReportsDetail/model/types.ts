@@ -27,7 +27,6 @@ export type ReportDetailCatalogsProps = {
   getTestOptions: () => AutoCompleteOption[];
   getAnalysisMethodOptions: () => AutoCompleteOption[];
   getCriteriaOptions: () => AutoCompleteOption[];
-  getAnalytesByTestTypeId: (testTypeId: string) => Promise<Analyte[] | null>;
 };
 
 export type ReportDetailFormStateProps = {
@@ -47,12 +46,9 @@ export type ReportDetailFormStateProps = {
     React.SetStateAction<FieldValidations>
   >;
   cleanForm: (defaultFormVFieldValues: FormProps) => void;
-  analytesByTestType: Record<string, Analyte[]>;
-  reportTestGroups: ReportTestGroups;
+  groups: ReportTestGroup[];
+  setGroups: React.Dispatch<React.SetStateAction<ReportTestGroup[]>>;
   areReportTestsValid: boolean;
-  hasCompleteReportTestRow: boolean;
-  getReportTestRows: (testTypeId: string) => ReportTestRow[];
-  handleTestRowsChange: (testTypeId: string, nextRows: ReportTestRow[]) => void;
 };
 
 export type DetailFormProps = {
@@ -64,12 +60,22 @@ export type DetailFormProps = {
 };
 export type ReportTestRow = {
   id: string;
-  analyteId: string;
   analysisMethodId: string;
   result: string;
   criteriaId: string;
 };
 
-export type ReportTestGroups = Record<string, ReportTestRow[]>;
+export type ReportTestGroup = {
+  id: string;
+  testTypeId: string;
+  analyteId: string;
+  rows: ReportTestRow[];
+};
+
+// The existing report mapper accepts rows keyed by test type.
+export type ReportTestGroups = Record<
+  string,
+  (ReportTestRow & {analyteId: string})[]
+>;
 
 export type ReportTestRowField = keyof Omit<ReportTestRow, "id">;
