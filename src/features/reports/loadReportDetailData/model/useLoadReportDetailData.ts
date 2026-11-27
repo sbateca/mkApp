@@ -9,7 +9,6 @@ import {useAnalysisMethodsStore} from "../../../../entities/analysisMethod/model
 import {
   selectAnalytes,
   selectGetAnalytes,
-  selectGetAnalytesByTestTypeId,
   selectIsLoadingAnalytes,
   selectSetAnalytes,
 } from "../../../../entities/analyte/model/selectors";
@@ -79,9 +78,6 @@ export const useLoadReportDetailData = () => {
   const isLoadingAnalytes = useAnalyteStore(selectIsLoadingAnalytes);
   const getAnalytes = useAnalyteStore(selectGetAnalytes);
   const setAnalytes = useAnalyteStore(selectSetAnalytes);
-  const getAnalytesByTestTypeId = useAnalyteStore(
-    selectGetAnalytesByTestTypeId,
-  );
 
   const criterias = useCriteriaStore(selectCriterias);
   const isLoadingCriterias = useCriteriaStore(selectIsLoadingCriterias);
@@ -226,6 +222,5 @@ export const useLoadReportDetailData = () => {
     getTestOptions,
     getAnalysisMethodOptions,
     getCriteriaOptions,
-    getAnalytesByTestTypeId,
   };
 };

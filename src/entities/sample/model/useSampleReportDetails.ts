@@ -1,7 +1,5 @@
 import {useMemo} from "react";
 import {Sample} from "./Sample";
-import {SampleType} from "../../sampleType";
-import {Client} from "../../client";
 import {REPORT_FORM_FIELDS, REPORT_FORM_LABELS} from "../../../utils/constants";
 
 interface SampleCardDetailItem {
@@ -20,27 +18,7 @@ interface SampleCardDetails {
   [REPORT_FORM_FIELDS.RESPONSABLE]: SampleCardDetailItem;
 }
 
-export const useSampleReportDetails = (
-  sample: Sample | null,
-  sampleTypes: SampleType[],
-  clients: Client[],
-) => {
-  const getSampleTypeFromSample = () => {
-    if (sample) {
-      return sampleTypes.find(
-        (sampleType) => sampleType.id === sample.sampleType.id,
-      );
-    }
-    return null;
-  };
-
-  const getClientFromSample = () => {
-    if (sample) {
-      return clients.find((client) => client.id === sample.client.id);
-    }
-    return null;
-  };
-
+export const useSampleReportDetails = (sample: Sample | null) => {
   const getSampleCardDetails = (): SampleCardDetails => {
     return {
       [REPORT_FORM_FIELDS.SAMPLE_CODE]: {
@@ -49,11 +27,11 @@ export const useSampleReportDetails = (
       },
       [REPORT_FORM_FIELDS.SAMPLE_TYPE]: {
         label: REPORT_FORM_LABELS[REPORT_FORM_FIELDS.SAMPLE_TYPE],
-        value: getSampleTypeFromSample()?.name || "",
+        value: sample?.sampleType?.name ?? "",
       },
       [REPORT_FORM_FIELDS.CLIENT]: {
         label: REPORT_FORM_LABELS[REPORT_FORM_FIELDS.CLIENT],
-        value: getClientFromSample()?.name || "",
+        value: sample?.client?.name ?? "",
       },
       [REPORT_FORM_FIELDS.GET_SAMPLE_DATE]: {
         label: REPORT_FORM_LABELS[REPORT_FORM_FIELDS.GET_SAMPLE_DATE],
@@ -84,7 +62,7 @@ export const useSampleReportDetails = (
   const sampleCardDetails = useMemo(
     () => getSampleCardDetails(),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [sample, sampleTypes, clients],
+    [sample],
   );
   return {sampleCardDetails};
 };

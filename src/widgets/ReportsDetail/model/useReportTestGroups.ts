@@ -1,119 +1,103 @@
 import {v4 as uuidv4} from "uuid";
-
-import {AutoCompleteOption} from "../../../shared/ui/AutoComplete/types";
+import {Test} from "../../../entities/test";
 import {
   API_FIELD_LIMITS,
   exceedsLength,
-  FormProps,
   REQUIRED_FIELD_ERROR_TEXT,
 } from "../../../utils/constants";
-import {ReportFormFields} from "../../../utils/enums";
-import {ReportTestGroups, ReportTestRow, ReportTestRowField} from "./types";
+import {
+  ReportTestGroup,
+  ReportTestGroups,
+  ReportTestRow,
+  ReportTestRowField,
+} from "./types";
 
-export const createEmptyReportTestRow = (): ReportTestRow => ({
+export const createReportTestRow = (): ReportTestRow => ({
   id: uuidv4(),
-  analyteId: "",
   analysisMethodId: "",
   result: "",
   criteriaId: "",
 });
 
-export const getDefaultReportTestRows = (): ReportTestRow[] => [
-  createEmptyReportTestRow(),
-];
+export const createReportTestGroup = (): ReportTestGroup => ({
+  id: uuidv4(),
+  testTypeId: "",
+  analyteId: "",
+  rows: [createReportTestRow()],
+});
+
+export const groupReportTests = (tests: Test[]): ReportTestGroup[] => {
+  const groups = new Map<string, ReportTestGroup>();
+
+  for (const test of tests) {
+    const testTypeId = test.testType.id;
+    const analyteId = test.analyte.id;
+    const key = `${testTypeId}:${analyteId}`;
+    const row = {
+      id: test.id,
+      analysisMethodId: test.analysisMethod.id,
+      criteriaId: test.criteria.id,
+      result: test.result,
+    };
+
+    const group = groups.get(key);
+    if (group) group.rows.push(row);
+    else groups.set(key, {id: key, testTypeId, analyteId, rows: [row]});
+  }
+
+  return Array.from(groups.values());
+};
 
 const validateResultLength = exceedsLength(API_FIELD_LIMITS.reportResult);
 
-export const isCompleteReportTestRow = (row: ReportTestRow): boolean => {
-  return (
-    !!row.analyteId.trim() &&
-    !!row.analysisMethodId.trim() &&
-    !!row.result.trim() &&
-    !validateResultLength(row.result) &&
-    !!row.criteriaId.trim()
-  );
-};
+const isEmptyRow = ({analysisMethodId, result, criteriaId}: ReportTestRow) =>
+  !analysisMethodId && !result.trim() && !criteriaId;
 
-export const isEmptyReportTestRow = (row: ReportTestRow): boolean => {
-  return (
-    !row.analyteId.trim() &&
-    !row.analysisMethodId.trim() &&
-    !row.result.trim() &&
-    !row.criteriaId.trim()
-  );
-};
-
-export const hasValidReportTests = (testGroups: ReportTestGroups): boolean => {
-  const rows = Object.values(testGroups).flat();
-  const hasCompleteRow = rows.some(isCompleteReportTestRow);
-  const hasPartialRows = rows.some(
-    (row) => !isEmptyReportTestRow(row) && !isCompleteReportTestRow(row),
-  );
-
-  return hasCompleteRow && !hasPartialRows;
-};
-
-export const getFormReportTestGroups = (
-  form: FormProps,
-): ReportTestGroups | null => {
-  const reportTestGroups = form[ReportFormFields.REPORT_TEST_GROUPS];
-
-  if (!reportTestGroups || typeof reportTestGroups !== "object") {
-    return null;
-  }
-
-  const hasOnlyRows = Object.values(reportTestGroups).every((rows) =>
-    Array.isArray(rows),
-  );
-
-  return hasOnlyRows ? (reportTestGroups as ReportTestGroups) : null;
-};
-
-export const addReportTestRow = (rows: ReportTestRow[]): ReportTestRow[] => [
-  ...rows,
-  createEmptyReportTestRow(),
-];
-
-export const removeReportTestRow = (
-  rows: ReportTestRow[],
-  rowId: string,
-): ReportTestRow[] => rows.filter((row) => row.id !== rowId);
-
-export const updateReportTestRow = (
-  rows: ReportTestRow[],
-  rowId: string,
-  fieldName: ReportTestRowField,
-  value: string,
-): ReportTestRow[] =>
-  rows.map((row) =>
-    row.id === rowId
-      ? {
-          ...row,
-          [fieldName]: value,
-        }
-      : row,
-  );
-
-export const getAutoCompleteValue = (
-  options: AutoCompleteOption[],
-  value: string,
-): string => {
-  const optionExists = options.some((option) => option.id === value);
-  return optionExists ? value : "";
-};
+const isEmptyGroup = ({testTypeId, analyteId, rows}: ReportTestGroup) =>
+  !testTypeId && !analyteId && rows.every(isEmptyRow);
 
 export const getReportTestFieldError = (
   row: ReportTestRow,
   fieldName: ReportTestRowField,
-  hasCompleteReportTestRow: boolean,
-  isReadonly: boolean,
 ): string => {
-  const shouldValidateRow =
-    !isEmptyReportTestRow(row) || !hasCompleteReportTestRow;
-
-  if (isReadonly || !shouldValidateRow) return "";
   if (!row[fieldName].trim()) return REQUIRED_FIELD_ERROR_TEXT;
-  return fieldName === ReportFormFields.RESULT
-    ? validateResultLength(row.result)
-    : "";
+  return fieldName === "result" ? validateResultLength(row.result) : "";
+};
+
+export const hasValidReportTests = (groups: ReportTestGroup[]): boolean => {
+  const selected = groups.filter((group) => !isEmptyGroup(group));
+  const keys = new Set(
+    selected.map(({testTypeId, analyteId}) => `${testTypeId}:${analyteId}`),
+  );
+  return (
+    selected.length > 0 &&
+    keys.size === selected.length &&
+    selected.every(
+      ({testTypeId, analyteId, rows}) =>
+        Boolean(testTypeId && analyteId) &&
+        rows.length > 0 &&
+        rows.every(
+          (row) =>
+            !getReportTestFieldError(row, "analysisMethodId") &&
+            !getReportTestFieldError(row, "result") &&
+            !getReportTestFieldError(row, "criteriaId"),
+        ),
+    )
+  );
+};
+
+export const toReportTestGroups = (
+  groups: ReportTestGroup[],
+): ReportTestGroups => {
+  const groupsByTestType: ReportTestGroups = {};
+  for (const {testTypeId, analyteId, rows} of groups.filter(
+    (group) => !isEmptyGroup(group),
+  )) {
+    const tests = rows.map((row) => ({...row, analyteId}));
+    groupsByTestType[testTypeId] = [
+      ...(groupsByTestType[testTypeId] ?? []),
+      ...tests,
+    ];
+  }
+  return groupsByTestType;
 };

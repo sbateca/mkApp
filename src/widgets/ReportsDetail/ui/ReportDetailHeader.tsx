@@ -14,11 +14,11 @@ import {
 } from "../../../utils/enums";
 import {ReportDetailStyles} from "./ReportsDetailStyles";
 import {Report} from "../../../entities/report";
-import {useReadOnlyMode} from "../../../features/readOnlyMode";
 
 export type HeaderProps = {
   handleCloseSideSection: () => void;
   isLoading: boolean;
+  isReadOnlyMode: boolean;
   selectedReport: Report | null;
   sideSectionTitle: string;
 };
@@ -26,11 +26,11 @@ export type HeaderProps = {
 export const ReportDetailHeader = ({
   handleCloseSideSection,
   isLoading,
+  isReadOnlyMode,
   selectedReport,
   sideSectionTitle,
 }: HeaderProps): React.ReactElement => {
   const {t} = useInterfaceTranslation();
-  const {isReadOnlyMode} = useReadOnlyMode();
 
   const getEditModeChip = (): React.ReactNode => {
     if (selectedReport) {

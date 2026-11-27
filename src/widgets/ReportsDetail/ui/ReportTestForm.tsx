@@ -1,148 +1,122 @@
-import {useInterfaceTranslation} from "../../../shared/i18n/useInterfaceTranslation";
-import React from "react";
-import {
-  Button,
-  Grid,
-  IconButton,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import AddOutlined from "@mui/icons-material/AddOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {Box} from "@mui/system";
-
+import {Box, Grid, IconButton, Stack, TextField} from "@mui/material";
 import {AutoComplete} from "../../../shared/ui";
-import {AnalysisMethod} from "../../../entities/analysisMethod";
-import {Analyte} from "../../../entities/analyte";
-import {Criteria} from "../../../entities/criteria";
-import {getAutoCompleteOptionsFromModel} from "../../../utils/model";
+import {AutoCompleteOption} from "../../../shared/ui/AutoComplete/types";
+import {formSectionSx} from "../../../shared/commonStyles";
+import {useInterfaceTranslation} from "../../../shared/i18n/useInterfaceTranslation";
 import {
-  ADD_MORE_TESTS_HINT_TEXT,
-  BUTTON_LABELS,
   REPORT_ANALYSIS_METHOD_LABEL_TEXT,
   REPORT_ANALYTE_LABEL_TEXT,
   REPORT_CRITERIA_LABEL_TEXT,
   REPORT_RESULT_LABEL_TEXT,
+  REPORT_TEST_TYPE_LABEL_TEXT,
 } from "../../../utils/constants";
 import {
-  ReportFormFields,
-  SelectVariants,
-  SharedButtonColors,
-  SharedButtonCommonLabels,
-  SharedButtonSizes,
-  SharedTextFieldVariants,
-} from "../../../utils/enums";
-import {ReportTestRow, ReportTestRowField} from "../model/types";
-import {
-  addReportTestRow,
-  getAutoCompleteValue,
-  getReportTestFieldError,
-  removeReportTestRow,
-  updateReportTestRow,
-} from "../model/useReportTestGroups";
-import {formSectionSx, getStackFieldProps} from "../../../shared/commonStyles";
-import {useReadOnlyMode} from "../../../features/readOnlyMode";
+  ReportTestGroup,
+  ReportTestRow,
+  ReportTestRowField,
+} from "../model/types";
+import {getReportTestFieldError} from "../model/useReportTestGroups";
 
-type ReportTestFormProps = {
-  hasCompleteReportTestRow: boolean;
-  analytes: Analyte[] | null;
-  criterias: Criteria[] | null;
-  analysisMethods: AnalysisMethod[] | null;
-  title: string;
-  rows: ReportTestRow[];
-  onRowsChange: (nextRows: ReportTestRow[]) => void;
+type Props = {
+  group: ReportTestGroup;
+  number: number;
+  testTypes: AutoCompleteOption[];
+  analytes: AutoCompleteOption[];
+  methods: AutoCompleteOption[];
+  criteria: AutoCompleteOption[];
+  onChange: (group: ReportTestGroup) => void;
+  onRemove: () => void;
 };
 
 export const ReportTestForm = ({
-  hasCompleteReportTestRow,
+  group,
+  number,
+  testTypes,
   analytes,
-  criterias,
-  analysisMethods,
-  title,
-  rows,
-  onRowsChange,
-}: ReportTestFormProps): React.ReactElement => {
+  methods,
+  criteria,
+  onChange,
+  onRemove,
+}: Props) => {
   const {t} = useInterfaceTranslation();
-  const {isReadOnlyMode} = useReadOnlyMode();
+  const hasAnalyte = Boolean(group.testTypeId && group.analyteId);
 
-  const handleAddTestFields = () => {
-    onRowsChange(addReportTestRow(rows));
+  const updateRow = (id: string, field: ReportTestRowField, value: string) => {
+    onChange({
+      ...group,
+      rows: group.rows.map((row) =>
+        row.id === id ? {...row, [field]: value} : row,
+      ),
+    });
   };
 
-  const handleRemoveTestFields = (rowId: string) => {
-    onRowsChange(removeReportTestRow(rows, rowId));
-  };
-
-  const handleRowChange = (
-    rowId: string,
-    fieldName: ReportTestRowField,
-    value: string,
+  const renderRowSelect = (
+    row: ReportTestRow,
+    field: "analysisMethodId" | "criteriaId",
+    label: string,
+    options: AutoCompleteOption[],
   ) => {
-    onRowsChange(updateReportTestRow(rows, rowId, fieldName, value));
+    const error = hasAnalyte ? getReportTestFieldError(row, field) : "";
+    return (
+      <AutoComplete
+        name={field}
+        label={t(label)}
+        options={options}
+        value={row[field]}
+        variant="outlined"
+        onChange={(_, option) => updateRow(row.id, field, option?.id ?? "")}
+        readOnly={false}
+        disabled={!hasAnalyte}
+        required
+        error={Boolean(error)}
+        helperText={t(error)}
+      />
+    );
   };
-
-  const analyteOptions = getAutoCompleteOptionsFromModel(analytes);
-  const analysisMethodOptions =
-    getAutoCompleteOptionsFromModel(analysisMethods);
-  const criteriaOptions = getAutoCompleteOptionsFromModel(criterias);
 
   return (
-    <Stack component="section" gap={2} sx={formSectionSx}>
-      <Stack
-        direction="row"
-        flexWrap="wrap"
-        gap={1}
-        justifyContent="space-between"
-      >
-        <Box>
-          <Typography component="h2" fontWeight={750}>
-            {title}
-          </Typography>
-          {!isReadOnlyMode && (
-            <Typography variant="body2" color="text.secondary">
-              {t(ADD_MORE_TESTS_HINT_TEXT)}
-            </Typography>
-          )}
-        </Box>
-        {!isReadOnlyMode && (
-          <Button
+    <Stack
+      component="section"
+      aria-label={`${t(REPORT_ANALYTE_LABEL_TEXT)} ${number}`}
+      gap={2}
+      sx={{...formSectionSx, borderLeft: 4, borderLeftColor: "primary.main"}}
+    >
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6}>
+          <AutoComplete
+            name="testTypeId"
+            label={t(REPORT_TEST_TYPE_LABEL_TEXT)}
+            options={testTypes}
+            value={group.testTypeId}
             variant="outlined"
-            size="small"
-            startIcon={<AddOutlined />}
-            onClick={handleAddTestFields}
-            sx={{alignSelf: "flex-start"}}
-          >
-            {t(BUTTON_LABELS.ADD_TEST)}
-          </Button>
-        )}
-      </Stack>
-      {rows.map((row) => {
-        const analyteError = getReportTestFieldError(
-          row,
-          ReportFormFields.ANALYTE_ID,
-          hasCompleteReportTestRow,
-          isReadOnlyMode,
-        );
-        const analysisMethodError = getReportTestFieldError(
-          row,
-          ReportFormFields.ANALYSIS_METHOD_ID,
-          hasCompleteReportTestRow,
-          isReadOnlyMode,
-        );
-        const resultError = getReportTestFieldError(
-          row,
-          ReportFormFields.RESULT,
-          hasCompleteReportTestRow,
-          isReadOnlyMode,
-        );
-        const criteriaError = getReportTestFieldError(
-          row,
-          ReportFormFields.CRITERIA_ID,
-          hasCompleteReportTestRow,
-          isReadOnlyMode,
-        );
-
+            onChange={(_, option) => {
+              const testTypeId = option?.id ?? "";
+              if (testTypeId !== group.testTypeId)
+                onChange({...group, testTypeId, analyteId: ""});
+            }}
+            readOnly={false}
+            required
+          />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <AutoComplete
+            name="analyteId"
+            label={t(REPORT_ANALYTE_LABEL_TEXT)}
+            options={analytes}
+            value={group.analyteId}
+            variant="outlined"
+            onChange={(_, option) =>
+              onChange({...group, analyteId: option?.id ?? ""})
+            }
+            readOnly={false}
+            disabled={!group.testTypeId}
+            required
+          />
+        </Grid>
+      </Grid>
+      {group.rows.map((row) => {
+        const error = hasAnalyte ? getReportTestFieldError(row, "result") : "";
         return (
           <Box
             key={row.id}
@@ -156,129 +130,72 @@ export const ReportTestForm = ({
           >
             <Grid container spacing={2} alignItems="flex-start">
               <Grid item xs={12} sm={6}>
-                <Stack {...getStackFieldProps()}>
-                  <AutoComplete
-                    options={analyteOptions}
-                    label={t(REPORT_ANALYTE_LABEL_TEXT)}
-                    value={getAutoCompleteValue(analyteOptions, row.analyteId)}
-                    variant={SelectVariants.OUTLINED}
-                    onChange={(_, newValue) =>
-                      handleRowChange(
-                        row.id,
-                        ReportFormFields.ANALYTE_ID,
-                        newValue?.id ?? "",
-                      )
-                    }
-                    name={ReportFormFields.ANALYTE_ID}
-                    readOnly={isReadOnlyMode}
-                    required
-                    error={!!analyteError}
-                    helperText={t(analyteError)}
-                  />
-                </Stack>
+                {renderRowSelect(
+                  row,
+                  "analysisMethodId",
+                  REPORT_ANALYSIS_METHOD_LABEL_TEXT,
+                  methods,
+                )}
               </Grid>
-
               <Grid item xs={12} sm={6}>
-                <Stack {...getStackFieldProps()}>
-                  <AutoComplete
-                    options={analysisMethodOptions}
-                    label={t(REPORT_ANALYSIS_METHOD_LABEL_TEXT)}
-                    value={getAutoCompleteValue(
-                      analysisMethodOptions,
-                      row.analysisMethodId,
-                    )}
-                    variant={SelectVariants.OUTLINED}
-                    onChange={(_, newValue) =>
-                      handleRowChange(
-                        row.id,
-                        ReportFormFields.ANALYSIS_METHOD_ID,
-                        newValue?.id ?? "",
-                      )
-                    }
-                    name={ReportFormFields.ANALYSIS_METHOD_ID}
-                    readOnly={isReadOnlyMode}
-                    required
-                    error={!!analysisMethodError}
-                    helperText={t(analysisMethodError)}
-                  />
-                </Stack>
+                <TextField
+                  required
+                  label={t(REPORT_RESULT_LABEL_TEXT)}
+                  name="result"
+                  size="small"
+                  value={row.result}
+                  onChange={(event) =>
+                    updateRow(row.id, "result", event.target.value)
+                  }
+                  disabled={!hasAnalyte}
+                  error={Boolean(error)}
+                  helperText={t(error)}
+                  fullWidth
+                />
               </Grid>
-
               <Grid item xs={12} sm={6}>
-                <Stack {...getStackFieldProps()}>
-                  <TextField
-                    required
-                    label={t(REPORT_RESULT_LABEL_TEXT)}
-                    type="text"
-                    color={SharedButtonColors.PRIMARY}
-                    size={SharedButtonSizes.SMALL}
-                    onChange={(event) =>
-                      handleRowChange(
-                        row.id,
-                        ReportFormFields.RESULT,
-                        event.target.value,
-                      )
-                    }
-                    name={ReportFormFields.RESULT}
-                    value={row.result}
-                    variant={SharedTextFieldVariants.OUTLINED}
-                    fullWidth
-                    error={!!resultError}
-                    helperText={t(resultError)}
-                    InputProps={{
-                      readOnly: isReadOnlyMode,
-                    }}
-                  />
-                </Stack>
+                {renderRowSelect(
+                  row,
+                  "criteriaId",
+                  REPORT_CRITERIA_LABEL_TEXT,
+                  criteria,
+                )}
               </Grid>
-
-              <Grid item xs={12} sm={6}>
-                <Stack {...getStackFieldProps()}>
-                  <AutoComplete
-                    options={criteriaOptions}
-                    label={t(REPORT_CRITERIA_LABEL_TEXT)}
-                    value={getAutoCompleteValue(
-                      criteriaOptions,
-                      row.criteriaId,
-                    )}
-                    variant={SelectVariants.OUTLINED}
-                    onChange={(_, newValue) =>
-                      handleRowChange(
-                        row.id,
-                        ReportFormFields.CRITERIA_ID,
-                        newValue?.id ?? "",
-                      )
-                    }
-                    name={ReportFormFields.CRITERIA_ID}
-                    readOnly={isReadOnlyMode}
-                    required
-                    error={!!criteriaError}
-                    helperText={t(criteriaError)}
-                  />
-                </Stack>
-              </Grid>
-
-              <Grid
-                item
-                xs={12}
-                sx={{display: "flex", justifyContent: "flex-end"}}
-              >
-                <Stack>
+              {group.rows.length > 1 && (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  sx={{display: "flex", justifyContent: "flex-end"}}
+                >
                   <IconButton
-                    aria-label={t(SharedButtonCommonLabels.DELETE)}
-                    color={SharedButtonColors.ERROR}
-                    size={SharedButtonSizes.SMALL}
-                    disabled={isReadOnlyMode}
-                    onClick={() => handleRemoveTestFields(row.id)}
+                    aria-label={t("Remove result")}
+                    size="small"
+                    color="error"
+                    onClick={() =>
+                      onChange({
+                        ...group,
+                        rows: group.rows.filter(({id}) => id !== row.id),
+                      })
+                    }
                   >
                     <DeleteIcon />
                   </IconButton>
-                </Stack>
-              </Grid>
+                </Grid>
+              )}
             </Grid>
           </Box>
         );
       })}
+      <IconButton
+        aria-label={t("Remove analyte")}
+        color="error"
+        onClick={onRemove}
+        size="small"
+        sx={{alignSelf: "flex-end"}}
+      >
+        <DeleteIcon />
+      </IconButton>
     </Stack>
   );
 };

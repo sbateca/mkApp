@@ -1,45 +1,84 @@
 import React from "react";
+import {
+  Box,
+  Divider,
+  SxProps,
+  Theme,
+  useMediaQuery,
+  useTheme,
+} from "@mui/material";
 
-import {Box, Divider, Theme, useMediaQuery, useTheme} from "@mui/material";
-import {SxProps} from "@mui/material/styles";
-
+import {
+  selectError,
+  selectIsLoadingReport,
+  selectSelectedReport,
+  useReportStore,
+} from "../../../entities/report";
+import {useReadOnlyMode} from "../../../features/readOnlyMode";
+import {useSideSection} from "../../../features/sideSection";
+import {getBoxContainerProps} from "../../../shared/commonStyles";
 import {Spinner} from "../../../shared/ui";
-
 import {useReportDetailController} from "../model/useReportDetailController";
+import {useReportErrorNotifier} from "../model/useReportErrorNotifier";
 import {ReportDetailHeader} from "./ReportDetailHeader";
 import {ReportDetailForm} from "./ReportDetailForm";
-import {getBoxContainerProps} from "../../../shared/commonStyles";
+import {ReportReadView} from "./ReportReadView";
 
-export const ReportDetail = (): React.ReactElement => {
-  const theme = useTheme<Theme>();
-  const isLessThanMediumScreen = useMediaQuery(theme.breakpoints.down("sm"));
+type EditorProps = {isLessThanMediumScreen: boolean};
 
+const ReportEditor = ({isLessThanMediumScreen}: EditorProps) => {
   const {catalogs, detailForm, state, actions} = useReportDetailController();
 
-  const {isLoadingAll} = catalogs;
-  const {isLoading, selectedReport, sideSectionTitle} = state;
-  const {onCloseSideSection} = actions;
+  return catalogs.isLoadingAll ? (
+    <Spinner />
+  ) : (
+    <ReportDetailForm
+      isLessThanMediumScreen={isLessThanMediumScreen}
+      catalogs={catalogs}
+      detailForm={detailForm}
+      state={state}
+      actions={actions}
+    />
+  );
+};
+
+export const ReportDetail = ({
+  canCreate,
+}: {
+  canCreate: boolean;
+}): React.ReactElement => {
+  const theme = useTheme<Theme>();
+  const isLessThanMediumScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const selectedReport = useReportStore(selectSelectedReport);
+  const isLoading = useReportStore(selectIsLoadingReport);
+  const error = useReportStore(selectError);
+  const {sideSectionTitle, onCloseSideSection} = useSideSection();
+  const {isReadOnlyMode} = useReadOnlyMode();
+  useReportErrorNotifier(error);
+
+  const canEdit = selectedReport
+    ? selectedReport.actions?.update?.allowed === true
+    : canCreate;
+  const showEditor = canEdit && !isReadOnlyMode;
 
   return (
     <Box sx={getBoxContainerProps(isLessThanMediumScreen) as SxProps}>
       <ReportDetailHeader
         handleCloseSideSection={onCloseSideSection}
         isLoading={isLoading}
+        isReadOnlyMode={!showEditor}
         selectedReport={selectedReport}
         sideSectionTitle={sideSectionTitle}
       />
       <Divider />
-      {isLoadingAll ? (
-        <Spinner />
-      ) : (
-        <ReportDetailForm
+      {showEditor ? (
+        <ReportEditor isLessThanMediumScreen={isLessThanMediumScreen} />
+      ) : selectedReport ? (
+        <ReportReadView
+          report={selectedReport}
           isLessThanMediumScreen={isLessThanMediumScreen}
-          catalogs={catalogs}
-          detailForm={detailForm}
-          state={state}
-          actions={actions}
         />
-      )}
+      ) : null}
     </Box>
   );
 };

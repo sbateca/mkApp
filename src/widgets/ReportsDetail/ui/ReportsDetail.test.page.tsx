@@ -51,6 +51,9 @@ const mockReports = buildReportsData(2, {
 });
 const mockTests = mockReports.flatMap((report) => report.tests);
 const mockTestTypes = mockTests.map((test) => test.testType);
+mockAnalytes.forEach((analyte, index) => {
+  analyte.testType = mockTestTypes[index];
+});
 const mockReportTestGroups = {
   [mockTests[0].testType.id]: [
     {
@@ -175,6 +178,8 @@ jest.mock("../../../features/readOnlyMode", () => ({
   useReadOnlyMode: () => ({
     isReadOnlyMode: mockReadOnlyModeStoreState.isReadOnlyMode,
     setIsReadOnlyMode: mockReadOnlyModeStoreState.setIsReadOnlyMode,
+    handleSwitchReadOnlyMode:
+      mockReadOnlyModeStoreState.handleSwitchReadOnlyMode,
   }),
 }));
 
@@ -185,7 +190,19 @@ jest.mock("../../../utils/hooks", () => ({
   useForm: jest.fn(),
 }));
 
-export const renderReportDetail = async () => {
+export const renderReportDetail = ({
+  readOnly = true,
+  canUpdate = false,
+  canCreate = false,
+  hasReport = true,
+} = {}) => {
+  const report = {
+    ...mockReports[0],
+    actions: {read: {allowed: true}, update: {allowed: canUpdate}},
+  };
+  const form = hasReport
+    ? mockReportDetailData.form
+    : mockReportDetailData.defaulForm;
   mockedSamplesState = {
     samples: mockReportDetailData.samples,
     selectedSample: mockReportDetailData.samples[0],
@@ -208,7 +225,7 @@ export const renderReportDetail = async () => {
 
   mockedReportState = {
     reports: mockReports,
-    selectedReport: mockReports[0],
+    selectedReport: hasReport ? report : null,
     isLoading: false,
     error: null,
     setReports: jest.fn(),
@@ -338,14 +355,16 @@ export const renderReportDetail = async () => {
   };
 
   mockReadOnlyModeStoreState = {
-    isReadOnlyMode: mockReportDetailData.readonly,
-    setIsReadOnlyMode: jest.fn(),
+    isReadOnlyMode: readOnly,
+    setIsReadOnlyMode: jest.fn((value) => {
+      mockReadOnlyModeStoreState.isReadOnlyMode = value;
+    }),
     handleSwitchReadOnlyMode: jest.fn(),
   };
 
   jest.spyOn(hooks, "useForm").mockReturnValue({
-    form: mockReportDetailData.form,
-    setForm: jest.fn().mockReturnValue(mockReportDetailData.form),
+    form,
+    setForm: jest.fn().mockReturnValue(form),
     handleChange: jest.fn(),
     handleDateChange: jest.fn(),
     cleanForm: jest.fn(),
@@ -358,10 +377,25 @@ export const renderReportDetail = async () => {
     isNotValidForm: false,
   });
 
-  const container = render(<ReportDetail />);
+  const container = render(<ReportDetail canCreate={canCreate} />);
 
   return {
-    container,
+    report,
+    rerender: () => container.rerender(<ReportDetail canCreate={canCreate} />),
+    testTypes: mockTestTypes,
+    analytes: mockAnalytes,
+    catalogRequests: [
+      mockedSamplesState.getSamples,
+      mockedSamplesState.getSampleById,
+      mockClientStoreState.getClients,
+      mockSampleTypeStoreState.getSampleTypes,
+      mockCriteriaStoreState.getCriterias,
+      mockAnalysisMethodsStoreState.getAnalysisMethods,
+      mockAnalyteStoreState.getAnalytes,
+      mockAnalyteStoreState.getAnalytesByTestTypeId,
+      mockTestTypeStoreState.getTestTypes,
+      mockTestStoreState.getTests,
+    ],
     titleNode: container.container.querySelector("h6"),
     closeButton: screen.getByText("Close"),
     screen,
